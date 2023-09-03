@@ -2,36 +2,47 @@ import { DC } from "../../constants";
 
 export const normalAchievements = [
   {
+    // Reward not implemented
     id: 11,
     name: "You gotta start somewhere",
     description: "Buy a 1st Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
+    get reward() { return '1st Antimatter Dimensions are ${formatInt(10)} times cheaper.'; },
   },
   {
+    // Reward not implemented
     id: 12,
     name: "100 antimatter is a lot",
     description: "Buy a 2nd Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
+    get reward() { return '2nd Antimatter Dimensions are ${formatInt(10)} times cheaper.'; },
   },
   {
+    // Reward not implemented
     id: 13,
     name: "Half life 3 CONFIRMED",
     description: "Buy a 3rd Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
+    get reward() { return '3rd Antimatter Dimensions are ${formatInt(10)} times cheaper.'; },
   },
   {
+    // Reward not implemented
     id: 14,
     name: "L4D: Left 4 Dimensions",
     description: "Buy a 4th Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
+    get reward() { return '4th Antimatter Dimensions are ${formatInt(10)} times cheaper.'; },
   },
   {
+    // Reward not implemented
     id: 15,
     name: "5 Dimension Antimatter Punch",
     description: "Buy a 5th Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
+    get reward() { return '5th Antimatter Dimensions are ${formatInt(10)} times cheaper.'; },
   },
   {
+    // Reward not implemented
     id: 16,
     name: "We couldn't afford 9",
     get description() {
@@ -40,14 +51,18 @@ export const normalAchievements = [
         : "Buy a 6th Antimatter Dimension.";
     },
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
+    get reward() { return '6th Antimatter Dimensions are ${formatInt(10)} times cheaper.'; },
   },
   {
+    // Reward not implemented
     id: 17,
     name: "Not a luck related achievement",
     description: "Buy a 7th Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
+    get reward() { return '7th Antimatter Dimensions are ${formatInt(10)} times cheaper.'; },
   },
   {
+    // Reward not implemented
     id: 18,
     name: "90 degrees to infinity",
     get description() {
@@ -56,6 +71,7 @@ export const normalAchievements = [
         : "Buy an 8th Antimatter Dimension.";
     },
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
+    get reward() { return '8th Antimatter Dimensions are ${formatInt(10)} times cheaper.'; },
   },
   {
     id: 21,
@@ -67,11 +83,13 @@ export const normalAchievements = [
     effect: 100
   },
   {
+    // Reward not implemented
     id: 22,
     name: "FAKE NEWS!",
     get description() { return `Encounter ${formatInt(50)} different news messages.`; },
     checkRequirement: () => NewsHandler.uniqueTickersSeen >= 50,
     checkEvent: GAME_EVENT.REALITY_RESET_AFTER
+    reward: 'Add a fast-forward button to the news ticker.',
   },
   {
     id: 23,
@@ -82,32 +100,41 @@ export const normalAchievements = [
     effect: 1.1
   },
   {
+    // Reward not implemented, and could be better
     id: 24,
     name: "Antimatter Apocalypse",
     get description() { return `Get over ${format(DC.E80)} antimatter.`; },
     checkRequirement: () => Currency.antimatter.exponent >= 80,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    get reward() { return `2nd Antimatter Dimensions are ${formatPercents(0.1)} stronger.`; },
+    effect: 1.1
   },
   {
+    // Reward not implemented
     id: 25,
     name: "Boosting to the max",
     get description() { return `Buy ${formatInt(10)} Dimension Boosts.`; },
     checkRequirement: () => DimBoost.purchasedBoosts >= 10,
     checkEvent: GAME_EVENT.DIMBOOST_AFTER
+    get reward() { return 'Dimension Boosts require ${formatInt(5)} fewer dimensions.'; },
   },
   {
+    // Reward not implemented
     id: 26,
     name: "You got past The Big Wall",
     description: "Buy an Antimatter Galaxy.",
     checkRequirement: () => true,
     checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE
+    get reward() { return 'Galaxies require ${formatInt(10)} fewer dimensions.'; },
   },
   {
+    // Reward not implemented
     id: 27,
     name: "Double Galaxy",
     get description() { return `Buy ${formatInt(2)} Antimatter Galaxies.`; },
     checkRequirement: () => player.galaxies >= 2,
     checkEvent: GAME_EVENT.GALAXY_RESET_AFTER
+    reward: 'Gain a free Tickspeed upgrade for each Antimatter Galaxy',
   },
   {
     id: 28,
@@ -143,11 +170,18 @@ export const normalAchievements = [
     effect: 0.1,
   },
   {
+    // Reward not implemented, needs balancing
     id: 33,
     name: "That's a lot of infinites",
     get description() { return `Reach Infinity ${formatInt(10)} times.`; },
     checkRequirement: () => Currency.infinities.gte(10),
     checkEvent: GAME_EVENT.BIG_CRUNCH_AFTER
+    get reward() {
+      return `Infinities more than ${formatInt(3)} minutes long
+      give ${formatX(2)} more Infinities.`;
+    },
+    effect: 2,
+    effectCondition: () => Time.thisInfinity.totalSeconds > 180
   },
   {
     id: 34,
@@ -159,6 +193,7 @@ export const normalAchievements = [
     effect: 1.02
   },
   {
+    // Reward not implemented
     id: 35,
     name: "Don't you dare sleep",
     get description() {
@@ -168,6 +203,9 @@ export const normalAchievements = [
     },
     checkRequirement: () => Date.now() - player.lastUpdate >= 21600000,
     checkEvent: GAME_EVENT.GAME_TICK_BEFORE
+    reward: "Extremely small multiplier to Antimatter Dimensions based on time spent offline.",
+    //effect: () => Math.max(Math.pow(Time.totalTimePlayed.totalDays * 4, 0.02), 1),
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     id: 36,
@@ -276,6 +314,9 @@ export const normalAchievements = [
     get description() { return `Complete ${formatInt(3)} Normal Challenges.`; },
     checkRequirement: () => NormalChallenges.all.countWhere(c => c.isCompleted) >= 3,
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
+    get reward () { 
+      return 'For every Normal Challenge completed, all Antimatter Dimensions are ${formatPercents(0.01)} stronger.
+    },
   },
   {
     id: 48,
@@ -287,11 +328,13 @@ export const normalAchievements = [
     effect: 1.1
   },
   {
+    // Reward not implemented
     id: 51,
     name: "Limit Break",
     description: "Break Infinity.",
     checkRequirement: () => player.break,
     checkEvent: [GAME_EVENT.BREAK_INFINITY, GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
+    reward: '1st Dimension Boost, and the ones after it, boost all Antimatter Dimensions.'
   },
   {
     id: 52,
