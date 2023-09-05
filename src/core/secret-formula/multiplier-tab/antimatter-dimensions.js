@@ -116,6 +116,7 @@ export const AD = {
     name: "Achievement Rewards",
     multValue: dim => {
       const allMult = DC.D1.timesEffectsOf(
+        Achievement(47),
         Achievement(48),
         Achievement(56),
         Achievement(65),
@@ -140,6 +141,7 @@ export const AD = {
         }
         dimMults[tier] = dimMults[tier].timesEffectsOf(
           tier === 8 ? Achievement(23) : null,
+          tier === 2 ? Achievement(24) : null,
           tier < 8 ? Achievement(34) : null,
           tier <= 4 ? Achievement(64) : null,
         );
