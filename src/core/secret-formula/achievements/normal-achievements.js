@@ -3,9 +3,6 @@ import { DC } from "../../constants";
 export const normalAchievements = [
   {
     // Row 1 rewards implemented!
-    // Known issue: buying more than 1 AD whithout the respective achievement
-    // will buy them at the unbuffed cost, resulting in lost AM compared to only purchasing 1
-    // at a time.
     id: 11,
     name: "You gotta start somewhere",
     description: "Buy a 1st Antimatter Dimension.",
