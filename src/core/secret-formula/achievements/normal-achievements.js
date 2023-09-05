@@ -103,7 +103,7 @@ export const normalAchievements = [
     effect: 1.1
   },
   {
-    // Reward not implemented
+    // Implemented!
     id: 25,
     name: "Boosting to the max",
     get description() { return `Buy ${formatInt(10)} Dimension Boosts.`; },
@@ -327,13 +327,13 @@ export const normalAchievements = [
     effect: 1.1
   },
   {
-    // Reward not implemented
+    // Implemented! But it's probably too powerful
     id: 51,
     name: "Limit Break",
     description: "Break Infinity.",
     checkRequirement: () => player.break,
     checkEvent: [GAME_EVENT.BREAK_INFINITY, GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
-    reward: '1st Dimension Boost, and the ones after it, boost all Antimatter Dimensions.',
+    reward: "1st Dimension Boost, and the ones after it, boost all Antimatter Dimensions.",
   },
   {
     id: 52,
@@ -341,7 +341,8 @@ export const normalAchievements = [
     description: "Max the interval for Antimatter Dimension and Tickspeed upgrade autobuyers.",
     checkRequirement: () => Autobuyer.antimatterDimension.zeroIndexed.concat(Autobuyer.tickspeed)
       .every(a => a.isUnlocked && a.hasMaxedInterval),
-    checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT]
+    checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
+    reward: "Antimatter Dimensions no longer spend Antimatter.",
   },
   {
     id: 53,
@@ -352,7 +353,8 @@ export const normalAchievements = [
     // We don't count autobuyers which can be upgraded via e.g. perks as upgradeable.
     checkRequirement: () => Autobuyers.upgradeable
       .every(a => a.isUnlocked && a.hasMaxedInterval),
-    checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT]
+    checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
+    reward: "Tickspeed upgrades no longer spend Antimatter.",
   },
   {
     id: 54,
