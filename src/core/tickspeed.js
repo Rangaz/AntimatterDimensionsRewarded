@@ -73,7 +73,8 @@ export function buyTickSpeed() {
     Tickspeed.multiplySameCosts();
   }
   Tutorial.turnOffEffect(TUTORIAL_STATE.TICKSPEED);
-  Currency.antimatter.subtract(Tickspeed.cost);
+  // r53 makes Tickspeed upgrades no longer spend AM
+  if (!Achievement(53).isUnlocked) Currency.antimatter.subtract(Tickspeed.cost);
   player.totalTickBought++;
   player.records.thisInfinity.lastBuyTime = player.records.thisInfinity.time;
   player.requirementChecks.permanent.singleTickspeed++;
@@ -92,7 +93,7 @@ export function buyMaxTickSpeed() {
     let cost = Tickspeed.cost;
     while (Currency.antimatter.gt(cost) && cost.lt(goal)) {
       Tickspeed.multiplySameCosts();
-      Currency.antimatter.subtract(cost);
+      if (!Achievement(53).isUnlocked) Currency.antimatter.subtract(cost);
       player.totalTickBought++;
       boughtTickspeed = true;
       cost = Tickspeed.cost;
@@ -102,7 +103,7 @@ export function buyMaxTickSpeed() {
     if (purchases === null) {
       return;
     }
-    Currency.antimatter.subtract(Decimal.pow10(purchases.logPrice));
+    if (!Achievement(53).isUnlocked) Currency.antimatter.subtract(Decimal.pow10(purchases.logPrice));
     player.totalTickBought += purchases.quantity;
     boughtTickspeed = true;
   }

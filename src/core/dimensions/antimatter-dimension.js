@@ -209,7 +209,8 @@ export function buyOneDimension(tier) {
 
   if (tier === 8 && Enslaved.isRunning && AntimatterDimension(8).bought >= 1) return false;
 
-  dimension.currencyAmount = dimension.currencyAmount.minus(cost);
+  // r52 makes Antimatter Dimensions no longer spend Antimatter.
+  if (!Achievement(52).isUnlocked) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
 
   if (dimension.boughtBefore10 === 9) {
     dimension.challengeCostBump();
@@ -242,7 +243,7 @@ export function buyManyDimension(tier) {
 
   if (tier === 8 && Enslaved.isRunning) return buyOneDimension(8);
 
-  dimension.currencyAmount = dimension.currencyAmount.minus(cost);
+  if (!Achievement(52).isUnlocked) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
   dimension.challengeCostBump();
   dimension.amount = dimension.amount.plus(dimension.remainingUntil10);
   dimension.bought += dimension.remainingUntil10;
@@ -262,7 +263,7 @@ export function buyAsManyAsYouCanBuy(tier) {
 
   if (tier === 8 && Enslaved.isRunning) return buyOneDimension(8);
 
-  dimension.currencyAmount = dimension.currencyAmount.minus(cost);
+  if (!Achievement(52).isUnlocked) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
   dimension.challengeCostBump();
   dimension.amount = dimension.amount.plus(howMany);
   dimension.bought += howMany;
@@ -301,10 +302,9 @@ export function buyMaxDimension(tier, bulk = Infinity) {
   if (Laitela.continuumActive || !dimension.isAvailableForPurchase || !dimension.isAffordableUntil10) return;
   
   // If you don't have the row 1 achievement I'll force you to buy a single dimension,
-  // so that the game can update the cost and hopefully not lose unnecesary Antimatter.
+  // so that the game can update the cost and not make you lose unnecesary Antimatter.
   if (!Achievement(10 + tier).isUnlocked) buyOneDimension(tier);
-
-
+  
   const cost = dimension.costUntil10;
   let bulkLeft = bulk;
   const goal = Player.infinityGoal;
@@ -317,7 +317,7 @@ export function buyMaxDimension(tier, bulk = Infinity) {
 
   // Buy any remaining until 10 before attempting to bulk-buy
   if (dimension.currencyAmount.gte(cost)) {
-    dimension.currencyAmount = dimension.currencyAmount.minus(cost);
+    if (!Achievement(52).isUnlocked) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
     buyUntilTen(tier);
     bulkLeft--;
   }
@@ -329,7 +329,7 @@ export function buyMaxDimension(tier, bulk = Infinity) {
     while (dimension.isAffordableUntil10 && dimension.cost.lt(goal) && bulkLeft > 0) {
       // We can use dimension.currencyAmount or Currency.antimatter here, they're the same,
       // but it seems safest to use dimension.currencyAmount for consistency.
-      dimension.currencyAmount = dimension.currencyAmount.minus(dimension.costUntil10);
+      if (!Achievement(52).isUnlocked) dimension.currencyAmount = dimension.currencyAmount.minus(dimension.costUntil10);
       buyUntilTen(tier);
       bulkLeft--;
     }
@@ -347,7 +347,7 @@ export function buyMaxDimension(tier, bulk = Infinity) {
   if (buying > bulkLeft) buying = bulkLeft;
   dimension.amount = dimension.amount.plus(10 * buying).round();
   dimension.bought += 10 * buying;
-  dimension.currencyAmount = dimension.currencyAmount.minus(Decimal.pow10(maxBought.logPrice));
+  if (!Achievement(52).isUnlocked) dimension.currencyAmount = dimension.currencyAmount.minus(Decimal.pow10(maxBought.logPrice));
 }
 
 class AntimatterDimensionState extends DimensionState {

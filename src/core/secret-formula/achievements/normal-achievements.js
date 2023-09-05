@@ -345,6 +345,7 @@ export const normalAchievements = [
     reward: "Antimatter Dimensions no longer spend Antimatter.",
   },
   {
+    // Implemented!
     id: 53,
     name: "Definitely not worth it",
     description: "Max the intervals for all normal autobuyers.",
