@@ -1,4 +1,5 @@
 import { DC } from "../constants";
+import { Achievement } from "../globals";
 
 import { DimensionState } from "./dimension";
 
@@ -21,6 +22,7 @@ export function antimatterDimensionCommonMultiplier() {
     BreakInfinityUpgrade.slowestChallengeMult,
     InfinityUpgrade.totalTimeMult,
     InfinityUpgrade.thisInfinityTimeMult,
+    Achievement(47),
     Achievement(48),
     Achievement(56),
     Achievement(65),
@@ -126,6 +128,7 @@ function applyNDMultipliers(mult, tier) {
 
   multiplier = multiplier.timesEffectsOf(
     tier === 8 ? Achievement(23) : null,
+    tier === 2 ? Achievement(24) : null,  
     tier < 8 ? Achievement(34) : null,
     tier <= 4 ? Achievement(64) : null,
     tier < 8 ? TimeStudy(71) : null,
@@ -334,11 +337,12 @@ export function buyMaxDimension(tier, bulk = Infinity) {
 class AntimatterDimensionState extends DimensionState {
   constructor(tier) {
     super(() => player.dimensions.antimatter, tier);
-    const BASE_COSTS = [null, 10, 100, 1e4, 1e6, 1e9, 1e13, 1e18, 1e24];
+    // The base costs are already 10 times cheaper than vanilla
+    const BASE_COSTS = [null, 1, 10, 1e3, 1e5, 1e8, 1e12, 1e17, 1e23];
     this._baseCost = BASE_COSTS[tier];
     const BASE_COST_MULTIPLIERS = [null, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e12, 1e15];
     this._baseCostMultiplier = BASE_COST_MULTIPLIERS[tier];
-    const C6_BASE_COSTS = [null, 10, 100, 100, 500, 2500, 2e4, 2e5, 4e6];
+    const C6_BASE_COSTS = [null, 1, 10, 10, 50, 250, 2e3, 2e4, 4e5];
     this._c6BaseCost = C6_BASE_COSTS[tier];
     const C6_BASE_COST_MULTIPLIERS = [null, 1e3, 5e3, 1e4, 1.2e4, 1.8e4, 2.6e4, 3.2e4, 4.2e4];
     this._c6BaseCostMultiplier = C6_BASE_COST_MULTIPLIERS[tier];
@@ -348,8 +352,8 @@ class AntimatterDimensionState extends DimensionState {
    * @returns {ExponentialCostScaling}
    */
   get costScale() {
-    return new ExponentialCostScaling({
-      baseCost: NormalChallenge(6).isRunning ? this._c6BaseCost : this._baseCost,
+      return new ExponentialCostScaling({
+      baseCost: NormalChallenge(6).isRunning ? this._c6BaseCost : this._baseCost * (Achievement(10 + this.tier).isUnlocked ? 1 : 10),
       baseIncrease: NormalChallenge(6).isRunning ? this._c6BaseCostMultiplier : this._baseCostMultiplier,
       costScale: Player.dimensionMultDecrease,
       scalingCostThreshold: Number.MAX_VALUE
