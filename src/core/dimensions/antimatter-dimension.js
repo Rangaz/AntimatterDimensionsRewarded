@@ -222,6 +222,12 @@ export function buyOneDimension(tier) {
     Achievement(28).tryUnlock();
   }
 
+  if (!Achievement(10 + tier).isUnlocked) {
+    onBuyDimension(tier);
+    buyAsManyAsYouCanBuy(tier);
+    return true;
+  }
+
   onBuyDimension(tier);
 
   return true;
@@ -230,6 +236,8 @@ export function buyOneDimension(tier) {
 export function buyManyDimension(tier) {
   const dimension = AntimatterDimension(tier);
   if (Laitela.continuumActive || !dimension.isAvailableForPurchase || !dimension.isAffordableUntil10) return false;
+  if (!Achievement(10 + tier).isUnlocked) buyOneDimension(tier);
+
   const cost = dimension.costUntil10;
 
   if (tier === 8 && Enslaved.isRunning) return buyOneDimension(8);
@@ -247,6 +255,8 @@ export function buyManyDimension(tier) {
 export function buyAsManyAsYouCanBuy(tier) {
   const dimension = AntimatterDimension(tier);
   if (Laitela.continuumActive || !dimension.isAvailableForPurchase || !dimension.isAffordable) return false;
+  if (!Achievement(10 + tier).isUnlocked) buyOneDimension(tier);
+  
   const howMany = dimension.howManyCanBuy;
   const cost = dimension.cost.times(howMany);
 
@@ -289,6 +299,12 @@ export function maxAll() {
 export function buyMaxDimension(tier, bulk = Infinity) {
   const dimension = AntimatterDimension(tier);
   if (Laitela.continuumActive || !dimension.isAvailableForPurchase || !dimension.isAffordableUntil10) return;
+  
+  // If you don't have the row 1 achievement I'll force you to buy a single dimension,
+  // so that the game can update the cost and hopefully not lose unnecesary Antimatter.
+  if (!Achievement(10 + tier).isUnlocked) buyOneDimension(tier);
+
+
   const cost = dimension.costUntil10;
   let bulkLeft = bulk;
   const goal = Player.infinityGoal;
@@ -353,6 +369,7 @@ class AntimatterDimensionState extends DimensionState {
    */
   get costScale() {
       return new ExponentialCostScaling({
+      // I made the cost multiply by 10 if you don't have the achievement
       baseCost: NormalChallenge(6).isRunning ? this._c6BaseCost : this._baseCost * (Achievement(10 + this.tier).isUnlocked ? 1 : 10),
       baseIncrease: NormalChallenge(6).isRunning ? this._c6BaseCostMultiplier : this._baseCostMultiplier,
       costScale: Player.dimensionMultDecrease,
