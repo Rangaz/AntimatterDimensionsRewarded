@@ -123,7 +123,7 @@ export const normalAchievements = [
     
   },
   {
-    // Reward not implemented
+    // Implemented!
     id: 27,
     name: "Double Galaxy",
     get description() { return `Buy ${formatInt(2)} Antimatter Galaxies.`; },
