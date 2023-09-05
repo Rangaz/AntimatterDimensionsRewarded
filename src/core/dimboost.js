@@ -1,4 +1,5 @@
 import { DC } from "./constants";
+import { Achievement } from "./globals";
 
 class DimBoostRequirement {
   constructor(tier, amount) {
@@ -39,7 +40,8 @@ export class DimBoost {
   }
 
   static multiplierToNDTier(tier) {
-    const normalBoostMult = DimBoost.power.pow(this.purchasedBoosts + 1 - tier).clampMin(1);
+    // r51 will make all Dimension Boosts affect all Antimatter dimensions
+    const normalBoostMult = DimBoost.power.pow(this.purchasedBoosts + 1 - tier * !Achievement(51).isUnlocked).clampMin(1);
     const imaginaryBoostMult = DimBoost.power.times(ImaginaryUpgrade(24).effectOrDefault(1))
       .pow(this.imaginaryBoosts).clampMin(1);
     return normalBoostMult.times(imaginaryBoostMult);
@@ -113,8 +115,9 @@ export class DimBoost {
       amount += Math.pow(targetResets - 1, 3) + targetResets - 1;
     }
 
-    amount -= Effects.sum(InfinityUpgrade.resetBoost);
+    amount -= Effects.sum(InfinityUpgrade.resetBoost, Achievement(25));
     if (InfinityChallenge(5).isCompleted) amount -= 1;
+    //if (Achievement(25).canBeApplied) amount -= 5;
 
     amount *= InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1);
 
@@ -138,7 +141,10 @@ export class DimBoost {
     const formattedMultText = `give a ${formatX(DimBoost.power, 2, 1)} multiplier `;
     let dimensionRange = `to the 1st Dimension`;
     if (boosts > 0) dimensionRange = `to Dimensions 1-${Math.min(boosts + 1, 8)}`;
-    if (boosts >= DimBoost.maxDimensionsUnlockable - 1) dimensionRange = `to all Dimensions`;
+    // r51 should update the text as well
+    if (boosts >= DimBoost.maxDimensionsUnlockable - 1 || Achievement(51).canBeApplied) {
+      dimensionRange = `to all Dimensions`;
+    }
 
     let boostEffects;
     if (NormalChallenge(8).isRunning) boostEffects = newUnlock;
