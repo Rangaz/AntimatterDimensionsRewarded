@@ -22,6 +22,7 @@ export function antimatterDimensionCommonMultiplier() {
     BreakInfinityUpgrade.slowestChallengeMult,
     InfinityUpgrade.totalTimeMult,
     InfinityUpgrade.thisInfinityTimeMult,
+    Achievement(35),
     Achievement(47),
     Achievement(48),
     Achievement(56),

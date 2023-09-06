@@ -189,7 +189,7 @@ export const normalAchievements = [
     effect: 1.02
   },
   {
-    // Reward not implemented
+    // Implemented!
     id: 35,
     name: "Don't you dare sleep",
     get description() {
@@ -199,8 +199,12 @@ export const normalAchievements = [
     },
     checkRequirement: () => Date.now() - player.lastUpdate >= 21600000,
     checkEvent: GAME_EVENT.GAME_TICK_BEFORE,
-    reward: "Extremely small multiplier to Antimatter Dimensions based on time spent offline.",
-    //effect: () => Math.max(Math.pow(Time.totalTimePlayed.totalDays * 4, 0.02), 1),
+    get reward() { 
+      return PlayerProgress.realityUnlocked()
+        ? `Extremely small multiplier to Antimatter Dimensions based on time played (real time).`
+        : `Extremely small multiplier to Antimatter Dimensions based on time played.`;
+    },
+    effect: () => Math.max(Math.pow(Time.realTimePlayed.totalHours / 6, 0.04), 1),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
