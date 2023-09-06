@@ -166,18 +166,19 @@ export const normalAchievements = [
     effect: 0.1,
   },
   {
-    // Reward not implemented, needs balancing
+    // Implemented! Still needs multiplier tab functionality
     id: 33,
     name: "That's a lot of infinites",
     get description() { return `Reach Infinity ${formatInt(10)} times.`; },
     checkRequirement: () => Currency.infinities.gte(10),
     checkEvent: GAME_EVENT.BIG_CRUNCH_AFTER,
     get reward() {
-      return `Infinities more than ${formatInt(3)} minutes long
+      return `Infinities more than ${formatInt(1)} minute long
       give ${formatX(2)} more Infinities.`;
     },
+    // I'll cheat so that the effect can hopefully stack with r87 correctly
     effect: 2,
-    effectCondition: () => Time.thisInfinity.totalSeconds > 180
+    effectCondition: () => Time.thisInfinity.totalSeconds > 60
   },
   {
     id: 34,
@@ -327,7 +328,7 @@ export const normalAchievements = [
     effect: 1.1
   },
   {
-    // Implemented! But it's probably too powerful
+    // Implemented!
     id: 51,
     name: "Limit Break",
     description: "Break Infinity.",
@@ -336,6 +337,7 @@ export const normalAchievements = [
     reward: "1st Dimension Boost, and the ones after it, boost all Antimatter Dimensions.",
   },
   {
+    // Implemented!
     id: 52,
     name: "Age of Automation",
     description: "Max the interval for Antimatter Dimension and Tickspeed upgrade autobuyers.",
