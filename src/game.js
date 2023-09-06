@@ -278,6 +278,7 @@ export function gainedInfinities() {
     TimeStudy(32),
     RealityUpgrade(5),
     RealityUpgrade(7),
+    Achievement(33),
     Achievement(164),
     Ra.unlocks.continuousTTBoost.effects.infinity
   );
