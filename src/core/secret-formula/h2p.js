@@ -354,7 +354,7 @@ You gain a ${formatX(2)} multiplier to the 1st Dimension for every Dimension Boo
 Dimension will have the multiplier applied one less time as the previous, down to a minimum of ${formatInt(0)}.
 For example, with ${formatInt(3)} Boosts, the 1st Dimension will gain ${formatX(8)}, the 2nd Dimension ${formatX(4)},
 the 3rd Dimension ${formatX(2)}, and all other Dimensions are unaffected.
-Once you obtain Achievement 51 however, every Boost applies equally to all Dimensions.
+Once you obtain Achievement 51 "Limit break" however, every Boost applies equally to all Dimensions.
 <br>
 <br>
 <b>Hotkey: D</b> will try to purchase a Dimension Boost.
@@ -415,7 +415,7 @@ ${formatX(8)} then ${formatX(5)}; in both cases you will end up with a total sac
     }, {
       name: "Achievements",
       info: () => `
-Each Achievement has requirements to unlock. Once unlocked, some Achievements give a reward.
+Each Achievement has requirements to unlock. Once unlocked, ALL Achievements give a reward.
 Requirements and rewards vary in difficulty and benefit significantly.
 <br>
 <br>
