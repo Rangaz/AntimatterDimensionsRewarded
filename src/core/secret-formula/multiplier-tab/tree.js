@@ -122,7 +122,7 @@ const targetedEffects = {
     TD: [105, 128],
     IP: [85, 93, 116, 125, 141],
     DT: [132, 137],
-    infinities: [87, 164],
+    infinities: [33, 87, 164],
   },
   timeStudy: {
     checkFn: MultiplierTabHelper.timeStudyDimCheck,
