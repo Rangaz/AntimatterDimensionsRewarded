@@ -176,7 +176,6 @@ export const normalAchievements = [
       return `Infinities more than ${formatInt(1)} minute long
       give ${formatX(2)} more Infinities.`;
     },
-    // I'll cheat so that the effect can hopefully stack with r87 correctly
     effect: 2,
     effectCondition: () => Time.thisInfinity.totalSeconds > 60
   },
