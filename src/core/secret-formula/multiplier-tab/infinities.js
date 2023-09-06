@@ -8,7 +8,8 @@ export const infinities = {
     name: "Infinities gained per Crunch",
     isBase: true,
     multValue: () => gainedInfinities(),
-    // The earliest sources of infinity multipliers are ach87 and TS32, which may happen in either order
+    // The earliest sources of infinity multipliers, where I think is worth showing the tab for,
+    // are ach87 and TS32, which may happen in either order
     isActive: () => (Achievement(87).isUnlocked || PlayerProgress.eternityUnlocked()) &&
       !EternityChallenge(4).isRunning && !Pelle.isDoomed,
     overlay: ["∞", "<i class='fa-solid fa-arrows-rotate' />"],
@@ -16,10 +17,11 @@ export const infinities = {
   achievement: {
     name: "Achievements",
     multValue: () => DC.D1.timesEffectsOf(
+      Achievement(33),
       Achievement(87),
       Achievement(164)
     ),
-    isActive: () => Achievement(87).isUnlocked,
+    isActive: () => Achievement(33).isUnlocked,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   timeStudy: {

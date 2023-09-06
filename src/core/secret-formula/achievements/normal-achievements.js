@@ -166,7 +166,7 @@ export const normalAchievements = [
     effect: 0.1,
   },
   {
-    // Implemented! Still needs multiplier tab functionality
+    // Implemented!
     id: 33,
     name: "That's a lot of infinites",
     get description() { return `Reach Infinity ${formatInt(10)} times.`; },
