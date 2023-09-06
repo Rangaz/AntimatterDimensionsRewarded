@@ -143,6 +143,7 @@ export const AD = {
           tier === 8 ? Achievement(23) : null,
           tier === 2 ? Achievement(24) : null,
           tier < 8 ? Achievement(34) : null,
+          tier === 8 ? Achievement(38) : null,
           tier <= 4 ? Achievement(64) : null,
         );
         if (Achievement(43).isUnlocked) {

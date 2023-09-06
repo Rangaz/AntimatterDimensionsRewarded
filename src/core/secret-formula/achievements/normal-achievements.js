@@ -224,6 +224,7 @@ export const normalAchievements = [
     effect: 5000
   },
   {
+    // Implemented!
     id: 38,
     name: "I don't believe in Gods",
     get description() {
@@ -231,7 +232,11 @@ export const normalAchievements = [
         (Your Antimatter Galaxies are reset on Infinity.)`;
     },
     checkRequirement: () => player.requirementChecks.infinity.noSacrifice,
-    checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE
+    checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
+    get reward() { return `8th Antimatter Dimensions are ${formatInt(3)} times stronger, 
+    but only if you have no sacrifices.`},
+    effect: 3,
+    effectCondition: () => player.requirementChecks.infinity.noSacrifice,
   },
   {
     id: 41,
