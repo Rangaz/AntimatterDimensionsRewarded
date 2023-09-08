@@ -113,14 +113,16 @@ export const normalAchievements = [
     effect: 5
   },
   {
-    // Reward not implemented
+    // Implemented! Surprisingly difficult, and hopefully this has no bugs.
+    // Multiplier tab still needed
     id: 26,
     name: "You got past The Big Wall",
     description: "Buy an Antimatter Galaxy.",
     checkRequirement: () => true,
     checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
     reward: "Gain a free Tickspeed upgrade for each Antimatter Galaxy bought.",
-    
+    effect: () => player.galaxies,
+    formatEffect: value => `+${formatInt(value)}`
   },
   {
     // Implemented!
@@ -793,7 +795,7 @@ export const normalAchievements = [
     id: 105,
     name: "Infinite Time",
     get description() { return `Have ${formatInt(308)} Tickspeed upgrades from Time Dimensions.`; },
-    checkRequirement: () => player.totalTickGained >= 308,
+    checkRequirement: () => player.tickGainedFromShards >= 308,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Time Dimensions gain a multiplier based on tickspeed.",
     effect: () => Tickspeed.perSecond.pow(0.000005),

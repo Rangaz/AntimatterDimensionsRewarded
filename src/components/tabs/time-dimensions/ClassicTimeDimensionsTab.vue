@@ -27,7 +27,7 @@ export default {
   methods: {
     update() {
       this.showLockedDimCostNote = !TimeDimension(8).isUnlocked && player.realities >= 1;
-      this.totalUpgrades = player.totalTickGained;
+      this.totalUpgrades = player.tickGainedFromShards;
       this.multPerTickspeed = FreeTickspeed.multToNext;
       this.tickspeedSoftcap = FreeTickspeed.softcap;
       this.timeShards.copyFrom(Currency.timeShards);

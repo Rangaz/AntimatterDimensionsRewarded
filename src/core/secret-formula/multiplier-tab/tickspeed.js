@@ -79,8 +79,8 @@ export const tickspeedUpgrades = {
   },
   free: {
     name: "Tickspeed Upgrades from TD",
-    displayOverride: () => formatInt(player.totalTickGained),
-    multValue: () => Decimal.pow10(player.totalTickGained),
+    displayOverride: () => formatInt(player.tickGainedFromShards),
+    multValue: () => Decimal.pow10(player.tickGainedFromShards),
     isActive: () => Currency.timeShards.gt(0),
     icon: MultiplierTabIcons.SPECIFIC_GLYPH("time"),
   }

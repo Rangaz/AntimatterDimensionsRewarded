@@ -359,7 +359,7 @@ window.player = {
     previousRuns: {}
   },
   IPMultPurchases: 0,
-  version: 24,
+  version: 29,
   infinityPower: DC.D1,
   postC4Tier: 0,
   eternityPoints: DC.D0,
@@ -367,6 +367,7 @@ window.player = {
   eternityUpgrades: new Set(),
   epmultUpgrades: 0,
   timeShards: DC.D0,
+  tickGainedFromShards: 0,
   totalTickGained: 0,
   totalTickBought: 0,
   replicanti: {
