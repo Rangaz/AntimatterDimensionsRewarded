@@ -77,11 +77,18 @@ export const tickspeedUpgrades = {
     isActive: () => true,
     icon: MultiplierTabIcons.PURCHASE("AD"),
   },
-  free: {
+  fromShards: {
     name: "Tickspeed Upgrades from TD",
     displayOverride: () => formatInt(player.tickGainedFromShards),
     multValue: () => Decimal.pow10(player.tickGainedFromShards),
     isActive: () => Currency.timeShards.gt(0),
     icon: MultiplierTabIcons.SPECIFIC_GLYPH("time"),
+  },
+  fromAchievements: {
+    name: "Tickspeed Upgrades from Achievements",
+    displayOverride: () => formatInt(player.tickGainedFromAchievements),
+    multValue: () => Decimal.pow10(player.tickGainedFromAchievements),
+    isActive: () => [26].some(a => Achievement(a).canBeApplied),
+    icon: MultiplierTabIcons.ACHIEVEMENT,
   }
 };
