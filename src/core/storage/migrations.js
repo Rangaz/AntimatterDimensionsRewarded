@@ -411,6 +411,10 @@ export const migrations = {
         player.reality.automator.constantSortOrder = [...definedConstants];
       }
     },
+    29: player => {
+      // I made a few variables
+      player.tickGainedFromShards = player.totalTickGained;
+    }
   },
 
   normalizeTimespans(player) {
