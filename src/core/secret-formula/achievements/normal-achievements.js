@@ -140,8 +140,9 @@ export const normalAchievements = [
     },
     checkRequirement: () => AntimatterDimension(1).amount.exponent >= 150,
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-    get reward() { return `1st Antimatter Dimensions are ${formatPercents(0.1)} stronger.`; },
-    effect: 1.1
+    get reward() { return `1st Antimatter Dimensions are slightly stronger based on their amount.`; },
+    effect: () => 1 + AntimatterDimension(1).amount.exponent / 1500,
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     id: 31,
@@ -149,8 +150,8 @@ export const normalAchievements = [
     get description() { return `Get any Antimatter Dimension multiplier over ${formatX(DC.E31)}.`; },
     checkRequirement: () => AntimatterDimensions.all.some(x => x.multiplier.exponent >= 31),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `1st Antimatter Dimensions are ${formatPercents(0.05)} stronger.`; },
-    effect: 1.05
+    get reward() { return `1st Antimatter Dimensions are ${formatPercents(0.1)} stronger.`; },
+    effect: 1.1
   },
   {
     id: 32,
