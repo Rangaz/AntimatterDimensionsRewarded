@@ -148,13 +148,16 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
+    // Modified!
     id: 31,
     name: "I forgot to nerf that",
     get description() { return `Get any Antimatter Dimension multiplier over ${formatX(DC.E31)}.`; },
     checkRequirement: () => AntimatterDimensions.all.some(x => x.multiplier.exponent >= 31),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `1st Antimatter Dimensions are ${formatPercents(0.1)} stronger.`; },
-    effect: 1.1
+    reward: "1st Antimatter Dimensions are stronger based on achievement rows completed.",
+    effect: () => Math.pow(0.85 + Achievements.allRows.countWhere(row => row.every(ach => ach.isUnlocked)) * 0.2,
+    Achievements.allRows.countWhere(row => row.every(ach => ach.isUnlocked))),
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     id: 32,
@@ -241,9 +244,9 @@ export const normalAchievements = [
     },
     checkRequirement: () => player.requirementChecks.infinity.noSacrifice,
     checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
-    get reward() { return `8th Antimatter Dimensions are ${formatInt(3)} times stronger, 
+    get reward() { return `8th Antimatter Dimensions are ${formatInt(5)} times stronger, 
     but only if you have no sacrifices.`},
-    effect: 3,
+    effect: 5,
     effectCondition: () => player.requirementChecks.infinity.noSacrifice,
   },
   {
