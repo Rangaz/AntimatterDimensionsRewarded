@@ -368,6 +368,7 @@ window.player = {
   epmultUpgrades: 0,
   timeShards: DC.D0,
   tickGainedFromShards: 0,
+  tickGainedFromAchievements: 0,
   totalTickGained: 0,
   totalTickBought: 0,
   replicanti: {

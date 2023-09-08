@@ -566,9 +566,11 @@ export function gameLoop(passDiff, options = {}) {
   InfinityDimensions.tick(diff);
   AntimatterDimensions.tick(diff);
 
-  const gain = Math.clampMin(FreeTickspeed.fromShards(Currency.timeShards.value).newAmount - player.tickGainedFromShards, 0);
-  player.tickGainedFromShards += gain;
-  player.totalTickGained = player.tickGainedFromShards + FreeTickspeed.fromAchievements();
+  const gainFromTDs = Math.clampMin(FreeTickspeed.fromShards(Currency.timeShards.value).newAmount - player.tickGainedFromShards, 0);
+  player.tickGainedFromShards += gainFromTDs;
+  const gainFromAchievements = Math.clampMin(FreeTickspeed.fromAchievements() - player.tickGainedFromAchievements, 0);
+  player.tickGainedFromAchievements += gainFromAchievements;
+  player.totalTickGained = player.tickGainedFromShards + player.tickGainedFromAchievements;
 
   updatePrestigeRates();
   tryCompleteInfinityChallenges();
