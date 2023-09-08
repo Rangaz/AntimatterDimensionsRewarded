@@ -93,14 +93,15 @@ export const normalAchievements = [
     effect: 1.1
   },
   {
-    // Implemented! But could be better
+    // Implemented!
     id: 24,
     name: "Antimatter Apocalypse",
     get description() { return `Get over ${format(DC.E80)} antimatter.`; },
     checkRequirement: () => Currency.antimatter.exponent >= 80,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `2nd Antimatter Dimensions are ${formatPercents(0.1)} stronger.`; },
-    effect: 1.1
+    get reward() { return `2nd Antimatter Dimensions are slightly stronger based on current Antimatter.`; },
+    effect: () => Math.max(1, Math.pow(1.1, Math.pow(Currency.antimatter.exponent, 0.23) - 1.3)),
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     // Implemented!
@@ -114,7 +115,6 @@ export const normalAchievements = [
   },
   {
     // Implemented! Surprisingly difficult, and hopefully this has no bugs.
-    // Multiplier tab still needed
     id: 26,
     name: "You got past The Big Wall",
     description: "Buy an Antimatter Galaxy.",
@@ -135,6 +135,7 @@ export const normalAchievements = [
     effect: 10
   },
   {
+    // Modified!
     id: 28,
     name: "There's no point in doing that...",
     get description() {
@@ -143,7 +144,7 @@ export const normalAchievements = [
     checkRequirement: () => AntimatterDimension(1).amount.exponent >= 150,
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `1st Antimatter Dimensions are slightly stronger based on their amount.`; },
-    effect: () => 1 + AntimatterDimension(1).amount.exponent / 1500,
+    effect: () => 1 + AntimatterDimension(1).amount.exponent / 1000,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -188,8 +189,8 @@ export const normalAchievements = [
     description: "Infinity without having any 8th Antimatter Dimensions.",
     checkRequirement: () => AntimatterDimension(8).totalAmount.eq(0),
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `Dimensions 1-7 are ${formatPercents(0.02)} stronger.`; },
-    effect: 1.02
+    get reward() { return `Dimensions 1-7 are ${formatPercents(0.05)} stronger.`; },
+    effect: 1.05
   },
   {
     // Implemented!
