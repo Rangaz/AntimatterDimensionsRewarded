@@ -731,7 +731,11 @@ export const normalAchievements = [
     name: "Time is relative",
     description: "Go Eternal.",
     checkRequirement: () => true,
-    checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE
+    checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
+    get reward() {
+      return `Upon getting this achievement, gain ${formatInt(3)} Eternity Points. Use them wisely!`;
+    },
+    effect: 3
   },
   {
     id: 97,
@@ -745,8 +749,12 @@ export const normalAchievements = [
     name: "0 degrees from Infinity",
     description: "Unlock the 8th Infinity Dimension.",
     checkRequirement: () => InfinityDimension(8).isUnlocked,
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    reward: "Infinity Dimensions no longer spend Infinity Points.",
   },
+
+  // Anything at this point forward won't start developing until much later
+
   {
     id: 101,
     name: "8 nobody got time for that",

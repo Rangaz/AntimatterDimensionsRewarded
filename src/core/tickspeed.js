@@ -264,6 +264,12 @@ export const FreeTickspeed = {
       newAmount: purchases + FreeTickspeed.softcap,
       nextShards: next,
     };
+  },
+
+  // For my achievements that give free Tickspeed upgrades separately from Time Dimensions
+  fromAchievements() {
+    // Placeholder
+    return 99999;
   }
 
 };
