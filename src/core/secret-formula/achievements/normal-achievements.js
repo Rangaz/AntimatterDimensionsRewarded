@@ -89,7 +89,8 @@ export const normalAchievements = [
     name: "The 9th Dimension is a lie",
     get description() { return `Have exactly ${formatInt(99)} 8th Antimatter Dimensions.`; },
     checkRequirement: () => AntimatterDimension(8).amount.eq(99),
-    get reward() { return `8th Antimatter Dimensions are ${formatPercents(0.1)} stronger.`; },
+    get reward() { return `Whenever you make a Dimensional Sacrifice, 
+    8th Antimatter Dimensions gain an additional boost that fades over time.`; },
     effect: 1.1
   },
   {
@@ -222,8 +223,8 @@ export const normalAchievements = [
     },
     checkRequirement: () => player.galaxies === 1,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `Multiply starting tick speed by ${format(1.02, 2, 2)}.`; },
-    effect: 1 / 1.02
+    get reward() { return `Multiply starting tick speed by ${format(1.04, 2, 2)}.`; },
+    effect: 1 / 1.04
   },
   {
     id: 37,
@@ -294,6 +295,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Not implemented
     id: 44,
     name: "Over in 30 Seconds",
     get description() {
@@ -303,6 +305,11 @@ export const normalAchievements = [
     checkRequirement: () => AchievementTimers.marathon1
       .check(Currency.antimatter.productionPerSecond.gt(Currency.antimatter.value), 30),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() {
+      return `For every second your antimatter per second exceeds your current antimatter,
+      produce ${formatPercents(0.01)} more. This effect slows down after 60 seconds.`;
+    },
+
   },
   {
     id: 45,
@@ -310,8 +317,8 @@ export const normalAchievements = [
     get description() { return `Get more than ${format(DC.E29)} ticks per second.`; },
     checkRequirement: () => Tickspeed.current.exponent <= -26,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `Multiply starting tickspeed by ${formatX(1.02, 0, 2)}.`; },
-    effect: 0.98
+    get reward() { return `Multiply starting tickspeed by ${formatX(1.04, 0, 2)}.`; },
+    effect: 0.96
   },
   {
     id: 46,
