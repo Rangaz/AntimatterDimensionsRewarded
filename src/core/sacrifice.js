@@ -134,6 +134,7 @@ export function sacrificeReset() {
     AntimatterDimensions.resetAmountUpToTier(NormalChallenge(12).isRunning ? 6 : 7);
   }
   player.requirementChecks.infinity.noSacrifice = false;
+  player.records.timeSinceLastSacrifice = 0;
   EventHub.dispatch(GAME_EVENT.SACRIFICE_RESET_AFTER);
   return true;
 }
