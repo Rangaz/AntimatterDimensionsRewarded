@@ -88,6 +88,19 @@ export const Time = {
   /**
    * @returns {TimeSpan}
    */
+  get timeSinceLastSacrifice() {
+    return this.fromMilliseconds(() => player.records.timeSinceLastSacrifice);
+  },
+  /**
+   * @param {TimeSpan} timespan
+   */
+  set timeSinceLastSacrifice(timespan) {
+    this.toMilliseconds(timespan, value => player.records.timeSinceLastSacrifice = value);
+  },
+
+  /**
+   * @returns {TimeSpan}
+   */
   get timeWithExcessAMProd() {
     return this.fromMilliseconds(() => player.records.timeWithExcessAMProd);
   },

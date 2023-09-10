@@ -525,6 +525,10 @@ export function gameLoop(passDiff, options = {}) {
     player.records.realTimeDoomed += realDiff;
     player.records.realTimePlayed += realDiff;
     player.records.totalTimePlayed += diff;
+    // If the sacrifice autobuyer is active and we have achievement 118,
+    // I don't want the timer to go above 0
+    if (!player.auto.sacrifice.isActive || !Achievement(118).isEffectActive)
+      {player.records.timeSinceLastSacrifice += diff}; // For r23
     player.records.timeWithExcessAMProd += diff; // For r44
     player.records.thisInfinity.realTime += realDiff;
     player.records.thisInfinity.time += diff;

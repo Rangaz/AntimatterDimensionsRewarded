@@ -85,13 +85,16 @@ export const normalAchievements = [
     reward: "Add a fast-forward button to the news ticker.",
   },
   {
+    // Implemented!
     id: 23,
     name: "The 9th Dimension is a lie",
     get description() { return `Have exactly ${formatInt(99)} 8th Antimatter Dimensions.`; },
     checkRequirement: () => AntimatterDimension(8).amount.eq(99),
     get reward() { return `Whenever you make a Dimensional Sacrifice, 
     8th Antimatter Dimensions gain an additional boost that fades over time.`; },
-    effect: 1.1
+    effect: () => player.requirementChecks.infinity.noSacrifice ? 1 : 
+    Math.pow(0.965, Time.timeSinceLastSacrifice.totalSeconds) * 1.99 + 1.01,
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     // Implemented!

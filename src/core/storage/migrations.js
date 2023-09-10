@@ -415,6 +415,7 @@ export const migrations = {
       // I made a few variables
       player.tickGainedFromShards = player.totalTickGained;
       player.records.timeWithExcessAMProd = 0;
+      player.records.timeSinceLastSacrifice = 0;
     }
   },
 
