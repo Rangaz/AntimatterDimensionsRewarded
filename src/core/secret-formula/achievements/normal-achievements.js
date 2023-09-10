@@ -156,7 +156,7 @@ export const normalAchievements = [
     checkRequirement: () => AntimatterDimensions.all.some(x => x.multiplier.exponent >= 31),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "1st Antimatter Dimensions are stronger based on achievement rows completed.",
-    effect: () => Math.pow(0.85 + Achievements.allRows.countWhere(row => row.every(ach => ach.isUnlocked)) * 0.2,
+    effect: () => Math.pow(0.9 + Achievements.allRows.countWhere(row => row.every(ach => ach.isUnlocked)) * 0.2,
     Achievements.allRows.countWhere(row => row.every(ach => ach.isUnlocked))),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
@@ -295,21 +295,23 @@ export const normalAchievements = [
     }
   },
   {
-    // Not implemented
+    // Implemented!
     id: 44,
     name: "Over in 30 Seconds",
     get description() {
       return `Have antimatter per second exceed your current antimatter
       for ${formatInt(30)} consecutive seconds.`;
     },
-    checkRequirement: () => AchievementTimers.marathon1
-      .check(Currency.antimatter.productionPerSecond.gt(Currency.antimatter.value), 30),
+    checkRequirement: () => player.records.timeWithExcessAMProd >= 30,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() {
       return `For every second your antimatter per second exceeds your current antimatter,
-      produce ${formatPercents(0.01)} more. This effect slows down after 60 seconds.`;
+      produce +${formatPercents(0.01)} more Antimatter. This growth slows down after 30 seconds.`;
     },
-
+    effect: () => player.records.timeWithExcessAMProd >= 30000 ?
+    Math.pow(player.records.timeWithExcessAMProd - 30000, 0.5) / 3162 + 1.3 : 
+    1 + player.records.timeWithExcessAMProd / 100000,
+    formatEffect: value => `${formatX(value, 0, 2)}`
   },
   {
     id: 45,
@@ -356,7 +358,7 @@ export const normalAchievements = [
     description: "Break Infinity.",
     checkRequirement: () => player.break,
     checkEvent: [GAME_EVENT.BREAK_INFINITY, GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
-    reward: "1st Dimension Boost, and the ones after it, boost all Antimatter Dimensions.",
+    reward: "All Dimension Boosts affect all Antimatter Dimensions.",
   },
   {
     // Implemented!
@@ -495,8 +497,9 @@ export const normalAchievements = [
     get description() { return `Get more than ${format(DC.E58)} ticks per second.`; },
     checkRequirement: () => Tickspeed.current.exponent <= -55,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `Multiply starting tickspeed by ${formatX(1.02, 0, 2)}.`; },
-    effect: 0.98
+    get reward() { return `Tickspeed is just below ${formatPercents(0.01)} faster per Dimension Boost.`; },
+    effect: () => DC.D1_007.pow(player.dimensionBoosts).recip(),
+    formatEffect: value => `${formatX(value.recip(), 2, 2)}`
   },
   {
     id: 67,

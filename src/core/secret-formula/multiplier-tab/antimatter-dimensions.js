@@ -136,6 +136,7 @@ export const AD = {
           dimMults[tier] = dimMults[tier].timesEffectsOf(
             Achievement(28),
             Achievement(31),
+            Achievement(44),
             Achievement(68),
             Achievement(71),
           );

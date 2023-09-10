@@ -525,6 +525,7 @@ export function gameLoop(passDiff, options = {}) {
     player.records.realTimeDoomed += realDiff;
     player.records.realTimePlayed += realDiff;
     player.records.totalTimePlayed += diff;
+    player.records.timeWithExcessAMProd += diff; // For r44
     player.records.thisInfinity.realTime += realDiff;
     player.records.thisInfinity.time += diff;
     player.records.thisEternity.realTime += realDiff;
@@ -571,6 +572,11 @@ export function gameLoop(passDiff, options = {}) {
   const gainFromAchievements = Math.clampMin(FreeTickspeed.fromAchievements() - player.tickGainedFromAchievements, 0);
   player.tickGainedFromAchievements += gainFromAchievements;
   player.totalTickGained = player.tickGainedFromShards + player.tickGainedFromAchievements;
+
+  // Check done for r44 condition
+  if (!Currency.antimatter.productionPerSecond.gt(Currency.antimatter.value)) {
+    player.records.timeWithExcessAMProd = 0;
+  }
 
   updatePrestigeRates();
   tryCompleteInfinityChallenges();
