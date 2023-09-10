@@ -88,6 +88,19 @@ export const Time = {
   /**
    * @returns {TimeSpan}
    */
+  get timeWithExcessAMProd() {
+    return this.fromMilliseconds(() => player.records.timeWithExcessAMProd);
+  },
+  /**
+   * @param {TimeSpan} timespan
+   */
+  set timeWithExcessAMProd(timespan) {
+    this.toMilliseconds(timespan, value => player.records.timeWithExcessAMProd = value);
+  },
+
+  /**
+   * @returns {TimeSpan}
+   */
   get realTimeDoomed() {
     return this.fromMilliseconds(() => player.records.realTimeDoomed);
   },

@@ -414,6 +414,7 @@ export const migrations = {
     29: player => {
       // I made a few variables
       player.tickGainedFromShards = player.totalTickGained;
+      player.records.timeWithExcessAMProd = 0;
     }
   },
 
