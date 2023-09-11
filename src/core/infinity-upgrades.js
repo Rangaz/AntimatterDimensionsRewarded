@@ -181,7 +181,10 @@ class InfinityIPMultUpgrade extends GameMechanicState {
     if (!TimeStudy(181).isBought) {
       Autobuyer.bigCrunch.bumpAmount(DC.D2.pow(amount));
     }
-    Currency.infinityPoints.subtract(Decimal.sumGeometricSeries(amount, this.cost, this.costIncrease, 0));
+    // r82 makes this upgrade no longer spend IP
+    if (!Achievement(82).isEffectActive) {
+      Currency.infinityPoints.subtract(Decimal.sumGeometricSeries(amount, this.cost, this.costIncrease, 0));
+    }
     player.IPMultPurchases += amount;
     GameUI.update();
   }

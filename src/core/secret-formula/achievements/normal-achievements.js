@@ -334,6 +334,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value.recip(), 2, 2)}`
   },
   {
+    // Reward not implemented
     id: 46,
     name: "Multidimensional",
     get description() { return `Reach ${format(DC.E12)} of all Antimatter Dimensions except the 8th.`; },
@@ -513,6 +514,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value.recip(), 2, 2)}`
   },
   {
+    // Reward not implemented
     id: 67,
     name: "Infinitely Challenging",
     description: "Complete an Infinity Challenge.",
@@ -614,6 +616,7 @@ export const normalAchievements = [
     effect: 5e25
   },
   {
+    // Reward not implemented
     id: 81,
     name: "Game Design Is My Passion",
     get description() { return `Beat Infinity Challenge 5 in ${formatInt(15)} seconds or less.`; },
@@ -621,11 +624,13 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE
   },
   {
+    // Implemented!
     id: 82,
     name: "Anti-antichallenged",
     get description() { return `Complete all ${formatInt(8)} Infinity Challenges.`; },
     checkRequirement: () => InfinityChallenges.completed.length === 8,
     checkEvent: [GAME_EVENT.INFINITY_CHALLENGE_COMPLETED, GAME_EVENT.REALITY_RESET_AFTER],
+    get reward() { return `The ${formatX(2)} IP multiplier upgrade no longer spends IP.`;}
   },
   {
     id: 83,
