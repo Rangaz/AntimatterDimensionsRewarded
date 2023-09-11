@@ -92,7 +92,7 @@ export const normalAchievements = [
     checkRequirement: () => AntimatterDimension(8).amount.eq(99),
     get reward() { return `8th Antimatter Dimensions are stronger right after a Dimensional Sacrifice.`; },
     effect: () => player.requirementChecks.infinity.noSacrifice ? 1 : 
-    Math.pow(0.9, Time.timeSinceLastSacrifice.totalSeconds) * 8.99 + 1.01,
+    Math.pow(0.88, Time.timeSinceLastSacrifice.totalSeconds) * 6.99 + 1.01,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -267,6 +267,8 @@ export const normalAchievements = [
     },
   },
   {
+    // Implemented! This one has been a nightmare
+    // Lesson: Don't use production per second in rewards, causes recursion.
     id: 42,
     name: "Super Sanic",
     get description() {
@@ -278,7 +280,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return `1st Antimatter Dimensions are stronger based on your current
     Antimatter amount, but only if your production is larger.`},
-    effect: () => Decimal.max(1, Decimal.pow(DC.D1_2, Math.log10(Currency.antimatter.exponent))),
+    effect: () => Decimal.max(1, Decimal.pow(DC.D1_2, Math.pow(Math.log10(Currency.antimatter.exponent) - 1, 2))),
     //effect: 1.3,
     effectCondition: () => Time.timeWithExcessAMProd.totalMilliseconds >= 500,
     formatEffect: value => `${formatX(value, 2, 2)}`
