@@ -85,15 +85,14 @@ export const normalAchievements = [
     reward: "Add a fast-forward button to the news ticker.",
   },
   {
-    // Implemented!
+    // Modified!
     id: 23,
     name: "The 9th Dimension is a lie",
     get description() { return `Have exactly ${formatInt(99)} 8th Antimatter Dimensions.`; },
     checkRequirement: () => AntimatterDimension(8).amount.eq(99),
-    get reward() { return `Whenever you make a Dimensional Sacrifice, 
-    8th Antimatter Dimensions gain an additional boost that fades over time.`; },
+    get reward() { return `8th Antimatter Dimensions are stronger right after a Dimensional Sacrifice.`; },
     effect: () => player.requirementChecks.infinity.noSacrifice ? 1 : 
-    Math.pow(0.965, Time.timeSinceLastSacrifice.totalSeconds) * 1.99 + 1.01,
+    Math.pow(0.9, Time.timeSinceLastSacrifice.totalSeconds) * 8.99 + 1.01,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -114,7 +113,7 @@ export const normalAchievements = [
     get description() { return `Buy ${formatInt(10)} Dimension Boosts.`; },
     checkRequirement: () => DimBoost.purchasedBoosts >= 10,
     checkEvent: GAME_EVENT.DIMBOOST_AFTER,
-    get reward() { return `Decrease the number of Dimensions needed for Dimension Boosts by ${formatInt(5)}.`; },
+    get reward() { return `Dimension Boosts require ${formatInt(5)} fewer Dimensions.`; },
     effect: 5
   },
   {
@@ -135,7 +134,7 @@ export const normalAchievements = [
     get description() { return `Buy ${formatInt(2)} Antimatter Galaxies.`; },
     checkRequirement: () => player.galaxies >= 2,
     checkEvent: GAME_EVENT.GALAXY_RESET_AFTER,
-    get reward() { return `Decrease the number of Dimensions needed for Antimatter Galaxies by ${formatInt(10)}.`; },
+    get reward() { return `Antimatter Galaxies require ${formatInt(10)} fewer Dimensions.`; },
     effect: 10
   },
   {
@@ -276,7 +275,13 @@ export const normalAchievements = [
     checkRequirement: () =>
       Currency.antimatter.exponent >= 63 &&
       Currency.antimatter.productionPerSecond.gt(Currency.antimatter.value),
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() { return `1st Antimatter Dimensions are stronger based on your current
+    Antimatter amount, but only if your production is larger.`},
+    effect: () => Decimal.max(1, Decimal.pow(DC.D1_2, Math.log10(Currency.antimatter.exponent))),
+    //effect: 1.3,
+    effectCondition: () => Time.timeWithExcessAMProd.totalMilliseconds >= 500,
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     id: 43,
@@ -305,16 +310,16 @@ export const normalAchievements = [
       return `Have antimatter per second exceed your current antimatter
       for ${formatInt(30)} consecutive seconds.`;
     },
-    checkRequirement: () => player.records.timeWithExcessAMProd >= 30,
+    checkRequirement: () => Time.timeWithExcessAMProd.totalSeconds >= 30,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() {
-      return `For every second your antimatter per second exceeds your current antimatter,
-      produce +${formatPercents(0.01)} more Antimatter. This growth slows down after 30 seconds.`;
+      return `1st Antimatter Dimensions are stronger the longer your antimatter per second 
+      exceeds your current antimatter.`;
     },
-    effect: () => player.records.timeWithExcessAMProd >= 30000 ?
-    Math.pow(player.records.timeWithExcessAMProd - 30000, 0.5) / 3162 + 1.3 : 
-    1 + player.records.timeWithExcessAMProd / 100000,
-    formatEffect: value => `${formatX(value, 0, 2)}`
+    effect: () => Time.timeWithExcessAMProd.totalSeconds >= 30 ?
+    Math.pow(Time.timeWithExcessAMProd.totalSeconds - 30, 0.5) / 100 + 1.3 : 
+    1 + Time.timeWithExcessAMProd.totalSeconds / 100,
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     id: 45,
