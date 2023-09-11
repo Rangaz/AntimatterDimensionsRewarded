@@ -573,8 +573,7 @@ export function gameLoop(passDiff, options = {}) {
 
   const gainFromTDs = Math.clampMin(FreeTickspeed.fromShards(Currency.timeShards.value).newAmount - player.tickGainedFromShards, 0);
   player.tickGainedFromShards += gainFromTDs;
-  const gainFromAchievements = Math.clampMin(FreeTickspeed.fromAchievements() - player.tickGainedFromAchievements, 0);
-  player.tickGainedFromAchievements += gainFromAchievements;
+  player.tickGainedFromAchievements = FreeTickspeed.fromAchievements()
   player.totalTickGained = player.tickGainedFromShards + player.tickGainedFromAchievements;
 
   // Check done for r44 condition

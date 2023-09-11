@@ -123,9 +123,8 @@ export const normalAchievements = [
     description: "Buy an Antimatter Galaxy.",
     checkRequirement: () => true,
     checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
-    reward: "Gain a free Tickspeed upgrade for each Antimatter Galaxy bought.",
-    effect: () => player.galaxies,
-    formatEffect: value => `+${formatInt(value)}`
+    reward: "Start with a free Tickspeed Upgrade.",
+    effect: 1,
   },
   {
     // Implemented!
@@ -190,6 +189,7 @@ export const normalAchievements = [
     effectCondition: () => Time.thisInfinity.totalSeconds > 60
   },
   {
+    // I want to modify this
     id: 34,
     name: "You didn't need it anyway",
     description: "Infinity without having any 8th Antimatter Dimensions.",
@@ -329,8 +329,9 @@ export const normalAchievements = [
     get description() { return `Get more than ${format(DC.E29)} ticks per second.`; },
     checkRequirement: () => Tickspeed.current.exponent <= -26,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `Multiply starting tickspeed by ${formatX(1.04, 0, 2)}.`; },
-    effect: 0.96
+    get reward() { return `Tickspeed is just below ${formatPercents(0.01)} faster per Dimension Boost.`; },
+    effect: () => DC.D1_007.pow(player.dimensionBoosts).recip(),
+    formatEffect: value => `${formatX(value.recip(), 2, 2)}`
   },
   {
     id: 46,
@@ -507,8 +508,8 @@ export const normalAchievements = [
     get description() { return `Get more than ${format(DC.E58)} ticks per second.`; },
     checkRequirement: () => Tickspeed.current.exponent <= -55,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `Tickspeed is just below ${formatPercents(0.01)} faster per Dimension Boost.`; },
-    effect: () => DC.D1_007.pow(player.dimensionBoosts).recip(),
+    get reward() { return `Tickspeed is just over ${formatPercents(0.05)} faster per Antimatter Galaxy.`; },
+    effect: () => DC.D0_95.pow(player.galaxies),
     formatEffect: value => `${formatX(value.recip(), 2, 2)}`
   },
   {
@@ -632,9 +633,9 @@ export const normalAchievements = [
     get description() { return `Get ${formatInt(50)} Antimatter Galaxies.`; },
     checkRequirement: () => player.galaxies >= 50,
     checkEvent: GAME_EVENT.GALAXY_RESET_AFTER,
-    get reward() { return `Tickspeed is just over ${formatPercents(0.05)} faster per Antimatter Galaxy.`; },
-    effect: () => DC.D0_95.pow(player.galaxies),
-    formatEffect: value => `${formatX(value.recip(), 2, 2)}`
+    get reward() { return `Every ${formatInt(5)} Antimatter Galaxies bought gives a free Tickspeed Upgrade.`; },
+    effect: () => Math.floor(player.galaxies / 5),
+    formatEffect: value => `+${formatInt(value, 2, 2)}`
   },
   {
     id: 84,
@@ -1446,6 +1447,7 @@ export const normalAchievements = [
     displayId: 181,
     name: "An unhealthy obsession",
     description: `Purchase Time Study 181 while Doomed.`,
+    reward: "..."
   },
   {
     id: 187,
