@@ -119,8 +119,10 @@ export const breakInfinityUpgrades = {
     costIncrease: 5e3,
     maxUpgrades: 7,
     description: "Reduce post-infinity Antimatter Dimension cost multiplier scaling",
-    afterEC: () => (EternityChallenge(6).completions > 0
-      ? `After EC6: ${formatX(Player.dimensionMultDecrease, 2, 2)}`
+
+    // I want this text to also appear if you have r81, as that also changes this value
+    afterEC: () => ((EternityChallenge(6).completions > 0 || Achievement(81).isEffectActive)
+      ? `After other effects: ${formatX(Player.dimensionMultDecrease, 2, 2)}`
       : ""
     ),
     noLabel: true,

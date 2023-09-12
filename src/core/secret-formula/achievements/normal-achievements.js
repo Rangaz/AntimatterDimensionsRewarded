@@ -626,7 +626,7 @@ export const normalAchievements = [
     effect: 5e25
   },
   {
-    // Implemented! Still needs to show properly.
+    // Implemented!
     id: 81,
     name: "Game Design Is My Passion",
     get description() { return `Beat Infinity Challenge 5 in ${formatInt(15)} seconds or less.`; },
