@@ -334,14 +334,17 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value.recip(), 2, 2)}`
   },
   {
-    // Reward not implemented
+    // Implemented! Very happy about this one, the code might be better
     id: 46,
     name: "Multidimensional",
     get description() { return `Reach ${format(DC.E12)} of all Antimatter Dimensions except the 8th.`; },
     checkRequirement: () => AntimatterDimension(7).amount.exponent >= 12,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    reward: "8th Antimatter Dimensions are stronger based on the product of all your AD amounts.",
-    effect: () => 1,
+    reward: "8th Antimatter Dimensions are slightly stronger based on the product of all your AD amounts.",
+    effect: () => Decimal.max(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(AntimatterDimension(3).amount.times(
+    AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(AntimatterDimension(6).amount.times(
+    AntimatterDimension(7).amount)))))).pow(0.00002).plus(0.05), 1),
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     // Implemented! :)
@@ -526,7 +529,7 @@ export const normalAchievements = [
   {
     // Reward not implemented
     id: 67,
-    name: "Infinitely Challenging",
+    name: "Infinitely Challenging",                                                                                                      
     description: "Complete an Infinity Challenge.",
     checkRequirement: () => InfinityChallenges.completed.length > 0,
     checkEvent: [GAME_EVENT.INFINITY_CHALLENGE_COMPLETED, GAME_EVENT.REALITY_RESET_AFTER]
