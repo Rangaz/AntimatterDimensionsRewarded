@@ -772,6 +772,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.REPLICANTI_TICK_AFTER
   },
   {
+    // Implemented!
     id: 96,
     name: "Time is relative",
     description: "Go Eternal.",
@@ -783,20 +784,21 @@ export const normalAchievements = [
     effect: 3
   },
   {
-    // Reward not implemented
+    // Implemented!
     id: 97,
     name: "Like jumping on a lego",
     get description() { return `Get the sum of Infinity Challenge times under ${format(6.66, 2, 2)} seconds.`; },
     checkRequirement: () => Time.infinityChallengeSum.totalSeconds < 6.66,
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER],
-    get reward() { return Time.infinityChallengeSum.totalSeconds < 0.61 ? 
+    get reward() { return Time.infinityChallengeSum.totalSeconds < 0.666 ? 
       "IC1's reward is raised based on sum of IC times (capped)." : 
       "IC1's reward is raised based on sum of IC times." 
     },
-    effect: () => 6.66 / Math.max(Time.infinityChallengeSum.totalSeconds, 0.61),
+    effect: () => Math.max(6.66 / Math.max(Time.infinityChallengeSum.totalSeconds, 0.666), 1),
     formatEffect: value => `^${format(value, 2, 2)}`
   },
   {
+    // Implemented!
     id: 98,
     name: "0 degrees from Infinity",
     description: "Unlock the 8th Infinity Dimension.",

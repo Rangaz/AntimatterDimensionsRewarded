@@ -9,7 +9,7 @@ export const infinityChallenges = [
     isQuickResettable: true,
     reward: {
       description: () => `${formatX(1.3, 1, 1)} on all Infinity Dimensions for each Infinity Challenge completed`,
-      effect: () => Math.pow(1.3, InfinityChallenges.completed.length),
+      effect: () => Decimal.pow(1.3, InfinityChallenges.completed.length).powEffectOf(Achievement(97)),
       formatEffect: value => formatX(value, 1, 1)
     },
     unlockAM: DC.E2000,
