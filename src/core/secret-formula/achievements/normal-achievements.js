@@ -19,6 +19,7 @@ But it would be hard to make them balanced from each other, so...
 -Initially only the first 4 rows could be charged,
 -Then V could unlock the rows 5-9,
 -And then Ra-V could unlock rows 10-13.
+It's perfect.
 */
 
 export const normalAchievements = [
