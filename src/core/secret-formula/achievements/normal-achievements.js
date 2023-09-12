@@ -357,6 +357,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
   },
   {
+    // I want to modify this
     id: 48,
     name: "Antichallenged",
     get description() { return `Complete all ${formatInt(12)} Normal Challenges.`; },
@@ -469,7 +470,7 @@ export const normalAchievements = [
     reward: "Dimension Autobuyer bulks are unlimited."
   },
   {
-    // Reward not implemented
+    // Implemented!
     id: 62,
     name: "Oh, hey... You're still here?",
     get description() { return `Reach ${format(DC.E8)} Infinity Points per minute.`; },
