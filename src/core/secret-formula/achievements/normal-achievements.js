@@ -1,5 +1,26 @@
 import { DC } from "../../constants";
 
+/*
+In the future, I want to make Charged Achievement rewards for every pre-reality achievement
+in the game, because, especially the earlier ones, they inevitably fall off and become useless.
+
+Something like...
+(26) Reward: Start with a free Tickspeed upgrade ->
+(26) Charged: Start with 10000 free Tickspeed upgrades.
+Or
+(38) Reward: 8th Antimatter Dimensions are 5 times stronger, but only if you have no sacrifices ->
+(38) Charged: 8th Antimatter Dimensions are x1e100,000 stronger, but only if you have no sacrifices
+Every charged reward should feel different from one another, and for that...
+-You could get 1 charge for every row 14-17 achievement (32 total),
+-+1 charge for every V Achievement (36 total), and
+-+2 charge for every Hard V achievement (36 total).
+That exactly adds up to 104 (13*8), the first 13 rows.
+But it would be hard to make them balanced from each other, so...
+-Initially only the first 4 rows could be charged,
+-Then V could unlock the rows 5-9,
+-And then Ra-V could unlock rows 10-13.
+*/
+
 export const normalAchievements = [
   {
     // Row 1 rewards implemented!
@@ -366,8 +387,8 @@ export const normalAchievements = [
     get description() { return `Complete all ${formatInt(12)} Normal Challenges.`; },
     checkRequirement: () => NormalChallenges.all.countWhere(c => !c.isCompleted) === 0,
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
-    get reward() { return `All Dimensions are ${formatPercents(0.1)} stronger.`; },
-    effect: 1.1
+    get reward() { return `All Dimensions are ${formatPercents(0.12)} stronger.`; },
+    effect: 1.12
   },
   {
     // Implemented!
@@ -535,6 +556,7 @@ export const normalAchievements = [
     checkEvent: [GAME_EVENT.INFINITY_CHALLENGE_COMPLETED, GAME_EVENT.REALITY_RESET_AFTER]
   },
   {
+    // I want to modify this
     id: 68,
     name: "You did this again just for the achievement right?",
     get description() {
@@ -568,8 +590,8 @@ export const normalAchievements = [
     },
     checkRequirement: () => AntimatterDimensions.all.every(x => x.multiplier.gte(Decimal.NUMBER_MAX_VALUE)),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `All Antimatter Dimensions are ${formatPercents(0.1)} stronger.`; },
-    effect: 1.1
+    get reward() { return `All Antimatter Dimensions are ${formatPercents(0.308)} stronger.`; },
+    effect: 1.308
   },
   {
     id: 73,
