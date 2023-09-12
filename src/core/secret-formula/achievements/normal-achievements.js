@@ -182,7 +182,7 @@ export const normalAchievements = [
     checkRequirement: () => Currency.infinities.gte(10),
     checkEvent: GAME_EVENT.BIG_CRUNCH_AFTER,
     get reward() {
-      return `Infinities more than ${formatInt(1)} minute long
+      return `Infinities more than ${formatInt(60)} seconds long
       give ${formatX(2)} more Infinities.`;
     },
     effect: 2,
@@ -339,7 +339,9 @@ export const normalAchievements = [
     name: "Multidimensional",
     get description() { return `Reach ${format(DC.E12)} of all Antimatter Dimensions except the 8th.`; },
     checkRequirement: () => AntimatterDimension(7).amount.exponent >= 12,
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    reward: "8th Antimatter Dimensions are stronger based on the product of all your AD amounts.",
+    effect: () => 1,
   },
   {
     // Implemented! :)
@@ -349,9 +351,9 @@ export const normalAchievements = [
     checkRequirement: () => NormalChallenges.all.countWhere(c => c.isCompleted) >= 3,
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
     get reward () { 
-      return `For every Normal Challenge completed, all Antimatter Dimensions are ${formatPercents(0.01)} stronger.`;
+      return `For every Normal Challenge completed, all Antimatter Dimensions are ${formatPercents(0.02)} stronger.`;
     },
-    effect: () => Math.pow(1.01, NormalChallenges.all.countWhere(c => c.isCompleted)),
+    effect: () => Math.pow(1.02, NormalChallenges.all.countWhere(c => c.isCompleted)),
     formatEffect: value => `${formatX(value, 2, 2)}`,
   },
   {
@@ -467,13 +469,20 @@ export const normalAchievements = [
     reward: "Dimension Autobuyer bulks are unlimited."
   },
   {
+    // Reward not implemented
     id: 62,
     name: "Oh, hey... You're still here?",
     get description() { return `Reach ${format(DC.E8)} Infinity Points per minute.`; },
     checkRequirement: () => Player.bestRunIPPM.exponent >= 8,
-    checkEvent: GAME_EVENT.BIG_CRUNCH_AFTER
+    checkEvent: GAME_EVENT.BIG_CRUNCH_AFTER,
+    get reward() { return `A small multiplier to Infinity points that fades over ${formatInt(60)}
+    seconds this Infinity.`},
+    effect: () => Math.max(1, 4 - Time.thisInfinity.totalSeconds / 20),
+    effectCondition: () => Time.thisInfinity.totalMinutes < 1,
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
+    // Reward not implemented
     id: 63,
     name: "A new beginning",
     description: "Begin generation of Infinity Power.",
@@ -598,6 +607,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
+    // Reward not implemented
     id: 77,
     name: "1 Million is a lot",
     get description() { return `Reach ${format(1e6)} Infinity Power.`; },
@@ -616,7 +626,7 @@ export const normalAchievements = [
     effect: 5e25
   },
   {
-    // Reward not implemented
+    // Implemented! Still needs to show properly.
     id: 81,
     name: "Game Design Is My Passion",
     get description() { return `Beat Infinity Challenge 5 in ${formatInt(15)} seconds or less.`; },
@@ -635,6 +645,7 @@ export const normalAchievements = [
     get reward() { return `The ${formatX(2)} IP multiplier upgrade no longer spends IP.`;}
   },
   {
+    // Modified!
     id: 83,
     name: "YOU CAN GET 50 GALAXIES?!?!",
     get description() { return `Get ${formatInt(50)} Antimatter Galaxies.`; },
@@ -772,11 +783,18 @@ export const normalAchievements = [
     effect: 3
   },
   {
+    // Reward not implemented
     id: 97,
     name: "Like jumping on a lego",
     get description() { return `Get the sum of Infinity Challenge times under ${format(6.66, 2, 2)} seconds.`; },
     checkRequirement: () => Time.infinityChallengeSum.totalSeconds < 6.66,
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER],
+    get reward() { return Time.infinityChallengeSum.totalSeconds < 0.61 ? 
+      "IC1's reward is raised based on sum of IC times (capped)." : 
+      "IC1's reward is raised based on sum of IC times." 
+    },
+    effect: () => 6.66 / Math.max(Time.infinityChallengeSum.totalSeconds, 0.61),
+    formatEffect: value => `^${format(value, 2, 2)}`
   },
   {
     id: 98,
@@ -787,6 +805,7 @@ export const normalAchievements = [
     reward: "Infinity Dimensions no longer spend Infinity Points.",
   },
 
+  // ----------------------------------------------------------------------
   // Anything at this point forward won't start developing until much later
 
   {
