@@ -56,6 +56,7 @@ export const IP = {
     name: "Achievements",
     multValue: () => DC.D1.timesEffectsOf(
       Achievement(62),
+      Achievement(77),
       Achievement(85),
       Achievement(93),
       Achievement(116),

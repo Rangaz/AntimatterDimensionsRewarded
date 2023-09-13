@@ -119,8 +119,9 @@ const targetedEffects = {
   achievement: {
     checkFn: MultiplierTabHelper.achievementDimCheck,
     AD: [23, 24, 28, 31, 34, 35, 38, 42, 43, 44, 46, 47, 48, 56, 64, 65, 67, 68, 71, 72, 73, 74, 76, 84, 91, 92, 183],
-    TD: [105, 128],
-    IP: [62, 85, 93, 116, 125, 141],
+    ID: [48, 94],
+    TD: [48, 105, 128],
+    IP: [62, 77, 85, 93, 116, 125, 141],
     DT: [132, 137],
     infinities: [33, 87, 164],
   },

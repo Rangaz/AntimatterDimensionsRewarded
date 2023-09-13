@@ -5,6 +5,7 @@ import { DimensionState } from "./dimension";
 export function infinityDimensionCommonMultiplier() {
   let mult = new Decimal(ShopPurchase.allDimPurchases.currentMult)
     .timesEffectsOf(
+      Achievement(48),
       Achievement(75),
       TimeStudy(82),
       TimeStudy(92),
