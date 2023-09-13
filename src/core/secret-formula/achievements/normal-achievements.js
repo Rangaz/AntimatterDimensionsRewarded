@@ -20,6 +20,8 @@ But it would be hard to make them balanced from each other, so...
 -Then V could unlock the rows 5-9,
 -And then Ra-V could unlock rows 10-13.
 It's perfect.
+
+If someone sees this, please don't tell anyone.
 */
 
 export const normalAchievements = [
@@ -139,7 +141,7 @@ export const normalAchievements = [
     effect: 5
   },
   {
-    // Implemented! Surprisingly difficult, and hopefully this has no bugs.
+    // Implemented! Surprisingly difficult.
     id: 26,
     name: "You got past The Big Wall",
     description: "Buy an Antimatter Galaxy.",
@@ -247,8 +249,8 @@ export const normalAchievements = [
     },
     checkRequirement: () => player.galaxies === 1,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `Multiply starting tick speed by ${format(1.04, 2, 2)}.`; },
-    effect: 1 / 1.04
+    get reward() { return `Multiply starting tick speed by ${format(1.05, 2, 2)}.`; },
+    effect: 1 / 1.05
   },
   {
     id: 37,
@@ -303,7 +305,6 @@ export const normalAchievements = [
     get reward() { return `1st Antimatter Dimensions are stronger based on your current
     Antimatter amount, but only if your production is larger.`},
     effect: () => Decimal.max(1, Decimal.pow(DC.D1_2, Math.pow(Math.log10(Currency.antimatter.exponent) - 1, 2))),
-    //effect: 1.3,
     effectCondition: () => Time.timeWithExcessAMProd.totalMilliseconds >= 500,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
@@ -346,6 +347,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
+    // Modified!
     id: 45,
     name: "Faster than a potato",
     get description() { return `Get more than ${format(DC.E29)} ticks per second.`; },
@@ -503,17 +505,20 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.BIG_CRUNCH_AFTER,
     get reward() { return `A small multiplier to Infinity points that fades over ${formatInt(60)}
     seconds this Infinity.`},
-    effect: () => Math.max(1, 4 - Time.thisInfinity.totalSeconds / 20),
+    effect: () => Math.max(1, 3 - Time.thisInfinity.totalSeconds / 30),
     effectCondition: () => Time.thisInfinity.totalMinutes < 1,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
-    // Reward not implemented
+    // Implemented!
     id: 63,
     name: "A new beginning",
     description: "Begin generation of Infinity Power.",
     checkRequirement: () => Currency.infinityPower.gt(1),
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() { return `Gain back those ${format(DC.E8)} IP you must have spent to get that 
+    Infinity Dimension.`},
+    effect: DC.E8,
   },
   {
     id: 64,
@@ -539,6 +544,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
+    // Modified!
     id: 66,
     name: "Faster than a squared potato",
     get description() { return `Get more than ${format(DC.E58)} ticks per second.`; },
@@ -549,15 +555,18 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value.recip(), 2, 2)}`
   },
   {
-    // Reward not implemented
+    // Implemented!
     id: 67,
     name: "Infinitely Challenging",                                                                                                      
     description: "Complete an Infinity Challenge.",
     checkRequirement: () => InfinityChallenges.completed.length > 0,
-    checkEvent: [GAME_EVENT.INFINITY_CHALLENGE_COMPLETED, GAME_EVENT.REALITY_RESET_AFTER]
+    checkEvent: [GAME_EVENT.INFINITY_CHALLENGE_COMPLETED, GAME_EVENT.REALITY_RESET_AFTER],
+    get reward() {return `Antimatter Dimensions are ${formatPercents(0.3)} stronger for every Infinity Challenge completed.`;},
+    effect: () => Math.pow(1.3, InfinityChallenges.completed.length),
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
-    // I want to modify this
+    // Modified!
     id: 68,
     name: "You did this again just for the achievement right?",
     get description() {
@@ -565,8 +574,11 @@ export const normalAchievements = [
     },
     checkRequirement: () => NormalChallenge(3).isOnlyActiveChallenge && Time.thisInfinityRealTime.totalSeconds <= 10,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `1st Antimatter Dimensions are ${formatPercents(0.5)} stronger.`; },
-    effect: 1.5
+    get reward() { return `1st Antimatter Dimensions get an exponentially increasing multiplier that 
+    resets after Dimension Boosts, Antimatter Galaxies, and Infinities.`; },
+    effect: () => player.chall3Pow.times(105).pow(1.37).clampMax(DC.E10),
+    effectCondition: () => !NormalChallenge(3).isRunning,
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     id: 71,
@@ -678,8 +690,8 @@ export const normalAchievements = [
     get description() { return `Get ${formatInt(50)} Antimatter Galaxies.`; },
     checkRequirement: () => player.galaxies >= 50,
     checkEvent: GAME_EVENT.GALAXY_RESET_AFTER,
-    get reward() { return `Every ${formatInt(5)} Antimatter Galaxies bought gives a free Tickspeed Upgrade.`; },
-    effect: () => Math.floor(player.galaxies / 5),
+    get reward() { return `Every ${formatInt(10)} Antimatter Galaxies bought gives a free Tickspeed Upgrade.`; },
+    effect: () => Math.floor(player.galaxies / 10),
     formatEffect: value => `+${formatInt(value, 2, 2)}`
   },
   {

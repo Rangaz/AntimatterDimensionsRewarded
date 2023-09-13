@@ -121,6 +121,7 @@ export const AD = {
         Achievement(48),
         Achievement(56),
         Achievement(65),
+        Achievement(67),
         Achievement(72),
         Achievement(73),
         Achievement(74),
