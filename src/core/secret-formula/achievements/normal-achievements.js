@@ -1,4 +1,5 @@
 import { DC } from "../../constants";
+import { PlayerProgress } from "../../player-progress";
 
 /*
 In the future, I want to make Charged Achievement rewards for every pre-reality achievement
@@ -384,13 +385,24 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
   },
   {
-    // I want to modify this
+    // Modified!
     id: 48,
     name: "Antichallenged",
     get description() { return `Complete all ${formatInt(12)} Normal Challenges.`; },
     checkRequirement: () => NormalChallenges.all.countWhere(c => !c.isCompleted) === 0,
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
-    get reward() { return `All Dimensions are ${formatPercents(0.12)} stronger.`; },
+    get reward() { 
+      if (Laitela.isUnlocked) {
+        return `ALL Dimensions, including IDs, TDs, and DMDs, are ${formatPercents(0.12)} stronger.`;
+      }
+      else if (PlayerProgress.eternityUnlocked()) {
+        return `ALL Dimensions, including IDs and TDs, are ${formatPercents(0.12)} stronger.`;
+      }
+      else if (InfinityDimension(1).isUnlocked) {
+        return `ALL Dimensions, including Infinity Dimensions, are ${formatPercents(0.12)} stronger.`; 
+      };
+      return `ALL Dimensions are ${formatPercents(0.12)} stronger.`
+    },
     effect: 1.12
   },
   {
@@ -646,12 +658,16 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
-    // Reward not implemented
+    // Implemented!
     id: 77,
     name: "1 Million is a lot",
     get description() { return `Reach ${format(1e6)} Infinity Power.`; },
     checkRequirement: () => Currency.infinityPower.exponent >= 6,
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    reward: "A small multiplier to IP based on Infinity Power.",
+    effect: () => Decimal.max(1, Decimal.pow(Decimal.log10(Currency.infinityPower.value) / 3, 0.5)),
+    formatEffect: value => `${formatX(value, 2, 2)}`
+
   },
   {
     id: 78,

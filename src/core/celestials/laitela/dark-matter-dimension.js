@@ -60,6 +60,7 @@ export class DarkMatterDimensionState extends DimensionState {
 
   get commonDarkMult() {
     return DC.D1.timesEffectsOf(
+      Achievement(48),
       SingularityMilestone.darkFromTesseracts,
       SingularityMilestone.darkFromGlyphLevel,
       SingularityMilestone.darkFromTheorems,

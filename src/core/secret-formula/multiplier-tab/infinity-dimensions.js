@@ -125,11 +125,31 @@ export const ID = {
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   achievement: {
-    // Note: This only applies to ID1
-    name: () => "Achievement 94",
-    multValue: dim => ((dim ?? 1) === 1 ? Achievement(94).effectOrDefault(1) : 1),
-    isActive: () => Achievement(94).canBeApplied,
-    icon: MultiplierTabIcons.ACHIEVEMENT,
+    // Note: This doesn't only apply to ID1
+    name: "Achievement Rewards",
+    multValue: dim => {
+      const allMult = DC.D1.timesEffectsOf(
+        Achievement(48),
+      );
+
+      const dimMults = Array.repeat(DC.D1, 9);
+      for (let tier = 1; tier <= 8; tier++) {
+        if (tier === 1) {
+          dimMults[tier] = dimMults[tier].timesEffectsOf(
+            Achievement(94),
+          );
+        }
+      }
+
+      if (dim) return allMult.times(dimMults[dim]);
+      let totalMult = DC.D1;
+      for (let tier = 1; tier <= MultiplierTabHelper.activeDimCount("ID"); tier++) {
+        totalMult = totalMult.times(dimMults[tier]).times(allMult);
+      }
+      return totalMult;
+    },
+    isActive: () => [48, 94].some(a => Achievement(a).canBeApplied) && !EternityChallenge(11).isRunning,
+    icon: MultiplierTabIcons.ACHIEVEMENT
   },
   timeStudy: {
     name: dim => (dim ? `Time Studies (ID ${dim})` : "Time Studies"),
