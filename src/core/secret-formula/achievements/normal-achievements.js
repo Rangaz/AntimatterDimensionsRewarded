@@ -214,14 +214,20 @@ export const normalAchievements = [
     effectCondition: () => Time.thisInfinity.totalSeconds > 60
   },
   {
-    // I want to modify this
+    // Modified!
     id: 34,
     name: "You didn't need it anyway",
     description: "Infinity without having any 8th Antimatter Dimensions.",
     checkRequirement: () => AntimatterDimension(8).totalAmount.eq(0),
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `Dimensions 1-7 are ${formatPercents(0.05)} stronger.`; },
-    effect: 1.05
+    get reward() { return `Antimatter Dimensions 1-7 are stronger the less Dimensions you are using.`; },
+    effect() {
+      for (let i = 8; i > 0; i--) {
+        if (!AntimatterDimension(i).totalAmount.eq(0)) {return 1.8 - i * 0.09;}
+      }
+      return 1.8;
+    },
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     // Implemented!
@@ -243,6 +249,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
+    // Buffed!
     id: 36,
     name: "Claustrophobic",
     get description() {
@@ -608,6 +615,7 @@ export const normalAchievements = [
     effect: 3
   },
   {
+    // Buffed!
     id: 72,
     name: "Can't hold all these infinities",
     get description() {
