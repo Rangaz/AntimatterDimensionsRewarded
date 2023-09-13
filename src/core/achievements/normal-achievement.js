@@ -65,6 +65,10 @@ class AchievementState extends GameMechanicState {
         Instead of the Dimensions disappearing, they stay and the Big Crunch button appears on top of them.
         This is purely visual, and is there to prevent flickering.`, {}, 3);
     }
+    // r63 gives 100 M IP
+    if (this.id === 63) {
+      player.infinityPoints = player.infinityPoints.plus(100000000);
+    }
     // r81 affects post-infinity AD scaling
     if (this.id === 81) {
       GameCache.dimensionMultDecrease.invalidate();
