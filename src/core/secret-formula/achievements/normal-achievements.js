@@ -101,7 +101,7 @@ export const normalAchievements = [
     effect: 100
   },
   {
-    // Implemented! Still needs to show actual icons and its option.
+    // Implemented! Still needs to show actual icons and its option, and classic UI.
     id: 22,
     name: "FAKE NEWS!",
     get description() { return `Encounter ${formatInt(50)} different news messages.`; },

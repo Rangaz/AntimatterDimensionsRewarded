@@ -10,7 +10,6 @@ export default {
       enableAnimation: false,
       timeAtNewsUpdate: new Date(),
       showFastForward: false,
-
     };
   },
   computed: {
