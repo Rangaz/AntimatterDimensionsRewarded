@@ -214,6 +214,7 @@ window.player = {
       newsQueuePosition: 1000,
       eiffelTowerChapter: 0
     },
+    isFastForward: false,
     totalSeen: 0,
   },
   lastUpdate: new Date().getTime(),
@@ -775,6 +776,7 @@ window.player = {
       AIChance: 0,
       speed: 1,
       includeAnimated: true,
+      showFastForward: true,
     },
     notation: "Mixed scientific",
     notationDigits: {

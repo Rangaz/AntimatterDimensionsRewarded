@@ -1,18 +1,23 @@
 <script>
 import { openExternalLink } from "@/utility/open-external-link";
 import { STEAM } from "@/env";
+import ModalConfirmationCheck from "../modals/ModalConfirmationCheck.vue";
 
 export default {
   name: "NewsTicker",
   data() {
     return {
       enableAnimation: false,
+      timeAtNewsUpdate: new Date(),
+      showFastForward: false,
+
     };
   },
   computed: {
     lineClass() {
       return this.enableAnimation ? undefined : "c-disable-ticker-animation";
     }
+
   },
   beforeCreate() {
     this.recentTickers = [];
@@ -30,6 +35,7 @@ export default {
         this.$refs.line.innerHTML = this.currentNews.text;
       }
       this.enableAnimation = player.options.news.includeAnimated;
+      this.showFastForward = Achievement(22).isEffectActive && player.options.news.showFastForward;
     },
     restart() {
       if (!GameUI.initialized) {
@@ -98,8 +104,10 @@ export default {
     scrollMessage() {
       const line = this.$refs.line;
 
-      // SCROLL_SPEED is in pixels per second
-      const SCROLL_SPEED = player.options.news.speed * 100;
+      this.timeAtNewsUpdate = Date.now();
+
+      // SCROLL_SPEED is in pixels per second. Fast forward will double it.
+      const SCROLL_SPEED = player.options.news.speed * 100 * (1 + player.news.isFastForward);
       const scrollDuration = (this.$refs.ticker.clientWidth + line.clientWidth) / SCROLL_SPEED;
 
       line.style["transition-duration"] = `${scrollDuration}s`;
@@ -123,6 +131,33 @@ export default {
       if (updatedText !== undefined) {
         this.$refs.line.innerHTML = updatedText;
       }
+    },
+    onFastForward() {
+      const line = this.$refs.line;
+      player.news.isFastForward = !player.news.isFastForward;
+
+      // The time passed since the news ticker puts a new news, or when its state has changed.
+      const timePassed = (Date.now() - this.timeAtNewsUpdate) / 1000;
+      console.log(Number.parseFloat(line.style["transition-duration"]) - timePassed);
+
+      // If the transition duration is 0 ms, it means that it's preparing the next news.
+      if (Number.parseFloat(line.style["transition-duration"]) <= 0) return;
+
+      // We want to take into account the time that has transcurred since the last change in 
+      // either news or speed, and wheter we are fast forwarding or disabling it.
+      const scrollDuration = player.news.isFastForward ? 
+      (Number.parseFloat(line.style["transition-duration"]) - timePassed) / 2 :
+      (Number.parseFloat(line.style["transition-duration"]) - timePassed) * 2;
+
+      line.style["transition-duration"] = `${scrollDuration}s`;
+
+      this.timeAtNewsUpdate = Date.now();
+
+      // I think this has to have different values every time in order to update the speed.
+      const randVar = 100 + Math.random() / 10;
+      line.style.transform = `translateX(-${randVar}%)`;
+      this.clearTimeouts();
+      this.scrollTimeout = setTimeout(this.prepareNextMessage.bind(this), scrollDuration * 1000);
     }
   }
 };
@@ -133,6 +168,12 @@ export default {
     ref="ticker"
     class="c-news-ticker"
   >
+    <button
+      class="o-primary-btn l-button-container fforward-button"
+      @click="onFastForward"
+      v-if="showFastForward"
+      >
+    </button>
     <span
       ref="line"
       class="c-news-line c-news-ticker__line"
@@ -141,3 +182,11 @@ export default {
     />
   </div>
 </template>
+
+<style scoped>
+.fforward-button {
+  position:absolute;
+  z-index: 9;
+  left: 12.8rem; /* This is the same width as the modern sidebar. */
+}
+</style>

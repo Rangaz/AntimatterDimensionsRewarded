@@ -101,7 +101,7 @@ export const normalAchievements = [
     effect: 100
   },
   {
-    // Reward not implemented
+    // Implemented! Still needs to show actual icons and its option.
     id: 22,
     name: "FAKE NEWS!",
     get description() { return `Encounter ${formatInt(50)} different news messages.`; },

@@ -416,6 +416,8 @@ export const migrations = {
       player.tickGainedFromShards = player.totalTickGained;
       player.records.timeWithExcessAMProd = 0;
       player.records.timeSinceLastSacrifice = 0;
+      player.news.isFastForward = false;
+      player.options.news.showFastForward = true;
     }
   },
 
