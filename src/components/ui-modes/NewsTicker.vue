@@ -174,14 +174,14 @@ export default {
   >
     <button
       :class="isFastForward"
-      class="o-primary-btn fforward-button fas"
+      class="o-primary-btn c-fforward-button l-fforward-button fas"
       @click="onFastForward"
       v-if="showFForward && isModern"
       >
     </button>
     <button
       :class="isFastForward"
-      class="o-primary-btn old-fforward-button fas"
+      class="o-primary-btn c-old-fforward-button l-old-fforward-button fas"
       @click="onFastForward"
       v-if="showFForward && !isModern"
       >
@@ -196,16 +196,20 @@ export default {
 </template>
 
 <style scoped>
-.fforward-button {
-  position: absolute;
+.c-fforward-button {
   z-index: 9;
-  left: 12.8rem; /* This is the same width as the modern sidebar. */
   width: 32px;
 }
-.old-fforward-button {
+.l-fforward-button {
   position: absolute;
+  left: 12.8rem; /* This is the same width as the modern sidebar. */
+}
+.c-old-fforward-button {
   z-index: 9;
-  left: 10%; /* This is good enough for most zoom levels. */
   width: 32px;
+}
+.l-old-fforward-button {
+  position: absolute;
+  left: 10%; /* This is good enough for most zoom levels. */
 }
 </style>
