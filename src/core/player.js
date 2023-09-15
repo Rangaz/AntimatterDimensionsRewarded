@@ -776,7 +776,7 @@ window.player = {
       AIChance: 0,
       speed: 1,
       includeAnimated: true,
-      showFastForward: true,
+      showFForward: true,
     },
     notation: "Mixed scientific",
     notationDigits: {

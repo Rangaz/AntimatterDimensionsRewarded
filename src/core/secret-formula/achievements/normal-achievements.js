@@ -7,7 +7,7 @@ in the game, because, especially the earlier ones, they inevitably fall off and 
 
 Something like...
 (26) Reward: Start with a free Tickspeed upgrade ->
-(26) Charged: Start with 10000 free Tickspeed upgrades.
+(26) Charged: Start with 1000 free Tickspeed upgrades.
 Or
 (38) Reward: 8th Antimatter Dimensions are 5 times stronger, but only if you have no sacrifices ->
 (38) Charged: 8th Antimatter Dimensions are x1e100,000 stronger, but only if you have no sacrifices
@@ -101,7 +101,7 @@ export const normalAchievements = [
     effect: 100
   },
   {
-    // Implemented! Still needs to show actual icons and its option, and classic UI.
+    // Implemented! Biggest challenge so far, and I'm very happy with it!
     id: 22,
     name: "FAKE NEWS!",
     get description() { return `Encounter ${formatInt(50)} different news messages.`; },
