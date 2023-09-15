@@ -9,6 +9,31 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 9, 15],
+    name: "First public release",
+    info: `
+Hello! I'm Rangaz, the developer of the mod you are playing right now!
+<br>
+What you're paying right now is a modification of the game that adds a unique achievement reward to every single 
+achievement that didn't have one, and also modifies or buffs many of the existing ones! The game is the same
+otherwise.
+<br>
+<br>
+<i>This mod is currently in development!</i>
+<br>
+So far, only the first 9 rows of achievements have been modified, which typically lasts up to unlocking Eternity.
+I plan to finish this mod with ALL achievements rows finished, but for now enjoy.
+<br>
+<br>
+<b>Changes:</b>
+<li>Achievements with new rewards: 11, 12, 13, 14, 15, 16, 17, 18, 22, 24, 25, 26, 27, 33, 35, 38, 42, 44, 46, 47, 
+51, 52, 53, 62, 63, 67, 77, 81, 82, 96, 97, 98.</li>
+<li>Achievements with modified rewards: 23, 28, 31, 34, 36, 45, 48, 66, 68, 72, 83.</li>
+<br>
+`
+  },
+  /*
+  {
     date: [2023, 7, 18],
     name: "Final Official Patch",
     info: `
@@ -1119,6 +1144,7 @@ gaining infinity points.</li>
 <li>Saves should now FINALLY work properly.</li>
 </ul>`
   }
+  */
 ];
 
 
