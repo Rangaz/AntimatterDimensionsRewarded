@@ -19,6 +19,7 @@ export default {
       AIChance: 0,
       speed: 1,
       includeAnimated: false,
+      showFForward: false,
     };
   },
   computed: {
@@ -69,6 +70,9 @@ export default {
     includeAnimated(newValue) {
       player.options.news.includeAnimated = newValue;
     },
+    showFForward(newValue) {
+      player.options.news.showFForward = newValue;
+    }
   },
   methods: {
     update() {
@@ -78,6 +82,7 @@ export default {
       this.AIChance = options.AIChance;
       this.speed = options.speed;
       this.includeAnimated = options.includeAnimated;
+      this.showFForward = options.showFForward;
     },
     adjustSliderValueRepeatBuffer(value) {
       this.repeatBuffer = value;
@@ -137,6 +142,11 @@ export default {
       v-model="includeAnimated"
       class="o-primary-btn o-primary-btn--option-wide"
       text="Animation Effects:"
+    />
+    <ModalOptionsToggleButton
+      v-model="showFForward"
+      class="o-primary-btn o-primary-btn--option-wide"
+      text="Show fast forward button:"
     />
   </ModalWrapperOptions>
 </template>

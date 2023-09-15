@@ -417,7 +417,7 @@ export const migrations = {
       player.records.timeWithExcessAMProd = 0;
       player.records.timeSinceLastSacrifice = 0;
       player.news.isFastForward = false;
-      player.options.news.showFastForward = true;
+      player.options.news.showFForward = true;
     }
   },
 

@@ -7,16 +7,20 @@ export default {
   name: "NewsTicker",
   data() {
     return {
+      isModern: false,
       enableAnimation: false,
       timeAtNewsUpdate: new Date(),
-      showFastForward: false,
+      fastForward: false,
+      showFForward: false,
     };
   },
   computed: {
     lineClass() {
       return this.enableAnimation ? undefined : "c-disable-ticker-animation";
+    },
+    isFastForward() {
+      return this.fastForward ? "fa-play" : "fa-forward";
     }
-
   },
   beforeCreate() {
     this.recentTickers = [];
@@ -33,8 +37,9 @@ export default {
       if (this.currentNews?.dynamic) {
         this.$refs.line.innerHTML = this.currentNews.text;
       }
+      this.isModern = player.options.newUI;
       this.enableAnimation = player.options.news.includeAnimated;
-      this.showFastForward = Achievement(22).isEffectActive && player.options.news.showFastForward;
+      this.showFForward = Achievement(22).isEffectActive && player.options.news.showFForward;
     },
     restart() {
       if (!GameUI.initialized) {
@@ -134,13 +139,13 @@ export default {
     onFastForward() {
       const line = this.$refs.line;
       player.news.isFastForward = !player.news.isFastForward;
-
-      // The time passed since the news ticker puts a new news, or when its state has changed.
-      const timePassed = (Date.now() - this.timeAtNewsUpdate) / 1000;
-      console.log(Number.parseFloat(line.style["transition-duration"]) - timePassed);
+      this.fastForward = player.news.isFastForward;
 
       // If the transition duration is 0 ms, it means that it's preparing the next news.
       if (Number.parseFloat(line.style["transition-duration"]) <= 0) return;
+
+      // The time passed since the news ticker puts a new news, or when its state has changed.
+      const timePassed = (Date.now() - this.timeAtNewsUpdate) / 1000;
 
       // We want to take into account the time that has transcurred since the last change in 
       // either news or speed, and wheter we are fast forwarding or disabling it.
@@ -168,9 +173,17 @@ export default {
     class="c-news-ticker"
   >
     <button
-      class="o-primary-btn l-button-container fforward-button"
+      :class="isFastForward"
+      class="o-primary-btn fforward-button fas"
       @click="onFastForward"
-      v-if="showFastForward"
+      v-if="showFForward && isModern"
+      >
+    </button>
+    <button
+      :class="isFastForward"
+      class="o-primary-btn old-fforward-button fas"
+      @click="onFastForward"
+      v-if="showFForward && !isModern"
       >
     </button>
     <span
@@ -184,8 +197,15 @@ export default {
 
 <style scoped>
 .fforward-button {
-  position:absolute;
+  position: absolute;
   z-index: 9;
   left: 12.8rem; /* This is the same width as the modern sidebar. */
+  width: 32px;
+}
+.old-fforward-button {
+  position: absolute;
+  z-index: 9;
+  left: 10%; /* This is good enough for most zoom levels. */
+  width: 32px;
 }
 </style>
