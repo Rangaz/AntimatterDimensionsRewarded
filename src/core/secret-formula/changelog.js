@@ -28,6 +28,7 @@ export const changelog = [
     when using the fast forward button.</li>
     </ul>
     <br>
+    <br>
     `
   },
   {
