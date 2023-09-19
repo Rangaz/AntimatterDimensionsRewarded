@@ -1,4 +1,5 @@
 import { DC } from "./constants";
+import { Time } from "./time";
 
 // Slowdown parameters for replicanti growth, interval will increase by scaleFactor for every scaleLog10
 // OoM past the cap (default is 308.25 (log10 of 1.8e308), 1.2, Number.MAX_VALUE)
@@ -38,11 +39,12 @@ export function replicantiGalaxy(auto) {
   }
   if (!Replicanti.galaxies.canBuyMore) return;
   const galaxyGain = Replicanti.galaxies.gain;
+  const minReplicanti = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
   if (galaxyGain < 1) return;
   player.replicanti.timer = 0;
   Replicanti.amount = Achievement(126).isUnlocked && !Pelle.isDoomed
     ? Decimal.pow10(Replicanti.amount.log10() - LOG10_MAX_VALUE * galaxyGain)
-    : DC.D1;
+    : minReplicanti;
   addReplicantiGalaxies(galaxyGain);
 }
 
@@ -137,6 +139,7 @@ export function totalReplicantiSpeedMult(overCap) {
   if (Pelle.isDisabled("replicantiIntervalMult")) return totalMult;
 
   const preCelestialEffects = Effects.product(
+    Achievement(106),
     TimeStudy(62),
     TimeStudy(213),
     RealityUpgrade(2),
@@ -144,6 +147,10 @@ export function totalReplicantiSpeedMult(overCap) {
     RealityUpgrade(23),
   );
   totalMult = totalMult.times(preCelestialEffects);
+  
+  if (Achievement(108).isEffectActive && Time.thisEternity.totalSeconds < 9) {
+    totalMult = totalMult.timesEffectOf(Achievement(108).effects.replicantiSpeed);
+  }
   if (TimeStudy(132).isBought && Perk.studyPassive.isBought) {
     totalMult = totalMult.times(3);
   }
@@ -501,9 +508,11 @@ export const Replicanti = {
   },
   reset(force = false) {
     const unlocked = force ? false : EternityMilestone.unlockReplicanti.isReached;
+    const minReplicanti = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
     player.replicanti = {
       unl: unlocked,
-      amount: unlocked ? DC.D1 : DC.D0,
+      // I want it to start at 9 replicanti if you have r108.
+      amount: unlocked ? minReplicanti : DC.D0,
       timer: 0,
       chance: 0.01,
       chanceCost: DC.E150,
@@ -521,7 +530,7 @@ export const Replicanti = {
       if (!freeUnlock) Currency.infinityPoints.subtract(cost);
       player.replicanti.unl = true;
       player.replicanti.timer = 0;
-      Replicanti.amount = DC.D1;
+      Replicanti.amount = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
     }
   },
   get amount() {

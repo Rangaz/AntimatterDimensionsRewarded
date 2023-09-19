@@ -9,6 +9,28 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 9, 19],
+    name: "Row 10 update",
+    info: `
+    Row 10 rewards have arrived!
+    <br>
+    <br>
+    <b>New stuff</b>
+    <ul>
+    <li>Added new rewards to Achievements: 101, 102, 106, 107, and 108.</li>
+    <li>Achievement 103 and Tme Study 111 now stack their effects.</li>
+    </ul>
+    <br>
+    <br>
+    <b>Other stuff</b>
+    <ul>
+    <li>Fixed the news ticker <i>"Don't mind me, just passing through."</i> going the wrong direction
+    when using the fast forward button.</li>
+    </ul>
+    <br>
+    `
+  },
+  {
     date: [2023, 9, 15],
     name: "First public release",
     info: `

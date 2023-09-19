@@ -87,11 +87,7 @@ export function breakInfinity() {
 }
 
 export function gainedInfinityPoints() {
-  const div = Effects.min(
-    308,
-    Achievement(103),
-    TimeStudy(111)
-  );
+  const div = 308 - Effects.sum(Achievement(103), TimeStudy(111));
   if (Pelle.isDisabled("IPMults")) {
     return Decimal.pow10(player.records.thisInfinity.maxAM.log10() / div - 0.75)
       .timesEffectsOf(PelleRifts.vacuum)
@@ -201,10 +197,12 @@ export function resetInfinityRuns() {
 }
 
 // Player gains 50% of infinities they would get based on their best infinities/hour crunch if they have the
-// milestone and turned on infinity autobuyer with 1 minute or less per crunch
+// milestone and turned on infinity autobuyer with 1 minute or less per crunch.
+// This amount increases to 90% with r102, but, since you get it anyway when you get this milestone,
+// I'll pretend it was always 90%.
 export function getInfinitiedMilestoneReward(ms, considerMilestoneReached) {
   return Autobuyer.bigCrunch.autoInfinitiesAvailable(considerMilestoneReached)
-    ? Decimal.floor(player.records.thisEternity.bestInfinitiesPerMs.times(ms).dividedBy(2))
+    ? Decimal.floor(player.records.thisEternity.bestInfinitiesPerMs.times(ms).dividedBy(1/.9))
     : DC.D0;
 }
 
@@ -233,10 +231,11 @@ export function resetEternityRuns() {
 }
 
 // Player gains 50% of the eternities they would get if they continuously repeated their fastest eternity, if they
-// have the auto-eternity milestone and turned on eternity autobuyer with 0 EP
+// have the auto-eternity milestone and turned on eternity autobuyer with 0 EP.
+// This amount increases to 90% with r102.
 export function getEternitiedMilestoneReward(ms, considerMilestoneReached) {
   return Autobuyer.eternity.autoEternitiesAvailable(considerMilestoneReached)
-    ? Decimal.floor(player.records.thisReality.bestEternitiesPerMs.times(ms).dividedBy(2))
+    ? Decimal.floor(player.records.thisReality.bestEternitiesPerMs.times(ms).dividedBy(1 / Achievement(102).effectOrDefault(0.5)))
     : DC.D0;
 }
 
@@ -247,7 +246,8 @@ function isOfflineEPGainEnabled() {
 
 export function getOfflineEPGain(ms) {
   if (!EternityMilestone.autoEP.isReached || !isOfflineEPGainEnabled()) return DC.D0;
-  return player.records.bestEternity.bestEPminReality.times(TimeSpan.fromMilliseconds(ms).totalMinutes / 4);
+  return player.records.bestEternity.bestEPminReality.times(TimeSpan.fromMilliseconds(ms).totalMinutes * 
+  Effects.max(0.25, Achievement(102))); // r102 bumps the amount up to 90%.
 }
 
 // Note: realities and ampFactor must be distinct because there are a few things farther up which only multiply
