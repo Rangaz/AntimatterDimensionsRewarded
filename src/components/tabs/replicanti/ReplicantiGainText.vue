@@ -20,6 +20,7 @@ export default {
         (Math.log(player.replicanti.chance + 1)), getReplicantiInterval(false)).dividedBy(Math.LN10);
 
       const replicantiAmount = Replicanti.amount;
+      const minReplicanti = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
       const isAbove308 = Replicanti.isUncapped && replicantiAmount.log10() > LOG10_MAX_VALUE;
 
       if (isAbove308) {
@@ -44,7 +45,7 @@ export default {
         this.remainingTimeText = "";
       }
 
-      const totalTime = LOG10_MAX_VALUE / (ticksPerSecond * log10GainFactorPerTick.toNumber());
+      const totalTime = (LOG10_MAX_VALUE - minReplicanti.log10()) / (ticksPerSecond * log10GainFactorPerTick.toNumber());
       let remainingTime = (LOG10_MAX_VALUE - replicantiAmount.log10()) /
         (ticksPerSecond * log10GainFactorPerTick.toNumber());
       if (remainingTime < 0) {
@@ -52,7 +53,7 @@ export default {
         remainingTime = 0;
       }
 
-      const galaxiesPerSecond = log10GainFactorPerTickUncapped.times(ticksPerSecond / LOG10_MAX_VALUE);
+      const galaxiesPerSecond = log10GainFactorPerTickUncapped.times(ticksPerSecond / (LOG10_MAX_VALUE - minReplicanti.log10()));
       const timeFromZeroRG = galaxies => 50 * Math.log((galaxies + 49.5) / 49.5);
       let baseGalaxiesPerSecond, effectiveMaxRG, effectiveCurrentRG;
       if (RealityUpgrade(6).isBought && !Pelle.isDoomed) {

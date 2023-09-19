@@ -11,10 +11,19 @@ export const replicanti = {
     overlay: ["Ξ"],
   },
   achievement: {
-    name: "Achievement 134",
-    // This is explicitly 2 in the replicanti code as well, inside of a replicanti amount check
-    multValue: 2,
-    isActive: () => Achievement(134).canBeApplied && Replicanti.amount.lte(replicantiCap()) && !Pelle.isDoomed,
+    name: "Achievement Rewards",
+    // r108 doesn't have an effectCondition, so it must be explicit here, and
+    // r134 is explicitly 2 in the replicanti code as well, inside of a replicanti amount check (for some reason)
+    multValue: () => {
+      let totalMult = DC.D1;
+      totalMult  = totalMult.timesEffectOf(Achievement(106));
+      if (Time.thisEternity.totalSeconds < 9) {
+        totalMult = totalMult.timesEffectOf(Achievement(108).effects.replicantiSpeed);
+      }
+      if (Replicanti.amount.lte(replicantiCap())) totalMult  = totalMult.timesEffectOf(Achievement(134));
+      return totalMult;
+    },
+    isActive: () => [106, 108, 134].some(a => Achievement(a).canBeApplied),
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   timeStudy: {

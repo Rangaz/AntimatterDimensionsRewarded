@@ -857,7 +857,7 @@ export const normalAchievements = [
       "IC1's reward is raised based on sum of IC times (capped)." : 
       "IC1's reward is raised based on sum of IC times." 
     },
-    effect: () => Math.max(6.66 / Math.max(Time.infinityChallengeSum.totalSeconds, 0.666), 1),
+    effect: () => Math.max(6.66 / Math.max(Time.infinityChallengeSum.totalSeconds, 0.6), 1),
     formatEffect: value => `^${format(value, 2, 2)}`
   },
   {
@@ -870,33 +870,47 @@ export const normalAchievements = [
     reward: "Infinity Dimensions no longer spend Infinity Points.",
   },
 
-  // ----------------------------------------------------------------------
-  // Anything at this point forward won't start developing until much later
-
   {
+    // Implemented! Likely the messiest code, but it's just multiplication.
     id: 101,
     name: "8 nobody got time for that",
     description: "Eternity without buying Antimatter Dimensions 1-7.",
     checkRequirement: () => player.requirementChecks.eternity.onlyAD8,
-    checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE
+    checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
+    reward: "8th ADs are stronger based on purchased ADs.",
+    effect: () => Laitela.continuumActive ? Decimal.pow(AntimatterDimension(1).continuumAmount * AntimatterDimension(2).continuumAmount *
+    AntimatterDimension(3).continuumAmount * AntimatterDimension(4).continuumAmount * AntimatterDimension(5).continuumAmount * 
+    AntimatterDimension(6).continuumAmount * AntimatterDimension(7).continuumAmount, AntimatterDimension(8).continuumAmount / 2000).plus(1) : 
+    Decimal.pow(AntimatterDimension(1).bought * AntimatterDimension(2).bought * AntimatterDimension(3).bought * 
+      AntimatterDimension(4).bought * AntimatterDimension(5).bought * AntimatterDimension(6).bought * 
+      AntimatterDimension(7).bought, AntimatterDimension(8).bought / 2000).plus(1),
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
+    // Implemented (in theory)!
     id: 102,
     name: "This mile took an eternity",
     description: "Get all Eternity milestones.",
     checkRequirement: () => EternityMilestone.all.every(m => m.isReached),
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() {
+      return `Improve offline generation milestones to give ${formatPercents(0.9)} of their respective resource.`
+    },
+    effect: 0.9
   },
   {
+    // Improved!
     id: 103,
     name: "Tätä saavutusta ei ole olemassa II",
     get description() { return `Reach ${formatPostBreak(DC.D9_99999E999, 5, 0)} Infinity Points.`; },
     checkRequirement: () => Currency.infinityPoints.exponent >= 1000,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() {
-      return `Make the Infinity Point formula better. log(x)/${formatInt(308)} ➜ log(x)/${formatFloat(307.8, 1)}`;
+      return TimeStudy(111).canBeApplied ? 
+      `Make the Infinity Point formula better. log(x)/${formatInt(285)} ➜ log(x)/${formatFloat(284.8, 1)}` : 
+      `Make the Infinity Point formula better. log(x)/${formatInt(308)} ➜ log(x)/${formatFloat(307.8, 1)}`;
     },
-    effect: 307.8
+    effect: 0.2,
   },
   {
     id: 104,
@@ -918,26 +932,55 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
+    // Implemented!
     id: 106,
     name: "The swarm",
     get description() { return `Get ${formatInt(10)} Replicanti Galaxies in ${formatInt(15)} seconds.`; },
     checkRequirement: () => Replicanti.galaxies.total >= 10 && Time.thisInfinity.totalSeconds <= 15,
-    checkEvent: GAME_EVENT.REPLICANTI_TICK_AFTER
+    checkEvent: GAME_EVENT.REPLICANTI_TICK_AFTER,
+    get reward() {return `Replicanti speed ${formatX(2)} if you have less than ${formatInt(10)} Replicanti Galaxies.`},
+    effect: 2,
+    effectCondition: () => Replicanti.galaxies.total < 10,
   },
   {
+    // Implemented!
     id: 107,
     name: "Do you really need a guide for this?",
     get description() { return `Eternity with less than ${formatInt(10)} Infinities.`; },
     checkRequirement: () => Currency.infinities.lt(10),
-    checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE
+    checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,  
+    reward: "Boost Infinity Dimensions the more Infinities you have.",
+    effect: () => Decimal.pow(Currency.infinitiesTotal.value.clampMin(1), LOG10_2 / 2).powEffectOf(TimeStudy(31)),
+    formatEffect: value => {
+      // Since TS31 is already accounted for in the effect prop, we need to "undo" it to display the base value here
+      const mult = formatX(value, 2, 2);
+      return TimeStudy(31).canBeApplied
+        ? `${formatX(value.pow(1 / TimeStudy(31).effectValue), 2, 1)} (After TS31: ${mult})`
+        : mult;
+    }
   },
   {
+    // Implemented!
     id: 108,
     name: "We COULD afford 9",
     get description() { return `Eternity with exactly ${formatInt(9)} Replicanti.`; },
     checkRequirement: () => Replicanti.amount.round().eq(9),
-    checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE
+    checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
+    get reward() {
+      return `You'll always have at least ${formatInt(9)} Replicanti. Gain ${formatX(2)} 
+      Replicanti speed the first ${formatInt(9)} seconds of each Eternity.`;
+    },
+    effects: {
+      minReplicanti: 9,
+      replicantiSpeed: 2
+    },
+    // This check is just in case
+    effectCondition: () => player.replicanti.unl
   },
+
+  // ----------------------------------------------------------------------
+  // Anything at this point forward won't start developing until later
+
   {
     id: 111,
     name: "Yo dawg, I heard you liked infinities...",
@@ -1152,7 +1195,8 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() {
       return `You gain Replicanti ${formatInt(2)} times faster under ${format(replicantiCap(), 1)} Replicanti.`;
-    }
+    },
+    effect: 2
   },
   {
     id: 135,

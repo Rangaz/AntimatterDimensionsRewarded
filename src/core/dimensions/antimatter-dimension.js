@@ -137,6 +137,7 @@ function applyNDMultipliers(mult, tier) {
     tier === 8 ? Achievement(38) : null,
     tier === 8 ? Achievement(46) : null,
     tier <= 4 ? Achievement(64) : null,
+    tier === 8 ? Achievement(101) : null,
     tier < 8 ? TimeStudy(71) : null,
     tier === 8 ? TimeStudy(214) : null,
     tier > 1 && tier < 8 ? InfinityChallenge(8).reward : null

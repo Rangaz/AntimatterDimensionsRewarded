@@ -130,6 +130,7 @@ export const ID = {
     multValue: dim => {
       const allMult = DC.D1.timesEffectsOf(
         Achievement(48),
+        Achievement(107),
       );
 
       const dimMults = Array.repeat(DC.D1, 9);
@@ -148,7 +149,7 @@ export const ID = {
       }
       return totalMult;
     },
-    isActive: () => [48, 94].some(a => Achievement(a).canBeApplied) && !EternityChallenge(11).isRunning,
+    isActive: () => [48, 94, 107].some(a => Achievement(a).canBeApplied) && !EternityChallenge(11).isRunning,
     icon: MultiplierTabIcons.ACHIEVEMENT
   },
   timeStudy: {

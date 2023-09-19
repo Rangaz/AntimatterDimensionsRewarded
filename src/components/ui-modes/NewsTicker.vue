@@ -158,8 +158,12 @@ export default {
       this.timeAtNewsUpdate = Date.now();
 
       // I think this has to have different values every time in order to update the speed.
-      const randVar = 100 + Math.random() / 10;
-      line.style.transform = `translateX(-${randVar}%)`;
+      const randVar = Math.random() / 10;
+      if (this.currentNews && this.currentNews.id === "a244") {
+        line.style.transform = `translateX(${randVar})`;
+      } else {
+        line.style.transform = `translateX(-${randVar + 100}%)`;
+      }
       this.clearTimeouts();
       this.scrollTimeout = setTimeout(this.prepareNextMessage.bind(this), scrollDuration * 1000);
     }

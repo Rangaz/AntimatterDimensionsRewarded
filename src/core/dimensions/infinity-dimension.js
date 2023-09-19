@@ -7,6 +7,7 @@ export function infinityDimensionCommonMultiplier() {
     .timesEffectsOf(
       Achievement(48),
       Achievement(75),
+      Achievement(107),
       TimeStudy(82),
       TimeStudy(92),
       TimeStudy(162),

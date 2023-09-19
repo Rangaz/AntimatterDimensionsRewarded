@@ -33,7 +33,7 @@ export const eternityMilestones = {
       if (!player.options.offlineProgress) return `This milestone would give offline EP generation, but offline progress
         is currently disabled`;
       const effectText = (em200 || em1000) ? "Inactive" : `Currently ${format(EPmin, 2, 2)} EP/min`;
-      return `While offline, gain ${formatPercents(0.25)} of your best Eternity Points per minute from previous
+      return `While offline, gain ${formatPercents(Achievement(102).isEffectActive ? 0.9 : 0.25)} of your best Eternity Points per minute from previous
         Eternities (${effectText})`;
     },
     activeCondition: () => (player.options.offlineProgress
@@ -158,7 +158,7 @@ export const eternityMilestones = {
       // which seems messy to say the least.
       const realTime = PlayerProgress.seenAlteredSpeed() ? " real-time" : "";
       // eslint-disable-next-line prefer-template
-      return `While offline, gain Eternities at ${formatPercents(0.5)} the rate of your fastest${realTime} Eternity ` +
+      return `While offline, gain Eternities at ${formatPercents(Achievement(102).isEffectActive ? 0.9 : 0.5)} the rate of your fastest${realTime} Eternity ` +
         (eternities.gt(0) ? `(Currently ${format(eternities, 2, 2)}/hour)` : "(Inactive)");
     },
     activeCondition: () => (player.options.offlineProgress
@@ -175,7 +175,7 @@ export const eternityMilestones = {
       const infinities = getInfinitiedMilestoneReward(TimeSpan.fromHours(1).totalMilliseconds,
         player.eternities.gte(1000));
       // eslint-disable-next-line prefer-template
-      return `While offline, gain Infinities equal to ${formatPercents(0.5)}
+      return `While offline, gain Infinities equal to ${formatPercents(Achievement(102).isEffectActive ? 0.9 : 0.5)}
         your best Infinities/hour this Eternity ` +
         (infinities.gt(0) ? `(Currently ${format(infinities, 2, 2)}/hour)` : "(Inactive)");
     },
