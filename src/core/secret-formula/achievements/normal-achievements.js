@@ -978,9 +978,6 @@ export const normalAchievements = [
     effectCondition: () => player.replicanti.unl
   },
 
-  // ----------------------------------------------------------------------
-  // Anything at this point forward won't start developing until later
-
   {
     id: 111,
     name: "Yo dawg, I heard you liked infinities...",
@@ -1000,22 +997,36 @@ export const normalAchievements = [
     reward: "Your antimatter doesn't reset on Dimension Boosts or Antimatter Galaxies."
   },
   {
+    // Implemented!
     id: 112,
     name: "Never again",
     get description() { return `Get the sum of Infinity Challenge times below ${formatInt(750)}ms.`; },
     checkRequirement: () => Time.infinityChallengeSum.totalMilliseconds < 750,
-    checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER]
+    checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER],
+    reward: "IC1 and IC6 rewards affect Time Dimensions at a greatly reduced rate.",
+    effect: () => Decimal.pow(InfinityChallenge(1).reward.effectValue.timesEffectOf(InfinityChallenge(6).reward), 0.004),
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
+    // Modified!
     id: 113,
     name: "Eternities are the new infinity",
     get description() { return `Eternity in under ${formatInt(250)}ms.`; },
     checkRequirement: () => Time.thisEternity.totalMilliseconds <= 250,
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
-    get reward() { return `Gain ${formatX(2)} more Eternities.`; },
-    effect: 2,
+    get reward() { return `Gain more Eternities based on your fastest time, up to ${formatX(5)}.`; },
+    effect: () => Math.clampMin(Math.floor(500 / Math.max(player.records.bestEternity.time, 100)), 1),
+    formatEffect: value => {
+      const mult = formatX(value);
+      if (value < 5) {
+        const nextAt = Math.floor(500 / (value + 1));
+        return mult + ` (Next at ${formatInt(nextAt)} ms)`;
+      }
+      return mult;
+    }
   },
   {
+    // I find this one funny, so it'll stay
     id: 114,
     name: "You're a mistake",
     description: "Fail an Eternity Challenge.",
@@ -1025,10 +1036,15 @@ export const normalAchievements = [
     effect: () => "Sense of accomplishment (fading)"
   },
   {
+    // Implemented!
     id: 115,
     name: "I wish I had gotten 7 eternities",
     description: "Start an Infinity Challenge inside an Eternity Challenge.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
+    get reward() {
+      return `Infinities no longer reset Infinity power nor ID amounts, and keep up to 
+      ${formatInt(200)} Dimension Boosts and ${formatInt(50)} Antimatter Galaxies between them.`
+    },
   },
   {
     id: 116,
@@ -1067,6 +1083,10 @@ export const normalAchievements = [
     reward: `Dimensional Sacrifice doesn't reset your Antimatter Dimensions
       and the Autobuyer activates every tick if turned on.`,
   },
+  
+  // ----------------------------------------------------------------------
+  // Anything at this point forward won't start developing until later
+
   {
     id: 121,
     name: "Can you get infinite IP?",

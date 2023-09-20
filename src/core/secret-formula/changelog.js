@@ -9,6 +9,28 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 9, 20],
+    name: "Row 11 update",
+    info: `
+    Here are row 11 rewards!
+    <br>
+    <br>
+    <b>New stuff</b>
+    <ul>
+    <li>Added new rewards to Achievements 112 and 115.</li>
+    <li>Buffed Achievement 113 to give up to x5 eternities if you're fast enough.</li>
+    </ul>
+    <br>
+    <br>
+    <b>Other stuff</b>
+    <ul>
+    <li>Made the Replicanti Galaxy modal reflect Achieement 108's 9 replicanti effect.</li>
+    </ul>
+    <br>
+    <br>
+    `
+  },
+  {
     date: [2023, 9, 19],
     name: "Row 10 update",
     info: `
