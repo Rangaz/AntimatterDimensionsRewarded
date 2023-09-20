@@ -9,6 +9,7 @@ export default {
   data() {
     return {
       replicanti: new Decimal(),
+      minReplicanti: 1,
       divideReplicanti: false,
       canBeBought: 0,
     };
@@ -22,7 +23,7 @@ export default {
         ? `divide your Replicanti by ${format(Number.MAX_VALUE, 2, 2)} for each Replicanti Galaxy purchased
           (${format(this.replicanti, 2, 2)} to
           ${format(this.replicanti.divide(Decimal.NUMBER_MAX_VALUE.pow(this.canBeBought)), 2, 2)})`
-        : `reset your Replicanti to ${formatInt(1)}`;
+        : `reset your Replicanti to ${formatInt(this.minReplicanti)}`;
       return `A Replicanti Galaxy boosts Tickspeed the same way an Antimatter Galaxy does. However, it does not
         increase the cost of Antimatter Galaxies, nor is it affected by multipliers to Antimatter Galaxies specifically.
         It will ${reductionString}.`;
@@ -31,6 +32,7 @@ export default {
   methods: {
     update() {
       this.replicanti.copyFrom(player.replicanti.amount);
+      this.minReplicanti = Achievement(108).isUnlocked ? 9 : 1;
       this.divideReplicanti = Achievement(126).isUnlocked;
       this.canBeBought = Replicanti.galaxies.gain;
       if (this.replicanti.lt(Number.MAX_VALUE)) this.emitClose();

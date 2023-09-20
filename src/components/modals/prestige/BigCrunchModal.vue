@@ -1,5 +1,6 @@
 <script>
 import ResetModal from "@/components/modals/prestige/ResetModal";
+import { Achievement } from "../../../core/globals";
 
 export default {
   name: "BigCrunchModal",
@@ -12,7 +13,7 @@ export default {
       gainedInfinityPoints: new Decimal(),
       startingBoosts: 0,
       startingAM: 10,
-      willStartWithGalaxy: false
+      startingGalaxies: 0
     };
   },
   computed: {
@@ -35,7 +36,7 @@ export default {
       const gainedResources = [];
       if (this.startingAM.gte(10)) gainedResources.push(`${quantify("Antimatter", this.startingAM, 2, 1)}`);
       if (this.startingBoosts > 0) gainedResources.push(`${quantify("Dimension Boost", this.startingBoosts)}`);
-      if (this.willStartWithGalaxy) gainedResources.push(`${quantify("Galaxy", 1)}`);
+      if (this.startingGalaxies) gainedResources.push(`${quantify("Galaxy", this.startingGalaxies)}`);
 
       return `You will start your next Infinity with ${makeEnumeration(gainedResources)}.`;
     }
@@ -44,9 +45,15 @@ export default {
     update() {
       this.gainedInfinities = gainedInfinities().round();
       this.gainedInfinityPoints = gainedInfinityPoints().round();
-      this.startingBoosts = DimBoost.startingDimensionBoosts;
+      if (Achievement(115).isEffectActive) {
+        console.log("115!");
+        this.startingBoosts = Math.clamp(player.dimensionBoosts, DimBoost.startingDimensionBoosts, 200);
+        this.startingGalaxies = Math.clamp(player.galaxies, InfinityUpgrade.skipResetGalaxy.isBought, 50);
+      } else {
+        this.startingBoosts = DimBoost.startingDimensionBoosts;
+        this.startingGalaxies = InfinityUpgrade.skipResetGalaxy.isBought ? 1 : 0;
+      }
       this.startingAM = Currency.antimatter.startingValue;
-      this.willStartWithGalaxy = InfinityUpgrade.skipResetGalaxy.isBought;
     },
     handleYesClick() {
       bigCrunchResetRequest();

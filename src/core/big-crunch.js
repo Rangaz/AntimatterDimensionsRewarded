@@ -152,12 +152,19 @@ function bigCrunchCheckUnlocks() {
 }
 
 export function secondSoftReset(enteringAntimatterChallenge) {
-  player.dimensionBoosts = 0;
-  player.galaxies = 0;
+  // r115 keeps u to 200 dim boosts and 50 galaxies
+  if (Achievement(115).canBeApplied) {
+    player.dimensionBoosts = Math.clampMax(player.dimensionBoosts, 200);
+    player.galaxies = Math.clampMax(player.galaxies, 50);
+  } else {
+    player.dimensionBoosts = 0;
+    player.galaxies = 0;
+  }
+
   player.records.thisInfinity.maxAM = DC.D0;
   Currency.antimatter.reset();
   softReset(0, true, true, enteringAntimatterChallenge);
-  InfinityDimensions.resetAmount();
+  if (!Achievement(115).isEffectActive) InfinityDimensions.resetAmount();
   if (player.replicanti.unl) Replicanti.amount = DC.D1;
   player.replicanti.galaxies = 0;
   player.records.thisInfinity.time = 0;

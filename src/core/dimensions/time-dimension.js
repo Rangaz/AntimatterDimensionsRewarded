@@ -105,6 +105,7 @@ export function timeDimensionCommonMultiplier() {
     .timesEffectsOf(
       Achievement(48),
       Achievement(105),
+      Achievement(112),
       Achievement(128),
       TimeStudy(93),
       TimeStudy(103),
