@@ -222,11 +222,11 @@ export const infinityUpgrades = {
     checkRequirement: () => Achievement(41).isUnlocked,
     costCap: DC.E6E6,
     costIncreaseThreshold: DC.E3E6,
-    description: () => `Multiply Infinity Points from all sources by ${formatX(2)}`,
+    description: () => Achievement(121).isUnlocked ? `Multiply Infinity Points from all sources by ${formatX(2.01, 2, 2)}` : `Multiply Infinity Points from all sources by ${formatX(2)}`,
     // Normally the multiplier caps at e993k or so with 3300000 purchases, but if the cost is capped then we just give
-    // an extra e7k to make the multiplier look nice
-    effect: () => (player.IPMultPurchases >= 3300000 ? DC.E1E6 : DC.D2.pow(player.IPMultPurchases)),
-    cap: () => Effarig.eternityCap ?? DC.E1E6,
+    // an extra e7k to make the multiplier look nice... that is, without my r121.
+    effect: () => (Achievement(121).isUnlocked ? DC.D2.times(DC.D1_005).pow(player.IPMultPurchases) : DC.D2.pow(player.IPMultPurchases)),
+    cap: () => Effarig.eternityCap ?? DC.D2.times(DC.D1_005).pow(3300000),
     formatEffect: value => formatX(value, 2, 2),
   }
 };

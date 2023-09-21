@@ -349,9 +349,12 @@ export const normalAchievements = [
       return `1st Antimatter Dimensions are stronger the longer your antimatter per second 
       exceeds your current antimatter.`;
     },
-    effect: () => Time.timeWithExcessAMProd.totalSeconds >= 30 ?
-    Math.pow(Time.timeWithExcessAMProd.totalSeconds - 30, 0.5) / 100 + 1.3 : 
-    1 + Time.timeWithExcessAMProd.totalSeconds / 100,
+    effect() {
+      const excessTimeProduction = Time.timeWithExcessAMProd.totalSeconds;
+      return excessTimeProduction >= 30 ?
+      Math.pow(excessTimeProduction - 30, 0.5) / 100 + 1.3 : 
+      1 + excessTimeProduction / 100;
+    },
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -674,6 +677,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "A small multiplier to IP based on Infinity Power.",
     effect: () => Decimal.max(1, Decimal.pow(Decimal.log10(Currency.infinityPower.value) / 3, 0.5)),
+    cap: () => Effarig.eternityCap,
     formatEffect: value => `${formatX(value, 2, 2)}`
 
   },
@@ -1084,44 +1088,64 @@ export const normalAchievements = [
       and the Autobuyer activates every tick if turned on.`,
   },
   
-  // ----------------------------------------------------------------------
-  // Anything at this point forward won't start developing until later
-
   {
+    // Implemented!
     id: 121,
     name: "Can you get infinite IP?",
     get description() { return `Reach ${formatPostBreak("1e30008")} Infinity Points.`; },
     checkRequirement: () => Currency.infinityPoints.exponent >= 30008,
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() {
+      return `Improve the IP multiplier upgrade: ${formatX(2)} ➜ ${formatX(2.01, 2, 2)}.`;
+    },
+    effect: 2.01
   },
   {
+    // Implemented! It'll appear in multiplier tab as part of 'purchases' instead of in 'achievements'.
     id: 122,
     name: "You're already dead.",
     description: "Eternity without buying Antimatter Dimensions 2-8.",
     checkRequirement: () => player.requirementChecks.eternity.onlyAD1,
-    checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE
+    checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
+    get reward() {
+      return `The Buy 10 Dimensions multiplier is +${formatPercents(0.5)} stronger on 1st 
+      Antimatter Dimensions.`;
+    },
+    effect: () => Laitela.continuumActive ? DC.D1_5.pow(AntimatterDimension(1).continuumAmount / 10) : 
+      DC.D1_5.pow(Math.floor(AntimatterDimension(1).bought / 10)),
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
+    // Implemented!
     id: 123,
     name: "5 more eternities until the update",
     get description() { return `Complete ${formatInt(50)} unique Eternity Challenge tiers.`; },
     checkRequirement: () => EternityChallenges.completions >= 50,
-    checkEvent: GAME_EVENT.ETERNITY_RESET_AFTER
+    checkEvent: GAME_EVENT.ETERNITY_RESET_AFTER,
+    get reward() {
+      return `Time Dimensions are ${formatPercents(0.12)} stronger for every unique Eternity Challenge tier completed.`;
+    },
+    effect: () => Math.pow(1.12, EternityChallenges.completions),
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
+    // Implemented!
     id: 124,
     name: "Long lasting relationship",
     get description() {
       return `Have your Infinity Power per second exceed your Infinity Power
       for ${formatInt(60)} consecutive seconds during a single Infinity.`;
     },
-    checkRequirement: () => AchievementTimers.marathon2
-      .check(
-        !EternityChallenge(7).isRunning &&
-        InfinityDimension(1).productionPerSecond.gt(Currency.infinityPower.value),
-        60
-      ),
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkRequirement: () => Time.timeWithExcessIPowerProd.totalSeconds >= 60,
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    reward: "1st Infinity Dimensions are stronger the longer your production surpasses your current Infinity Power. Slows down after 60 seconds.",
+    effect() {
+      const excessTimeProduction = Time.timeWithExcessIPowerProd.totalSeconds;
+      return excessTimeProduction >= 60 ?
+      Math.pow(2, 180) * Math.pow(excessTimeProduction - 59, 0.5) : 
+      Math.pow(8, excessTimeProduction)
+    },
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     id: 125,
@@ -1148,16 +1172,20 @@ export const normalAchievements = [
     checkRequirement: () => Replicanti.galaxies.total >= 180 * player.galaxies && player.galaxies > 0,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() {
-      return `Replicanti Galaxies divide your Replicanti by ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)}
+      return Achievement(108).isUnlocked ? `Replicanti Galaxies divide your Replicanti by ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)}
+      instead of resetting them to ${formatInt(9)}.` : 
+      `Replicanti Galaxies divide your Replicanti by ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)}
       instead of resetting them to ${formatInt(1)}.`;
     },
   },
   {
+    // Implemented!
     id: 127,
     name: "But I wanted another prestige layer...",
     get description() { return `Reach ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)} Eternity Points.`; },
     checkRequirement: () => Currency.eternityPoints.gte(Decimal.NUMBER_MAX_VALUE),
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() {return `The ${formatX(5)} EP upgrade no longer spends EP.`}
   },
   {
     id: 128,
@@ -1169,6 +1197,10 @@ export const normalAchievements = [
     effect: () => Math.max(player.timestudy.studies.length, 1),
     formatEffect: value => `${formatX(value)}`
   },
+
+  // ----------------------------------------------------------------------
+  // Anything at this point forward won't start developing until later
+
   {
     id: 131,
     name: "No ethical consumption",

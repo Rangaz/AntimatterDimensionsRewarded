@@ -138,6 +138,7 @@ export const ID = {
         if (tier === 1) {
           dimMults[tier] = dimMults[tier].timesEffectsOf(
             Achievement(94),
+            Achievement(124),
           );
         }
       }
@@ -149,7 +150,7 @@ export const ID = {
       }
       return totalMult;
     },
-    isActive: () => [48, 94, 107].some(a => Achievement(a).canBeApplied) && !EternityChallenge(11).isRunning,
+    isActive: () => [48, 94, 107, 124].some(a => Achievement(a).canBeApplied) && !EternityChallenge(11).isRunning,
     icon: MultiplierTabIcons.ACHIEVEMENT
   },
   timeStudy: {

@@ -530,6 +530,7 @@ export function gameLoop(passDiff, options = {}) {
     if (!player.auto.sacrifice.isActive || !Achievement(118).isEffectActive)
       {player.records.timeSinceLastSacrifice += diff}; // For r23
     player.records.timeWithExcessAMProd += diff; // For r44
+    player.records.timeWithExcessIPowerProd += diff; // For r124
     player.records.thisInfinity.realTime += realDiff;
     player.records.thisInfinity.time += diff;
     player.records.thisEternity.realTime += realDiff;
@@ -579,6 +580,11 @@ export function gameLoop(passDiff, options = {}) {
   // Check done for r44 condition
   if (!Currency.antimatter.productionPerSecond.gt(Currency.antimatter.value)) {
     player.records.timeWithExcessAMProd = 0;
+  }
+
+  // Check done for r124 condition
+  if (!InfinityDimension(1).productionPerSecond.gt(Currency.infinityPower.value)) {
+    player.records.timeWithExcessIPowerProd = 0;
   }
 
   updatePrestigeRates();

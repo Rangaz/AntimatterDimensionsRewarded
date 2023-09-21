@@ -123,6 +123,7 @@ function applyNDMultipliers(mult, tier) {
         Achievement(44),
         Achievement(68),
         Achievement(71),
+        Achievement(122),
         TimeStudy(234)
       );
   }

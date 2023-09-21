@@ -66,11 +66,15 @@ export const AD = {
         ? AntimatterDimension(ad).continuumValue
         : Math.floor(AntimatterDimension(ad).bought / 10)
       );
-      if (dim) return Decimal.pow(AntimatterDimensions.buyTenMultiplier, getPurchases(dim));
+      // I'll pretend that r122 affects purchases, when in reality it doesn't.
+      if (dim) {
+        return dim == 1 ? Decimal.pow(AntimatterDimensions.buyTenMultiplier, getPurchases(dim)).timesEffectOf(Achievement(122)) :
+          Decimal.pow(AntimatterDimensions.buyTenMultiplier, getPurchases(dim))
+      };
       return AntimatterDimensions.all
         .filter(ad => ad.isProducing)
         .map(ad => Decimal.pow(AntimatterDimensions.buyTenMultiplier, getPurchases(ad.tier)))
-        .reduce((x, y) => x.times(y), DC.D1);
+        .reduce((x, y) => x.times(y), DC.D1).timesEffectOf(Achievement(122));
     },
     isActive: () => !EternityChallenge(11).isRunning,
     icon: dim => MultiplierTabIcons.PURCHASE("AD", dim),
