@@ -9,6 +9,28 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 9, 21],
+    name: "Row 12 update",
+    info: `
+    Hello row 12!
+    <br>
+    <br>
+    <b>New stuff</b>
+    <ul>
+    <li>Added new rewards to Achievements: 121, 122, 123, 124, and 127.</li>
+    </ul>
+    <br>
+    <br>
+    <b>Other stuff</b>
+    <ul>
+    <li>Fixed multiplier tab showing extremely large Infinity Point amounts due to Achievement 103
+    or Time Study 111.</li>
+    </ul>
+    <br>
+    <br>
+    `
+  },
+  {
     date: [2023, 9, 20],
     name: "Row 11 update",
     info: `
@@ -24,7 +46,7 @@ export const changelog = [
     <br>
     <b>Other stuff</b>
     <ul>
-    <li>Made the Replicanti Galaxy modal reflect Achieement 108's 9 replicanti effect.</li>
+    <li>Made the Replicanti Galaxy modal reflect Achievement 108's 9 replicanti effect.</li>
     </ul>
     <br>
     <br>

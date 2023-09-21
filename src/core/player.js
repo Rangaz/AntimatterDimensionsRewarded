@@ -279,6 +279,7 @@ window.player = {
     totalAntimatter: DC.E1,
     timeSinceLastSacrifice: 0, // For r23
     timeWithExcessAMProd: 0, // For r44
+    timeWithExcessIPowerProd: 0, // For r124
     recentInfinities: Array.range(0, 10).map(() =>
       [Number.MAX_VALUE, Number.MAX_VALUE, DC.D1, DC.D1, ""]),
     recentEternities: Array.range(0, 10).map(() =>

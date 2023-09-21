@@ -309,7 +309,7 @@ class EPMultiplierState extends GameMechanicState {
 
   purchase() {
     if (!this.isAffordable) return false;
-    Currency.eternityPoints.subtract(this.cost);
+    if (!Achievement(127).isUnlocked) Currency.eternityPoints.subtract(this.cost);
     ++this.boughtAmount;
     return true;
   }
@@ -326,7 +326,7 @@ class EPMultiplierState extends GameMechanicState {
       firstCost: this.cost,
     }, this.boughtAmount);
     if (!bulk) return false;
-    Currency.eternityPoints.subtract(bulk.purchasePrice);
+    if (!Achievement(127).isUnlocked) Currency.eternityPoints.subtract(bulk.purchasePrice);
     this.boughtAmount += bulk.quantity;
     return true;
   }

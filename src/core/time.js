@@ -114,6 +114,20 @@ export const Time = {
   /**
    * @returns {TimeSpan}
    */
+  get timeWithExcessIPowerProd() {
+    return this.fromMilliseconds(() => player.records.timeWithExcessIPowerProd);
+  },
+  /**
+   * @param {TimeSpan} timespan
+   */
+  set timeWithExcessIPowerProd(timespan) {
+    this.toMilliseconds(timespan, value => player.records.timeWithExcessIPowerProd = value);
+  },
+
+
+  /**
+   * @returns {TimeSpan}
+   */
   get realTimeDoomed() {
     return this.fromMilliseconds(() => player.records.realTimeDoomed);
   },
