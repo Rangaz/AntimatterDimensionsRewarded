@@ -99,6 +99,10 @@ export function eternity(force, auto, specialConditions = {}) {
   initializeChallengeCompletions();
   initializeResourcesAfterEternity();
 
+  if (!Achievement(136).canBeApplied || specialConditions.switchingDilation || specialConditions.enteringEC) {
+    Currency.timeShards.reset();
+  }
+
   if (!EternityMilestone.keepAutobuyers.isReached && !(Pelle.isDoomed && PelleUpgrade.keepAutobuyers.canBeApplied)) {
     // Fix infinity because it can only break after big crunch autobuyer interval is maxed
     player.break = false;
@@ -129,7 +133,10 @@ export function eternity(force, auto, specialConditions = {}) {
   player.records.thisEternity.bestEPmin = DC.D0;
   player.records.thisEternity.bestInfinitiesPerMs = DC.D0;
   player.records.thisEternity.bestIPMsWithoutMaxAll = DC.D0;
-  resetTimeDimensions();
+  // I want r136 to not reset Time Dimensions, if you're not entering Dilation or an EC
+  if (!Achievement(136).canBeApplied && !specialConditions.switchingDilation && !specialConditions.enteringEC) {
+    resetTimeDimensions();
+  }
   resetTickspeed();
   playerInfinityUpgradesOnReset();
   AchievementTimers.marathon2.reset();
@@ -196,7 +203,8 @@ export function initializeResourcesAfterEternity() {
   player.partInfinitied = 0;
   player.IPMultPurchases = 0;
   Currency.infinityPower.reset();
-  Currency.timeShards.reset();
+  // I want Time Shards to be handled by r136.
+  //Currency.timeShards.reset();
   player.records.thisEternity.time = 0;
   player.records.thisEternity.realTime = 0;
   player.tickGainedFromShards = 0;

@@ -5,6 +5,8 @@ import { GameMechanicState } from "./game-mechanics";
 export function startEternityChallenge() {
   initializeChallengeCompletions();
   initializeResourcesAfterEternity();
+  // Putting time shards here since I changed initializeResourcesAfterEternity()
+  Currency.timeShards.reset();
   resetInfinityRuns();
   InfinityDimensions.fullReset();
   Replicanti.reset();
