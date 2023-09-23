@@ -1368,8 +1368,8 @@ export const normalAchievements = [
     description: "Have all Perks bought.",
     checkRequirement: () => player.reality.perks.size === Perks.all.length,
     checkEvent: GAME_EVENT.PERK_BOUGHT,
-    get reward() { return `+${formatPercents(0.01)} Glyph rarity.`; },
-    effect: 1
+    get reward() { return `+${formatPercents(0.03)} Glyph rarity.`; },
+    effect: 3
   },
   {
     id: 147,
