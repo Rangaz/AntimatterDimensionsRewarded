@@ -1299,9 +1299,6 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Removes the downsides from Time Study 131 and 133 in the Active and Idle Time Study paths."
   },
-  
-  // ----------------------------------------------------------------------
-  // Anything at this point forward won't start developing until later
 
   {
     id: 141,
@@ -1347,6 +1344,7 @@ export const normalAchievements = [
     reward: "Galaxies no longer reset Dimension Boosts."
   },
   {
+    // Reward not implemented
     id: 144,
     name: "Is this an Interstellar reference?",
     description: "Unlock the Black Hole.",
@@ -1363,13 +1361,14 @@ export const normalAchievements = [
     effect: 0.9
   },
   {
+    // Buffed!
     id: 146,
     name: "Perks of living",
     description: "Have all Perks bought.",
     checkRequirement: () => player.reality.perks.size === Perks.all.length,
     checkEvent: GAME_EVENT.PERK_BOUGHT,
     get reward() { return `+${formatPercents(0.03)} Glyph rarity.`; },
-    effect: 3
+    effect: 0.03
   },
   {
     id: 147,
@@ -1445,6 +1444,7 @@ export const normalAchievements = [
     effect: 2.5
   },
   {
+    // Implemented (in theory)!
     id: 157,
     name: "It's super effective!",
     get description() { return `Get a Glyph with ${formatInt(4)} effects.`; },
@@ -1452,7 +1452,10 @@ export const normalAchievements = [
       glyph => getGlyphEffectsFromBitmask(glyph.effects, 0, 0)
         .filter(effect => effect.isGenerated).length
     ).max() >= 4,
-    checkEvent: GAME_EVENT.GLYPHS_CHANGED
+    checkEvent: GAME_EVENT.GLYPHS_CHANGED,
+    get reward() { return `Glyphs have a +${formatPercents(0.05)} chance to get an additional effect.`},
+    // Assumes you already have the Reality upgrade that improves chances for additional effects.
+    effect: 0.55,
   },
   {
     id: 158,
@@ -1463,6 +1466,10 @@ export const normalAchievements = [
     get reward() { return `Black Hole power increased by ${formatPercents(0.1)}.`; },
     effect: 1.1
   },
+    
+  // ----------------------------------------------------------------------
+  // Anything at this point forward won't start developing until later
+
   {
     id: 161,
     name: "that's where you're wrong kiddo",
