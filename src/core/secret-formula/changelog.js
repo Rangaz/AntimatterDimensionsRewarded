@@ -9,6 +9,33 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 9, 22],
+    name: "Pre-reality update",
+    info: `
+    All pre-reality content is complete!
+    There'll be a little break between updates since I want to do an experiment. Later on I'll reveal more details!
+    But for now, enjoy!
+    <br>
+    <br>
+    <b>Achievement stuff</b>
+    <ul>
+    <li>Added new rewards to Achievements 135 and 136.</li>
+    <li>Achievement 127 now also makes Time Dimensions no longer spend Eternity Points.</li>
+    <li>Buffed Achievement 131 from 5% to 15%.</li>
+    <li>Very slightly buffed Achievement 132: ^0.04 -> ^0.045.</li>
+    </ul>
+    <br>
+    <br>
+    <b>Other stuff</b>
+    <ul>
+    <li>Fixed multiplier tab showing extremely large Infinity Point amounts due to Achievement 103
+    or Time Study 111.</li>
+    </ul>
+    <br>
+    <br>
+    `
+  },
+  {
     date: [2023, 9, 21],
     name: "Row 12 update",
     info: `
