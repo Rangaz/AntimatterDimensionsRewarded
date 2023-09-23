@@ -81,6 +81,14 @@ export function buyMaxTimeDimension(tier, portionToSpend = 1, isMaxAll = false) 
 }
 
 export function maxAllTimeDimensions() {
+  // The behaviour is so much simpler when TDs don't spend resources, aka my r127.
+  if (Achievement(127).canBeApplied) {
+    for (let i = 8; i > 0; i--) {
+      buyMaxTimeDimension(i, 1, true); // Just buy everything
+    }
+    return; // No need to do anything else.
+  }
+
   // Try to buy single from the highest affordable new dimensions
   for (let i = 8; i > 0 && TimeDimension(i).bought === 0; i--) {
     buySingleTimeDimension(i, true);
