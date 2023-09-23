@@ -13,12 +13,13 @@ Or
 (38) Charged: 8th Antimatter Dimensions are x1e100,000 stronger, but only if you have no sacrifices
 Every charged reward should feel different from one another, and for that...
 -You could get 1 charge for every row 14-17 achievement (32 total),
+-+1 charge for every Celestial reality completed (effectively 6 total),
 -+1 charge for every V Achievement (36 total), and
--+2 charge for every Hard V achievement (36 total).
+-+2 charge for every Hard V achievement (30 total).
 That exactly adds up to 104 (13*8), the first 13 rows.
 But it would be hard to make them balanced from each other, so...
--Initially only the first 4 rows could be charged,
--Then V could unlock the rows 5-9,
+-Initially only the first 4 rows could be charged, though a new perk,
+-Then V could unlock the rows 5-9 as a milestone,
 -And then Ra-V could unlock rows 10-13.
 It's perfect.
 
@@ -1179,13 +1180,13 @@ export const normalAchievements = [
     },
   },
   {
-    // Implemented!
+    // Implemented! And modified!
     id: 127,
     name: "But I wanted another prestige layer...",
     get description() { return `Reach ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)} Eternity Points.`; },
     checkRequirement: () => Currency.eternityPoints.gte(Decimal.NUMBER_MAX_VALUE),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() {return `The ${formatX(5)} EP upgrade no longer spends EP.`}
+    get reward() {return `Time Dimensions and the ${formatX(5)} EP upgrade no longer spend EP.`}
   },
   {
     id: 128,
@@ -1198,21 +1199,20 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value)}`
   },
 
-  // ----------------------------------------------------------------------
-  // Anything at this point forward won't start developing until later
-
   {
+    // Buffed!
     id: 131,
     name: "No ethical consumption",
     get description() { return `Get ${format(DC.D2E9)} Banked Infinities.`; },
     checkRequirement: () => Currency.infinitiesBanked.gt(DC.D2E9),
     checkEvent: [GAME_EVENT.ETERNITY_RESET_AFTER, GAME_EVENT.SAVE_CONVERTED_FROM_PREVIOUS_VERSION],
     get reward() {
-      return `After Eternity you permanently keep ${formatPercents(0.05)} of your Infinities as Banked Infinities.`;
+      return `After Eternity you permanently keep ${formatPercents(0.15)} of your Infinities as Banked Infinities.`;
     },
-    effect: () => Currency.infinities.value.times(0.05).floor()
+    effect: () => Currency.infinities.value.times(0.15).floor()
   },
   {
+    // Buffed!
     id: 132,
     name: "Unique snowflakes",
     get description() {
@@ -1222,7 +1222,7 @@ export const normalAchievements = [
     checkRequirement: () => player.galaxies >= 569 && player.requirementChecks.eternity.noRG,
     checkEvent: GAME_EVENT.GALAXY_RESET_AFTER,
     reward: "Gain a multiplier to Tachyon Particle and Dilated Time gain based on Antimatter Galaxies.",
-    effect: () => 1.22 * Math.max(Math.pow(player.galaxies, 0.04), 1),
+    effect: () => 1.22 * Math.max(Math.pow(player.galaxies, 0.045), 1),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -1251,17 +1251,25 @@ export const normalAchievements = [
     effect: 2
   },
   {
+    // Implemented!
     id: 135,
     name: "Faster than a potato^286078",
     get description() { return `Get more than ${formatPostBreak("1e8296262")} ticks per second.`; },
     checkRequirement: () => Tickspeed.current.exponent <= -8296262,
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() {
+      return `Tickspeed is ${formatX(2)} faster for every Tachyon Galaxy obtained.`;
+    },
+    effect: () => DC.D1.divide(DC.D2.pow(player.dilation.totalTachyonGalaxies)),
+    formatEffect: value => `${formatX(value.recip())}`,
   },
   {
+    // Implemented!
     id: 136,
     name: "I told you already, time is relative",
     description: "Dilate time.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
+    reward: "Eternities no longer reset Time shards nor TD amounts, unless entering Eternity Challenges or Time Dilation."
   },
   {
     id: 137,
@@ -1291,6 +1299,10 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Removes the downsides from Time Study 131 and 133 in the Active and Idle Time Study paths."
   },
+  
+  // ----------------------------------------------------------------------
+  // Anything at this point forward won't start developing until later
+
   {
     id: 141,
     name: "Snap back to reality",

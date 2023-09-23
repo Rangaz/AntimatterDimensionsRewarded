@@ -170,7 +170,8 @@ export const Tickspeed = {
     return DC.E3.timesEffectsOf(
       Achievement(36),
       Achievement(45),
-      Achievement(66)
+      Achievement(66),
+      Achievement(135),
     )
       .times(getTickSpeedMultiplier().pow(this.totalUpgrades));
   },

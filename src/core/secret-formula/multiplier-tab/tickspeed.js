@@ -31,12 +31,13 @@ export const tickspeed = {
       const val = DC.D1.dividedByEffectsOf(
         Achievement(36),
         Achievement(45),
-        Achievement(66)
+        Achievement(66),
+        Achievement(135)
       );
       return `${format(val, 2, 2)}/sec`;
     },
     multValue: () => new Decimal.pow10(100 * MultiplierTabHelper.decomposeTickspeed().base),
-    isActive: () => [36, 45, 66].some(a => Achievement(a).canBeApplied),
+    isActive: () => [36, 45, 66, 135].some(a => Achievement(a).canBeApplied),
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   upgrades: {
