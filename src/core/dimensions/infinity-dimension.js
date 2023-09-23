@@ -403,7 +403,7 @@ export const InfinityDimensions = {
     // Try to unlock dimensions
     const unlockedDimensions = this.all.filter(dimension => dimension.unlock());
 
-    // Try to buy single from the highest affordable new dimensions
+    // Try to buy single from the highest affordable new dimensions.
     unlockedDimensions.slice().reverse().forEach(dimension => {
       if (dimension.purchases === 0) dimension.buySingle();
     });

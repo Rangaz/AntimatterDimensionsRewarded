@@ -26,10 +26,10 @@ export const changelog = [
     </ul>
     <br>
     <br>
-    <b>Other stuff</b>
+    <b>Post release stuff</b>
     <ul>
-    <li>Fixed multiplier tab showing extremely large Infinity Point amounts due to Achievement 103
-    or Time Study 111.</li>
+    <li>Simplified the Max All code for Time Dimensions when you have Achievement 127 (23/9).</li>
+    <li>Fixed Achievement 108's 9 replicanti effect not working if you had Achievement 126 (23/9).</li>
     </ul>
     <br>
     <br>
