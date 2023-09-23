@@ -1,5 +1,6 @@
 import { DC } from "../../constants";
 import { PlayerProgress } from "../../player-progress";
+import { isInCelestialReality } from "../../reality";
 
 /*
 In the future, I want to make Charged Achievement rewards for every pre-reality achievement
@@ -1401,20 +1402,27 @@ export const normalAchievements = [
     reward: "Unlock V, the Celestial of Achievements."
   },
   {
-    // Reward not implemented
+    // Partially implemented, still need the Glyph slot.
     id: 152,
     name: "Y'all got any more of them Glyphs?",
     get description() { return `Have ${formatInt(100)} Glyphs in your inventory.`; },
     checkRequirement: () => Glyphs.inventoryList.length >= 100,
     checkEvent: GAME_EVENT.GLYPHS_CHANGED,
-    reward: "Gain a Glyph slot, that only accepts a particular kind of Glyph."
+    get reward() { return `+${formatInt(1)} Glyph choice on Reality, and gain a Glyph slot 
+      that only accepts a particular kind of Glyph.`},
+    // Assumes you already have the START perk that makes it 4 choices.
+    effect: 5,
   },
   {
+    // Reward not implemented
     id: 153,
     name: "More like \"reallydoesn'tmatter\"",
     description: "Reality without producing antimatter.",
     checkRequirement: () => player.requirementChecks.reality.noAM,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
+    get reward() { return `Gain a multiplier to EP based on how far away you are to ${formatPostBreak("1e4000")} EP.`},
+    effect: () => DC.E4000.divide(Currency.eternityPoints.value).pow(0.05).clampMin(10),
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     id: 154,
