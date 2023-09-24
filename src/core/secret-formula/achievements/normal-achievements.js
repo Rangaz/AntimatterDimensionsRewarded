@@ -282,8 +282,8 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
     get reward() { return `8th Antimatter Dimensions are ${formatInt(5)} times stronger, 
     but only if you have no sacrifices.`},
-    effect: 5,
-    effectCondition: () => player.requirementChecks.infinity.noSacrifice,
+    effect: DC.D5,
+    effectCondition: () => Sacrifice.totalBoost.lte(1),
   },
   {
     id: 41,
