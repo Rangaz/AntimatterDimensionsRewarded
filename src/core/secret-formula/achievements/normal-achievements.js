@@ -1,6 +1,5 @@
 import { DC } from "../../constants";
 import { PlayerProgress } from "../../player-progress";
-import { isInCelestialReality } from "../../reality";
 
 /*
 In the future, I want to make Charged Achievement rewards for every pre-reality achievement
@@ -1414,14 +1413,14 @@ export const normalAchievements = [
     effect: 5,
   },
   {
-    // Reward not implemented
+    // Implemented!
     id: 153,
     name: "More like \"reallydoesn'tmatter\"",
     description: "Reality without producing antimatter.",
     checkRequirement: () => player.requirementChecks.reality.noAM,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     get reward() { return `Gain a multiplier to EP based on how far away you are to ${formatPostBreak("1e4000")} EP.`},
-    effect: () => DC.E4000.divide(Currency.eternityPoints.value).pow(0.05).clampMin(10),
+    effect: () => DC.E4000.divide(Currency.eternityPoints.value).pow(0.04).clampMin(10),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {

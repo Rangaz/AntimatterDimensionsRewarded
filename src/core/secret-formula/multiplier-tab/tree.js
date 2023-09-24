@@ -14,7 +14,7 @@ const propList = {
     "dilationUpgrade", "realityUpgrade", "glyph", "alchemy", "imaginaryUpgrade", "pelle", "iap", "nerfV", "nerfCursed"],
   IP: ["base", "infinityUpgrade", "achievement", "timeStudy", "dilationUpgrade", "glyph", "alchemy", "pelle", "iap",
     "nerfTeresa", "nerfV"],
-  EP: ["base", "eternityUpgrade", "timeStudy", "glyph", "realityUpgrade", "pelle", "iap", "nerfTeresa", "nerfV"],
+  EP: ["base", "eternityUpgrade", "achievement", "timeStudy", "glyph", "realityUpgrade", "pelle", "iap", "nerfTeresa", "nerfV"],
 };
 
 // Some of the props above would contain every entry except "total" in their respective value GameDB entry, so we
@@ -122,6 +122,7 @@ const targetedEffects = {
     ID: [48, 94, 107, 124],
     TD: [48, 105, 112, 123, 128],
     IP: [62, 77, 85, 93, 116, 125, 141],
+    EP: [153],
     DT: [132, 137],
     infinities: [33, 87, 164],
     replicanti: [106, 108, 134]

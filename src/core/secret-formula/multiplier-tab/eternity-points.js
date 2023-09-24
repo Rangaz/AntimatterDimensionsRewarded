@@ -50,6 +50,16 @@ export const EP = {
     isActive: () => PlayerProgress.eternityUnlocked() && !Pelle.isDoomed,
     icon: MultiplierTabIcons.UPGRADE("eternity"),
   },
+  achievement: {
+    name: "Achievement rewards",
+    displayOverride: () => {
+      const val = Achievement(153).effectOrDefault(1);
+      return `${formatX(val, 2, 2)}`;
+    },
+    multValue: () => Achievement(153).effectOrDefault(1),
+    isActive: () => PlayerProgress.eternityUnlocked() && Achievement(153).canBeApplied && !Pelle.isDoomed,
+    icon: MultiplierTabIcons.ACHIEVEMENT,
+  },
   timeStudy: {
     name: "Time Studies",
     multValue: () => DC.D1.timesEffectsOf(
