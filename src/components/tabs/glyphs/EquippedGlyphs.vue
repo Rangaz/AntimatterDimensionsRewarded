@@ -1,5 +1,6 @@
 <script>
 import GlyphComponent from "@/components/GlyphComponent";
+import { GameUI } from "../../../core/ui";
 
 export default {
   name: "EquippedGlyphs",
@@ -16,6 +17,7 @@ export default {
       undoAvailable: false,
       undoVisible: false,
       cosmeticGlow: false,
+      hasCompanionSlot: false,
     };
   },
   computed: {
@@ -84,11 +86,21 @@ export default {
       this.undoVisible = TeresaUnlocks.undo.canBeApplied;
       this.undoAvailable = this.undoVisible && this.undoSlotsAvailable && player.reality.glyphs.undo.length > 0;
       this.cosmeticGlow = player.reality.glyphs.cosmetics.glowNotification;
+      this.hasCompanionSlot = Achievement(152).canBeApplied;
+      // For some reason I couldn't get this.$refs to work, so this will do.
+      if (this.hasCompanionSlot && document.getElementsByClassName("c-companion-slot")[0] != undefined)
+        document.getElementsByClassName("c-companion-slot")[0].innerHTML = GLYPH_SYMBOLS.companion;
     },
     glyphPositionStyle(idx) {
-      const angle = 2 * Math.PI * idx / this.slotCount;
+      const angle = 2 * Math.PI * idx / (this.hasCompanionSlot ? this.slotCount - 1 : this.slotCount);
       const dx = -this.GLYPH_SIZE / 2 + this.arrangementRadius * Math.sin(angle);
       const dy = -this.GLYPH_SIZE / 2 + this.arrangementRadius * Math.cos(angle);
+      if (this.hasCompanionSlot && idx == 5) return {
+          position: "absolute",
+          left: `calc(50% - 2.5rem)`,
+          top: `calc(50% - 2.5rem)`,
+          "z-index": 1,
+        };
       return {
         position: "absolute",
         left: `calc(50% + ${dx}rem)`,
@@ -109,6 +121,10 @@ export default {
       const id = parseInt(event.dataTransfer.getData(GLYPH_MIME_TYPE), 10);
       if (isNaN(id)) return;
       const glyph = Glyphs.findById(id);
+      if (this.hasCompanionSlot && idx == 5 && glyph.type != "companion") {
+        GameUI.notify.error("This slot does not accept this type of Glyph", 10000);
+        return;
+      };
       if (glyph) Glyphs.equip(glyph, idx);
     },
     toggleRespec() {
@@ -157,7 +173,8 @@ export default {
 </script>
 
 <template>
-  <div class="l-equipped-glyphs">
+  <div 
+    class="l-equipped-glyphs">
     <div class="l-equipped-glyphs__slots">
       <div
         v-for="(glyph, idx) in glyphs"
@@ -182,9 +199,11 @@ export default {
         />
         <div
           v-else
+          
           :class="['l-equipped-glyphs__empty', 'c-equipped-glyphs__empty',
-                   {'c-equipped-glyphs__empty--dragover': dragoverIndex === idx}]"
-        />
+                   {'c-equipped-glyphs__empty--dragover': dragoverIndex === idx,
+                   'c-companion-slot': idx == 5}]"
+        ></div>
       </div>
     </div>
     <div class="l-equipped-glyphs__buttons">
@@ -230,7 +249,15 @@ export default {
 .c-equipped-glyph {
   -webkit-user-drag: none;
 }
-
+.c-companion-slot {
+  display: inline-flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  font-family: Typewriter;
+  font-size: 2rem;
+}
 .l-glyph-equip-button {
   width: 100%;
   height: 3.5rem;

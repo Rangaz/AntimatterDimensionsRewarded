@@ -12,7 +12,7 @@ export const GlyphSelection = {
   },
 
   get choiceCount() {
-    return Effects.max(1, Perk.firstPerk, Achievement(152)) *
+    return Effects.max(1, Perk.firstPerk, Achievement(152).effects.glyphChoices) *
       Ra.unlocks.extraGlyphChoicesAndRelicShardRarityAlwaysMax.effectOrDefault(1);
   },
 
