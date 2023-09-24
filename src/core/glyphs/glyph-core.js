@@ -68,7 +68,7 @@ export const Glyphs = {
       if (PelleRifts.vacuum.milestones[0].canBeApplied) return 1;
       return 0;
     }
-    return 3 + Effects.sum(RealityUpgrade(9), RealityUpgrade(24));
+    return 3 + Effects.sum(RealityUpgrade(9), RealityUpgrade(24), Achievement(152).effects.glyphSlots);
   },
   get protectedSlots() {
     return 10 * player.reality.glyphs.protectedRows;
@@ -286,6 +286,8 @@ export const Glyphs = {
         ImaginaryUpgrade(25).tryShowWarningModal();
         return;
       }
+      // For the special Glyph slot that only accepts the Companion Glyph
+      if (Achievement(152).canBeApplied && targetSlot == 5) return;
     }
 
     this.validate();

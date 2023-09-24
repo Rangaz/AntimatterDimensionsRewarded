@@ -1401,16 +1401,18 @@ export const normalAchievements = [
     reward: "Unlock V, the Celestial of Achievements."
   },
   {
-    // Partially implemented, still need the Glyph slot.
+    // Implemented! Really hard to do, is probably buggy.
     id: 152,
     name: "Y'all got any more of them Glyphs?",
     get description() { return `Have ${formatInt(100)} Glyphs in your inventory.`; },
     checkRequirement: () => Glyphs.inventoryList.length >= 100,
     checkEvent: GAME_EVENT.GLYPHS_CHANGED,
-    get reward() { return `+${formatInt(1)} Glyph choice on Reality, and gain a Glyph slot 
+    get reward() { return `+${formatInt(1)} Glyph to choose from on Reality, and gain a Glyph slot 
       that only accepts a particular kind of Glyph.`},
-    // Assumes you already have the START perk that makes it 4 choices.
-    effect: 5,
+    effects: {
+      glyphChoices: 5, // Assumes you already have the START perk that makes it 4 choices.
+      glyphSlots: 1 // For the very special glyph slot.
+    }
   },
   {
     // Implemented!
