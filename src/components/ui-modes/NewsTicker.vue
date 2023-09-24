@@ -160,7 +160,7 @@ export default {
       // I think this has to have different values every time in order to update the speed.
       const randVar = Math.random() / 10;
       if (this.currentNews && this.currentNews.id === "a244") {
-        line.style.transform = `translateX(${randVar})`;
+        line.style.transform = `translateX(${randVar - 0.1})`;
       } else {
         line.style.transform = `translateX(-${randVar + 100}%)`;
       }

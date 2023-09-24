@@ -10,6 +10,8 @@ export default {
     return {
       currentMultiplier: new Decimal(),
       nextMultiplier: new Decimal(),
+      achievement38Value: new Decimal(),
+      showAchievement38Warning: true,
     };
   },
   computed: {
@@ -26,11 +28,17 @@ export default {
       return `Multiplier is currently ${formatX(this.currentMultiplier, 2, 2)} and will increase to
         ${formatX(this.nextMultiplier, 2, 2)} on Dimensional Sacrifice.`;
     },
+    achievement38Text() {
+      return `However, you will lose Achievement 38's ${formatX(this.achievement38Value, 2, 2)} multiplier, leaving you with
+      effectively a ${formatX(this.nextMultiplier.divide(this.achievement38Value), 2, 2)} multiplier.`
+    }
   },
   methods: {
     update() {
       this.currentMultiplier.copyFrom(Sacrifice.totalBoost);
       this.nextMultiplier.copyFrom(Sacrifice.nextBoost.times(Sacrifice.totalBoost));
+      this.achievement38Value.copyFrom(Achievement(38).effectOrDefault(new Decimal(1)));
+      this.showAchievement38Warning = Achievement(38).canBeApplied;
     },
     handleYesClick() {
       sacrificeReset();
@@ -54,6 +62,11 @@ export default {
     <div class="c-modal-message__text">
       {{ multiplierText }}
       <br>
+    </div>
+    <br>
+    <div class="c-modal-message__text"
+    v-if=this.showAchievement38Warning>
+      {{ achievement38Text }}
     </div>
   </ModalWrapperChoice>
 </template>

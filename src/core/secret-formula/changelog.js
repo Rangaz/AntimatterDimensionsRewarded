@@ -30,6 +30,8 @@ export const changelog = [
     <ul>
     <li>Simplified the Max All code for Time Dimensions when you have Achievement 127 (23/9).</li>
     <li>Fixed Achievement 108's 9 replicanti effect not working if you had Achievement 126 (23/9).</li>
+    <li>Fixed Achievement 38's effect not applying if you Sacrificed in a previous Dimension Boost (24/9).</li>
+    <li>You can no longer Sacrifice if you'd end up net negative due to Achievement 38 (24/9).</li>
     </ul>
     <br>
     <br>
