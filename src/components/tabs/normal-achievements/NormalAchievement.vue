@@ -3,6 +3,7 @@ import wordShift from "@/core/word-shift";
 
 import EffectDisplay from "@/components/EffectDisplay";
 import HintText from "@/components/HintText";
+import { Pelle } from "../../../core/globals";
 
 export default {
   name: "NormalAchievement",
@@ -24,6 +25,8 @@ export default {
     return {
       isDisabled: false,
       isUnlocked: false,
+      canBeEnhanced: false,
+      isEnhanced: false,
       isMouseOver: false,
       isCancer: false,
       showUnlockState: false,
@@ -113,6 +116,8 @@ export default {
     update() {
       this.isDisabled = Pelle.disabledAchievements.includes(this.id) && Pelle.isDoomed;
       this.isUnlocked = this.achievement.isUnlocked && !this.isDisabled;
+      this.isEnhanced = this.achievement.isEnhanced && !Pelle.isDoomed;
+      this.canBeEnhanced = this.achievement.canEnhance && !Pelle.isDoomed;
       this.isCancer = Theme.current().name === "S4" || player.secretUnlocks.cancerAchievements;
       this.showUnlockState = player.options.showHintText.achievementUnlockStates;
       this.realityUnlocked = PlayerProgress.realityUnlocked();
@@ -225,11 +230,18 @@ export default {
     >
       <i :class="indicatorIconClass" />
     </div>
+    <!--Now the Enhanced icon-->
     <div
-      v-if="hasReward"
+      v-if="canBeEnhanced"
       :class="rewardClassObject"
     >
-      <i class="fas fa-star" />
+      <i class="fas fa-arrow-up" />
+    </div>
+    <div
+      v-if="isEnhanced"
+      :class="rewardClassObject"
+    >
+      <i class="fas fa-trophy" />
     </div>
   </div>
 </template>

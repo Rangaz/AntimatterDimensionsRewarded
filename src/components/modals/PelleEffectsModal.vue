@@ -40,7 +40,8 @@ export default {
         "All Tachyon Particle multipliers are disabled",
         "All pre-Doomed Time Theorem generation effects are disabled except the Dilation upgrade",
 
-        // Glyphs
+        // Reality
+        "Achievements cannot be enhanced",
         "Glyph equipping is disabled until reacquired",
         `Glyph levels are lowered and rarity is set to ${formatPercents(0)}`,
         "Effects from Glyph Sacrifice, Alteration, and Alchemy are all disabled",
