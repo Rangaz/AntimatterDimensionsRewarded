@@ -2,6 +2,19 @@ import { GameMechanicState } from "../game-mechanics";
 
 import { SteamRuntime } from "@/steam";
 
+// I probably want this for my enhanced achievements
+class EnhancedAchievementState extends GameMechanicState {
+  constructor(config, achievement) {
+    super(config);
+    this._achievement = achievement;
+  }
+
+  get isEffectActive() {
+    return this._achievement.isUnlocked && this._achievement.isEnhanced;
+  }
+}
+
+
 class AchievementState extends GameMechanicState {
   constructor(config) {
     super(config);
@@ -10,6 +23,9 @@ class AchievementState extends GameMechanicState {
     this._bitmask = 1 << (this.column - 1);
     this._inverseBitmask = ~this._bitmask;
     this.registerEvents(config.checkEvent, args => this.tryUnlock(args));
+    if (config.enhanced) {
+      this._enhancedEffect = new EnhancedAchievementState(config.enhanced, this);
+    }
   }
 
   get name() {
@@ -44,6 +60,33 @@ class AchievementState extends GameMechanicState {
     return this.isUnlocked && !this.isDisabled;
   }
 
+  get hasEnhancedEffect() {
+    return this.config.enhanced !== undefined;
+  }
+
+  get isEnhanced() {
+    return player.reality.enhancedAchievements.has(this.id);
+  }
+
+  get canEnhance() {
+    return this.isUnlocked &&
+      this.hasEnhancedEffect &&
+      !this.isEnhanced &&
+      player.reality.enhancementPoints !== 0 &&
+      !Pelle.isDisabled("enhancedAchievements");
+  }
+
+  enhance() {
+    player.reality.enhancedAchievements.add(this.id);
+    player.reality.enhancementPoints -= 1;
+  }
+
+  // Should only be called when respeccing
+  disEnhance() {
+    player.reality.enhancedAchievements.delete(this.id);
+  }
+
+
   tryUnlock(args) {
     if (this.isUnlocked) return;
     if (!this.config.checkRequirement(args)) return;
@@ -53,6 +96,7 @@ class AchievementState extends GameMechanicState {
   lock() {
     player.achievementBits[this.row - 1] &= this._inverseBitmask;
   }
+  
 
   unlock(auto) {
     if (this.isUnlocked) return;
@@ -94,6 +138,12 @@ class AchievementState extends GameMechanicState {
     Achievements._power.invalidate();
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENT_UNLOCKED);
   }
+}
+
+export function disEnhanceAll() {
+  for (achievement in Achievement.all.filter(ach => ach.isEnhanced)) disEnhance(achievement);
+  player.reality.enhancementPoints = player.reality.totalEnhancementPoints;
+  EventHub.dispatch(GAME_EVENT.ACHIEVEMENTS_DISENHANCED);
 }
 
 /**

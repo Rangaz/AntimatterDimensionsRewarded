@@ -8,6 +8,7 @@ import { Quotes } from "../quotes";
 import wordShift from "../../word-shift";
 
 import zalgo from "./zalgo";
+import { disEnhanceAll } from "../../globals";
 
 
 const disabledMechanicUnlocks = {
@@ -49,6 +50,7 @@ const disabledMechanicUnlocks = {
   rupg10: () => ({}),
   dtMults: () => ({}),
   chargedInfinityUpgrades: () => ({}),
+  enhancedAchievements: () => ({}),
   alteration: () => ({}),
   timeTheorems: () => ({})
 };
@@ -91,6 +93,7 @@ export const Pelle = {
     Currency.infinityPoints.reset();
     player.IPMultPurchases = 0;
     Autobuyer.bigCrunch.mode = AUTO_CRUNCH_MODE.AMOUNT;
+    disEnhanceAll();
     disChargeAll();
     clearCelestialRuns();
 
@@ -159,6 +162,7 @@ export const Pelle = {
       this.cel.remnants += this.remnantsGain;
     }
     finishProcessReality({ reset: true, armageddon: true });
+    disEnhanceAll();
     disChargeAll();
     player.celestials.enslaved.isStoringReal = false;
     player.celestials.enslaved.autoStoreReal = false;
@@ -182,8 +186,8 @@ export const Pelle = {
   },
 
   get disabledAchievements() {
-    return [164, 156, 143, 142, 141, 137, 134, 133, 132, 126, 125, 124, 122, 118, 117, 116, 115, 113, 111, 
-      107, 104, 103, 101, 97, 95, 93, 92, 91, 87, 85, 78, 77, 76, 74, 65, 62, 55, 54, 37, 33, 31];
+    return [164, 157, 156, 153, 152, 143, 142, 141, 137, 136, 134, 133, 132, 126, 125, 124, 122, 118, 117, 116, 115, 113, 111, 
+      108, 107, 106, 104, 103, 101, 97, 95, 93, 92, 91, 87, 85, 78, 77, 76, 74, 65, 62, 55, 54, 37, 33, 31];
   },
 
   get uselessInfinityUpgrades() {

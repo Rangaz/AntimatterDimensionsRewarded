@@ -2,28 +2,13 @@ import { DC } from "../../constants";
 import { PlayerProgress } from "../../player-progress";
 
 /*
-In the future, I want to make Charged Achievement rewards for every pre-reality achievement
-in the game, because, especially the earlier ones, they inevitably fall off and become useless.
-
-Something like...
-(26) Reward: Start with a free Tickspeed upgrade ->
-(26) Charged: Start with 1000 free Tickspeed upgrades.
-Or
-(38) Reward: 8th Antimatter Dimensions are 5 times stronger, but only if you have no sacrifices ->
-(38) Charged: 8th Antimatter Dimensions are x1e100,000 stronger, but only if you have no sacrifices
-Every charged reward should feel different from one another, and for that...
--You could get 1 charge for every row 14-17 achievement (32 total),
--+1 charge for every Celestial reality completed (effectively 6 total),
--+1 charge for every V Achievement (36 total), and
--+2 charge for every Hard V achievement (30 total).
-That exactly adds up to 104 (13*8), the first 13 rows.
-But it would be hard to make them balanced from each other, so...
--Initially only the first 4 rows could be charged, though a new perk,
--Then V could unlock the rows 5-9 as a milestone,
--And then Ra-V could unlock rows 10-13.
-It's perfect.
-
-If someone sees this, please don't tell anyone.
+TODO:
+-Add the perk that unlocks Achievement Enhancement,
+-Add a way to gain Enhancement Points through row 14+ achievements,
+-Modify the Achievements tab with the relevant information,
+-Include a proper respec button, <DOING>
+-Add an Enhanced effect to the first 4 rows of Achievements,
+-Make them work
 */
 
 export const normalAchievements = [
@@ -151,6 +136,10 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
     reward: "Start with a free Tickspeed Upgrade.",
     effect: 1,
+    enhanced: {
+      get reward() { return `Start with ${formatInt(100)} free Tickspeed Upgrades.`},
+      effect: 100,
+    }
   },
   {
     // Implemented!
@@ -247,7 +236,11 @@ export const normalAchievements = [
         : `Extremely small multiplier to Antimatter Dimensions based on time played.`;
     },
     effect: () => Math.max(Math.pow(Time.realTimePlayed.totalHours / 6, 0.04), 1),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "Small multiplier to Antimatter Dimensions based on time played (real time)",
+      effect: () => Time.realTimePlayed.totalSeconds,
+    }
   },
   {
     // Buffed!

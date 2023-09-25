@@ -1,4 +1,5 @@
 import { DC } from "./constants";
+import { disEnhanceAll } from "./globals";
 
 /**
  * Object that manages the selection of glyphs offered to the player
@@ -599,6 +600,7 @@ export function finishProcessReality(realityProps) {
     if (player.celestials.ra.disCharge) {
       disChargeAll();
     }
+    if (player.reality.disEnhance) disEnhanceAll();
   }
   if (player.options.automatorEvents.clearOnReality) AutomatorData.clearEventLog();
   if (Player.automatorUnlocked && AutomatorBackend.state.forceRestart) {
