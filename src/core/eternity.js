@@ -134,12 +134,13 @@ export function eternity(force, auto, specialConditions = {}) {
   player.records.thisEternity.bestInfinitiesPerMs = DC.D0;
   player.records.thisEternity.bestIPMsWithoutMaxAll = DC.D0;
   // I want r136 to not reset Time Dimensions, if you're not entering Dilation or an EC
-  if (!Achievement(136).canBeApplied && !specialConditions.switchingDilation && !specialConditions.enteringEC) {
+  if (!Achievement(136).canBeApplied || specialConditions.switchingDilation || specialConditions.enteringEC) {
     resetTimeDimensions();
   }
   resetTickspeed();
   playerInfinityUpgradesOnReset();
   AchievementTimers.marathon2.reset();
+  player.records.timeWithExcessIPowerProd = 0;
   applyEU1();
   player.records.thisInfinity.maxAM = DC.D0;
   player.records.thisEternity.maxAM = DC.D0;

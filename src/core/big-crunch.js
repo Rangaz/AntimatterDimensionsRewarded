@@ -159,6 +159,7 @@ export function secondSoftReset(enteringAntimatterChallenge) {
   } else {
     player.dimensionBoosts = 0;
     player.galaxies = 0;
+    player.records.timeWithExcessIPowerProd = 0;
   }
 
   player.records.thisInfinity.maxAM = DC.D0;
