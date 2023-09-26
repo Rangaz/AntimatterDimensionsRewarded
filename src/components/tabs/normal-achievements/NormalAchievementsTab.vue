@@ -3,6 +3,7 @@ import NormalAchievementRow from "./NormalAchievementRow";
 import PrimaryToggleButton from "@/components/PrimaryToggleButton";
 import PrimaryButton from "@/components/PrimaryButton";
 import SwapAchievementImagesButton from "./SwapAchievementImagesButton";
+import { Pelle } from "../../../core/globals";
 
 export default {
   name: "NormalAchievementsTab",
@@ -24,7 +25,8 @@ export default {
       missingAchievements: 0,
       showAutoAchieve: false,
       isAutoAchieveActive: false,
-      isEnhancementUnlocked: true, // Set this to false later
+      isEnhancementUnlocked: false,
+      respecEnhancements: false,
       hideCompletedRows: false,
       achMultBreak: false,
       achMultToIDS: false,
@@ -58,6 +60,12 @@ export default {
       if (this.achMultToTT) boostList.push(`Time Theorem production: ${achievementPower}`);
       return `${boostList.join("<br>")}`;
     },
+    respecClassObject() {
+      return {
+        "o-primary-btn--subtab-option": true,
+        "o-primary-btn--respec-active": this.respecEnhancements // Change the color later
+      };
+    },
   },
   watch: {
     isAutoAchieveActive(newValue) {
@@ -67,6 +75,9 @@ export default {
       player.options.hideCompletedAchievementRows = newValue;
       this.startRowRendering();
     },
+    respecEnhancements(newValue) {
+      player.reality.disEnhance = newValue;
+    }
   },
   created() {
     this.startRowRendering();
@@ -93,8 +104,10 @@ export default {
         Achievements.timeToNextAutoAchieve) / gameSpeedupFactor;
       this.missingAchievements = Achievements.preReality.countWhere(a => !a.isUnlocked);
       this.enhancementPoints = player.reality.enhancementPoints;
-      this.enhancedAchievements = player.reality.enhancedAchievements.length;
+      this.enhancedAchievements = player.reality.enhancedAchievements.size;
       this.totalEnhancementPoints = player.reality.totalEnhancementPoints;
+      this.respecEnhancements = player.reality.disEnhance;
+      this.isEnhancementUnlocked = Perk.achievementEnhancement.isBought && !this.isDoomed;
       this.showAutoAchieve = PlayerProgress.realityUnlocked() && !Perk.achievementGroup5.isBought;
       this.isAutoAchieveActive = player.reality.autoAchieve;
       this.hideCompletedRows = player.options.hideCompletedAchievementRows;
@@ -160,7 +173,7 @@ export default {
         class="o-primary-btn--subtab-option"
         label="Auto Achievements:"
       />
-      <!--
+      
       <PrimaryButton
         v-if="isEnhancementUnlocked"
         @click="addEnhancementPoint"
@@ -173,7 +186,13 @@ export default {
         class="o-primary-btn"
         label="Set enhancement points to 0 (DEBUG)"
       >Set enhancement points to 0 (DEBUG)</PrimaryButton>
-      -->
+      
+      <PrimaryButton
+        v-if="isEnhancementUnlocked"
+        :class="respecClassObject"
+        @click="respecEnhancements = !respecEnhancements"
+      >Respec Enhanced Achievements on next Reality</PrimaryButton>
+      
     </div>
     <div class="c-achievements-tab__header c-achievements-tab__header--multipliers">
       <span v-if="isDoomed">
@@ -188,7 +207,13 @@ export default {
       v-if="isEnhancementUnlocked"
       class="c-achievements-tab__header"
     >
-      You have enhanced {{ formatInt(achievementsEnhanced) }}/{{ formatInt(totalEnhancementPoints) }} Achievements.
+      You have enhanced {{ formatInt(enhancedAchievements) }}/{{ formatInt(totalEnhancementPoints) }} Achievements.
+    </div>
+    <div 
+      v-if="isDoomed"
+      class="c-achievements-tab__header"
+    >
+      You cannot enhance Achievements anymore.
     </div>
     <div
       v-if="showAutoAchieve"

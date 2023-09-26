@@ -73,10 +73,12 @@ class AchievementState extends GameMechanicState {
       this.hasEnhancedEffect &&
       !this.isEnhanced &&
       player.reality.enhancementPoints !== 0 &&
+      Perk.achievementEnhancement.isBought &&
       !Pelle.isDisabled("enhancedAchievements");
   }
 
   enhance() {
+    if (!this.canEnhance) return;
     player.reality.enhancedAchievements.add(this.id);
     player.reality.enhancementPoints -= 1;
   }
@@ -140,12 +142,6 @@ class AchievementState extends GameMechanicState {
   }
 }
 
-export function disEnhanceAll() {
-  for (achievement in Achievement.all.filter(ach => ach.isEnhanced)) disEnhance(achievement);
-  player.reality.enhancementPoints = player.reality.totalEnhancementPoints;
-  EventHub.dispatch(GAME_EVENT.ACHIEVEMENTS_DISENHANCED);
-}
-
 /**
  * @param {number} id
  * @returns {AchievementState}
@@ -198,6 +194,16 @@ export const Achievements = {
 
   get period() {
     return GameCache.achievementPeriod.value;
+  },
+
+  disEnhanceAll() {
+    const enhancedAchievements = Achievements.preReality
+    for (const achievement of enhancedAchievements) {
+      achievement.disEnhance();
+    }
+    player.reality.enhancementPoints = player.reality.totalEnhancementPoints;
+    player.reality.disEnhance = false;
+    EventHub.dispatch(GAME_EVENT.ACHIEVEMENTS_DISENHANCED);
   },
 
   autoAchieveUpdate(diff) {
