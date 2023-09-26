@@ -3,12 +3,18 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Add the perk that unlocks Achievement Enhancement,
+-Add the perk that unlocks Achievement Enhancement, <DONE>
 -Add a way to gain Enhancement Points through row 14+ achievements,
 -Modify the Achievements tab with the relevant information,
--Include a proper respec button, <DOING>
+-Allow to Enhance Achievements in Achievement tab,
+-Include a proper respec button, <DONE>
 -Add an Enhanced effect to the first 4 rows of Achievements,
--Make them work
+-Make them work,
+-Achievement 144 reward
+
+Lower Priority:
+-Make the color for the respec button more appropiate,
+-Look into optimized AM autobuyers after r52
 */
 
 export const normalAchievements = [
@@ -174,7 +180,11 @@ export const normalAchievements = [
     reward: "1st Antimatter Dimensions are stronger based on achievement rows completed.",
     effect: () => Math.pow(0.9 + Achievements.allRows.countWhere(row => row.every(ach => ach.isUnlocked)) * 0.2,
     Achievements.allRows.countWhere(row => row.every(ach => ach.isUnlocked))),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "1st Antimatter Dimensions are way stronger based on achievements completed.",
+      effect: () => Decimal.pow(Achievements.effectiveCount * 10, Achievements.effectiveCount * 10),
+    }
   },
   {
     id: 32,
