@@ -219,6 +219,23 @@ export default {
             />
           </span>
         </div>
+        <!--My Enhanced effect-->
+        <div
+          v-if="canBeEnhanced || isEnhanced"
+          class="o-achievement__tooltip__enhanced"
+        >
+          <span
+            v-if="!isObscured"
+            :class="{ 'o-pelle-disabled': isDisabled }"
+          >
+            Enhanced: {{ config.enhanced.reward }}
+            <EffectDisplay
+              v-if="config.enhanced.formatEffect"
+              br
+              :config="config.enhanced"
+            />
+          </span>
+        </div>
         <div
           v-if="achievedTime"
           class="o-achievement-time"
@@ -297,7 +314,7 @@ export default {
 
 .o-achievement--enhanced {
   box-shadow: 0px 0px 20px #acac39;
-  background-color: #9acc75;
+  background-color: #aacc75;
 }
 
 .t-dark-metro .o-achievement--waiting {
@@ -354,5 +371,10 @@ export default {
 
 .o-achievement__enhancement--enhanced {
   box-shadow: 0px 0px 5px #acac39;
+}
+
+.o-achievement__tooltip__enhanced {
+  font-style: italic;
+  font-size: 1.3rem;
 }
 </style>

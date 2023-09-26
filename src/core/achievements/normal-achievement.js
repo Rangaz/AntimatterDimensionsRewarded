@@ -57,16 +57,23 @@ class AchievementState extends GameMechanicState {
   }
 
   get isEffectActive() {
-    return this.isUnlocked && !this.isDisabled;
+    // This means that enhanced achievements lose their regular effect
+    return this.isUnlocked && !this.isDisabled && !this.isEnhanced;
   }
 
   get hasEnhancedEffect() {
     return this.config.enhanced !== undefined;
   }
 
+  get enhancedEffect() {
+    return this._enhancedEffect;
+  }
+
   get isEnhanced() {
     return player.reality.enhancedAchievements.has(this.id);
   }
+
+  // Experimental
 
   get canEnhance() {
     return this.isUnlocked &&
