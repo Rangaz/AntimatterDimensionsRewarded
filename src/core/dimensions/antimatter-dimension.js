@@ -361,8 +361,10 @@ export function buyMaxDimension(tier, bulk = Infinity) {
 class AntimatterDimensionState extends DimensionState {
   constructor(tier) {
     super(() => player.dimensions.antimatter, tier);
-    // The base costs are already 10 times cheaper than vanilla
-    const BASE_COSTS = [null, 1, 10, 1e3, 1e5, 1e8, 1e12, 1e17, 1e23];
+    // The vanilla costs are in the FIRST_PURCHASE_COST
+    const FIRST_PURCHASE_COST = [null, 10, 100, 1e4, 1e6, 1e9, 1e13, 1e18, 1e24];
+    this._firstPurchaseCost = FIRST_PURCHASE_COST[tier];
+    const BASE_COSTS = [null, 1, 10, 1e3, 1e5, 1e8, 1e11, 1e16, 1e22];
     this._baseCost = BASE_COSTS[tier];
     const BASE_COST_MULTIPLIERS = [null, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e12, 1e15];
     this._baseCostMultiplier = BASE_COST_MULTIPLIERS[tier];
@@ -377,8 +379,8 @@ class AntimatterDimensionState extends DimensionState {
    */
   get costScale() {
       return new ExponentialCostScaling({
-      // I made the cost multiply by 10 if you don't have the achievement
-      baseCost: NormalChallenge(6).isRunning ? this._c6BaseCost : this._baseCost * (Achievement(10 + this.tier).isUnlocked ? 1 : 10),
+      // I made the cost be different if you don't have the achievement
+      baseCost: NormalChallenge(6).isRunning ? this._c6BaseCost : (Achievement(10 + this.tier).isUnlocked ? this._baseCost : this._firstPurchaseCost),
       baseIncrease: NormalChallenge(6).isRunning ? this._c6BaseCostMultiplier : this._baseCostMultiplier,
       costScale: Player.dimensionMultDecrease,
       scalingCostThreshold: Number.MAX_VALUE
