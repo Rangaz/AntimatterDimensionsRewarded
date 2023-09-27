@@ -23,8 +23,10 @@ export function antimatterDimensionCommonMultiplier() {
     InfinityUpgrade.totalTimeMult,
     InfinityUpgrade.thisInfinityTimeMult,
     Achievement(35),
+    Achievement(35).enhancedEffect,
     Achievement(47),
     Achievement(48),
+    Achievement(48).enhancedEffect,
     Achievement(56),
     Achievement(65),
     Achievement(67),
@@ -118,9 +120,13 @@ function applyNDMultipliers(mult, tier) {
         InfinityUpgrade.unspentIPMult,
         InfinityUpgrade.unspentIPMult.chargedEffect,
         Achievement(28),
+        Achievement(28).enhancedEffect,
         Achievement(31),
+        Achievement(31).enhancedEffect,
         Achievement(42),
+        Achievement(42).enhanedEffect,
         Achievement(44),
+        Achievement(44).enhancedEffect,
         Achievement(68),
         Achievement(71),
         Achievement(122),
@@ -129,21 +135,31 @@ function applyNDMultipliers(mult, tier) {
   }
   if (tier === 8) {
     multiplier = multiplier.times(Sacrifice.totalBoost);
+    multiplier = multiplier.timesEffectsOf(
+      Achievement(23),
+      Achievement(23).enhancedEffect,
+      Achievement(38),
+      Achievement(38).enhancedEffect,
+      Achievement(46),
+      Achievement(46).enhancedEffect,
+      Achievement(101),
+      TimeStudy(214),
+    );
   }
 
   multiplier = multiplier.timesEffectsOf(
-    tier === 8 ? Achievement(23) : null,
-    tier === 2 ? Achievement(24) : null,  
+    tier === 2 ? Achievement(24) : null, 
+    tier === 2 ? Achievement(24).enhancedEffect : null, 
     tier < 8 ? Achievement(34) : null,
-    tier === 8 ? Achievement(38) : null,
-    tier === 8 ? Achievement(46) : null,
+    tier < 8 ? Achievement(34).enhancedEffect : null,
     tier <= 4 ? Achievement(64) : null,
-    tier === 8 ? Achievement(101) : null,
     tier < 8 ? TimeStudy(71) : null,
-    tier === 8 ? TimeStudy(214) : null,
     tier > 1 && tier < 8 ? InfinityChallenge(8).reward : null
   );
-  if (Achievement(43).isUnlocked) {
+
+  if (Achievement(43).isEnhanced) {
+    multiplier = multiplier.times(DC.E250.pow(tier))
+  } else if (Achievement(43).canBeApplied) {
     multiplier = multiplier.times(1 + tier / 100);
   }
 
@@ -172,6 +188,7 @@ function applyNDPowers(mult, tier) {
       InfinityUpgrade.totalTimeMult.chargedEffect,
       InfinityUpgrade.thisInfinityTimeMult.chargedEffect,
       AlchemyResource.power,
+      Achievement(47).enhancedEffect,
       Achievement(183),
       PelleRifts.paradox
     );

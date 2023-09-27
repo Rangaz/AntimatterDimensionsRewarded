@@ -280,6 +280,7 @@ export function gainedInfinities() {
     RealityUpgrade(5),
     RealityUpgrade(7),
     Achievement(33),
+    Achievement(33).enhancedEffect,
     Achievement(164),
     Ra.unlocks.continuousTTBoost.effects.infinity
   );
@@ -526,10 +527,9 @@ export function gameLoop(passDiff, options = {}) {
     player.records.realTimeDoomed += realDiff;
     player.records.realTimePlayed += realDiff;
     player.records.totalTimePlayed += diff;
-    // If the sacrifice autobuyer is active and we have achievement 118,
-    // I don't want the timer to go above 0
-    if (!player.auto.sacrifice.isActive || !Achievement(118).isEffectActive)
-      {player.records.timeSinceLastSacrifice += diff}; // For r23
+    // There's now a 3 second grace window in r23's effect.
+    // r23 now uses Real Time because fast enough game speeds would turn the bonus to 1 instantly.
+    player.records.timeSinceLastSacrifice += realDiff; // For r23
     player.records.timeWithExcessAMProd += diff; // For r44
     player.records.timeWithExcessIPowerProd += diff; // For r124
     player.records.thisInfinity.realTime += realDiff;
