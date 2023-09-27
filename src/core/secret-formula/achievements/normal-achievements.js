@@ -9,7 +9,7 @@ TODO:
 -Allow to Enhance Achievements in Achievement tab,
 -Include a proper respec button, <DONE>
 -Add an Enhanced effect to the first 4 rows of Achievements, <DONE>
--Make them work, <REMAIN: 1X, 22, 25, 32 & 41>
+-Make them work, <REMAIN: 22, 32 & 41>
 -Multiplier tab for Enhanced Achievements (HARD),
 -Achievement 144 reward <DONE>
 
@@ -20,7 +20,7 @@ Lower Priority:
 
 export const normalAchievements = [
   {
-    // Row 1 rewards to be enhanced
+    // Row 1 rewards enhanced!
     id: 11,
     name: "You gotta start somewhere",
     description: "Buy a 1st Antimatter Dimension.",
@@ -177,7 +177,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 25,
     name: "Boosting to the max",
     get description() { return `Buy ${formatInt(10)} Dimension Boosts.`; },
