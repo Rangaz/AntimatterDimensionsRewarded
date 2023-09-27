@@ -204,7 +204,7 @@ export default {
           {{ processedDescription }}
         </div>
         <div
-          v-if="config.reward"
+          v-if="config.reward && !isEnhanced"
           class="o-achievement__tooltip__reward"
         >
           <span
