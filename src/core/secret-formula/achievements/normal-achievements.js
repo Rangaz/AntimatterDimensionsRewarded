@@ -9,8 +9,8 @@ TODO:
 -Allow to Enhance Achievements in Achievement tab,
 -Include a proper respec button, <DONE>
 -Add an Enhanced effect to the first 4 rows of Achievements, <DONE>
--Make them work, <DOING>
--Multiplier tab for Enhanced Achievements (!),
+-Make them work, <REMAIN: 1X, 22, 25, 32 & 41>
+-Multiplier tab for Enhanced Achievements (HARD),
 -Achievement 144 reward <DONE>
 
 Lower Priority:
