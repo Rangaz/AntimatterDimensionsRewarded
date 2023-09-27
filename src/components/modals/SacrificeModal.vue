@@ -1,5 +1,6 @@
 <script>
 import ModalWrapperChoice from "@/components/modals/ModalWrapperChoice";
+import { Achievement } from "../../core/globals";
 
 export default {
   name: "SacrificeModal",
@@ -37,8 +38,9 @@ export default {
     update() {
       this.currentMultiplier.copyFrom(Sacrifice.totalBoost);
       this.nextMultiplier.copyFrom(Sacrifice.nextBoost.times(Sacrifice.totalBoost));
-      this.achievement38Value.copyFrom(Achievement(38).effectOrDefault(new Decimal(1)));
-      this.showAchievement38Warning = Achievement(38).canBeApplied;
+      Achievement(38).isEnhanced ? this.achievement38Value.copyFrom(Achievement(38).enhancedEffect.effectOrDefault(new Decimal(1)))
+        : this.achievement38Value.copyFrom(Achievement(38).effectOrDefault(new Decimal(1)));
+      this.showAchievement38Warning = Achievement(38).canBeApplied || Achievement(38).enhancedEffect.canBeApplied;
     },
     handleYesClick() {
       sacrificeReset();
