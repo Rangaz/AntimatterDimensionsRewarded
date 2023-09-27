@@ -383,8 +383,13 @@ class AntimatterDimensionState extends DimensionState {
     this._firstPurchaseCost = FIRST_PURCHASE_COST[tier];
     const BASE_COSTS = [null, 1, 10, 1e3, 1e5, 1e8, 1e11, 1e16, 1e22];
     this._baseCost = BASE_COSTS[tier];
+    // These are the base costs with the enhanced achievements
+    const ENHANCED_BASE_COSTS = [null, 1, 1, 1, 1, 1, 1, 1, 1];
+    this._enhancedBaseCosts = ENHANCED_BASE_COSTS[tier];
     const BASE_COST_MULTIPLIERS = [null, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e12, 1e15];
     this._baseCostMultiplier = BASE_COST_MULTIPLIERS[tier];
+    const ENHANCED_COST_MULTIPLIERS = [null, 2, 2.4, 3, 3.6, 5.5, 8, 12, 32];
+    this._enhancedCostMultipliers = ENHANCED_COST_MULTIPLIERS[tier];
     const C6_BASE_COSTS = [null, 1, 10, 10, 50, 250, 2e3, 2e4, 4e5];
     this._c6BaseCost = C6_BASE_COSTS[tier];
     const C6_BASE_COST_MULTIPLIERS = [null, 1e3, 5e3, 1e4, 1.2e4, 1.8e4, 2.6e4, 3.2e4, 4.2e4];
@@ -395,13 +400,22 @@ class AntimatterDimensionState extends DimensionState {
    * @returns {ExponentialCostScaling}
    */
   get costScale() {
+    const row1Achievement = Achievement(10 + this.tier);
+    // Having the enhanced achievement makes its effect also conveniently work for C6.
+    if (row1Achievement.isEnhanced) {
       return new ExponentialCostScaling({
+      baseCost: this._enhancedBaseCosts,
+      baseIncrease: this._enhancedCostMultipliers,
+      costScale: Player.dimensionMultDecrease,
+      scalingCostThreshold: Number.MAX_VALUE
+    })};
+    return new ExponentialCostScaling({
       // I made the cost be different if you don't have the achievement
-      baseCost: NormalChallenge(6).isRunning ? this._c6BaseCost : (Achievement(10 + this.tier).isUnlocked ? this._baseCost : this._firstPurchaseCost),
+      baseCost: NormalChallenge(6).isRunning ? this._c6BaseCost : (row1Achievement.isUnlocked ? this._baseCost : this._firstPurchaseCost),
       baseIncrease: NormalChallenge(6).isRunning ? this._c6BaseCostMultiplier : this._baseCostMultiplier,
       costScale: Player.dimensionMultDecrease,
       scalingCostThreshold: Number.MAX_VALUE
-    });
+    })
   }
 
   /**
