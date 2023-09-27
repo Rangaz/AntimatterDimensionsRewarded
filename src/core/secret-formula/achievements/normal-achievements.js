@@ -9,7 +9,7 @@ TODO:
 -Allow to Enhance Achievements in Achievement tab,
 -Include a proper respec button, <DONE>
 -Add an Enhanced effect to the first 4 rows of Achievements, <DONE>
--Make them work, <REMAIN: 22, 32 & 41>
+-Make them work, <REMAIN: 32 & 41>
 -Multiplier tab for Enhanced Achievements (HARD),
 -Achievement 144 reward <DONE>
 
@@ -132,7 +132,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented! Biggest challenge so far, and I'm very happy with it!
+    // Enhanced! Biggest challenge so far, and I'm very happy with it!
     id: 22,
     name: "FAKE NEWS!",
     get description() { return `Encounter ${formatInt(50)} different news messages.`; },
