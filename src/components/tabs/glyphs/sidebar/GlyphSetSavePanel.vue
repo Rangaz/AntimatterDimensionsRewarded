@@ -115,7 +115,7 @@ export default {
       for (const glyph of selectedFromInventory) {
         const idx = Glyphs.active.indexOf(null);
         if (idx !== -1) {
-          console.log(idx);
+          //console.log(idx);
           // Special behaviour for my Companion Glyph slot
           if (glyph.type == "companion") {
             Glyphs.equip(glyph, 5);
