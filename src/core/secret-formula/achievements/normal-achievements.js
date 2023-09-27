@@ -8,10 +8,10 @@ TODO:
 -Modify the Achievements tab with the relevant information,
 -Allow to Enhance Achievements in Achievement tab,
 -Include a proper respec button, <DONE>
--Add an Enhanced effect to the first 4 rows of Achievements,
--Make them work, <PARTIALLY DONE>
--Multiplier tab,
--Achievement 144 reward
+-Add an Enhanced effect to the first 4 rows of Achievements, <DONE>
+-Make them work, <DOING>
+-Multiplier tab for Enhanced Achievements (!),
+-Achievement 144 reward <DONE>
 
 Lower Priority:
 -Make the color for the respec button more appropiate,
@@ -1291,7 +1291,7 @@ export const normalAchievements = [
       Antimatter Dimensions.`;
     },
     effect: () => Laitela.continuumActive ? DC.D1_5.pow(AntimatterDimension(1).continuumAmount / 10) : 
-      DC.D1_5.pow(Math.floor(AntimatterDimension(1).bought / 10)),
+      DC.D1_5.pow(Math.floor(AntimatterDimension(1).bought / 10)).pow(getAdjustedGlyphEffect("effarigforgotten")),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -1522,13 +1522,13 @@ export const normalAchievements = [
     reward: "Galaxies no longer reset Dimension Boosts."
   },
   {
-    // Reward not implemented
+    // Implemented!
     id: 144,
     name: "Is this an Interstellar reference?",
     description: "Unlock the Black Hole.",
     checkRequirement: () => BlackHole(1).isUnlocked,
     checkEvent: GAME_EVENT.BLACK_HOLE_UNLOCKED,
-    reward: "Time Dilation upgrades no longer spend Dilated Time.",
+    reward: "Time Dilation rebuyables no longer spend Dilated Time.",
   },
   {
     id: 145,
