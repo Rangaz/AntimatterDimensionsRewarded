@@ -10,6 +10,7 @@ TODO:
 -Include a proper respec button, <DONE>
 -Add an Enhanced effect to the first 4 rows of Achievements,
 -Make them work, <PARTIALLY DONE>
+-Multiplier tab,
 -Achievement 144 reward
 
 Lower Priority:
@@ -558,7 +559,7 @@ export const normalAchievements = [
         (Effarig.currentStage == EFFARIG_STAGES.COMPLETED ? 0.001 : 0) + 
         (Enslaved.isCompleted ? 0.001 : 0) +
         (V.spaceTheorems >= 1 ? 0.001 : 0) +
-        (Ra.totalPetLevel >= 2 ? 0.001 : 0) +
+        (player.celestials.ra.pets.teresa.memories > 1 ? 0.001 : 0) +
         (Laitela.difficultyTier >= 1 ? 0.001 : 0),
         formatEffect: value => Teresa.isUnlocked ? `${formatPow(value, 3, 3)}` : "Locked.",
     }
@@ -1527,6 +1528,7 @@ export const normalAchievements = [
     description: "Unlock the Black Hole.",
     checkRequirement: () => BlackHole(1).isUnlocked,
     checkEvent: GAME_EVENT.BLACK_HOLE_UNLOCKED,
+    reward: "Time Dilation upgrades no longer spend Dilated Time.",
   },
   {
     id: 145,
