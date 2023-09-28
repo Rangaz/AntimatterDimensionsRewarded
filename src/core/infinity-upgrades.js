@@ -184,7 +184,7 @@ class InfinityIPMultUpgrade extends GameMechanicState {
       Autobuyer.bigCrunch.bumpAmount(DC.D2.pow(amount));
     }
     // r82 makes this upgrade no longer spend IP
-    if (!Achievement(82).isEffectActive) {
+    if (!Achievement(82).isUnlocked) {
       Currency.infinityPoints.subtract(Decimal.sumGeometricSeries(amount, this.cost, this.costIncrease, 0));
     }
     player.IPMultPurchases += amount;
