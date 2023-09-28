@@ -196,7 +196,13 @@ class InfinityIPMultUpgrade extends GameMechanicState {
     if (!this.hasIncreasedCost) {
       // Only allow IP below the softcap to be used
       const availableIP = Currency.infinityPoints.value.clampMax(this.config.costIncreaseThreshold);
-      const purchases = Decimal.affordGeometricSeries(availableIP, this.cost, this.costIncrease, 0).toNumber();
+      var purchases = 0;
+      if (!Achievement(82).isUnlocked) {
+        purchases = Decimal.affordGeometricSeries(availableIP, this.cost, this.costIncrease, 0).toNumber();
+      } else { // There might be issues where the Buy Max buys 1 less than what you can actually purchase due
+        // to my Achievement 82 (no longer spends resources). I'll try to fix this issue.
+        purchases = Math.floor(Decimal.log(availableIP.divide(this.cost), this.costIncrease) + 1);
+      }
       if (purchases <= 0) return;
       this.purchase(purchases);
     }
