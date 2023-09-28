@@ -21,6 +21,7 @@ export default {
       ipMultHardCap: 0,
       eternityUnlocked: false,
       bottomRowUnlocked: false,
+      thirdBottomUpgradeUnlocked: false,
       styleOfColumnBg: undefined
     };
   },
@@ -87,6 +88,7 @@ export default {
       this.ipMultHardCap = GameDatabase.infinity.upgrades.ipMult.costCap;
       this.eternityUnlocked = PlayerProgress.current.isEternityUnlocked;
       this.bottomRowUnlocked = Achievement(41).isUnlocked;
+      this.thirdBottomUpgradeUnlocked = Achievement(41).isEnhanced;
     },
     btnClassObject(column) {
       const classObject = {
@@ -169,6 +171,13 @@ export default {
         :upgrade="offlineIpUpgrade"
         :class="btnClassObject(1)"
       />
+      <!--
+      <InfinityUpgradeButton
+        :class="btnClassObject(1)"
+      >
+      Lol
+      </InfinityUpgradeButton>
+      -->
     </div>
     <div v-if="eternityUnlocked && bottomRowUnlocked">
       The Infinity Point multiplier becomes more expensive

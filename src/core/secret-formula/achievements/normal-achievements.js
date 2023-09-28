@@ -5,7 +5,7 @@ import { PlayerProgress } from "../../player-progress";
 TODO:
 -Add the perk that unlocks Achievement Enhancement, <DONE>
 -Add a way to gain Enhancement Points through row 14+ achievements,
--Modify the Achievements tab with the relevant information,
+-Modify the Achievements tab with the relevant information, including Shift functionality,
 -Allow to Enhance Achievements in Achievement tab,
 -Include a proper respec button, <DONE>
 -Add an Enhanced effect to the first 4 rows of Achievements, <DONE>
