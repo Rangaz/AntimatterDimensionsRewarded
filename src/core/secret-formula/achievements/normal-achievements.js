@@ -12,6 +12,7 @@ TODO:
 -Allow to Enhance Achievements in Achievement tab
 -Multiplier tab for Enhanced Achievements
 -An h2p section for Enhanced Achievements
+-Changelog entry
 
 Lower Priority:
 -Make the color for the respec button more appropiate,
