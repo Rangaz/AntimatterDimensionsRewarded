@@ -2,38 +2,34 @@ import { DC } from "../../constants";
 import { PlayerProgress } from "../../player-progress";
 
 /*
-In the future, I want to make Charged Achievement rewards for every pre-reality achievement
-in the game, because, especially the earlier ones, they inevitably fall off and become useless.
+TODO:
+-Add the perk that unlocks Achievement Enhancement, <DONE>
+-Add a way to gain Enhancement Points through row 14+ achievements,
+-Modify the Achievements tab with the relevant information, including Shift functionality,
+-Allow to Enhance Achievements in Achievement tab,
+-Include a proper respec button, <DONE>
+-Add an Enhanced effect to the first 4 rows of Achievements, <DONE>
+-Make them work, <REMAIN: 32 & 41>
+-Multiplier tab for Enhanced Achievements (HARD),
+-Achievement 144 reward <DONE>
 
-Something like...
-(26) Reward: Start with a free Tickspeed upgrade ->
-(26) Charged: Start with 1000 free Tickspeed upgrades.
-Or
-(38) Reward: 8th Antimatter Dimensions are 5 times stronger, but only if you have no sacrifices ->
-(38) Charged: 8th Antimatter Dimensions are x1e100,000 stronger, but only if you have no sacrifices
-Every charged reward should feel different from one another, and for that...
--You could get 1 charge for every row 14-17 achievement (32 total),
--+1 charge for every Celestial reality completed (effectively 6 total),
--+1 charge for every V Achievement (36 total), and
--+2 charge for every Hard V achievement (30 total).
-That exactly adds up to 104 (13*8), the first 13 rows.
-But it would be hard to make them balanced from each other, so...
--Initially only the first 4 rows could be charged, though a new perk,
--Then V could unlock the rows 5-9 as a milestone,
--And then Ra-V could unlock rows 10-13.
-It's perfect.
-
-If someone sees this, please don't tell anyone.
+Lower Priority:
+-Make the color for the respec button more appropiate,
+-Look into optimized AM autobuyers after r52
 */
 
 export const normalAchievements = [
   {
-    // Row 1 rewards implemented!
+    // Row 1 rewards enhanced!
     id: 11,
     name: "You gotta start somewhere",
     description: "Buy a 1st Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `1st Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
+    enhanced: {
+      get reward() { return `1st Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
+        their initial cost scaling is ${formatX(2)}.`}
+    }
   },
   {
     id: 12,
@@ -41,6 +37,10 @@ export const normalAchievements = [
     description: "Buy a 2nd Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `2nd Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
+    enhanced: {
+      get reward() { return `2nd Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
+        their initial cost scaling is ${formatX(2.4, 1, 1)}.`}
+    }
   },
   {
     id: 13,
@@ -48,6 +48,10 @@ export const normalAchievements = [
     description: "Buy a 3rd Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `3rd Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
+    enhanced: {
+      get reward() { return `3rd Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
+        their initial cost scaling is ${formatX(3)}.`}
+    }
   },
   {
     id: 14,
@@ -55,6 +59,10 @@ export const normalAchievements = [
     description: "Buy a 4th Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `4th Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
+    enhanced: {
+      get reward() { return `4th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
+        their initial cost scaling is ${formatX(3.6, 1, 1)}.`}
+    }
   },
   {
     id: 15,
@@ -62,6 +70,10 @@ export const normalAchievements = [
     description: "Buy a 5th Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `5th Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
+    enhanced: {
+      get reward() { return `5th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
+        their initial cost scaling is ${formatX(5.5, 1, 1)}.`}
+    }
   },
   {
     id: 16,
@@ -72,14 +84,22 @@ export const normalAchievements = [
         : "Buy a 6th Antimatter Dimension.";
     },
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-    get reward() { return `6th Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
+    get reward() { return `6th Antimatter Dimensions are ${formatInt(100)} times cheaper.`; },
+    enhanced: {
+      get reward() { return `6th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
+        their initial cost scaling is ${formatX(8)}.`}
+    }
   },
   {
     id: 17,
     name: "Not a luck related achievement",
     description: "Buy a 7th Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-    get reward() { return `7th Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
+    get reward() { return `7th Antimatter Dimensions are ${formatInt(100)} times cheaper.`; },
+    enhanced: {
+      get reward() { return `7th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
+        their initial cost scaling is ${formatX(12)}.`}
+    }
   },
   {
     id: 18,
@@ -90,39 +110,58 @@ export const normalAchievements = [
         : "Buy an 8th Antimatter Dimension.";
     },
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-    get reward() { return `8th Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
+    get reward() { return `8th Antimatter Dimensions are ${formatInt(100)} times cheaper.`; },
+    enhanced: {
+      get reward() { return `8th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
+        their initial cost scaling is ${formatX(32)}.`}
+    }
   },
   {
+    // Enhanced!
     id: 21,
     name: "To infinity!",
     description: "Go Infinite.",
     checkRequirement: () => true,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `Start with ${formatInt(100)} antimatter.`; },
-    effect: 100
+    effect: 100,
+    enhanced: {
+      get reward() { return `Multiply starting Antimatter by your Infinity amount.`},
+      effect: () => Currency.infinitiesTotal.value.clampMin(1),
+      formatEffect: value => `${formatX(value, 2, 2)}`
+    }
   },
   {
-    // Implemented! Biggest challenge so far, and I'm very happy with it!
+    // Enhanced! Biggest challenge so far, and I'm very happy with it!
     id: 22,
     name: "FAKE NEWS!",
     get description() { return `Encounter ${formatInt(50)} different news messages.`; },
     checkRequirement: () => NewsHandler.uniqueTickersSeen >= 50,
     checkEvent: GAME_EVENT.REALITY_RESET_AFTER,
     reward: "Add a fast-forward button to the news ticker.",
+    enhanced: {
+      reward: "Add a fast-forward button and a skip button to the news ticker.",
+    }
   },
   {
-    // Modified!
+    // Enhanced!
     id: 23,
     name: "The 9th Dimension is a lie",
     get description() { return `Have exactly ${formatInt(99)} 8th Antimatter Dimensions.`; },
     checkRequirement: () => AntimatterDimension(8).amount.eq(99),
-    get reward() { return `8th Antimatter Dimensions are stronger right after a Dimensional Sacrifice.`; },
+    reward: "8th Antimatter Dimensions are stronger right after a Dimensional Sacrifice.",
     effect: () => player.requirementChecks.infinity.noSacrifice ? 1 : 
-    Math.pow(0.88, Time.timeSinceLastSacrifice.totalSeconds) * 6.99 + 1.01,
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    Math.pow(0.88, Math.clampMin(Time.timeSinceLastSacrifice.totalSeconds - 3, 0)) * 4.99 + 1.01,
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "8th Antimatter Dimensions are way stronger right after a Dimensional Sacrifice.",
+      effect: () => player.requirementChecks.infinity.noSacrifice ? 1 : 
+      DC.D0_01.pow(Math.clampMin(Time.timeSinceLastSacrifice.totalMilliseconds - 3e3, 0)).times(DC.E11111).clampMin(1),
+      formatEffect: value => `${formatX(value)}`,
+    }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 24,
     name: "Antimatter Apocalypse",
     get description() { return `Get over ${format(DC.E80)} antimatter.`; },
@@ -130,20 +169,29 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return `2nd Antimatter Dimensions are slightly stronger based on current Antimatter.`; },
     effect: () => Math.max(1, Math.pow(1.1, Math.pow(Currency.antimatter.exponent, 0.23) - 1.3)),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "2nd Antimatter Dimensions are mildly stronger based on current Antimatter.",
+      effect: () => DC.D1_3.pow(Math.pow(Currency.antimatter.exponent, 0.55)),
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 25,
     name: "Boosting to the max",
     get description() { return `Buy ${formatInt(10)} Dimension Boosts.`; },
     checkRequirement: () => DimBoost.purchasedBoosts >= 10,
     checkEvent: GAME_EVENT.DIMBOOST_AFTER,
     get reward() { return `Dimension Boosts require ${formatInt(5)} fewer Dimensions.`; },
-    effect: 5
+    effect: 5,
+    enhanced: {
+      get reward() { return `Start with ${formatInt(100)} free Dimension Boosts.`; },
+      effect: 100,
+    }
   },
   {
-    // Implemented! Surprisingly difficult.
+    // Enhanced! Surprisingly difficult.
     id: 26,
     name: "You got past The Big Wall",
     description: "Buy an Antimatter Galaxy.",
@@ -151,19 +199,31 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
     reward: "Start with a free Tickspeed Upgrade.",
     effect: 1,
+    enhanced: {
+      get reward() { return `Start with ${formatInt(100)} free Tickspeed Upgrades.`},
+      effect: 100,
+    }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 27,
     name: "Double Galaxy",
     get description() { return `Buy ${formatInt(2)} Antimatter Galaxies.`; },
     checkRequirement: () => player.galaxies >= 2,
     checkEvent: GAME_EVENT.GALAXY_RESET_AFTER,
     get reward() { return `Antimatter Galaxies require ${formatInt(10)} fewer Dimensions.`; },
-    effect: 10
+    effect: 10,
+    enhanced: {
+      get reward() { return `Antimatter Galaxies require ${formatInt(60)} fewer Dimensions, and 
+        their requirement increase by ${formatInt(2)} fewer Dimensions.`; },
+      effects: {
+        initialReduction: 60,
+        perGalaxyReduction: 2
+      }
+    }
   },
   {
-    // Modified!
+    // Enhanced!
     id: 28,
     name: "There's no point in doing that...",
     get description() {
@@ -171,12 +231,17 @@ export const normalAchievements = [
     },
     checkRequirement: () => AntimatterDimension(1).amount.exponent >= 150,
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-    get reward() { return `1st Antimatter Dimensions are slightly stronger based on their amount.`; },
+    reward: "1st Antimatter Dimensions are slightly stronger based on their amount.",
     effect: () => 1 + AntimatterDimension(1).amount.exponent / 1000,
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "1st Antimatter Dimensions are significantly stronger based on their amount.",
+      effect: () => Decimal.pow(AntimatterDimension(1).amount.exponent, 1200).clampMin(1),
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
-    // Modified!
+    // Enhanced!
     id: 31,
     name: "I forgot to nerf that",
     get description() { return `Get any Antimatter Dimension multiplier over ${formatX(DC.E31)}.`; },
@@ -185,9 +250,15 @@ export const normalAchievements = [
     reward: "1st Antimatter Dimensions are stronger based on achievement rows completed.",
     effect: () => Math.pow(0.9 + Achievements.allRows.countWhere(row => row.every(ach => ach.isUnlocked)) * 0.2,
     Achievements.allRows.countWhere(row => row.every(ach => ach.isUnlocked))),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "1st Antimatter Dimensions are way stronger based on achievements completed.",
+      effect: () => Decimal.pow(Achievements.effectiveCount , Decimal.pow(Achievements.effectiveCount, Achievements.effectiveCount / 15 - 5.64)),
+      formatEffect: value => `${formatX(value, 2, 2)}`
+    }
   },
   {
+    // Enhancement not implemented
     id: 32,
     name: "The Gods are pleased",
     get description() { return `Get over ${formatX(600)} from Dimensional Sacrifice outside of Challenge 8.`; },
@@ -199,9 +270,12 @@ export const normalAchievements = [
       ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Achievement57": false, "Achievement88": false })}`;
     },
     effect: 0.1,
+    enhanced: {
+      reward: "Dimensional Sacrifice is stronger... in some way.",
+    }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 33,
     name: "That's a lot of infinites",
     get description() { return `Reach Infinity ${formatInt(10)} times.`; },
@@ -212,26 +286,45 @@ export const normalAchievements = [
       give ${formatX(2)} more Infinities.`;
     },
     effect: 2,
-    effectCondition: () => Time.thisInfinity.totalSeconds > 60
+    effectCondition: () => Time.thisInfinity.totalSeconds > 60,
+    enhanced: {
+      reward: "Infinities give more Infinities the longer it lasts.",
+      effect: () => Math.clampMin(Math.pow(Math.log10(Time.thisInfinity.totalSeconds), 2), 1),
+      formatEffect: value => `${formatX(value, 2, 2)}`
+    }
   },
   {
-    // Modified!
+    // Enhanced!
     id: 34,
     name: "You didn't need it anyway",
     description: "Infinity without having any 8th Antimatter Dimensions.",
     checkRequirement: () => AntimatterDimension(8).totalAmount.eq(0),
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `Antimatter Dimensions 1-7 are stronger the less Dimensions you are using.`; },
+    reward: "Antimatter Dimensions 1-7 are stronger the less Dimensions you are using.",
     effect() {
       for (let i = 8; i > 0; i--) {
-        if (!AntimatterDimension(i).totalAmount.eq(0)) {return 1.8 - i * 0.09;}
+        if (!AntimatterDimension(i).isProducing) {return 1.8 - i * 0.09;}
       }
       return 1.8;
     },
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "Antimatter Dimensions 1-7 are way stronger the less Dimensions you are using. " +
+        "This takes into account IDs and TDs.",
+      effect() {
+        var dimensionsUsed = 0;
+        for (let i = 8; i > 0; i--) {
+          if (AntimatterDimension(i).isProducing) dimensionsUsed++;
+          if (InfinityDimension(i).isProducing) dimensionsUsed++;
+          if (TimeDimension(i).isProducing) dimensionsUsed++;
+        }
+        return DC.E400.pow(24 - dimensionsUsed);
+      },
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 35,
     name: "Don't you dare sleep",
     get description() {
@@ -247,10 +340,18 @@ export const normalAchievements = [
         : `Extremely small multiplier to Antimatter Dimensions based on time played.`;
     },
     effect: () => Math.max(Math.pow(Time.realTimePlayed.totalHours / 6, 0.04), 1),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      get reward() { return Laitela.isUnlocked ? "Small multiplier to all Dimensions, excluding Dark Matter Dimensions, "
+      + "based on time played (real time)": "Small multiplier to all Dimensions "
+      + "based on time played (real time)";
+      },
+      effect: () => Math.pow(Time.realTimePlayed.totalMilliseconds, 10),
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
-    // Buffed!
+    // Enhanced!
     id: 36,
     name: "Claustrophobic",
     get description() {
@@ -259,19 +360,29 @@ export const normalAchievements = [
     checkRequirement: () => player.galaxies === 1,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `Multiply starting tick speed by ${format(1.05, 2, 2)}.`; },
-    effect: 1 / 1.05
+    effect: 1 / 1.05,
+    enhanced: {
+      get reward() { return `Multiply starting tick speed by ${formatPostBreak(DC.E1000)}.`; },
+      effect: DC.D1.divide(DC.E1000),
+    }
   },
   {
+    // Enhanced!
     id: 37,
     name: "That's FAST!",
     get description() { return `Infinity in under ${formatInt(2)} hours.`; },
     checkRequirement: () => Time.thisInfinityRealTime.totalHours <= 2,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `Start with ${formatInt(5000)} antimatter.`; },
-    effect: 5000
+    effect: 5000,
+    enhanced: {
+      get reward() { return `Multiply starting Antimatter and Infinity Points by your Eternity amount.`;},
+      effect: () => Decimal.clampMin(player.eternities, 1),
+      formatEffect: value => `${formatX(value, 2, 2)}`
+    }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 38,
     name: "I don't believe in Gods",
     get description() {
@@ -280,12 +391,19 @@ export const normalAchievements = [
     },
     checkRequirement: () => player.requirementChecks.infinity.noSacrifice,
     checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
-    get reward() { return `8th Antimatter Dimensions are ${formatInt(5)} times stronger, 
+    get reward() { return `8th Antimatter Dimensions are ${formatInt(8)} times stronger, 
     but only if you have no sacrifices.`},
-    effect: DC.D5,
+    effect: DC.D8,
     effectCondition: () => Sacrifice.totalBoost.lte(1),
+    enhanced: {
+      get reward() { return `8th Antimatter Dimensions are ${formatPostBreak(DC.E45000)} times stronger, 
+      but only if you have no sacrifices.`},
+      effect: DC.E45000,
+      effectCondition: () => Sacrifice.totalBoost.lte(1),
+    }
   },
   {
+    // Enhancement not implemented
     id: 41,
     name: "No DLC required",
     get description() { return `Buy ${formatInt(16)} Infinity Upgrades.`; },
@@ -298,9 +416,15 @@ export const normalAchievements = [
     get reward() {
       return `Unlock two new Infinity Upgrades- ${formatX(2)} IP multiplier and offline IP generation.`;
     },
+    enhanced: {
+      get reward() {
+        return `Unlock three new Infinity Upgrades- ${formatX(2)} IP multiplier, offline IP generation, and 
+        IP mult cap increase.`;
+      },
+    }
   },
   {
-    // Implemented! This one has been a nightmare
+    // Enhanced! This one has been a nightmare
     // Lesson: Don't use production per second in rewards, causes recursion.
     id: 42,
     name: "Super Sanic",
@@ -315,9 +439,17 @@ export const normalAchievements = [
     Antimatter amount, but only if your production is larger.`},
     effect: () => Decimal.max(1, Decimal.pow(DC.D1_2, Math.pow(Math.log10(Currency.antimatter.exponent) - 1, 2))),
     effectCondition: () => Time.timeWithExcessAMProd.totalMilliseconds >= 500,
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      get reward() { return `1st Antimatter Dimensions are way stronger based on your current
+        Antimatter amount, but only if your production is larger.`},
+      effect: () => Decimal.pow(DC.D1_0000109, Math.pow(Currency.antimatter.exponent, 1.026)).clampMin(1),
+      effectCondition: () => Time.timeWithExcessAMProd.totalMilliseconds >= 500,
+      formatEffect: value => `${formatX(value, 2, 2)}`
+    }
   },
   {
+    // Enhanced!
     id: 43,
     name: "How the antitables have turned..",
     description:
@@ -334,10 +466,16 @@ export const normalAchievements = [
     get reward() {
       return `Each Antimatter Dimension gains a boost proportional to tier
       (8th gets ${formatPercents(0.08)}, 7th gets ${formatPercents(0.07)}, etc.)`;
+    },
+    enhanced: {
+      get reward() {
+        return `Each Antimatter Dimension gains a massive boost proportional to tier
+        (8th gets ${formatX(DC.E2000)}, 7th gets ${formatX(DC.E1750)}, etc.)`;
+      },
     }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 44,
     name: "Over in 30 Seconds",
     get description() {
@@ -346,20 +484,27 @@ export const normalAchievements = [
     },
     checkRequirement: () => Time.timeWithExcessAMProd.totalSeconds >= 30,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() {
-      return `1st Antimatter Dimensions are stronger the longer your antimatter per second 
-      exceeds your current antimatter.`;
-    },
+    reward: "1st Antimatter Dimensions are stronger the longer your antimatter per second " +
+      "exceeds your current antimatter.",
     effect() {
       const excessTimeProduction = Time.timeWithExcessAMProd.totalSeconds;
       return excessTimeProduction >= 30 ?
       Math.pow(excessTimeProduction - 30, 0.5) / 100 + 1.3 : 
       1 + excessTimeProduction / 100;
     },
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "1st Antimatter Dimensions are significantly stronger the longer your antimatter per second " +
+      "exceeds your current antimatter.",
+      effect() {
+        const excessTimeProduction = Time.timeWithExcessAMProd.totalMilliseconds;
+        return Decimal.pow(excessTimeProduction, 1000).clampMin(1);
+      },
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
-    // Modified!
+    // Enhanced!
     id: 45,
     name: "Faster than a potato",
     get description() { return `Get more than ${format(DC.E29)} ticks per second.`; },
@@ -367,10 +512,15 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return `Tickspeed is just below ${formatPercents(0.01)} faster per Dimension Boost.`; },
     effect: () => DC.D1_007.pow(player.dimensionBoosts).recip(),
-    formatEffect: value => `${formatX(value.recip(), 2, 2)}`
+    formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
+    enhanced: {
+      get reward() { return `Tickspeed is just above ${formatPercents(0.18)} faster per Dimension Boost.`; },
+      effect: () => DC.D0_8446303389034288.pow(player.dimensionBoosts),
+      formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
+    }
   },
   {
-    // Implemented! Very happy about this one, the code might be better
+    // Enhanced! Very happy about this one, the code might be better
     id: 46,
     name: "Multidimensional",
     get description() { return `Reach ${format(DC.E12)} of all Antimatter Dimensions except the 8th.`; },
@@ -380,10 +530,18 @@ export const normalAchievements = [
     effect: () => Decimal.max(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(AntimatterDimension(3).amount.times(
     AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(AntimatterDimension(6).amount.times(
     AntimatterDimension(7).amount)))))).pow(0.00002).plus(0.05), 1),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "8th Antimatter Dimensions are significantly stronger based on the product of your Antimatter and " + 
+        "all AD amounts.",
+        effect: () => Currency.antimatter.value.times(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(AntimatterDimension(3).amount.times(
+          AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(AntimatterDimension(6).amount.times(
+          AntimatterDimension(7).amount))))))).pow(0.000025).plus(1),
+          formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
-    // Implemented! :)
+    // Enhanced! :)
     id: 47,
     name: "Daredevil",
     get description() { return `Complete ${formatInt(3)} Normal Challenges.`; },
@@ -394,9 +552,24 @@ export const normalAchievements = [
     },
     effect: () => Math.pow(1.02, NormalChallenges.all.countWhere(c => c.isCompleted)),
     formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      get reward () {
+        if (Teresa.isUnlocked) return `For every Celestial Reality beaten, 
+          raise all Antimatter Dimensions by +${format(0.001, 3, 3)} power.`;
+        else return "Unlock Teresa to unlock this reward.";
+      },
+      effect: () => 1 + 
+        (Teresa.runCompleted ? 0.001 : 0) +
+        (Effarig.currentStage == EFFARIG_STAGES.COMPLETED ? 0.001 : 0) + 
+        (Enslaved.isCompleted ? 0.001 : 0) +
+        (V.spaceTheorems >= 1 ? 0.001 : 0) +
+        (player.celestials.ra.pets.teresa.memories > 1 ? 0.001 : 0) +
+        (Laitela.difficultyTier >= 1 ? 0.001 : 0),
+        formatEffect: value => Teresa.isUnlocked ? `${formatPow(value, 3, 3)}` : "Locked.",
+    }
   },
   {
-    // Modified!
+    // Enhanced!
     id: 48,
     name: "Antichallenged",
     get description() { return `Complete all ${formatInt(12)} Normal Challenges.`; },
@@ -414,8 +587,21 @@ export const normalAchievements = [
       };
       return `ALL Dimensions are ${formatPercents(0.12)} stronger.`
     },
-    effect: 1.12
+    effect: 1.12,
+    enhanced: {
+      get reward() { 
+        if (Laitela.isUnlocked) {
+          return `ALL Dimensions, including IDs, TDs, and DMDs, are ${formatPercents(0.12)} stronger.`;
+        }
+        else { return `ALL Dimensions, including IDs and TDs, are ${formatPercents(0.50)} stronger.`};
+      },
+      effect: 1.5,
+    }
   },
+
+  // ----------------------------------------------------------------
+  // Enhanced rewards later than this point won't be developed until later.
+
   {
     // Implemented!
     id: 51,
@@ -599,7 +785,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `1st Antimatter Dimensions get an exponentially increasing multiplier that 
     resets after Dimension Boosts, Antimatter Galaxies, and Infinities.`; },
-    effect: () => player.chall3Pow.times(105).pow(1.37).clampMax(DC.E10),
+    effect: () => player.chall3Pow.times(105).pow(1.4).clampMax(DC.E12),
     effectCondition: () => !NormalChallenge(3).isRunning,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
@@ -1113,7 +1299,7 @@ export const normalAchievements = [
       Antimatter Dimensions.`;
     },
     effect: () => Laitela.continuumActive ? DC.D1_5.pow(AntimatterDimension(1).continuumAmount / 10) : 
-      DC.D1_5.pow(Math.floor(AntimatterDimension(1).bought / 10)),
+      DC.D1_5.pow(Math.floor(AntimatterDimension(1).bought / 10)).pow(getAdjustedGlyphEffect("effarigforgotten")),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -1261,7 +1447,7 @@ export const normalAchievements = [
       return `Tickspeed is ${formatX(2)} faster for every Tachyon Galaxy obtained.`;
     },
     effect: () => DC.D1.divide(DC.D2.pow(player.dilation.totalTachyonGalaxies)),
-    formatEffect: value => `${formatX(value.recip())}`,
+    formatEffect: value => `${formatX(value.recip(), 1, 1)}`,
   },
   {
     // Implemented!
@@ -1299,9 +1485,6 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Removes the downsides from Time Study 131 and 133 in the Active and Idle Time Study paths."
   },
-  
-  // ----------------------------------------------------------------------
-  // Anything at this point forward won't start developing until later
 
   {
     id: 141,
@@ -1347,11 +1530,13 @@ export const normalAchievements = [
     reward: "Galaxies no longer reset Dimension Boosts."
   },
   {
+    // Implemented!
     id: 144,
     name: "Is this an Interstellar reference?",
     description: "Unlock the Black Hole.",
     checkRequirement: () => BlackHole(1).isUnlocked,
     checkEvent: GAME_EVENT.BLACK_HOLE_UNLOCKED,
+    reward: "Time Dilation rebuyables no longer spend Dilated Time.",
   },
   {
     id: 145,
@@ -1363,13 +1548,14 @@ export const normalAchievements = [
     effect: 0.9
   },
   {
+    // Buffed!
     id: 146,
     name: "Perks of living",
     description: "Have all Perks bought.",
     checkRequirement: () => player.reality.perks.size === Perks.all.length,
     checkEvent: GAME_EVENT.PERK_BOUGHT,
-    get reward() { return `+${formatPercents(0.01)} Glyph rarity.`; },
-    effect: 1
+    get reward() { return `+${formatPercents(0.03)} Glyph rarity.`; },
+    effect: 0.03
   },
   {
     id: 147,
@@ -1402,18 +1588,29 @@ export const normalAchievements = [
     reward: "Unlock V, the Celestial of Achievements."
   },
   {
+    // Implemented! Really hard to do, is probably buggy.
     id: 152,
     name: "Y'all got any more of them Glyphs?",
     get description() { return `Have ${formatInt(100)} Glyphs in your inventory.`; },
     checkRequirement: () => Glyphs.inventoryList.length >= 100,
-    checkEvent: GAME_EVENT.GLYPHS_CHANGED
+    checkEvent: GAME_EVENT.GLYPHS_CHANGED,
+    get reward() { return `+${formatInt(1)} Glyph to choose from on Reality, and gain a Glyph slot 
+      that only accepts a particular kind of Glyph.`},
+    effects: {
+      glyphChoices: 5, // Assumes you already have the START perk that makes it 4 choices.
+      glyphSlots: 1 // For the very special glyph slot.
+    }
   },
   {
+    // Implemented!
     id: 153,
     name: "More like \"reallydoesn'tmatter\"",
     description: "Reality without producing antimatter.",
     checkRequirement: () => player.requirementChecks.reality.noAM,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
+    get reward() { return `Gain a multiplier to EP based on how far away you are to ${formatPostBreak("1e4000")} EP.`},
+    effect: () => DC.E4000.divide(Currency.eternityPoints.value).pow(0.04).clampMin(10),
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     id: 154,
@@ -1443,6 +1640,7 @@ export const normalAchievements = [
     effect: 2.5
   },
   {
+    // Implemented (in theory)!
     id: 157,
     name: "It's super effective!",
     get description() { return `Get a Glyph with ${formatInt(4)} effects.`; },
@@ -1450,7 +1648,10 @@ export const normalAchievements = [
       glyph => getGlyphEffectsFromBitmask(glyph.effects, 0, 0)
         .filter(effect => effect.isGenerated).length
     ).max() >= 4,
-    checkEvent: GAME_EVENT.GLYPHS_CHANGED
+    checkEvent: GAME_EVENT.GLYPHS_CHANGED,
+    get reward() { return `Glyphs have a +${formatPercents(0.05)} chance to get an additional effect.`},
+    // Assumes you already have the Reality upgrade that improves chances for additional effects.
+    effect: 0.55,
   },
   {
     id: 158,
@@ -1461,6 +1662,10 @@ export const normalAchievements = [
     get reward() { return `Black Hole power increased by ${formatPercents(0.1)}.`; },
     effect: 1.1
   },
+    
+  // ----------------------------------------------------------------------
+  // Anything at this point forward won't start developing until later
+
   {
     id: 161,
     name: "that's where you're wrong kiddo",

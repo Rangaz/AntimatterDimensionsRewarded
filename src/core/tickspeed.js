@@ -169,7 +169,9 @@ export const Tickspeed = {
   get baseValue() {
     return DC.E3.timesEffectsOf(
       Achievement(36),
+      Achievement(36).enhancedEffect,
       Achievement(45),
+      Achievement(45).enhancedEffect,
       Achievement(66),
       Achievement(135),
     )
@@ -268,7 +270,7 @@ export const FreeTickspeed = {
 
   // For my achievements that give free Tickspeed upgrades separately from Time Dimensions
   fromAchievements() {
-    return Effects.sum(Achievement(26), Achievement(83));
+    return Effects.sum(Achievement(26), Achievement(26).enhancedEffect, Achievement(83));
   }
 
 };

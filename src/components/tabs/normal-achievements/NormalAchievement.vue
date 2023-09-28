@@ -3,6 +3,7 @@ import wordShift from "@/core/word-shift";
 
 import EffectDisplay from "@/components/EffectDisplay";
 import HintText from "@/components/HintText";
+import { Pelle } from "../../../core/globals";
 
 export default {
   name: "NormalAchievement",
@@ -24,6 +25,8 @@ export default {
     return {
       isDisabled: false,
       isUnlocked: false,
+      canBeEnhanced: false,
+      isEnhanced: false,
       isMouseOver: false,
       isCancer: false,
       showUnlockState: false,
@@ -54,6 +57,7 @@ export default {
         "o-achievement--disabled": this.isDisabled,
         "o-achievement--locked": !this.isUnlocked && !this.isDisabled && !this.isObscured,
         "o-achievement--unlocked": this.isUnlocked,
+        "o-achievement--enhanced": this.isEnhanced,
         "o-achievement--waiting": !this.isUnlocked && this.isPreRealityAchievement && !this.isDisabled,
         "o-achievement--blink": !this.isUnlocked && this.id === 78 && !this.isDisabled,
         "o-achievement--normal": !this.isCancer && !this.isObscured,
@@ -76,10 +80,12 @@ export default {
     },
     rewardClassObject() {
       return {
-        "o-achievement__reward": true,
-        "o-achievement__reward--disabled": this.isDisabled,
-        "o-achievement__reward--locked": !this.isUnlocked && !this.isPreRealityAchievement && !this.isDisabled,
-        "o-achievement__reward--waiting": !this.isUnlocked && this.isPreRealityAchievement && !this.isDisabled,
+        "o-achievement__enhancement": true,
+        "o-achievement__enhancement--enhanced": this.isEnhanced,
+        "o-achievement__enhancement--disabled": this.isDisabled,
+        "o-achievement__enhancement--locked": !this.isUnlocked && !this.isPreRealityAchievement && !this.isDisabled,
+        // This last one shouldn't appear
+        "o-achievement__enhancement--waiting": !this.isUnlocked && this.isPreRealityAchievement && !this.isDisabled,
       };
     },
     isPreRealityAchievement() {
@@ -113,6 +119,8 @@ export default {
     update() {
       this.isDisabled = Pelle.disabledAchievements.includes(this.id) && Pelle.isDoomed;
       this.isUnlocked = this.achievement.isUnlocked && !this.isDisabled;
+      this.isEnhanced = this.achievement.isEnhanced && !Pelle.isDoomed;
+      this.canBeEnhanced = this.achievement.canEnhance && !Pelle.isDoomed;
       this.isCancer = Theme.current().name === "S4" || player.secretUnlocks.cancerAchievements;
       this.showUnlockState = player.options.showHintText.achievementUnlockStates;
       this.realityUnlocked = PlayerProgress.realityUnlocked();
@@ -196,7 +204,7 @@ export default {
           {{ processedDescription }}
         </div>
         <div
-          v-if="config.reward"
+          v-if="config.reward && !isEnhanced"
           class="o-achievement__tooltip__reward"
         >
           <span
@@ -208,6 +216,23 @@ export default {
               v-if="config.formatEffect"
               br
               :config="config"
+            />
+          </span>
+        </div>
+        <!--My Enhanced effect-->
+        <div
+          v-if="canBeEnhanced || isEnhanced"
+          class="o-achievement__tooltip__enhanced"
+        >
+          <span
+            v-if="!isObscured"
+            :class="{ 'o-pelle-disabled': isDisabled }"
+          >
+            Enhanced: {{ config.enhanced.reward }}
+            <EffectDisplay
+              v-if="config.enhanced.formatEffect"
+              br
+              :config="config.enhanced"
             />
           </span>
         </div>
@@ -225,11 +250,18 @@ export default {
     >
       <i :class="indicatorIconClass" />
     </div>
+    <!--Now the Enhanced icon-->
     <div
-      v-if="hasReward"
+      v-if="canBeEnhanced"
       :class="rewardClassObject"
     >
-      <i class="fas fa-star" />
+      <i class="fas fa-arrow-up" />
+    </div>
+    <div
+      v-if="isEnhanced"
+      :class="rewardClassObject"
+    >
+      <i class="fas fa-trophy" />
     </div>
   </div>
 </template>
@@ -280,6 +312,11 @@ export default {
   border-color: #acac39;
 }
 
+.o-achievement--enhanced {
+  box-shadow: 0px 0px 20px #acac39;
+  background-color: #aacc75;
+}
+
 .t-dark-metro .o-achievement--waiting {
   background-color: #b9b946;
   border-color: #7d7d36;
@@ -302,33 +339,42 @@ export default {
   }
 }
 
-.o-achievement__reward {
+.o-achievement__enhancement {
   width: 1.5rem;
   height: 1.5rem;
   position: absolute;
   left: 0;
   bottom: 0;
   font-size: 1rem;
-  color: black;
-  background: #5ac467;
-  border-top: var(--var-border-width, 0.2rem) solid #127a20;
-  border-right: var(--var-border-width, 0.2rem) solid #127a20;
+  color: #2d2d02;
+  background: #aac437;
+  border-top: var(--var-border-width, 0.2rem) solid #97ad16;
+  border-right: var(--var-border-width, 0.2rem) solid #97ad16;
   border-top-right-radius: var(--var-border-radius, 0.8rem);
   border-bottom-left-radius: var(--var-border-radius, 0.6rem);
 }
 
-.o-achievement__reward--locked {
+.o-achievement__enhancement--locked {
   background: #a3a3a3;
   border-color: var(--color-bad);
 }
 
-.o-achievement__reward--waiting {
+.o-achievement__enhancement--waiting {
   background: #d1d161;
   border-color: #acac39;
 }
 
-.o-achievement__reward--disabled {
+.o-achievement__enhancement--disabled {
   background: var(--color-pelle--base);
   border-color: var(--color-bad);
+}
+
+.o-achievement__enhancement--enhanced {
+  box-shadow: 0px 0px 5px #acac39;
+}
+
+.o-achievement__tooltip__enhanced {
+  font-style: italic;
+  font-size: 1.3rem;
 }
 </style>

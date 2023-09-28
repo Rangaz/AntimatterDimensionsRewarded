@@ -158,7 +158,7 @@ export const GlyphGenerator = {
   },
 
   // These Glyphs are given on entering Doomed to prevent the player
-  // from having none of each basic glyphs which are requied to beat pelle
+  // from having none of each basic glyphs which are required to beat Pelle
   doomedGlyph(type) {
     const effectList = GlyphEffects.all.filter(e => e.id.startsWith(type));
     effectList.push(GlyphEffects.timespeed);
@@ -246,8 +246,8 @@ export const GlyphGenerator = {
       Math.floor(Math.pow(random1, 1 - (Math.pow(level * strength, 0.5)) / 100) * 1.5 + 1)
     );
     // If we do decide to add anything else that boosts chance of an extra effect, keeping the code like this
-    // makes it easier to do (add it to the Effects.max).
-    if (RealityUpgrade(17).isBought && random2 < Effects.max(0, RealityUpgrade(17))) {
+    // makes it easier to do (add it to the Effects.max). Thank you!!
+    if (RealityUpgrade(17).isBought && random2 < Effects.max(0, RealityUpgrade(17), Achievement(157))) {
       num = Math.min(num + 1, maxEffects);
     }
     return Ra.unlocks.glyphEffectCount.canBeApplied ? Math.max(num, 4) : num;

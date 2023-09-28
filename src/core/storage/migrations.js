@@ -419,6 +419,12 @@ export const migrations = {
       player.records.timeSinceLastSacrifice = 0;
       player.news.isFastForward = false;
       player.options.news.showFForward = true;
+    },
+    30: player => {
+      // The enhanced achievements version
+      player.reality.enhancedAchievements = new Set();
+      player.reality.enhancementPoints = 0; // Later on add ways to retroactively get them.
+
     }
   },
 

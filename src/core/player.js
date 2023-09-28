@@ -363,7 +363,7 @@ window.player = {
     previousRuns: {}
   },
   IPMultPurchases: 0,
-  version: 29,
+  version: 30,
   infinityPower: DC.D1,
   postC4Tier: 0,
   eternityPoints: DC.D0,
@@ -521,6 +521,10 @@ window.player = {
     partEternitied: DC.D0,
     autoAchieve: true,
     gainedAutoAchievements: true,
+    totalEnhancementPoints: 0,
+    enhancementPoints: 0,
+    disEnhance: false,
+    enhancedAchievements: new Set(),
     automator: {
       state: {
         mode: AUTOMATOR_MODE.STOP,

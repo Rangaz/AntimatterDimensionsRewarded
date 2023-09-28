@@ -23,8 +23,10 @@ export function antimatterDimensionCommonMultiplier() {
     InfinityUpgrade.totalTimeMult,
     InfinityUpgrade.thisInfinityTimeMult,
     Achievement(35),
+    Achievement(35).enhancedEffect,
     Achievement(47),
     Achievement(48),
+    Achievement(48).enhancedEffect,
     Achievement(56),
     Achievement(65),
     Achievement(67),
@@ -118,9 +120,13 @@ function applyNDMultipliers(mult, tier) {
         InfinityUpgrade.unspentIPMult,
         InfinityUpgrade.unspentIPMult.chargedEffect,
         Achievement(28),
+        Achievement(28).enhancedEffect,
         Achievement(31),
+        Achievement(31).enhancedEffect,
         Achievement(42),
+        Achievement(42).enhanedEffect,
         Achievement(44),
+        Achievement(44).enhancedEffect,
         Achievement(68),
         Achievement(71),
         Achievement(122),
@@ -129,21 +135,31 @@ function applyNDMultipliers(mult, tier) {
   }
   if (tier === 8) {
     multiplier = multiplier.times(Sacrifice.totalBoost);
+    multiplier = multiplier.timesEffectsOf(
+      Achievement(23),
+      Achievement(23).enhancedEffect,
+      Achievement(38),
+      Achievement(38).enhancedEffect,
+      Achievement(46),
+      Achievement(46).enhancedEffect,
+      Achievement(101),
+      TimeStudy(214),
+    );
   }
 
   multiplier = multiplier.timesEffectsOf(
-    tier === 8 ? Achievement(23) : null,
-    tier === 2 ? Achievement(24) : null,  
+    tier === 2 ? Achievement(24) : null, 
+    tier === 2 ? Achievement(24).enhancedEffect : null, 
     tier < 8 ? Achievement(34) : null,
-    tier === 8 ? Achievement(38) : null,
-    tier === 8 ? Achievement(46) : null,
+    tier < 8 ? Achievement(34).enhancedEffect : null,
     tier <= 4 ? Achievement(64) : null,
-    tier === 8 ? Achievement(101) : null,
     tier < 8 ? TimeStudy(71) : null,
-    tier === 8 ? TimeStudy(214) : null,
     tier > 1 && tier < 8 ? InfinityChallenge(8).reward : null
   );
-  if (Achievement(43).isUnlocked) {
+
+  if (Achievement(43).isEnhanced) {
+    multiplier = multiplier.times(DC.E250.pow(tier))
+  } else if (Achievement(43).canBeApplied) {
     multiplier = multiplier.times(1 + tier / 100);
   }
 
@@ -172,6 +188,7 @@ function applyNDPowers(mult, tier) {
       InfinityUpgrade.totalTimeMult.chargedEffect,
       InfinityUpgrade.thisInfinityTimeMult.chargedEffect,
       AlchemyResource.power,
+      Achievement(47).enhancedEffect,
       Achievement(183),
       PelleRifts.paradox
     );
@@ -361,11 +378,18 @@ export function buyMaxDimension(tier, bulk = Infinity) {
 class AntimatterDimensionState extends DimensionState {
   constructor(tier) {
     super(() => player.dimensions.antimatter, tier);
-    // The base costs are already 10 times cheaper than vanilla
-    const BASE_COSTS = [null, 1, 10, 1e3, 1e5, 1e8, 1e12, 1e17, 1e23];
+    // The vanilla costs are in the FIRST_PURCHASE_COST
+    const FIRST_PURCHASE_COST = [null, 10, 100, 1e4, 1e6, 1e9, 1e13, 1e18, 1e24];
+    this._firstPurchaseCost = FIRST_PURCHASE_COST[tier];
+    const BASE_COSTS = [null, 1, 10, 1e3, 1e5, 1e8, 1e11, 1e16, 1e22];
     this._baseCost = BASE_COSTS[tier];
+    // These are the base costs with the enhanced achievements
+    const ENHANCED_BASE_COSTS = [null, 1, 1, 1, 1, 1, 1, 1, 1];
+    this._enhancedBaseCosts = ENHANCED_BASE_COSTS[tier];
     const BASE_COST_MULTIPLIERS = [null, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e12, 1e15];
     this._baseCostMultiplier = BASE_COST_MULTIPLIERS[tier];
+    const ENHANCED_COST_MULTIPLIERS = [null, 2, 2.4, 3, 3.6, 5.5, 8, 12, 32];
+    this._enhancedCostMultipliers = ENHANCED_COST_MULTIPLIERS[tier];
     const C6_BASE_COSTS = [null, 1, 10, 10, 50, 250, 2e3, 2e4, 4e5];
     this._c6BaseCost = C6_BASE_COSTS[tier];
     const C6_BASE_COST_MULTIPLIERS = [null, 1e3, 5e3, 1e4, 1.2e4, 1.8e4, 2.6e4, 3.2e4, 4.2e4];
@@ -376,13 +400,22 @@ class AntimatterDimensionState extends DimensionState {
    * @returns {ExponentialCostScaling}
    */
   get costScale() {
+    const row1Achievement = Achievement(10 + this.tier);
+    // Having the enhanced achievement makes its effect also conveniently work for C6.
+    if (row1Achievement.isEnhanced) {
       return new ExponentialCostScaling({
-      // I made the cost multiply by 10 if you don't have the achievement
-      baseCost: NormalChallenge(6).isRunning ? this._c6BaseCost : this._baseCost * (Achievement(10 + this.tier).isUnlocked ? 1 : 10),
+      baseCost: this._enhancedBaseCosts,
+      baseIncrease: this._enhancedCostMultipliers,
+      costScale: Player.dimensionMultDecrease,
+      scalingCostThreshold: Number.MAX_VALUE
+    })};
+    return new ExponentialCostScaling({
+      // I made the cost be different if you don't have the achievement
+      baseCost: NormalChallenge(6).isRunning ? this._c6BaseCost : (row1Achievement.isUnlocked ? this._baseCost : this._firstPurchaseCost),
       baseIncrease: NormalChallenge(6).isRunning ? this._c6BaseCostMultiplier : this._baseCostMultiplier,
       costScale: Player.dimensionMultDecrease,
       scalingCostThreshold: Number.MAX_VALUE
-    });
+    })
   }
 
   /**

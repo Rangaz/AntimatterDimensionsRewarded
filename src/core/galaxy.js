@@ -56,7 +56,8 @@ export class Galaxy {
       amount *= Math.pow(1.002, galaxies - (Galaxy.remoteStart - 1));
     }
 
-    amount -= Effects.sum(InfinityUpgrade.resetBoost, Achievement(27));
+    amount -= Effects.sum(InfinityUpgrade.resetBoost, Achievement(27), 
+      Achievement(27).enhancedEffect.effects.initialReduction);
     if (InfinityChallenge(5).isCompleted) amount -= 1;
 
     if (GlyphAlteration.isAdded("power")) amount *= getSecondaryGlyphEffect("powerpow");
@@ -67,7 +68,8 @@ export class Galaxy {
   }
 
   static get costMult() {
-    return Effects.min(NormalChallenge(10).isRunning ? 90 : 60, TimeStudy(42));
+    return (NormalChallenge(10).isRunning ? 90 : 60) - Effects.sum(
+      Achievement(27).enhancedEffect.effects.perGalaxyReduction, TimeStudy(42));
   }
 
   static get baseCost() {

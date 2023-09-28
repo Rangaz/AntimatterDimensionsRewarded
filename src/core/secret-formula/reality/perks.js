@@ -24,11 +24,12 @@ function vectorToNum(v) {
  * To make a new preset layout, define vectorToNum in the console, move all the nodes around in-game and then run
  *    Object.values(PerkNetwork.network.body.nodes).filter(n => n.edges.length !== 0).map(v => vectorToNum(v))
  * in the console to get all the current node positions. Then, append the resulting numbers to each layoutPosList
- * array below and make the appripriate entry in PerkLayouts.
+ * array below and make the appropriate entry in PerkLayouts.
  *
  * Note: This encoding/decoding only works properly for coordinates with values between -1000 and 1000, and will
  * be slightly off for vectors whose coordinates aren't divisible by 5
  */
+
 export const perks = {
   firstPerk: {
     id: 0,
@@ -39,7 +40,7 @@ export const perks = {
       and allow you to choose from ${formatInt(4)} different Glyphs on Reality.`;
     },
     effect: 4,
-    layoutPosList: [80200, 80200, 80200, 80200, 80188, 67769],
+    layoutPosList: [80200, 80200, 80200, 80200, 80188, 66567],
   },
   startAM: {
     id: 10,
@@ -164,14 +165,14 @@ export const perks = {
     label: "DU1",
     family: PERK_FAMILY.DILATION,
     description: "After unlocking Dilation, automatically unlock the second row of Dilation Upgrades for free.",
-    layoutPosList: [125433, 81801, 79803, 79398, 80200, 97510],
+    layoutPosList: [125433, 81801, 79403, 79398, 80200, 97510],
   },
   autounlockDilation2: {
     id: 43,
     label: "DU2",
     family: PERK_FAMILY.DILATION,
     description: "After unlocking Dilation, automatically unlock the third row of Dilation Upgrades for free.",
-    layoutPosList: [128662, 82201, 79403, 79397, 80203, 85513],
+    layoutPosList: [128662, 82201, 79003, 79397, 80203, 85513],
   },
   autounlockDilation3: {
     id: 44,
@@ -225,7 +226,7 @@ export const perks = {
       "requirements from Time Dilation unlock.",
     automatorPoints: 5,
     shortDescription: () => `Unlocking Dilation only requires TT`,
-    layoutPosList: [131400, 81802, 80203, 79799, 80600, 109116],
+    layoutPosList: [131400, 81800, 79803, 79799, 80600, 109116],
   },
   bypassEC1Lock: {
     id: 54,
@@ -298,7 +299,7 @@ export const perks = {
     label: "ACT",
     family: PERK_FAMILY.ETERNITY,
     description: "Active path multipliers are always maximized.",
-    layoutPosList: [59439, 79399, 80599, 80601, 78194, 58565],
+    layoutPosList: [59439, 79399, 80599, 80601, 78194, 56962],
   },
   studyIdleEP: {
     id: 71,
@@ -461,7 +462,7 @@ export const perks = {
     effect: 10,
     automatorPoints: 5,
     shortDescription: () => `Faster Achievements: every ${formatInt(20)} minutes`,
-    layoutPosList: [69391, 80201, 80601, 79801, 79791, 81371],
+    layoutPosList: [69391, 80201, 80601, 79801, 79791, 76170],
   },
   achievementGroup2: {
     id: 202,
@@ -472,7 +473,7 @@ export const perks = {
         Achievement (${formatInt(8)} minute decrease).`;
     },
     effect: 8,
-    layoutPosList: [60177, 80202, 80602, 79401, 79794, 93780],
+    layoutPosList: [60177, 80202, 80602, 79401, 79794, 84575],
   },
   achievementGroup3: {
     id: 203,
@@ -483,7 +484,7 @@ export const perks = {
         Achievement (${formatInt(6)} minute decrease).`;
     },
     effect: 6,
-    layoutPosList: [50965, 80602, 80603, 79402, 79797, 83005],
+    layoutPosList: [50965, 80602, 80203, 79402, 79797, 93780],
   },
   achievementGroup4: {
     id: 204,
@@ -494,7 +495,7 @@ export const perks = {
         Achievement (${formatInt(4)} minute decrease).`;
     },
     effect: 4,
-    layoutPosList: [40164, 81002, 81003, 79403, 79800, 95422],
+    layoutPosList: [40164, 81002, 80603, 79403, 79800, 83005],
   },
   achievementGroup5: {
     id: 205,
@@ -506,7 +507,19 @@ export const perks = {
     },
     automatorPoints: 10,
     shortDescription: () => "Keep Achievements on Reality",
-    layoutPosList: [29761, 81402, 81403, 79404, 79803, 84639],
+    layoutPosList: [29761, 81402, 81003, 79404, 79803, 95422],
+  },
+  // My new perk
+  achievementEnhancement: {
+    id: 206,
+    label: "ACHEH",
+    family: PERK_FAMILY.ACHIEVEMENT,
+    get description() {
+      return `Unlock Achievement Enhancement. You can Enhance 1 row 1-4 Achievement 
+      per Achievement obtained in rows 14-17.`;
+    },
+    shortDescription: () => "Unlock Achievement Enhancement",
+    layoutPosList: [20163, 81802, 81403, 79405, 79806, 84639], // I need to adjust these
   }
 };
 
@@ -550,6 +563,7 @@ export const perkConnections = (function() {
     [p.achievementGroup2, p.achievementGroup3],
     [p.achievementGroup3, p.achievementGroup4],
     [p.achievementGroup4, p.achievementGroup5],
+    [p.achievementGroup5, p.achievementEnhancement]
   ];
   const connections = {};
   for (const perk of Object.values(perks)) {

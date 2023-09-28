@@ -8,7 +8,7 @@ export class Sacrifice {
   }
 
   static get canSacrifice() {
-    return DimBoost.purchasedBoosts > 4 && !EternityChallenge(3).isRunning && this.nextBoost.gt(Achievement(38).effectOrDefault(1)) &&
+    return DimBoost.purchasedBoosts > 4 && !EternityChallenge(3).isRunning && this.nextBoost.gt(DC.D1.timesEffectsOf(Achievement(38), Achievement(38).enhancedEffect)) &&
       AntimatterDimension(8).totalAmount.gt(0) && Currency.antimatter.lt(Player.infinityLimit) &&
       !Enslaved.isRunning;
   }
@@ -20,6 +20,7 @@ export class Sacrifice {
     if (AntimatterDimension(8).totalAmount.eq(0)) return "No 8th Antimatter Dimensions";
     if (this.nextBoost.lte(1)) return `${formatX(1)} multiplier`;
     if (this.nextBoost.lt(Achievement(38).effectOrDefault(1))) return `Wouldn't be beneficial`;
+    if (this.nextBoost.lt(Achievement(38).enhancedEffect.effectOrDefault(1))) return `Wouldn't be beneficial`;
     if (Player.isInAntimatterChallenge) return "Challenge goal reached";
     return "Need to Crunch";
   }

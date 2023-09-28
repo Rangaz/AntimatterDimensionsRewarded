@@ -12,7 +12,7 @@ export const GlyphSelection = {
   },
 
   get choiceCount() {
-    return Effects.max(1, Perk.firstPerk) *
+    return Effects.max(1, Perk.firstPerk, Achievement(152).effects.glyphChoices) *
       Ra.unlocks.extraGlyphChoicesAndRelicShardRarityAlwaysMax.effectOrDefault(1);
   },
 
@@ -108,7 +108,7 @@ export const GlyphSelection = {
     return [group[this.indexWithoutSTART]];
   },
 
-  // The uniformity code behaves poorly without START, so we generate actually generate them 4 at a time and then
+  // The uniformity code behaves poorly without START, so we actually generate them 4 at a time and then
   // deterministically pick one of them randomly
   get indexWithoutSTART() {
     const lexIndex = player.realities * ((player.reality.initialSeed % 5) + 3);
@@ -599,6 +599,7 @@ export function finishProcessReality(realityProps) {
     if (player.celestials.ra.disCharge) {
       disChargeAll();
     }
+    if (player.reality.disEnhance) Achievements.disEnhanceAll();
   }
   if (player.options.automatorEvents.clearOnReality) AutomatorData.clearEventLog();
   if (Player.automatorUnlocked && AutomatorBackend.state.forceRestart) {

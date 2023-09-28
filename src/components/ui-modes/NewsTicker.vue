@@ -12,6 +12,7 @@ export default {
       timeAtNewsUpdate: new Date(),
       fastForward: false,
       showFForward: false,
+      showSkip: false,
     };
   },
   computed: {
@@ -20,6 +21,9 @@ export default {
     },
     isFastForward() {
       return this.fastForward ? "fa-play" : "fa-forward";
+    },
+    oldFForwardPosition() {
+      return this.showSkip ? "left: calc(10% - 32px)" : "left: 10%";
     }
   },
   beforeCreate() {
@@ -39,7 +43,8 @@ export default {
       }
       this.isModern = player.options.newUI;
       this.enableAnimation = player.options.news.includeAnimated;
-      this.showFForward = Achievement(22).isEffectActive && player.options.news.showFForward;
+      this.showFForward = Achievement(22).isUnlocked && player.options.news.showFForward;
+      this.showSkip = Achievement(22).isEnhanced;
     },
     restart() {
       if (!GameUI.initialized) {
@@ -166,6 +171,15 @@ export default {
       }
       this.clearTimeouts();
       this.scrollTimeout = setTimeout(this.prepareNextMessage.bind(this), scrollDuration * 1000);
+    },
+    onSkip() {
+      // Skip inmediately skips the current news and starts preparing the next one.
+      const line = this.$refs.line;
+      this.timeAtNewsUpdate = Date.now();
+
+      line.style["transition-duration"] = "0s";
+      this.clearTimeouts();
+      this.prepareNextMessage();
     }
   }
 };
@@ -186,8 +200,21 @@ export default {
     <button
       :class="isFastForward"
       class="o-primary-btn c-old-fforward-button l-old-fforward-button fas"
+      :style="oldFForwardPosition"
       @click="onFastForward"
       v-if="showFForward && !isModern"
+      >
+    </button>
+    <button
+      class="o-primary-btn c-skip-button l-skip-button fas fa-fast-forward"
+      @click="onSkip"
+      v-if="showSkip && isModern"
+      >
+    </button>
+    <button
+      class="o-primary-btn c-old-skip-button l-old-skip-button fas fa-fast-forward"
+      @click="onSkip"
+      v-if="showSkip && !isModern"
       >
     </button>
     <span
@@ -204,16 +231,32 @@ export default {
   z-index: 9;
   width: 32px;
 }
-.l-fforward-button {
-  position: absolute;
-  left: 12.8rem; /* This is the same width as the modern sidebar. */
-}
 .c-old-fforward-button {
   z-index: 9;
   width: 32px;
 }
+.l-fforward-button {
+  position: absolute;
+  left: 12.8rem; /* This is the same width as the modern sidebar. */
+}
 .l-old-fforward-button {
   position: absolute;
-  left: 10%; /* This is good enough for most zoom levels. */
+  /*left: 10%; /* This is good enough for most zoom levels. */
+}
+.c-skip-button {
+  z-index: 9;
+  width: 32px;
+}
+.c-old-skip-button {
+  z-index: 9;
+  width: 32px;
+}
+.l-skip-button {
+  position: absolute;
+  left: calc(12.8rem + 32px);
+}
+.l-old-skip-button {
+  position: absolute;
+  left: 10%;
 }
 </style>

@@ -1,14 +1,17 @@
 <script>
 import NormalAchievementRow from "./NormalAchievementRow";
 import PrimaryToggleButton from "@/components/PrimaryToggleButton";
+import PrimaryButton from "@/components/PrimaryButton";
 import SwapAchievementImagesButton from "./SwapAchievementImagesButton";
+import { Pelle } from "../../../core/globals";
 
 export default {
   name: "NormalAchievementsTab",
   components: {
     SwapAchievementImagesButton,
     NormalAchievementRow,
-    PrimaryToggleButton
+    PrimaryToggleButton,
+    PrimaryButton
   },
   data() {
     return {
@@ -16,9 +19,14 @@ export default {
       achTPEffect: 0,
       achCountdown: 0,
       totalCountdown: 0,
+      achievementsEnhanced: 0,
+      enhancementPoints: 0,
+      totalEnhancementPoints: 0,
       missingAchievements: 0,
       showAutoAchieve: false,
       isAutoAchieveActive: false,
+      isEnhancementUnlocked: false,
+      respecEnhancements: false,
       hideCompletedRows: false,
       achMultBreak: false,
       achMultToIDS: false,
@@ -52,6 +60,12 @@ export default {
       if (this.achMultToTT) boostList.push(`Time Theorem production: ${achievementPower}`);
       return `${boostList.join("<br>")}`;
     },
+    respecClassObject() {
+      return {
+        "o-primary-btn--subtab-option": true,
+        "o-primary-btn--respec-active": this.respecEnhancements // Change the color later
+      };
+    },
   },
   watch: {
     isAutoAchieveActive(newValue) {
@@ -60,6 +74,9 @@ export default {
     hideCompletedRows(newValue) {
       player.options.hideCompletedAchievementRows = newValue;
       this.startRowRendering();
+    },
+    respecEnhancements(newValue) {
+      player.reality.disEnhance = newValue;
     }
   },
   created() {
@@ -69,6 +86,15 @@ export default {
     cancelAnimationFrame(this.renderAnimationId);
   },
   methods: {
+    // DEBUG FUNCTIONS. REMOVE EVENTUALLY
+    addEnhancementPoint() {
+      player.reality.enhancementPoints += 1;
+      player.reality.totalEnhancementPoints += 1;
+    },
+    removeEnhancementPoints() {
+      player.reality.enhancementPoints = 0;
+      player.reality.totalEnhancementPoints = 0;
+    },
     update() {
       const gameSpeedupFactor = getGameSpeedupFactor();
       this.achievementPower = Achievements.power;
@@ -77,6 +103,11 @@ export default {
       this.totalCountdown = ((Achievements.preReality.countWhere(a => !a.isUnlocked) - 1) * Achievements.period +
         Achievements.timeToNextAutoAchieve) / gameSpeedupFactor;
       this.missingAchievements = Achievements.preReality.countWhere(a => !a.isUnlocked);
+      this.enhancementPoints = player.reality.enhancementPoints;
+      this.enhancedAchievements = player.reality.enhancedAchievements.size;
+      this.totalEnhancementPoints = player.reality.totalEnhancementPoints;
+      this.respecEnhancements = player.reality.disEnhance;
+      this.isEnhancementUnlocked = Perk.achievementEnhancement.isBought && !this.isDoomed;
       this.showAutoAchieve = PlayerProgress.realityUnlocked() && !Perk.achievementGroup5.isBought;
       this.isAutoAchieveActive = player.reality.autoAchieve;
       this.hideCompletedRows = player.options.hideCompletedAchievementRows;
@@ -142,6 +173,26 @@ export default {
         class="o-primary-btn--subtab-option"
         label="Auto Achievements:"
       />
+      
+      <PrimaryButton
+        v-if="isEnhancementUnlocked"
+        @click="addEnhancementPoint"
+        class="o-primary-btn"
+        label="Get an enhancement point (DEBUG)"
+      >Get an enhancement point (DEBUG)</PrimaryButton>
+      <PrimaryButton
+        v-if="isEnhancementUnlocked"
+        @click="removeEnhancementPoints"
+        class="o-primary-btn"
+        label="Set enhancement points to 0 (DEBUG)"
+      >Set enhancement points to 0 (DEBUG)</PrimaryButton>
+      
+      <PrimaryButton
+        v-if="isEnhancementUnlocked"
+        :class="respecClassObject"
+        @click="respecEnhancements = !respecEnhancements"
+      >Respec Enhanced Achievements on next Reality</PrimaryButton>
+      
     </div>
     <div class="c-achievements-tab__header c-achievements-tab__header--multipliers">
       <span v-if="isDoomed">
@@ -152,8 +203,17 @@ export default {
         <div v-html="boostText" />
       </span>
     </div>
-    <div class="c-achievements-tab__header">
-      Achievements with a <i class="fas fa-star" /> icon also give an additional reward.
+    <div 
+      v-if="isEnhancementUnlocked"
+      class="c-achievements-tab__header"
+    >
+      You have enhanced {{ formatInt(enhancedAchievements) }}/{{ formatInt(totalEnhancementPoints) }} Achievements.
+    </div>
+    <div 
+      v-if="isDoomed"
+      class="c-achievements-tab__header"
+    >
+      You cannot enhance Achievements anymore.
     </div>
     <div
       v-if="showAutoAchieve"

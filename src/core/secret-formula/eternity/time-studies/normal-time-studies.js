@@ -111,9 +111,10 @@ export const normalTimeStudies = [
     cost: 6,
     requirement: [32],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
-    description: () => `Antimatter Galaxy requirement increases by ${formatInt(52)}
+    description: () => Achievement(27).isEnhanced ? `Antimatter Galaxy requirement increases by ${formatInt(50)}
+    8th Dimensions instead of ${formatInt(58)}` : `Antimatter Galaxy requirement increases by ${formatInt(52)}
       8th Dimensions instead of ${formatInt(60)}`,
-    effect: 52
+    effect: 8
   },
   {
     id: 51,
