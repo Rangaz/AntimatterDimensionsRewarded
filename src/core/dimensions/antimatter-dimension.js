@@ -381,7 +381,7 @@ class AntimatterDimensionState extends DimensionState {
     // The vanilla costs are in the FIRST_PURCHASE_COST
     const FIRST_PURCHASE_COST = [null, 10, 100, 1e4, 1e6, 1e9, 1e13, 1e18, 1e24];
     this._firstPurchaseCost = FIRST_PURCHASE_COST[tier];
-    const BASE_COSTS = [null, 1, 10, 1e3, 1e5, 1e8, 1e11, 1e16, 1e22];
+    const BASE_COSTS = [null, 1, 10, 1e3, 1e4, 1e7, 1e10, 1e15, 1e21];
     this._baseCost = BASE_COSTS[tier];
     // These are the base costs with the enhanced achievements
     const ENHANCED_BASE_COSTS = [null, 1, 1, 1, 1, 1, 1, 1, 1];
