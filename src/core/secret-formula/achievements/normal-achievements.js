@@ -3,19 +3,20 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Add the perk that unlocks Achievement Enhancement, <DONE>
--Add a way to gain Enhancement Points through row 14+ achievements,
--Modify the Achievements tab with the relevant information, including Shift functionality,
--Allow to Enhance Achievements in Achievement tab,
--Include a proper respec button, <DONE>
--Add an Enhanced effect to the first 4 rows of Achievements, <DONE>
--Make them work, <REMAIN: 32 & 41>
--Multiplier tab for Enhanced Achievements (HARD),
+-Add the perk that unlocks Achievement Enhancement <DONE>
 -Achievement 144 reward <DONE>
+-Add an Enhanced effect to the first 4 rows of Achievements <DONE>
+-Include a proper respec button, <DONE>
+-Make them work <REMAIN: 32>
+-Add a way to gain Enhancement Points through row 14+ achievements
+-Modify the Achievements tab with the relevant information, including Shift functionality
+-Allow to Enhance Achievements in Achievement tab
+-Multiplier tab for Enhanced Achievements
+-An h2p section for Enhanced Achievements
 
 Lower Priority:
 -Make the color for the respec button more appropiate,
--Fix Rep Galaxi timer to take into account r106 (and r108?)
+-Fix Rep Galaxy timer to take into account r106 (and r108?)
 */
 
 export const normalAchievements = [
@@ -58,7 +59,7 @@ export const normalAchievements = [
     name: "L4D: Left 4 Dimensions",
     description: "Buy a 4th Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-    get reward() { return `4th Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
+    get reward() { return `4th Antimatter Dimensions are ${formatInt(100)} times cheaper.`; },
     enhanced: {
       get reward() { return `4th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
         their initial cost scaling is ${formatX(3.6, 1, 1)}.`}
@@ -69,7 +70,7 @@ export const normalAchievements = [
     name: "5 Dimension Antimatter Punch",
     description: "Buy a 5th Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-    get reward() { return `5th Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
+    get reward() { return `5th Antimatter Dimensions are ${formatInt(100)} times cheaper.`; },
     enhanced: {
       get reward() { return `5th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
         their initial cost scaling is ${formatX(5.5, 1, 1)}.`}
@@ -84,7 +85,7 @@ export const normalAchievements = [
         : "Buy a 6th Antimatter Dimension.";
     },
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-    get reward() { return `6th Antimatter Dimensions are ${formatInt(100)} times cheaper.`; },
+    get reward() { return `6th Antimatter Dimensions are ${formatInt(1000)} times cheaper.`; },
     enhanced: {
       get reward() { return `6th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
         their initial cost scaling is ${formatX(8)}.`}
@@ -95,7 +96,7 @@ export const normalAchievements = [
     name: "Not a luck related achievement",
     description: "Buy a 7th Antimatter Dimension.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-    get reward() { return `7th Antimatter Dimensions are ${formatInt(100)} times cheaper.`; },
+    get reward() { return `7th Antimatter Dimensions are ${formatInt(1000)} times cheaper.`; },
     enhanced: {
       get reward() { return `7th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
         their initial cost scaling is ${formatX(12)}.`}
@@ -110,7 +111,7 @@ export const normalAchievements = [
         : "Buy an 8th Antimatter Dimension.";
     },
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-    get reward() { return `8th Antimatter Dimensions are ${formatInt(100)} times cheaper.`; },
+    get reward() { return `8th Antimatter Dimensions are ${formatInt(1000)} times cheaper.`; },
     enhanced: {
       get reward() { return `8th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
         their initial cost scaling is ${formatX(32)}.`}
