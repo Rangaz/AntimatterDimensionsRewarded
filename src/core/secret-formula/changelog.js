@@ -29,7 +29,7 @@ export const changelog = [
     <b>Post release stuff</b>
     <ul>
     <li>Improved Buy Max functionality for the IP multiplier, EP multiplier, IDs, and TDs, to take into account 
-    wether or not they spend resources due to their respective Achievements (82, 98 and 127) (28/9)</li>
+    wether or not they spend resources due to their respective Achievements (82, 98 and 127) (28/9).</li>
     <li>Fixed Time Dimensions not resetting when they should (25/9).</li>
     <li>Fixed a bug where Infinitying too fast for 60 seconds could prematurely unlock Achievement 124 (25/9).</li>
     <li>You can no longer Sacrifice if you'd end up net negative due to Achievement 38 (24/9).</li>
