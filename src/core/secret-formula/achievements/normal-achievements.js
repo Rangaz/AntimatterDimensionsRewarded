@@ -4,11 +4,10 @@ import { PlayerProgress } from "../../player-progress";
 /*
 TODO:
 -Add the perk that unlocks Achievement Enhancement <DONE>
--Achievement 144 reward <DONE>
 -Add an Enhanced effect to the first 4 rows of Achievements <DONE>
 -Include a proper respec button, <DONE>
--Make them work <REMAIN: 32>
--Add a way to gain Enhancement Points through row 14+ achievements
+-Make them work <DONE>
+-Add a way to gain Enhancement Points through row 14+ achievements <DONE>
 -Modify the Achievements tab with the relevant information, including Shift functionality
 -Allow to Enhance Achievements in Achievement tab
 -Multiplier tab for Enhanced Achievements
@@ -259,7 +258,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhancement not implemented
+    // Enhanced!
     id: 32,
     name: "The Gods are pleased",
     get description() { return `Get over ${formatX(600)} from Dimensional Sacrifice outside of Challenge 8.`; },
@@ -272,7 +271,11 @@ export const normalAchievements = [
     },
     effect: 0.1,
     enhanced: {
-      reward: "Dimensional Sacrifice is stronger... in some way.",
+      get reward() { return  `Dimensional Sacrifice is mildly stronger.
+      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false})} ➜
+      ${Sacrifice.getSacrificeDescription({ "Achievement32": false ,"Enhancement32": true})}`;
+      },
+      effect: 0.16
     }
   },
   {
@@ -678,8 +681,10 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() {
       return `Dimensional Sacrifice is stronger.
-      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Achievement57": false, "Achievement88": false })} ➜
-      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Achievement57": true, "Achievement88": false })}`;
+      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
+        "Achievement57": false, "Achievement88": false })} ➜
+      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
+        "Achievement57": true, "Achievement88": false })}`;
     },
     effect: 0.1
   },
@@ -961,8 +966,10 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.SACRIFICE_RESET_BEFORE,
     get reward() {
       return `Dimensional Sacrifice is stronger.
-      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Achievement57": true, "Achievement88": false })} ➜
-      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Achievement57": true, "Achievement88": true })}`;
+      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
+        "Achievement57": true, "Achievement88": false })} ➜
+      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
+        "Achievement57": true, "Achievement88": true })}`;
     },
     effect: 0.1
   },

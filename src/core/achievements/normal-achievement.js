@@ -73,8 +73,6 @@ class AchievementState extends GameMechanicState {
     return player.reality.enhancedAchievements.has(this.id);
   }
 
-  // Experimental
-
   get canEnhance() {
     return this.isUnlocked &&
       this.hasEnhancedEffect &&
@@ -89,6 +87,7 @@ class AchievementState extends GameMechanicState {
     if (!this.canEnhance) return;
     player.reality.enhancedAchievements.add(this.id);
     player.reality.enhancementPoints -= 1;
+    EventHub.dispatch(GAME_EVENT.ACHIEVEMENT_ENHANCED);
   }
 
   // Should only be called when respeccing
@@ -134,6 +133,10 @@ class AchievementState extends GameMechanicState {
     if (this.id === 148 || this.id === 166) {
       GameCache.staticGlyphWeights.invalidate();
     }
+    // You must have Enhancement points equal to your row 14+ achievements.
+    player.reality.totalEnhancementPoints = Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality);
+    if (!this.isPreReality) player.reality.enhancementPoints++;
+
     if (auto) {
       GameUI.notify.reality(`Automatically unlocked: ${this.name}`);
     } else {
