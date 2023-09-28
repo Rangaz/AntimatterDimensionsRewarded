@@ -79,6 +79,7 @@ class AchievementState extends GameMechanicState {
     return this.isUnlocked &&
       this.hasEnhancedEffect &&
       !this.isEnhanced &&
+      this.row <= player.reality.maxEnhancedRow && // Maximum row allowed
       player.reality.enhancementPoints !== 0 &&
       Perk.achievementEnhancement.isBought &&
       !Pelle.isDisabled("enhancedAchievements");

@@ -63,7 +63,8 @@ export default {
         "o-primary-btn--charged-respec-active": this.disCharge
       };
     },
-    offlineIpUpgrade: () => InfinityUpgrade.ipOffline
+    offlineIpUpgrade: () => InfinityUpgrade.ipOffline,
+    ipMultUncap: () => InfinityUpgrade.ipMultUncap
   },
   watch: {
     disCharge(newValue) {
@@ -171,19 +172,18 @@ export default {
         :upgrade="offlineIpUpgrade"
         :class="btnClassObject(1)"
       />
-      <!--
+      
       <InfinityUpgradeButton
+        v-if="thirdBottomUpgradeUnlocked"
+        :upgrade="ipMultUncap"
         :class="btnClassObject(1)"
-      >
-      Lol
-      </InfinityUpgradeButton>
-      -->
+      />     
     </div>
     <div v-if="eternityUnlocked && bottomRowUnlocked">
       The Infinity Point multiplier becomes more expensive
       <br>
-      above {{ formatPostBreak(ipMultSoftCap) }} Infinity Points, and cannot be purchased past
-      {{ formatPostBreak(ipMultHardCap) }} Infinity Points.
+      above {{ formatPostBreak(ipMultSoftCap) }} Infinity Points, and<i v-if="thirdBottomUpgradeUnlocked">,
+       usually,</i> cannot be purchased past {{ formatPostBreak(ipMultHardCap) }} Infinity Points.
     </div>
   </div>
 </template>

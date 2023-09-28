@@ -213,7 +213,7 @@ export default {
       v-if="isDoomed"
       class="c-achievements-tab__header"
     >
-      You cannot enhance Achievements anymore.
+      You cannot enhance Achievements while Doomed.
     </div>
     <div
       v-if="showAutoAchieve"

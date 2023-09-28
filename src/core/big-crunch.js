@@ -152,7 +152,7 @@ function bigCrunchCheckUnlocks() {
 }
 
 export function secondSoftReset(enteringAntimatterChallenge) {
-  // r115 keeps u to 200 dim boosts and 50 galaxies
+  // r115 keeps up to 200 dim boosts and 50 galaxies
   if (Achievement(115).canBeApplied) {
     player.dimensionBoosts = Math.clampMax(player.dimensionBoosts, 200);
     player.galaxies = Math.clampMax(player.galaxies, 50);

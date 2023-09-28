@@ -424,6 +424,9 @@ export const migrations = {
       // The enhanced achievements version
       player.reality.enhancedAchievements = new Set();
       player.reality.enhancementPoints = 0; // Later on add ways to retroactively get them.
+      player.reality.totalEnhancementPoints = 0;
+      player.reality.disEnhance = false;
+      player.reality.maxEnhancedRow = 4;
 
     }
   },

@@ -222,11 +222,21 @@ export const infinityUpgrades = {
     checkRequirement: () => Achievement(41).isUnlocked,
     costCap: DC.E6E6,
     costIncreaseThreshold: DC.E3E6,
-    description: () => Achievement(121).isUnlocked ? `Multiply Infinity Points from all sources by ${formatX(2.01, 2, 2)}` : `Multiply Infinity Points from all sources by ${formatX(2)}`,
+    description: () => Achievement(121).isUnlocked ? `Multiply Infinity Points from all sources by ${formatX(2.01, 2, 2)}` : 
+      `Multiply Infinity Points from all sources by ${formatX(2)}`,
     // Normally the multiplier caps at e993k or so with 3300000 purchases, but if the cost is capped then we just give
     // an extra e7k to make the multiplier look nice... that is, without my r121.
     effect: () => (Achievement(121).isUnlocked ? DC.D2.times(DC.D1_005).pow(player.IPMultPurchases) : DC.D2.pow(player.IPMultPurchases)),
-    cap: () => Effarig.eternityCap ?? DC.D2.times(DC.D1_005).pow(3300000),
+    // The cap, while technically not gone with ipMultUncap upgrade, is practically impossible to obtain.
+    cap: () => Effarig.eternityCap ?? (InfinityUpgrade.ipMultUncap.isBought && Achievement(41).isEnhanced ? DC.E1E15 : 
+      DC.D2.times(DC.D1_005).pow(3300000)),
     formatEffect: value => formatX(value, 2, 2),
+  },
+  ipMultUncap: {
+    id: "ipMultUncap",
+    cost: DC.E1E7,
+    checkRequirement: () => Achievement(41).isEnhanced,
+    description: () => Achievement(41).isEnhanced ? `Remove the ${formatPostBreak(DC.E6E6)} IP cap from the IP multiplier upgrade, 
+    but its price increases much faster` : "Enhance Achievement 41 to activate this effect",
   }
 };
