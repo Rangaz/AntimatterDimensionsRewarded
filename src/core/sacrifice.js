@@ -35,12 +35,13 @@ export class Sacrifice {
       base = "x";
     } else if (f("InfinityChallenge2isCompleted", InfinityChallenge(2).isCompleted)) {
       factor = 1 / 120;
-      places = 3;
+      places = Perk.achievementEnhancement.isBought ? 4 : 3;
       base = "AD1";
     }
 
     const exponent = (1 +
       (f("Achievement32", Achievement(32).isEffectActive) ? Achievement(32).config.effect : 0) +
+      (f("Enhancement32", Achievement(32).enhancedEffect.isEffectActive) ? Achievement(32).enhancedEffect.config.effect : 0) +
       (f("Achievement57", Achievement(57).isEffectActive) ? Achievement(57).config.effect : 0)
     ) * (1 +
       (f("Achievement88", Achievement(88).isEffectActive) ? Achievement(88).config.effect : 0) +
@@ -64,7 +65,7 @@ export class Sacrifice {
     else base = 2;
 
     // All the factors which go into the multiplier have to combine this way in order to replicate legacy behavior
-    const preIC2 = 1 + Effects.sum(Achievement(32), Achievement(57));
+    const preIC2 = 1 + Effects.sum(Achievement(32), Achievement(32).enhancedEffect, Achievement(57));
     const postIC2 = 1 + Effects.sum(Achievement(88), TimeStudy(228));
     const triad = TimeStudy(304).effectOrDefault(1);
 
