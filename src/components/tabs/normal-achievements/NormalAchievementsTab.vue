@@ -86,15 +86,6 @@ export default {
     cancelAnimationFrame(this.renderAnimationId);
   },
   methods: {
-    // DEBUG FUNCTIONS. REMOVE EVENTUALLY
-    addEnhancementPoint() {
-      player.reality.enhancementPoints += 1;
-      player.reality.totalEnhancementPoints += 1;
-    },
-    removeEnhancementPoints() {
-      player.reality.enhancementPoints = 0;
-      player.reality.totalEnhancementPoints = 0;
-    },
     update() {
       const gameSpeedupFactor = getGameSpeedupFactor();
       this.achievementPower = Achievements.power;
@@ -173,19 +164,6 @@ export default {
         class="o-primary-btn--subtab-option"
         label="Auto Achievements:"
       />
-      
-      <PrimaryButton
-        v-if="isEnhancementUnlocked"
-        @click="addEnhancementPoint"
-        class="o-primary-btn"
-        label="Get an enhancement point (DEBUG)"
-      >Get an enhancement point (DEBUG)</PrimaryButton>
-      <PrimaryButton
-        v-if="isEnhancementUnlocked"
-        @click="removeEnhancementPoints"
-        class="o-primary-btn"
-        label="Set enhancement points to 0 (DEBUG)"
-      >Set enhancement points to 0 (DEBUG)</PrimaryButton>
       
       <PrimaryButton
         v-if="isEnhancementUnlocked"
