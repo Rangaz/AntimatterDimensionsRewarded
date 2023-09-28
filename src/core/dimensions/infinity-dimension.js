@@ -299,7 +299,8 @@ class InfinityDimensionState extends DimensionState {
       Currency.infinityPoints.value,
       this.cost,
       this.costMultiplier,
-      purchasesUntilHardcap
+      purchasesUntilHardcap,
+      Achievement(98).isUnlocked // The free factor in LinearCostScaling, because r98 makes them free.
     );
 
     if (costScaling.purchases <= 0) return false;
