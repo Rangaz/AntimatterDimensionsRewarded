@@ -15,7 +15,7 @@ TODO:
 
 Lower Priority:
 -Make the color for the respec button more appropiate,
--Look into optimized AM autobuyers after r52
+-Fix Rep Galaxi timer to take into account r106 (and r108?)
 */
 
 export const normalAchievements = [
@@ -403,7 +403,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhancement not implemented
+    // Enhanced!
     id: 41,
     name: "No DLC required",
     get description() { return `Buy ${formatInt(16)} Infinity Upgrades.`; },
@@ -419,7 +419,7 @@ export const normalAchievements = [
     enhanced: {
       get reward() {
         return `Unlock three new Infinity Upgrades- ${formatX(2)} IP multiplier, offline IP generation, and 
-        IP mult cap increase.`;
+        IP multipler uncap.`;
       },
     }
   },
@@ -514,8 +514,8 @@ export const normalAchievements = [
     effect: () => DC.D1_007.pow(player.dimensionBoosts).recip(),
     formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
     enhanced: {
-      get reward() { return `Tickspeed is just above ${formatPercents(0.18)} faster per Dimension Boost.`; },
-      effect: () => DC.D0_8446303389034288.pow(player.dimensionBoosts),
+      get reward() { return `Tickspeed is just over ${formatPercents(0.05)} faster per Dimension Boost.`; },
+      effect: () => DC.D0_95.pow(player.dimensionBoosts),
       formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
     }
   },
@@ -1444,9 +1444,9 @@ export const normalAchievements = [
     checkRequirement: () => Tickspeed.current.exponent <= -8296262,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() {
-      return `Tickspeed is ${formatX(2)} faster for every Tachyon Galaxy obtained.`;
+      return `Tickspeed is a bit below ${formatX(2)} faster for every Tachyon Galaxy obtained.`;
     },
-    effect: () => DC.D1.divide(DC.D2.pow(player.dilation.totalTachyonGalaxies)),
+    effect: () => DC.D0_55.pow(player.dilation.totalTachyonGalaxies),
     formatEffect: value => `${formatX(value.recip(), 1, 1)}`,
   },
   {
