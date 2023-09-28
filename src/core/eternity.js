@@ -331,7 +331,7 @@ class EPMultiplierState extends GameMechanicState {
     }
     const bulk = bulkBuyBinarySearch(Currency.eternityPoints.value, {
       costFunction: this.costAfterCount,
-      cumulative: true,
+      cumulative: !Achievement(127).isUnlocked,
       firstCost: this.cost,
     }, this.boughtAmount);
     if (!bulk) return false;
