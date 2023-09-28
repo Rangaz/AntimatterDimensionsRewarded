@@ -73,7 +73,10 @@ export function buyDilationUpgrade(id, bulk = 1) {
     const upgAmount = player.dilation.rebuyables[id];
     if (Currency.dilatedTime.lt(upgrade.cost) || upgAmount >= upgrade.config.purchaseCap) return false;
 
-    let buying = Decimal.affordGeometricSeries(Currency.dilatedTime.value,
+    // Having r144 means the cost calculation is different.
+    let buying = Achievement(144).isUnlocked ? Math.floor(Decimal.log(Currency.dilatedTime.value.divide(
+      upgrade.config.initialCost), upgrade.config.increment) + 1 - upgAmount) : 
+      Decimal.affordGeometricSeries(Currency.dilatedTime.value,
       upgrade.config.initialCost, upgrade.config.increment, upgAmount).toNumber();
     buying = Math.clampMax(buying, bulk);
     buying = Math.clampMax(buying, upgrade.config.purchaseCap - upgAmount);
