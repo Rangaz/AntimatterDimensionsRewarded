@@ -516,7 +516,7 @@ export const perks = {
     family: PERK_FAMILY.ACHIEVEMENT,
     get description() {
       return `Unlock Achievement Enhancement. You can Enhance 1 row 1-4 Achievement 
-      per Achievement obtained in rows 14-17.`;
+      per Achievement obtained in rows 14+.`;
     },
     shortDescription: () => "Unlock Achievement Enhancement",
     layoutPosList: [20163, 81802, 81403, 79405, 79806, 84639], // I need to adjust these

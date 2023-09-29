@@ -8,8 +8,8 @@ TODO:
 -Include a proper respec button, <DONE>
 -Make them work <DONE>
 -Add a way to gain Enhancement Points through row 14+ achievements <DONE>
+-Allow to Enhance Achievements in Achievement tab <DONE>
 -Modify the Achievements tab with the relevant information, including Shift functionality
--Allow to Enhance Achievements in Achievement tab
 -Multiplier tab for Enhanced Achievements
 -An h2p section for Enhanced Achievements
 -Changelog entry

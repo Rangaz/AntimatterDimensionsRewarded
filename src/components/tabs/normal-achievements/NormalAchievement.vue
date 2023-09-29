@@ -164,6 +164,9 @@ export default {
     onMouseLeave() {
       this.mouseOverInterval = setTimeout(() => this.isMouseOver = false, 300);
     },
+    onClick() {
+      if (this.canBeEnhanced) this.achievement.enhance();
+    },
     // We don't want to expose the original text for Pelle achievements, so we generate a random string with the same
     // length of the original text in order to make something that fits reasonably within their respective places
     makeGarbledTemplate(input) {
@@ -205,6 +208,7 @@ export default {
     :style="styleObject"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
+    @click="onClick"
   >
     <HintText
       :key="garbleKey"
