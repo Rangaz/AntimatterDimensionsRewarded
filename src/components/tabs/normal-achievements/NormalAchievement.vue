@@ -51,6 +51,24 @@ export default {
         "background-position": `-${(this.achievement.column - 1) * 104}px -${(this.achievement.row - 1) * 104}px`
       };
     },
+    tooltipStyle() {
+      return {
+        "o-achievement__tooltip__can-be-enhanced": this.canBeEnhanced,
+        "o-achievement__tooltip": !this.canBeEnhanced,
+        "l-column-one": this.achievement.column == 1,
+        "l-column-two": this.achievement.column == 2 && this.canBeEnhanced,
+        "l-column-seven": this.achievement.column == 7 && this.canBeEnhanced,
+        "l-column-eight": this.achievement.column == 8,
+      };
+    },
+    tooltipPosition() {
+      switch (this.achievement.column) {
+        case 1: return {"margin-left": "0rem"};
+        case 2: return this.canBeEnhanced ? {"margin-left": "-11.4rem"} : null;
+        case 7: return this.canBeEnhanced ? {"margin-left": "-18rem"} : null;
+        case 8: return this.canBeEnhanced ? {"margin-left": "-29.4rem"} : {"margin-left": "-9.5rem"};
+      };
+    },
     classObject() {
       return {
         "o-achievement": true,
@@ -195,7 +213,9 @@ export default {
     >
       {{ processedId }}
     </HintText>
-    <div class="o-achievement__tooltip">
+    <div :class="tooltipStyle"
+    :style="tooltipPosition"
+    ref="tooltip">
       <template v-if="isMouseOver">
         <div class="o-achievement__tooltip__name">
           {{ processedName }} ({{ processedId }})
@@ -203,39 +223,48 @@ export default {
         <div class="o-achievement__tooltip__description">
           {{ processedDescription }}
         </div>
-        <div
-          v-if="config.reward && !isEnhanced"
-          class="o-achievement__tooltip__reward"
-        >
-          <span
-            v-if="!isObscured"
-            :class="{ 'o-pelle-disabled': isDisabled }"
+        <table class="o-achievement__tooltip__table">
+        <!--<tr>
+          <td>-->
+          <div
+            v-if="config.reward && !isEnhanced"
+            class="o-achievement__tooltip__reward"
           >
-            Reward: {{ config.reward }}
-            <EffectDisplay
-              v-if="config.formatEffect"
-              br
-              :config="config"
-            />
-          </span>
-        </div>
-        <!--My Enhanced effect-->
-        <div
-          v-if="canBeEnhanced || isEnhanced"
-          class="o-achievement__tooltip__enhanced"
-        >
-          <span
-            v-if="!isObscured"
-            :class="{ 'o-pelle-disabled': isDisabled }"
+            <span
+              v-if="!isObscured"
+              :class="{ 'o-pelle-disabled': isDisabled }"
+            >
+              Reward: {{ config.reward }}
+              <EffectDisplay
+                v-if="config.formatEffect"
+                br
+                :config="config"
+              />
+            </span>
+          </div>
+          <!--</td>-->
+          <td v-if="canBeEnhanced" style="vertical-align: middle;">➜</td>
+          <!--My Enhanced effect-->
+          <!--<td>-->
+          <div
+            v-if="canBeEnhanced || isEnhanced"
+            class="o-achievement__tooltip__enhanced"
           >
-            Enhanced: {{ config.enhanced.reward }}
-            <EffectDisplay
-              v-if="config.enhanced.formatEffect"
-              br
-              :config="config.enhanced"
-            />
-          </span>
-        </div>
+            <span
+              v-if="!isObscured"
+              :class="{ 'o-pelle-disabled': isDisabled }"
+            >
+              Enhanced: {{ config.enhanced.reward }}
+              <EffectDisplay
+                v-if="config.enhanced.formatEffect"
+                br
+                :config="config.enhanced"
+              />
+            </span>
+          </div>
+          <!--</td>
+        </tr>-->
+      </table>
         <div
           v-if="achievedTime"
           class="o-achievement-time"
@@ -338,6 +367,67 @@ export default {
     visibility: hidden;
   }
 }
+.o-achievement__tooltip__can-be-enhanced {
+  width: 40rem;
+  position: absolute;
+  bottom: 10.2rem;
+  z-index: 2;
+  font-size: 1.4rem;
+  opacity: 0;
+  color: var(--color-text);
+  background: var(--color-base);
+  border: 0.1rem solid rgb(0, 0, 0);
+  border-radius: var(--var-border-radius, 0.8rem);
+  margin-left: -15rem;
+  padding: 0.4rem;
+  transition-duration: 0.3s;
+  pointer-events: none;
+}
+.o-achievement__tooltip__can-be-enhanced::after {
+  content: " ";
+  width: 0;
+  position: absolute;
+  bottom: 0;
+  right: 50%;
+  z-index: 0;
+  border-top: 0 solid black;
+  border-right: 0.7rem solid transparent;
+  border-left: 0.7rem solid transparent;
+  margin-bottom: 0;
+  margin-left: -0.7rem;
+  transition-duration: 0.3s;
+}
+.t-normal .o-achievement__tooltip__can-be-enhanced,
+.t-s12 .o-achievement__tooltip__can-be-enhanced {
+  background: var(--color-base);
+  border: 0.1rem solid var(--color-accent);
+}
+
+.t-normal .o-achievement__tooltip__can-be-enhanced::after,
+.t-s12 .o-achievement__tooltip__can-be-enhanced::after {
+  border-top-color: var(--color-accent);
+}
+.o-achievement:hover .o-achievement__tooltip__can-be-enhanced {
+  bottom: 11rem;
+  opacity: 1;
+}
+
+.o-achievement:hover .o-achievement__tooltip__can-be-enhanced::after {
+  border-top-width: 0.7rem;
+  margin-bottom: -0.7rem;
+}
+/*The column styles here only have the purpose of aligning a specific element*/
+.l-column-one::after {
+  left: 5rem;
+}
+.l-column-two::after {
+  left: 17rem;
+}
+.l-column-seven::after {
+  left: 23rem;
+}.l-column-eight::after {
+  right: 5rem;
+}
 
 .o-achievement__enhancement {
   width: 1.5rem;
@@ -376,5 +466,6 @@ export default {
 .o-achievement__tooltip__enhanced {
   font-style: italic;
   font-size: 1.3rem;
+  text-shadow: 0px 0px 4px #aac437;
 }
 </style>
