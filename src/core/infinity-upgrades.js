@@ -171,7 +171,7 @@ class InfinityIPMultUpgrade extends GameMechanicState {
   }
 
   get costIncrease() {
-    if (this.hasUncappedCost) return 1e250;
+    if (this.hasUncappedCost) return 1e200;
     return this.hasIncreasedCost ? 1e10 : 10;
   }
 
