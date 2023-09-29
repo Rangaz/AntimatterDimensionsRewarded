@@ -49,6 +49,12 @@ export default {
         "o-achievement__indicator--locked": !this.isUnlocked
       };
     },
+    tooltipPosition() {
+      switch (this.achievement.column) {
+        case 1: return "l-achievement__tooltip__column-one";
+        case 8: return "l-achievement__tooltip__column-eight";
+      }
+    }
   },
   beforeDestroy() {
     clearTimeout(this.mouseOverInterval);
@@ -88,7 +94,8 @@ export default {
     >
       S{{ id }}
     </HintText>
-    <div class="o-achievement__tooltip">
+    <div class="o-achievement__tooltip"
+    :class="tooltipPosition">
       <template v-if="isMouseOver">
         <div class="o-achievement__tooltip__name">
           {{ config.name }} (S{{ id }})
@@ -109,3 +116,18 @@ export default {
     </div>
   </div>
 </template>
+
+<style scoped>
+.l-achievement__tooltip__column-one {
+    margin-left: 0rem;
+}
+.l-achievement__tooltip__column-one::after {
+  left: 5rem;
+}
+.l-achievement__tooltip__column-eight {
+  margin-left: -9.5rem;
+}
+.l-achievement__tooltip__column-eight::after {
+  right: 5rem;
+}
+</style>
