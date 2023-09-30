@@ -11,12 +11,16 @@ TODO:
 -Allow to Enhance Achievements in Achievement tab <DONE>
 -Modify the Achievements tab with the relevant information, including Shift functionality <DONE>
 -Reality reminder <DONE>
--Multiplier tab for Enhanced Achievements <DONE>
+-Multiplier tab functionality for Enhanced Achievements <DONE>
 -An h2p section for Enhanced Achievements
 -Changelog entry
 
 Lower Priority:
--Make r45 work with free Dim Boosts
+-Make r45 work with free Dim Boosts <DONE>
+-Merge r52 & r53's reward <DONE>
+-Make r53's new effect <DONE>
+-Change r64's effect <DONE>
+-Change r72's effect <DONE>
 -Make the color for the respec button more appropiate,
 -Make Rep Galaxy timer take into account r106 (and r108?)
 */
@@ -518,11 +522,11 @@ export const normalAchievements = [
     checkRequirement: () => Tickspeed.current.exponent <= -26,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return `Tickspeed is just below ${formatPercents(0.01)} faster per Dimension Boost.`; },
-    effect: () => DC.D1_007.pow(player.dimensionBoosts).recip(),
+    effect: () => DC.D1_007.pow(DimBoost.totalBoosts).recip(),
     formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
     enhanced: {
       get reward() { return `Tickspeed is just over ${formatPercents(0.05)} faster per Dimension Boost.`; },
-      effect: () => DC.D0_95.pow(player.dimensionBoosts),
+      effect: () => DC.D0_95.pow(DimBoost.totalBoosts),
       formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
     }
   },
@@ -534,16 +538,16 @@ export const normalAchievements = [
     checkRequirement: () => AntimatterDimension(7).amount.exponent >= 12,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "8th Antimatter Dimensions are slightly stronger based on the product of all your AD amounts.",
-    effect: () => Decimal.max(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(AntimatterDimension(3).amount.times(
-    AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(AntimatterDimension(6).amount.times(
+    effect: () => Decimal.max(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(AntimatterDimension(3).
+    amount.times(AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(AntimatterDimension(6).amount.times(
     AntimatterDimension(7).amount)))))).pow(0.00002).plus(0.05), 1),
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "8th Antimatter Dimensions are significantly stronger based on the product of your Antimatter and " + 
         "all AD amounts.",
-        effect: () => Currency.antimatter.value.times(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(AntimatterDimension(3).amount.times(
-          AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(AntimatterDimension(6).amount.times(
-          AntimatterDimension(7).amount))))))).pow(0.000025).plus(1),
+        effect: () => Currency.antimatter.value.times(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(
+          AntimatterDimension(3).amount.times(AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(
+            AntimatterDimension(6).amount.times(AntimatterDimension(7).amount))))))).pow(0.000025).plus(1),
           formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
@@ -619,17 +623,17 @@ export const normalAchievements = [
     reward: "All Dimension Boosts affect all Antimatter Dimensions.",
   },
   {
-    // Implemented!
+    // Implemented! And modified!
     id: 52,
     name: "Age of Automation",
     description: "Max the interval for Antimatter Dimension and Tickspeed upgrade autobuyers.",
     checkRequirement: () => Autobuyer.antimatterDimension.zeroIndexed.concat(Autobuyer.tickspeed)
       .every(a => a.isUnlocked && a.hasMaxedInterval),
     checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
-    reward: "Antimatter Dimensions no longer spend Antimatter.",
+    reward: "Antimatter Dimensions and Tickspeed Upgrades no longer spend Antimatter.",
   },
   {
-    // Implemented!
+    // Implemented! And modified!
     id: 53,
     name: "Definitely not worth it",
     description: "Max the intervals for all normal autobuyers.",
@@ -639,7 +643,9 @@ export const normalAchievements = [
     checkRequirement: () => Autobuyers.upgradeable
       .every(a => a.isUnlocked && a.hasMaxedInterval),
     checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
-    reward: "Tickspeed upgrades no longer spend Antimatter.",
+    reward: "Start with an 8th AD, if possible. Disabled if the 8th AD autobuyer is also disabled.",
+    effect: 1,
+    effectCondition: () => Autobuyer.antimatterDimension(8).isActive && player.auto.autobuyersOn,
   },
   {
     id: 54,
@@ -734,18 +740,20 @@ export const normalAchievements = [
     description: "Begin generation of Infinity Power.",
     checkRequirement: () => Currency.infinityPower.gt(1),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `Gain back those ${format(DC.E8)} IP you must have spent to get that 
-    Infinity Dimension.`},
+    get reward() { return `Gain back those ${format(DC.E8)} IP you must have spent to get this Achievement.`},
     effect: DC.E8,
   },
   {
+    // Modified!
     id: 64,
     name: "Zero Deaths",
     description: "Get to Infinity without Dimension Boosts or Antimatter Galaxies while in a Normal Challenge.",
     checkRequirement: () => player.galaxies === 0 && DimBoost.purchasedBoosts === 0 && NormalChallenge.isRunning,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `Antimatter Dimensions 1-4 are ${formatPercents(0.25)} stronger.`; },
-    effect: 1.25
+    reward: "Antimatter Dimensions 1-4 are stronger the less Dimension Boosts and Antimatter Galaxies you have.",
+    effect: () => Math.pow(1.75 - Math.clampMax(player.galaxies, 50) / 100, 
+      5 - Math.clampMax(DimBoost.purchasedBoosts, 200) / 50),
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     id: 65,
@@ -794,7 +802,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `1st Antimatter Dimensions get an exponentially increasing multiplier that 
     resets after Dimension Boosts, Antimatter Galaxies, and Infinities.`; },
-    effect: () => player.chall3Pow.times(105).pow(1.5).clampMax(DC.E12),
+    effect: () => player.chall3Pow.times(105).pow(1.5).clampMax(DC.E15),
     effectCondition: () => !NormalChallenge(3).isRunning,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
@@ -814,7 +822,7 @@ export const normalAchievements = [
     effect: 3
   },
   {
-    // Buffed!
+    // Buffed! And modified!
     id: 72,
     name: "Can't hold all these infinities",
     get description() {
@@ -822,8 +830,9 @@ export const normalAchievements = [
     },
     checkRequirement: () => AntimatterDimensions.all.every(x => x.multiplier.gte(Decimal.NUMBER_MAX_VALUE)),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `All Antimatter Dimensions are ${formatPercents(0.308)} stronger.`; },
-    effect: 1.308
+    get reward() { return `Raise Antimatter Dimensions such that, for every product of ${formatX(Decimal.NUMBER_MAX_VALUE, 1)},
+      they are ${formatPercent(0.31)} stronger.`},
+    effect: 1.0003782837
   },
   {
     id: 73,
@@ -1244,8 +1253,8 @@ export const normalAchievements = [
     description: "Start an Infinity Challenge inside an Eternity Challenge.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() {
-      return `Infinities no longer reset Infinity power nor ID amounts, and keep up to 
-      ${formatInt(200)} Dimension Boosts and ${formatInt(50)} Antimatter Galaxies between them.`
+      return `Infinities no longer reset Infinity power nor ID amounts, and, if their autobuyers are on,
+       keep up to ${formatInt(200)} Dimension Boosts and ${formatInt(50)} Antimatter Galaxies between them.`
     },
   },
   {
@@ -1455,9 +1464,9 @@ export const normalAchievements = [
     checkRequirement: () => Tickspeed.current.exponent <= -8296262,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() {
-      return `Tickspeed is a bit below ${formatX(2)} faster for every Tachyon Galaxy obtained.`;
+      return `Tickspeed is ${formatX(2)} faster for every Tachyon Galaxy obtained.`;
     },
-    effect: () => DC.D0_55.pow(player.dilation.totalTachyonGalaxies),
+    effect: () => DC.D2.pow(player.dilation.totalTachyonGalaxies).recip(),
     formatEffect: value => `${formatX(value.recip(), 1, 1)}`,
   },
   {

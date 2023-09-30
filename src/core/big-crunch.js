@@ -152,10 +152,13 @@ function bigCrunchCheckUnlocks() {
 }
 
 export function secondSoftReset(enteringAntimatterChallenge) {
-  // r115 keeps up to 200 dim boosts and 50 galaxies
+  // r115 keeps up to 200 dim boosts and 50 galaxies, but only if their
+  // respective autobuyers are on.
   if (Achievement(115).canBeApplied) {
-    player.dimensionBoosts = Math.clampMax(player.dimensionBoosts, 200);
-    player.galaxies = Math.clampMax(player.galaxies, 50);
+    player.dimensionBoosts = Autobuyer.dimboost.isActive && player.auto.autobuyersOn ? 
+      Math.clampMax(player.dimensionBoosts, 200) : 0;
+    player.galaxies = Autobuyer.galaxy.isActive && player.auto.autobuyersOn ? 
+      Math.clampMax(player.galaxies, 50) : 0;
   } else {
     player.dimensionBoosts = 0;
     player.galaxies = 0;

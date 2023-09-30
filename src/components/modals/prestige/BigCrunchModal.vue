@@ -39,16 +39,36 @@ export default {
       if (this.startingGalaxies) gainedResources.push(`${quantify("Galaxy", this.startingGalaxies)}`);
 
       return `You will start your next Infinity with ${makeEnumeration(gainedResources)}.`;
+    },
+    // Achievement 115 won't keep dim boosts or galaxies if their respective autobuyers are off.
+    autobuyerWarning() {
+      if (player.auto.autobuyersOn && Autobuyer.dimboost.isActive && Autobuyer.galaxy.isActive) return;
+      if (!Achievement(115).canBeApplied) return;
+      const unkeptResources = [];
+      if (!Autobuyer.dimboost.isActive) unkeptResources.push("Dimension Boosts");
+      if (!Autobuyer.galaxy.isActive) unkeptResources.push("Antimatter Galaxies");
+      if (unkeptResources.length >= 2) {
+        return `Note that, because you disabled the autobuyers for ${unkeptResources[0]} and 
+          ${unkeptResources[1]}, Achievement 115 won't keep those resources.`;
+      } else {
+        return `Note that, because you disabled the autobuyer for ${unkeptResources[0]}, 
+          Achievement 115 won't keep that resource.`;
+      }
     }
   },
   methods: {
     update() {
       this.gainedInfinities = gainedInfinities().round();
       this.gainedInfinityPoints = gainedInfinityPoints().round();
-      if (Achievement(115).isEffectActive) {
-        console.log("115!");
-        this.startingBoosts = Math.clamp(player.dimensionBoosts, DimBoost.startingDimensionBoosts, 200);
-        this.startingGalaxies = Math.clamp(player.galaxies, InfinityUpgrade.skipResetGalaxy.isBought, 50);
+      // r115 will keep up to 200 Dim Boosts and 50 Galaxies, but only if
+      // their autobuyer is active.
+      if (Achievement(115).canBeApplied) {
+        this.startingBoosts = Autobuyer.dimboost.isActive && player.auto.autobuyersOn ? 
+          Math.clamp(player.dimensionBoosts, DimBoost.startingDimensionBoosts, 200) : 
+          DimBoost.startingDimensionBoosts;
+        this.startingGalaxies = Autobuyer.galaxy.isActive && player.auto.autobuyersOn ? 
+          Math.clamp(player.galaxies, InfinityUpgrade.skipResetGalaxy.isBought, 50) : 
+          (InfinityUpgrade.skipResetGalaxy.isBought ? 1 : 0);
       } else {
         this.startingBoosts = DimBoost.startingDimensionBoosts;
         this.startingGalaxies = InfinityUpgrade.skipResetGalaxy.isBought ? 1 : 0;
@@ -74,6 +94,7 @@ export default {
     :message="message"
     :gained-resources="ipGainInfo"
     :starting-resources="startingResources"
+    :autobuyerWarning="autobuyerWarning"
     :confirm-fn="handleYesClick"
     :alternate-condition="isFirstInfinity"
     :alternate-text="message"

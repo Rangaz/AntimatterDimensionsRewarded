@@ -24,6 +24,12 @@ export default {
       required: false,
       default: undefined
     },
+    autobuyerWarning: { // Used in my mod where disabling an autobuyer would
+      // make a reset keep less resources.
+      type: String,
+      required: false,
+      defauld: undefined
+    },
     confirmOption: {
       type: String,
       required: false,
@@ -70,6 +76,12 @@ export default {
         class="c-modal-message__text"
       >
         {{ startingResources }}
+      </div>
+      <div
+        v-if="autobuyerWarning"
+        class="c-modal-message__text"
+      >
+        {{ autobuyerWarning }}
       </div>
     </div>
     <div v-else>

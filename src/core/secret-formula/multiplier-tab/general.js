@@ -47,7 +47,7 @@ export const general = {
         Achievement(108).effects.replicantiSpeed.effectOrDefault(1) : 1;
       // There is also a buy10 effect, but we don't track that in the multiplier tab
       if (ach === 141) return Achievement(141).canBeApplied ? Achievement(141).effects.ipGain.effectOrDefault(1) : 1;
-      if (ach === 183) return 1;
+      if (ach === 72 || ach === 183) return 1;
       if (!dim) return Achievement(ach).canBeApplied ? Achievement(ach).effectOrDefault(1) : 1;
 
       if (dim?.length === 2) {
@@ -67,9 +67,10 @@ export const general = {
         ? Achievement(ach).effectOrDefault(1) : 1;
     },
     // 183 is the only time a power effect is in an Achievement, so we special-case it here and return a x1 multiplier.
-    // ...or that would be the case if it wasn't for my enhancements (Er47).
+    // ...or that would be the case if it wasn't for my achievements (r72 & Er47).
     powValue: ach => (ach === 183 ? Achievement(183).effectOrDefault(1) : 1) * 
-      (ach === 1047 ? Achievement(47).enhancedEffect.effectOrDefault(1) : 1),
+      (ach === 1047 ? Achievement(47).enhancedEffect.effectOrDefault(1) : 1) *
+      (ach === 72 ? Achievement(72).effectOrDefault(1) : 1),
     isActive: ach => ach > 1000 ? Achievement(ach - 1000).enhancedEffect.canBeApplied : Achievement(ach).canBeApplied,
     icon: ach => {
       const base = MultiplierTabIcons.ACHIEVEMENT;
