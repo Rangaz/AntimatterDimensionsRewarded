@@ -63,7 +63,7 @@ export default {
     respecClassObject() {
       return {
         "o-primary-btn--subtab-option": true,
-        "o-primary-btn--respec-active": this.respecEnhancements // Change the color later
+        "o-primary-btn--enhanced-respec-active": this.respecEnhancements // Change the color later
       };
     },
   },
@@ -224,3 +224,14 @@ export default {
     </div>
   </div>
 </template>
+
+<style scoped>
+.o-primary-btn--enhanced-respec-active {
+  color: #ffffff;
+  background-color: #aaaa33 !important;
+}
+.o-primary-btn--enhanced-respec-active:hover {
+  color: #000000;
+  background-color: #aaaa33 !important;
+}
+</style>
