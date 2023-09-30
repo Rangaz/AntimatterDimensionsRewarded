@@ -57,7 +57,8 @@ export default {
     },
     tooltipStyle() {
       return {
-        "o-achievement__tooltip__can-be-enhanced": this.canBeEnhanced || this.shiftDown,
+        "o-achievement__tooltip__can-be-enhanced": this.canBeEnhanced || 
+          (this.shiftDown && this.hasEnhancementEffect),
         "o-achievement__tooltip": !this.canBeEnhanced,
         "l-column-one": this.achievement.column == 1,
         "l-column-two": this.achievement.column == 2 && this.canBeEnhanced,
