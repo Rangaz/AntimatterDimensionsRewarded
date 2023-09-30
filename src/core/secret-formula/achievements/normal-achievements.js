@@ -831,8 +831,8 @@ export const normalAchievements = [
     checkRequirement: () => AntimatterDimensions.all.every(x => x.multiplier.gte(Decimal.NUMBER_MAX_VALUE)),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return `Raise Antimatter Dimensions such that, for every product of ${formatX(Decimal.NUMBER_MAX_VALUE, 1)},
-      they are ${formatPercent(0.31)} stronger.`},
-    effect: 1.0003782837
+    they are ${formatPercents(0.31)} stronger.`},
+    effect: 1.00038044
   },
   {
     id: 73,

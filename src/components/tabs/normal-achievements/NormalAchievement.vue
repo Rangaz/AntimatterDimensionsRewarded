@@ -69,9 +69,12 @@ export default {
     tooltipPosition() {
       switch (this.achievement.column) {
         case 1: return {"margin-left": "0rem"};
-        case 2: return this.canBeEnhanced || this.shiftDown ? {"margin-left": "-11.4rem"} : null;
-        case 7: return this.canBeEnhanced || this.shiftDown ? {"margin-left": "-18rem"} : null;
-        case 8: return this.canBeEnhanced || this.shiftDown ? {"margin-left": "-29.4rem"} : {"margin-left": "-9.5rem"};
+        case 2: return this.canBeEnhanced || (this.shiftDown && this.hasEnhancementEffect) ? 
+          {"margin-left": "-11.4rem"} : null;
+        case 7: return this.canBeEnhanced || (this.shiftDown && this.hasEnhancementEffect) ? 
+          {"margin-left": "-18rem"} : null;
+        case 8: return this.canBeEnhanced || (this.shiftDown && this.hasEnhancementEffect) ? 
+          {"margin-left": "-29.4rem"} : {"margin-left": "-9.5rem"};
       };
     },
     classObject() {
