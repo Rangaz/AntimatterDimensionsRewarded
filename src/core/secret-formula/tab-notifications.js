@@ -220,4 +220,15 @@ export const tabNotifications = {
     // Always externally triggered
     condition: () => true,
   },
+  achievementEnhancement: {
+    id: 17,
+    tabsToHighLight: [
+      {
+        parent: "achievements",
+        tab: "normal",
+      },
+    ],
+    // Always externally triggered (when I figure it out)
+    condition: () => true,
+  }
 };

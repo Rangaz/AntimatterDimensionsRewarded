@@ -59,6 +59,7 @@ class PerkState extends SetPurchasableMechanicState {
       const realityAchs = Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality);
       player.reality.totalEnhancementPoints = realityAchs;
       player.reality.enhancementPoints = realityAchs;
+      TabNotification.achievementEnhancement.tryTrigger();
     }
     GameCache.achievementPeriod.invalidate();
     GameCache.buyablePerks.invalidate();
