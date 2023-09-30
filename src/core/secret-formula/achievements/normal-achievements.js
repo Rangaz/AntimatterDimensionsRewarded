@@ -21,7 +21,7 @@ Lower Priority:
 -Make r53's new effect <DONE>
 -Change r64's effect <DONE>
 -Change r72's effect <DONE>
--Make the color for the respec button more appropiate,
+-Make the color for the respec button more appropiate <DONE>
 -Make Rep Galaxy timer take into account r106 (and r108?)
 */
 
