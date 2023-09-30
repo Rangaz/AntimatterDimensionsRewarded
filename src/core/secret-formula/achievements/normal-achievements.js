@@ -12,8 +12,8 @@ TODO:
 -Modify the Achievements tab with the relevant information, including Shift functionality <DONE>
 -Reality reminder <DONE>
 -Multiplier tab functionality for Enhanced Achievements <DONE>
--An h2p section for Enhanced Achievements
--Changelog entry
+-An h2p section for Enhanced Achievements <DONE (In 'Achievements')>
+-Changelog entry <DONE>
 
 Lower Priority:
 -Make r45 work with free Dim Boosts <DONE>

@@ -424,8 +424,19 @@ to all Antimatter Dimensions. Each fully completed row also gives another ${form
 effect from all Achievements together is shown above all the Achievement images.
 <br>
 <br>
+${Perk.achievementEnhancement.isBought ? `
+Achievement Enhancement is unlocked after you buy the perk ACHEH. It allows you to greatly strengthen an Achievement
+Reward of your choice, often overwriting its previous reward.
+<br>
+<br>
+The Achievements you can enhance are limited to the first 4 rows (and until I add more), and you permanently 
+gain an Enhancement Point for every Achievement unlocked in rows 14 and beyond.
+<br>
+<br>` : ``}
+
 Secret Achievements offer no gameplay benefits or advantages and are simply there for fun. Hovering over a Secret
 Achievement will give a hint on how to attain them.
+
 `,
       isUnlocked: () => true,
       tags: ["earlygame", "awards", "earlygame"],
@@ -1015,7 +1026,8 @@ different colors, roughly indicating which part of the game they affect the most
       isUnlocked: () => PlayerProgress.realityUnlocked() || TimeStudy.reality.isBought,
       tags: ["pp", "reality", "tree", "endgame", "lategame"],
       tab: "reality/perks"
-    }, {
+    }, 
+    {
       name: "Automator Overview",
       info: () => `
 The Automator is unlocked upon reaching a total of ${formatInt(AutomatorPoints.pointsForAutomator)} Automator Points.
