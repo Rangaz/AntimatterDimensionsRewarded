@@ -128,7 +128,6 @@ export const AD = {
         Achievement(56),
         Achievement(65),
         Achievement(67),
-        Achievement(72),
         Achievement(73),
         Achievement(74),
         Achievement(76),
@@ -186,7 +185,8 @@ export const AD = {
       }
       return totalMult;
     },
-    powValue: () => Achievement(183).effectOrDefault(1) * Achievement(47).enhancedEffect.effectOrDefault(1),
+    powValue: () => Achievement(183).effectOrDefault(1) * Achievement(47).enhancedEffect.effectOrDefault(1) *
+    Achievement(72).effectOrDefault(1),
     isActive: () => !EternityChallenge(11).isRunning,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
