@@ -5,11 +5,44 @@ import { MultiplierTabIcons } from "./icons";
 
 // See index.js for documentation
 export const general = {
-  achievement: {
-    name: (ach, dim) => (dim?.length === 2
-      ? `Achievement ${ach} (${dim})`
-      : `Achievement ${ach}`),
+  achievement: { // Enhanced effects are 1000 + actual achievement number
+    name: (ach, dim) => { 
+      let name = ach > 1000 ? "Enhanced Achievement " : "Achievement ";
+      if (ach > 1000) ach -= 1000;
+      name = name.concat(ach);
+      return dim?.length === 2
+      ? name.concat(" (", dim, ")")
+      : name},
     multValue: (ach, dim) => {
+      // If it's an enhanced effect...
+      if (ach > 1000) {
+        ach -= 1000;
+        if (ach === 47) return 1; // Power effect
+
+        if (!dim) return Achievement(ach).enhancedEffect.canBeApplied ? 
+          Achievement(ach).enhancedEffect.effectOrDefault(1) : 1;
+
+        if (dim?.length === 2) {
+          let totalEffect = DC.D1;
+          for (let tier = 1; tier <= MultiplierTabHelper.activeDimCount(dim); tier++) {
+            let singleEffect;
+            if (ach === 43) singleEffect = Achievement(43).enhancedEffect.canBeApplied ? 
+              DC.E250.pow(tier) : 1;
+            else singleEffect = (MultiplierTabHelper.achievementDimCheck(ach + 1000, `${dim}${tier}`) &&
+                Achievement(ach).enhancedEffect.canBeApplied) ? 
+                Achievement(ach).enhancedEffect.effectOrDefault(1) : 1;
+            totalEffect = totalEffect.times(singleEffect);
+          }
+          return totalEffect;
+        }
+        if (ach === 43) return Achievement(43).enhancedEffect.canBeApplied ? 
+          DC.E250.pow(Number(dim.charAt(2))) : 1;
+
+        return (MultiplierTabHelper.achievementDimCheck(ach, dim) && Achievement(ach).enhancedEffect.canBeApplied)
+        ? Achievement(ach).enhancedEffect.effectOrDefault(1) : 1;
+      }
+      
+      // For unenhanced achievements...
       if (ach === 108) return Achievement(108).canBeApplied && Time.thisEternity.totalSeconds < 9 ? 
         Achievement(108).effects.replicantiSpeed.effectOrDefault(1) : 1;
       // There is also a buy10 effect, but we don't track that in the multiplier tab
@@ -33,14 +66,16 @@ export const general = {
       return (MultiplierTabHelper.achievementDimCheck(ach, dim) && Achievement(ach).canBeApplied)
         ? Achievement(ach).effectOrDefault(1) : 1;
     },
-    // 183 is the only time a power effect is in an Achievement, so we special-case it here and return a x1 multiplier
-    powValue: ach => (ach === 183 ? Achievement(183).effectOrDefault(1) : 1),
-    isActive: ach => Achievement(ach).canBeApplied,
+    // 183 is the only time a power effect is in an Achievement, so we special-case it here and return a x1 multiplier.
+    // ...or that would be the case if it wasn't for my enhancements (Er47).
+    powValue: ach => (ach === 183 ? Achievement(183).effectOrDefault(1) : 1) * 
+      (ach === 1047 ? Achievement(47).enhancedEffect.effectOrDefault(1) : 1),
+    isActive: ach => ach > 1000 ? Achievement(ach - 1000).enhancedEffect.canBeApplied : Achievement(ach).canBeApplied,
     icon: ach => {
       const base = MultiplierTabIcons.ACHIEVEMENT;
       return {
         color: base.color,
-        symbol: `${base.symbol}${ach}`,
+        symbol: `${base.symbol}${ach > 1000 ? ach - 1000 : ach}`,
       };
     },
   },

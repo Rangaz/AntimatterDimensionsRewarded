@@ -18,6 +18,7 @@ export const infinities = {
     name: "Achievements",
     multValue: () => DC.D1.timesEffectsOf(
       Achievement(33),
+      Achievement(33).enhancedEffect,
       Achievement(87),
       Achievement(164)
     ),

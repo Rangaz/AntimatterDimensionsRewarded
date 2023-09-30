@@ -10,14 +10,15 @@ TODO:
 -Add a way to gain Enhancement Points through row 14+ achievements <DONE>
 -Allow to Enhance Achievements in Achievement tab <DONE>
 -Modify the Achievements tab with the relevant information, including Shift functionality <DONE>
--Reality reminder
--Multiplier tab for Enhanced Achievements
+-Reality reminder <DONE>
+-Multiplier tab for Enhanced Achievements <DONE>
 -An h2p section for Enhanced Achievements
 -Changelog entry
 
 Lower Priority:
+-Make r45 work with free Dim Boosts
 -Make the color for the respec button more appropiate,
--Fix Rep Galaxy timer to take into account r106 (and r108?)
+-Make Rep Galaxy timer take into account r106 (and r108?)
 */
 
 export const normalAchievements = [
@@ -157,8 +158,8 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "8th Antimatter Dimensions are way stronger right after a Dimensional Sacrifice.",
-      effect: () => player.requirementChecks.infinity.noSacrifice ? 1 : 
-      DC.D0_01.pow(Math.clampMin(Time.timeSinceLastSacrifice.totalMilliseconds - 3e3, 0)).times(DC.E11111).clampMin(1),
+      effect: () => player.requirementChecks.infinity.noSacrifice ? DC.D1 : 
+      DC.D0_01.pow(Decimal.max(Time.timeSinceLastSacrifice.totalMilliseconds - 3000, 0)).times(DC.E11111).clampMin(1),
       formatEffect: value => `${formatX(value)}`,
     }
   },
@@ -309,7 +310,7 @@ export const normalAchievements = [
     reward: "Antimatter Dimensions 1-7 are stronger the less Dimensions you are using.",
     effect() {
       for (let i = 8; i > 0; i--) {
-        if (!AntimatterDimension(i).isProducing) {return 1.8 - i * 0.09;}
+        if (AntimatterDimension(i).isProducing) {return 1.8 - i * 0.09;}
       }
       return 1.8;
     },
@@ -324,7 +325,7 @@ export const normalAchievements = [
           if (InfinityDimension(i).isProducing) dimensionsUsed++;
           if (TimeDimension(i).isProducing) dimensionsUsed++;
         }
-        return DC.E400.pow(24 - dimensionsUsed);
+        return DC.E400.pow(24 - dimensionsUsed).clampMin(10);
       },
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
@@ -597,7 +598,7 @@ export const normalAchievements = [
     enhanced: {
       get reward() { 
         if (Laitela.isUnlocked) {
-          return `ALL Dimensions, including IDs, TDs, and DMDs, are ${formatPercents(0.12)} stronger.`;
+          return `ALL Dimensions, including IDs, TDs, and DMDs, are ${formatPercents(0.50)} stronger.`;
         }
         else { return `ALL Dimensions, including IDs and TDs, are ${formatPercents(0.50)} stronger.`};
       },
@@ -793,7 +794,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `1st Antimatter Dimensions get an exponentially increasing multiplier that 
     resets after Dimension Boosts, Antimatter Galaxies, and Infinities.`; },
-    effect: () => player.chall3Pow.times(105).pow(1.4).clampMax(DC.E12),
+    effect: () => player.chall3Pow.times(105).pow(1.5).clampMax(DC.E12),
     effectCondition: () => !NormalChallenge(3).isRunning,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
@@ -1564,7 +1565,7 @@ export const normalAchievements = [
     description: "Have all Perks bought.",
     checkRequirement: () => player.reality.perks.size === Perks.all.length,
     checkEvent: GAME_EVENT.PERK_BOUGHT,
-    get reward() { return `+${formatPercents(0.03)} Glyph rarity.`; },
+    get reward() { return `+${formatPercents(0.05)} Glyph rarity.`; },
     effect: 0.05
   },
   {

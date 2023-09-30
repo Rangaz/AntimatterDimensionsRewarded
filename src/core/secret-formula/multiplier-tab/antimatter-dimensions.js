@@ -121,8 +121,10 @@ export const AD = {
     multValue: dim => {
       const allMult = DC.D1.timesEffectsOf(
         Achievement(35),
+        Achievement(35).enhancedEffect,
         Achievement(47),
         Achievement(48),
+        Achievement(48).enhancedEffect,
         Achievement(56),
         Achievement(65),
         Achievement(67),
@@ -140,24 +142,40 @@ export const AD = {
         if (tier === 1) {
           dimMults[tier] = dimMults[tier].timesEffectsOf(
             Achievement(28),
+            Achievement(28).enhancedEffect,
             Achievement(31),
+            Achievement(31).enhancedEffect,
             Achievement(42),
+            Achievement(42).enhancedEffect,
             Achievement(44),
+            Achievement(44).enhancedEffect,
             Achievement(68),
             Achievement(71),
           );
         }
+        if (tier === 8) {
+          dimMults[tier] = dimMults[tier].timesEffectsOf(
+            Achievement(23),
+            Achievement(23).enhancedEffect,
+            Achievement(38),
+            Achievement(38).enhancedEffect,
+            Achievement(46),
+            Achievement(46).enhancedEffect,
+            Achievement(101),
+          );
+        }
         dimMults[tier] = dimMults[tier].timesEffectsOf(
-          tier === 8 ? Achievement(23) : null,
           tier === 2 ? Achievement(24) : null,
+          tier === 2 ? Achievement(24).enhancedEffect : null,
           tier < 8 ? Achievement(34) : null,
-          tier === 8 ? Achievement(38) : null,
-          tier === 8 ? Achievement(46) : null,
+          tier < 8 ? Achievement(34).enhancedEffect : null,
           tier <= 4 ? Achievement(64) : null,
-          tier === 8 ? Achievement(101) : null,
         );
-        if (Achievement(43).isUnlocked) {
+        if (Achievement(43).canBeApplied) {
           dimMults[tier] = dimMults[tier].times(1 + tier / 100);
+        }
+        if (Achievement(43).enhancedEffect.canBeApplied) {
+          dimMults[tier] = dimMults[tier].times(DC.E250.pow(tier));
         }
       }
 
@@ -168,7 +186,7 @@ export const AD = {
       }
       return totalMult;
     },
-    powValue: () => Achievement(183).effectOrDefault(1),
+    powValue: () => Achievement(183).effectOrDefault(1) * Achievement(47).enhancedEffect.effectOrDefault(1),
     isActive: () => !EternityChallenge(11).isRunning,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
