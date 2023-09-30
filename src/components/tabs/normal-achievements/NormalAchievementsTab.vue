@@ -19,9 +19,9 @@ export default {
       achTPEffect: 0,
       achCountdown: 0,
       totalCountdown: 0,
-      achievementsEnhanced: 0,
-      enhancementPoints: 0,
       totalEnhancementPoints: 0,
+      enhancementPoints: 0,
+      enhancedAchievements: 0,
       missingAchievements: 0,
       showAutoAchieve: false,
       isAutoAchieveActive: false,
@@ -95,8 +95,8 @@ export default {
         Achievements.timeToNextAutoAchieve) / gameSpeedupFactor;
       this.missingAchievements = Achievements.preReality.countWhere(a => !a.isUnlocked);
       this.enhancementPoints = player.reality.enhancementPoints;
-      this.enhancedAchievements = player.reality.enhancedAchievements.size;
       this.totalEnhancementPoints = player.reality.totalEnhancementPoints;
+      this.enhancedAchievements = player.reality.enhancedAchievements.size;
       this.respecEnhancements = player.reality.disEnhance;
       this.isEnhancementUnlocked = Perk.achievementEnhancement.isBought && !this.isDoomed;
       this.showAutoAchieve = PlayerProgress.realityUnlocked() && !Perk.achievementGroup5.isBought;
@@ -167,7 +167,7 @@ export default {
       
       <PrimaryButton
         v-if="isEnhancementUnlocked"
-        :class="respecClassObject"
+        :class="respecClassObject" 
         @click="respecEnhancements = !respecEnhancements"
       >Respec Enhanced Achievements on next Reality</PrimaryButton>
       
@@ -184,7 +184,9 @@ export default {
     <div 
       v-if="isEnhancementUnlocked"
       class="c-achievements-tab__header"
+      style="font-size:small"
     >
+      Hold shift to see enhanced effects. 
       You have enhanced {{ formatInt(enhancedAchievements) }}/{{ formatInt(totalEnhancementPoints) }} Achievements.
     </div>
     <div 

@@ -515,11 +515,11 @@ export const perks = {
     label: "ACHEH",
     family: PERK_FAMILY.ACHIEVEMENT,
     get description() {
-      return `Unlock Achievement Enhancement. You can Enhance 1 row 1-4 Achievement 
-      per Achievement obtained in rows 14+.`;
+      return `Unlock Achievement Enhancement. You can Enhance a row 1-4 Achievement 
+      for every unlocked Achievement in rows 14+.`;
     },
     shortDescription: () => "Unlock Achievement Enhancement",
-    layoutPosList: [20163, 81802, 81403, 79405, 79806, 84639], // I need to adjust these
+    layoutPosList: [20163, 81802, 81403, 79405, 79806, 84639],
   }
 };
 

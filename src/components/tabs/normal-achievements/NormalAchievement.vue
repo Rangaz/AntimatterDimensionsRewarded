@@ -3,7 +3,7 @@ import wordShift from "@/core/word-shift";
 
 import EffectDisplay from "@/components/EffectDisplay";
 import HintText from "@/components/HintText";
-import { Pelle } from "../../../core/globals";
+import { GameUI, Pelle } from "../../../core/globals";
 
 export default {
   name: "NormalAchievement",
@@ -25,6 +25,7 @@ export default {
     return {
       isDisabled: false,
       isUnlocked: false,
+      hasEnhancementEffect: false,
       canBeEnhanced: false,
       isEnhanced: false,
       isMouseOver: false,
@@ -46,6 +47,9 @@ export default {
     config() {
       return this.achievement.config;
     },
+    shiftDown() {
+      return ui.view.shiftDown;
+    },
     styleObject() {
       return {
         "background-position": `-${(this.achievement.column - 1) * 104}px -${(this.achievement.row - 1) * 104}px`
@@ -53,7 +57,7 @@ export default {
     },
     tooltipStyle() {
       return {
-        "o-achievement__tooltip__can-be-enhanced": this.canBeEnhanced,
+        "o-achievement__tooltip__can-be-enhanced": this.canBeEnhanced || this.shiftDown,
         "o-achievement__tooltip": !this.canBeEnhanced,
         "l-column-one": this.achievement.column == 1,
         "l-column-two": this.achievement.column == 2 && this.canBeEnhanced,
@@ -64,9 +68,9 @@ export default {
     tooltipPosition() {
       switch (this.achievement.column) {
         case 1: return {"margin-left": "0rem"};
-        case 2: return this.canBeEnhanced ? {"margin-left": "-11.4rem"} : null;
-        case 7: return this.canBeEnhanced ? {"margin-left": "-18rem"} : null;
-        case 8: return this.canBeEnhanced ? {"margin-left": "-29.4rem"} : {"margin-left": "-9.5rem"};
+        case 2: return this.canBeEnhanced || this.shiftDown ? {"margin-left": "-11.4rem"} : null;
+        case 7: return this.canBeEnhanced || this.shiftDown ? {"margin-left": "-18rem"} : null;
+        case 8: return this.canBeEnhanced || this.shiftDown ? {"margin-left": "-29.4rem"} : {"margin-left": "-9.5rem"};
       };
     },
     classObject() {
@@ -137,6 +141,7 @@ export default {
     update() {
       this.isDisabled = Pelle.disabledAchievements.includes(this.id) && Pelle.isDoomed;
       this.isUnlocked = this.achievement.isUnlocked && !this.isDisabled;
+      this.hasEnhancementEffect = this.achievement.hasEnhancedEffect;
       this.isEnhanced = this.achievement.isEnhanced && !Pelle.isDoomed;
       this.canBeEnhanced = this.achievement.canEnhance && !Pelle.isDoomed;
       this.isCancer = Theme.current().name === "S4" || player.secretUnlocks.cancerAchievements;
@@ -163,9 +168,6 @@ export default {
     },
     onMouseLeave() {
       this.mouseOverInterval = setTimeout(() => this.isMouseOver = false, 300);
-    },
-    onClick() {
-      if (this.canBeEnhanced) this.achievement.enhance();
     },
     // We don't want to expose the original text for Pelle achievements, so we generate a random string with the same
     // length of the original text in order to make something that fits reasonably within their respective places
@@ -208,7 +210,7 @@ export default {
     :style="styleObject"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
-    @click="onClick"
+    @click="achievement.enhance()"
   >
     <HintText
       :key="garbleKey"
@@ -228,10 +230,8 @@ export default {
           {{ processedDescription }}
         </div>
         <table class="o-achievement__tooltip__table">
-        <!--<tr>
-          <td>-->
           <div
-            v-if="config.reward && !isEnhanced"
+            v-if="config.reward && (!isEnhanced || shiftDown)"
             class="o-achievement__tooltip__reward"
           >
             <span
@@ -246,12 +246,10 @@ export default {
               />
             </span>
           </div>
-          <!--</td>-->
-          <td v-if="canBeEnhanced" style="vertical-align: middle;">➜</td>
+          <td v-if="(shiftDown && hasEnhancementEffect) || canBeEnhanced" style="vertical-align: middle;">➜</td>
           <!--My Enhanced effect-->
-          <!--<td>-->
           <div
-            v-if="canBeEnhanced || isEnhanced"
+            v-if="(shiftDown && hasEnhancementEffect) || canBeEnhanced || isEnhanced"
             class="o-achievement__tooltip__enhanced"
           >
             <span
@@ -266,9 +264,7 @@ export default {
               />
             </span>
           </div>
-          <!--</td>
-        </tr>-->
-      </table>
+        </table>
         <div
           v-if="achievedTime"
           class="o-achievement-time"
