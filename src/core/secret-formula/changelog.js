@@ -9,6 +9,40 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 9, 30],
+    name: "Teresa ripoff update",
+    info: `
+    <b>Introducing: Achievement Enhancement!</b>
+    <br>
+    Achievement Enhancement allows an Achievement Reward to be greatly strengthened. This feature is unlocked by buying
+    a new perk: ACHEH.
+    For now, only the first 4 rows of Achievements have an Enhanced reward, but there are more to come later.
+    <br>
+    This update covers content up to the 4th Celestial unlock, which means:
+    <ul>
+    <li>32 new Enhanced effects!</li>
+    <li>New Rewards for Achievements: 53, 144, 152, 153, & 157.</li>
+    <li>Reworked rewards for Achievements: 52, 64 & 72.</li>
+    </ul>
+    <br>
+    <br>
+    Other changes:
+    <br>
+    <ul>
+    <li>Buffed Achievements: 
+      <li>14, 15, 16, 17 & 18 (they reduce prices more),</li>
+      <li>38 (multiplier is x5 ➜ x8), and</li>
+      <li>68 (grows around 10% faster, and caps at e10 ➜ e15).</li></li>
+    <li>Minor nerf to Achievement 23 (multiplier is x8 ➜ x6, but doesn't tick down the first 3 seconds).</li>
+    <li>Made Achievement 115 no longer keep Dimension Boosts or Antimatter Galaxies if their autobuyers
+    aren't on.</li>
+    <li>Made Achievement tooltips not go outside their grid.</li>
+    <li>Removed the star in the achievements that have a reward (every achievement row <=15 should have one).</li>
+    </ul>
+    <br>
+    `
+  },
+  {
     date: [2023, 9, 22],
     name: "Pre-reality update",
     info: `
@@ -29,7 +63,7 @@ export const changelog = [
     <b>Post release stuff</b>
     <ul>
     <li>Improved Buy Max functionality for the IP multiplier, EP multiplier, IDs, and TDs, to take into account 
-    wether or not they spend resources due to their respective Achievements (82, 98 and 127) (28/9)</li>
+    wether or not they spend resources due to their respective Achievements (82, 98 and 127) (28/9).</li>
     <li>Fixed Time Dimensions not resetting when they should (25/9).</li>
     <li>Fixed a bug where Infinitying too fast for 60 seconds could prematurely unlock Achievement 124 (25/9).</li>
     <li>You can no longer Sacrifice if you'd end up net negative due to Achievement 38 (24/9).</li>

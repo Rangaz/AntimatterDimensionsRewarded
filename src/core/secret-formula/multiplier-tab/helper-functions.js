@@ -104,19 +104,28 @@ export const MultiplierTabHelper = {
 
   // Helper method to check for whether an achievement affects a particular dimension or not. Format of dimStr is
   // expected to be a three-character string "XXN", eg. "AD3" or "TD2"
+  // Enhanced Achievements are +1000
   achievementDimCheck(ach, dimStr) {
     switch (ach) {
       case 23:
+      case 1023:
       case 38:
+      case 1038:
       case 46:
+      case 1046:
       case 101:
         return dimStr === "AD8";
       case 24:
+      case 1024:
         return dimStr === "AD2";
       case 28:
+      case 1028:
       case 31:
+      case 1031:
       case 42:
+      case 1042:
       case 44:
+      case 1044:
       case 68:
       case 71:
         return dimStr === "AD1";
@@ -124,6 +133,7 @@ export const MultiplierTabHelper = {
       case 124:
         return dimStr === "ID1";
       case 34:
+      case 1034:
         return dimStr.substr(0, 2) === "AD" && Number(dimStr.charAt(2)) !== 8;
       case 64:
         return dimStr.substr(0, 2) === "AD" && Number(dimStr.charAt(2)) <= 4;

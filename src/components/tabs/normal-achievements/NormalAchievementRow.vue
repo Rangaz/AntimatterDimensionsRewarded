@@ -19,6 +19,7 @@ export default {
   data() {
     return {
       isCompleted: false,
+      isFullyEnhanced: false,
       isHidden: false
     };
   },
@@ -26,13 +27,15 @@ export default {
     classObject() {
       return {
         "l-achievement-grid__row": true,
-        "c-achievement-grid__row--completed": this.isCompleted
+        "c-achievement-grid__row--completed": this.isCompleted,
+        "c-achievement-grid__row--enhanced": this.isFullyEnhanced
       };
     }
   },
   methods: {
     update() {
       this.isCompleted = this.row.every(a => a.isUnlocked);
+      this.isFullyEnhanced = this.row.every(a => a.isEnhanced);
       this.isHidden = this.isCompleted && player.options.hideCompletedAchievementRows;
     }
   }
@@ -53,3 +56,23 @@ export default {
     />
   </div>
 </template>
+
+<style scoped>
+.c-achievement-grid__row--enhanced {
+  background-color: #587300;
+  border-radius: var(--var-border-radius, 10px);
+}
+
+.s-base--metro .c-achievement-grid__row--enhanced {
+  background-color: #3a5e1b;
+}
+
+.t-s1 .c-achievement-grid__row--enhanced {
+  background-color: #bdc225;
+}
+
+.t-s7 .c-achievement-grid__row--enhanced {
+  background-color: #a3ad73;
+}
+
+</style>

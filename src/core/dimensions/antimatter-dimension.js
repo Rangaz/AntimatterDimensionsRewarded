@@ -1,5 +1,5 @@
 import { DC } from "../constants";
-import { Achievement } from "../globals";
+import { Achievement, InfinityChallenge, NormalChallenge } from "../globals";
 
 import { DimensionState } from "./dimension";
 
@@ -30,7 +30,6 @@ export function antimatterDimensionCommonMultiplier() {
     Achievement(56),
     Achievement(65),
     Achievement(67),
-    Achievement(72),
     Achievement(73),
     Achievement(74),
     Achievement(76),
@@ -189,6 +188,7 @@ function applyNDPowers(mult, tier) {
       InfinityUpgrade.thisInfinityTimeMult.chargedEffect,
       AlchemyResource.power,
       Achievement(47).enhancedEffect,
+      Achievement(72),
       Achievement(183),
       PelleRifts.paradox
     );
@@ -381,7 +381,7 @@ class AntimatterDimensionState extends DimensionState {
     // The vanilla costs are in the FIRST_PURCHASE_COST
     const FIRST_PURCHASE_COST = [null, 10, 100, 1e4, 1e6, 1e9, 1e13, 1e18, 1e24];
     this._firstPurchaseCost = FIRST_PURCHASE_COST[tier];
-    const BASE_COSTS = [null, 1, 10, 1e3, 1e5, 1e8, 1e11, 1e16, 1e22];
+    const BASE_COSTS = [null, 1, 10, 1e3, 1e4, 1e7, 1e10, 1e15, 1e21];
     this._baseCost = BASE_COSTS[tier];
     // These are the base costs with the enhanced achievements
     const ENHANCED_BASE_COSTS = [null, 1, 1, 1, 1, 1, 1, 1, 1];
@@ -681,6 +681,12 @@ export const AntimatterDimensions = {
   reset() {
     for (const dimension of AntimatterDimensions.all) {
       dimension.reset();
+    }
+    // r53 makes you keep up to 1 8th AD between EVERY reset, if possible
+    if (Achievement(53).canBeApplied && player.dimensionBoosts >= 4 && !NormalChallenge(10).isRunning && 
+      !InfinityChallenge(1).isRunning) {
+      AntimatterDimension(8).amount = DC.D1;
+      AntimatterDimension(8).bought = 1;
     }
     GameCache.dimensionMultDecrease.invalidate();
   },

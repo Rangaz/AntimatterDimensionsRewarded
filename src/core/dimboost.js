@@ -188,6 +188,7 @@ export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false
   EventHub.dispatch(GAME_EVENT.DIMBOOST_BEFORE, bulk);
   player.dimensionBoosts = Math.max(0, player.dimensionBoosts + bulk);
   resetChallengeStuff();
+  skipResetsIfPossible(enteringAntimatterChallenge);
   const canKeepDimensions = Pelle.isDoomed
     ? PelleUpgrade.dimBoostResetsNothing.canBeApplied
     : Perk.antimatterNoReset.canBeApplied;
@@ -196,7 +197,6 @@ export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false
     player.sacrificed = DC.D0;
     resetTickspeed();
   }
-  skipResetsIfPossible(enteringAntimatterChallenge);
   const canKeepAntimatter = Pelle.isDoomed
     ? PelleUpgrade.dimBoostResetsNothing.canBeApplied
     : (Achievement(111).isUnlocked || Perk.antimatterNoReset.canBeApplied);
@@ -211,8 +211,8 @@ export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false
 export function skipResetsIfPossible(enteringAntimatterChallenge) {
   if (enteringAntimatterChallenge || Player.isInAntimatterChallenge) return;
  
-  if (InfinityUpgrade.skipResetGalaxy.isBought && player.dimensionBoosts < 4) {
-    player.dimensionBoosts = 4;
+  if (InfinityUpgrade.skipResetGalaxy.isBought && (player.dimensionBoosts < 4 || player.galaxies < 1)) {
+    if (player.dimensionBoosts < 4) player.dimensionBoosts = 4;
     if (player.galaxies === 0) player.galaxies = 1;
   } else if (InfinityUpgrade.skipReset3.isBought && player.dimensionBoosts < 3) player.dimensionBoosts = 3;
   else if (InfinityUpgrade.skipReset2.isBought && player.dimensionBoosts < 2) player.dimensionBoosts = 2;

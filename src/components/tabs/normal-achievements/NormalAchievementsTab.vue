@@ -19,9 +19,9 @@ export default {
       achTPEffect: 0,
       achCountdown: 0,
       totalCountdown: 0,
-      achievementsEnhanced: 0,
-      enhancementPoints: 0,
       totalEnhancementPoints: 0,
+      enhancementPoints: 0,
+      enhancedAchievements: 0,
       missingAchievements: 0,
       showAutoAchieve: false,
       isAutoAchieveActive: false,
@@ -63,7 +63,7 @@ export default {
     respecClassObject() {
       return {
         "o-primary-btn--subtab-option": true,
-        "o-primary-btn--respec-active": this.respecEnhancements // Change the color later
+        "o-primary-btn--enhanced-respec-active": this.respecEnhancements // Change the color later
       };
     },
   },
@@ -86,15 +86,6 @@ export default {
     cancelAnimationFrame(this.renderAnimationId);
   },
   methods: {
-    // DEBUG FUNCTIONS. REMOVE EVENTUALLY
-    addEnhancementPoint() {
-      player.reality.enhancementPoints += 1;
-      player.reality.totalEnhancementPoints += 1;
-    },
-    removeEnhancementPoints() {
-      player.reality.enhancementPoints = 0;
-      player.reality.totalEnhancementPoints = 0;
-    },
     update() {
       const gameSpeedupFactor = getGameSpeedupFactor();
       this.achievementPower = Achievements.power;
@@ -104,8 +95,8 @@ export default {
         Achievements.timeToNextAutoAchieve) / gameSpeedupFactor;
       this.missingAchievements = Achievements.preReality.countWhere(a => !a.isUnlocked);
       this.enhancementPoints = player.reality.enhancementPoints;
-      this.enhancedAchievements = player.reality.enhancedAchievements.size;
       this.totalEnhancementPoints = player.reality.totalEnhancementPoints;
+      this.enhancedAchievements = player.reality.enhancedAchievements.size;
       this.respecEnhancements = player.reality.disEnhance;
       this.isEnhancementUnlocked = Perk.achievementEnhancement.isBought && !this.isDoomed;
       this.showAutoAchieve = PlayerProgress.realityUnlocked() && !Perk.achievementGroup5.isBought;
@@ -176,20 +167,7 @@ export default {
       
       <PrimaryButton
         v-if="isEnhancementUnlocked"
-        @click="addEnhancementPoint"
-        class="o-primary-btn"
-        label="Get an enhancement point (DEBUG)"
-      >Get an enhancement point (DEBUG)</PrimaryButton>
-      <PrimaryButton
-        v-if="isEnhancementUnlocked"
-        @click="removeEnhancementPoints"
-        class="o-primary-btn"
-        label="Set enhancement points to 0 (DEBUG)"
-      >Set enhancement points to 0 (DEBUG)</PrimaryButton>
-      
-      <PrimaryButton
-        v-if="isEnhancementUnlocked"
-        :class="respecClassObject"
+        :class="respecClassObject" 
         @click="respecEnhancements = !respecEnhancements"
       >Respec Enhanced Achievements on next Reality</PrimaryButton>
       
@@ -206,14 +184,16 @@ export default {
     <div 
       v-if="isEnhancementUnlocked"
       class="c-achievements-tab__header"
+      style="font-size:small"
     >
+      Hold shift to see enhanced effects. 
       You have enhanced {{ formatInt(enhancedAchievements) }}/{{ formatInt(totalEnhancementPoints) }} Achievements.
     </div>
     <div 
       v-if="isDoomed"
       class="c-achievements-tab__header"
     >
-      You cannot enhance Achievements anymore.
+      You cannot enhance Achievements while Doomed.
     </div>
     <div
       v-if="showAutoAchieve"
@@ -244,3 +224,14 @@ export default {
     </div>
   </div>
 </template>
+
+<style scoped>
+.o-primary-btn--enhanced-respec-active {
+  color: #ffffff;
+  background-color: #aaaa33 !important;
+}
+.o-primary-btn--enhanced-respec-active:hover {
+  color: #000000;
+  background-color: #aaaa33 !important;
+}
+</style>

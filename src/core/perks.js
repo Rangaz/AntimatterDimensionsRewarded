@@ -54,6 +54,13 @@ class PerkState extends SetPurchasableMechanicState {
         achievement.unlock(true);
       }
     }
+    // Give the Enhancement Points you should have
+    if (this.label === "ACHEH") {
+      const realityAchs = Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality);
+      player.reality.totalEnhancementPoints = realityAchs;
+      player.reality.enhancementPoints = realityAchs;
+      TabNotification.achievementEnhancement.tryTrigger();
+    }
     GameCache.achievementPeriod.invalidate();
     GameCache.buyablePerks.invalidate();
     EventHub.dispatch(GAME_EVENT.PERK_BOUGHT);

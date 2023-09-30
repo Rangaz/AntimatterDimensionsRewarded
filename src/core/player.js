@@ -525,6 +525,7 @@ window.player = {
     enhancementPoints: 0,
     disEnhance: false,
     enhancedAchievements: new Set(),
+    maxEnhancedRow: 4,
     automator: {
       state: {
         mode: AUTOMATOR_MODE.STOP,

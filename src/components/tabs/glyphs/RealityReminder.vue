@@ -8,6 +8,7 @@ export default {
       isExpanded: false,
       ecCount: 0,
       missingAchievements: 0,
+      unenhancedAchievements: 0,
       unpurchasedDilationUpgrades: 0,
       currLog10EP: 0,
       cheapestLog10TD: 0,
@@ -25,6 +26,9 @@ export default {
       }
       if (this.missingAchievements > 0) {
         arr.push(`Complete the rest of your Achievements (${formatInt(this.missingAchievements)} left)`);
+      }
+      if (this.unenhancedAchievements > 0) {
+        arr.push(`Enhance more Achievements (${formatInt(this.unenhancedAchievements)} left)`);
       }
       if (this.unpurchasedDilationUpgrades > 0) {
         arr.push(`Purchase the remaining Dilation Upgrades (${formatInt(this.unpurchasedDilationUpgrades)} left)`);
@@ -81,6 +85,7 @@ export default {
       this.isVisible = !isInCelestialReality();
       this.ecCount = EternityChallenges.completions;
       this.missingAchievements = Achievements.preReality.countWhere(a => !a.isUnlocked);
+      this.unenhancedAchievements = player.reality.enhancementPoints; // 
       // Repeatable dilation upgrades don't have isBought, but do have boughtAmount
       this.unpurchasedDilationUpgrades = DilationUpgrade.all
         .countWhere(u => (u.isBought === undefined ? u.boughtAmount === 0 : !u.isBought) && !u.config.pelleOnly);

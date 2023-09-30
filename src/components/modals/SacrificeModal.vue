@@ -30,16 +30,16 @@ export default {
         ${formatX(this.nextMultiplier, 2, 2)} on Dimensional Sacrifice.`;
     },
     achievement38Text() {
-      return `However, you will lose Achievement 38's ${formatX(this.achievement38Value, 2, 2)} multiplier, leaving you with
-      effectively a ${formatX(this.nextMultiplier.divide(this.achievement38Value), 2, 2)} multiplier.`
+      return `However, you will lose Achievement 38's ${formatX(this.achievement38Value, 2, 2)} multiplier, leaving 
+      you with effectively a ${formatX(this.nextMultiplier.divide(this.achievement38Value), 2, 2)} multiplier.`
     }
   },
   methods: {
     update() {
       this.currentMultiplier.copyFrom(Sacrifice.totalBoost);
       this.nextMultiplier.copyFrom(Sacrifice.nextBoost.times(Sacrifice.totalBoost));
-      Achievement(38).isEnhanced ? this.achievement38Value.copyFrom(Achievement(38).enhancedEffect.effectOrDefault(new Decimal(1)))
-        : this.achievement38Value.copyFrom(Achievement(38).effectOrDefault(new Decimal(1)));
+      Achievement(38).isEnhanced ? this.achievement38Value.copyFrom(Achievement(38).enhancedEffect.config.effect) : 
+      this.achievement38Value.copyFrom(Achievement(38).config.effect);
       this.showAchievement38Warning = Achievement(38).canBeApplied || Achievement(38).enhancedEffect.canBeApplied;
     },
     handleYesClick() {

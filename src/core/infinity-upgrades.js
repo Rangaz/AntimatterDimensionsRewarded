@@ -137,6 +137,10 @@ export function disChargeAll() {
 // GameDatabase.infinity.upgrades.ipMult
 class InfinityIPMultUpgrade extends GameMechanicState {
   get cost() {
+    if (this.purchaseCount >= this.purchasesAtCap) {
+      return this.config.costCap
+        .times(Decimal.pow(this.costIncrease, this.purchaseCount - this.purchasesAtCap));
+    }
     if (this.purchaseCount >= this.purchasesAtIncrease) {
       return this.config.costIncreaseThreshold
         .times(Decimal.pow(this.costIncrease, this.purchaseCount - this.purchasesAtIncrease));
@@ -152,16 +156,27 @@ class InfinityIPMultUpgrade extends GameMechanicState {
     return this.config.costIncreaseThreshold.log10() - 1;
   }
 
+  // This value is incorrect if costIncrease gives 10 instead of 1e10, but it fixes itself when needed.
+  get purchasesAtCap() {
+    return this.purchasesAtIncrease + 
+      Decimal.log10(this.config.costCap.divide(this.config.costIncreaseThreshold)) / 10;
+  }
+
   get hasIncreasedCost() {
     return this.purchaseCount >= this.purchasesAtIncrease;
   }
 
+  get hasUncappedCost() {
+    return InfinityUpgrade.ipMultUncap.isBought && this.purchaseCount >= this.purchasesAtCap;
+  }
+
   get costIncrease() {
+    if (this.hasUncappedCost) return 1e200;
     return this.hasIncreasedCost ? 1e10 : 10;
   }
 
   get isCapped() {
-    return this.cost.gte(this.config.costCap);
+    return this.cost.gte(this.config.costCap) && (!Achievement(41).isEnhanced || !InfinityUpgrade.ipMultUncap.isBought);
   }
 
   get isBought() {
@@ -211,8 +226,15 @@ class InfinityIPMultUpgrade extends GameMechanicState {
     // Do not replace it with `if else` - it's specifically designed to process two sides of threshold separately
     // (for example, we have 1e4000000 IP and no mult - first it will go to (but not including) 1e3000000 and then
     // it will go in this part)
-    if (this.hasIncreasedCost) {
+    if (this.hasIncreasedCost && !this.hasUncappedCost) {
       const availableIP = Currency.infinityPoints.value.clampMax(this.config.costCap);
+      const purchases = Decimal.affordGeometricSeries(availableIP, this.cost, this.costIncrease, 0).toNumber();
+      if (purchases <= 0) return;
+      this.purchase(purchases);
+    }
+    // Same logic here
+    if (this.hasUncappedCost) {
+      const availableIP = Currency.infinityPoints.value;
       const purchases = Decimal.affordGeometricSeries(availableIP, this.cost, this.costIncrease, 0).toNumber();
       if (purchases <= 0) return;
       this.purchase(purchases);
