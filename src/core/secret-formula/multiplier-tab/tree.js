@@ -116,15 +116,17 @@ multiplierTabTree.DT_total[0].unshift("TP_total");
 const dimTypes = ["AD", "ID", "TD"];
 const singleRes = ["IP", "EP", "DT", "infinities", "replicanti"];
 const targetedEffects = {
-  achievement: {
+  achievement: { // Enhanced Achievements will be placed here as (1000 + actual number)
+    // to distinguish them from the regular achievements
     checkFn: MultiplierTabHelper.achievementDimCheck,
-    AD: [23, 24, 28, 31, 34, 35, 38, 42, 43, 44, 46, 47, 48, 56, 64, 65, 67, 68, 71, 72, 73, 74, 76, 84, 91, 92, 101, 183],
-    ID: [48, 94, 107, 124],
-    TD: [48, 105, 112, 123, 128],
+    AD: [23, 1023, 24, 1024, 28, 1028, 31, 1031, 34, 1034, 35, 1035, 38, 1038, 42, 1042, 43, 1043, 44, 1044, 46, 1046, 
+      47, 1047, 48, 1048, 56, 64, 65, 67, 68, 71, 72, 73, 74, 76, 84, 91, 92, 101, 183],
+    ID: [1035, 48, 1048, 94, 107, 124],
+    TD: [1035, 48, 1048, 105, 112, 123, 128],
     IP: [62, 77, 85, 93, 116, 125, 141],
     EP: [153],
     DT: [132, 137],
-    infinities: [33, 87, 164],
+    infinities: [33, 1033, 87, 164],
     replicanti: [106, 108, 134]
   },
   timeStudy: {

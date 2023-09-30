@@ -104,7 +104,15 @@ export const TD = {
   achievement: {
     name: "Achievement Rewards",
     multValue: dim => {
-      const baseMult = DC.D1.timesEffectsOf(Achievement(48), Achievement(105), Achievement(112), Achievement(123), Achievement(128));
+      const baseMult = DC.D1.timesEffectsOf(
+        Achievement(35).enhancedEffect,
+        Achievement(48), 
+        Achievement(48).enhancedEffect,
+        Achievement(105), 
+        Achievement(112), 
+        Achievement(123), 
+        Achievement(128)
+      );
       return Decimal.pow(baseMult, dim ? 1 : MultiplierTabHelper.activeDimCount("TD"));
     },
     isActive: () =>  [48, 105, 112, 123, 128].some(a => Achievement(a).canBeApplied),
