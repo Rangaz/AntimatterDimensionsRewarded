@@ -215,8 +215,11 @@ export const normalTimeStudies = [
     cost: 5,
     requirement: [82],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
-    description: "Infinity Dimension multiplier based on fastest Eternity time",
-    effect: () => DC.D2.pow(60 / Math.max(Time.bestEternity.totalSeconds, 2)),
+    description: () => (Achievement(155).canBeApplied ?
+      "Infinity Dimension multiplier (maxed by Achievement 155)" :
+      "Infinity Dimension multiplier based on fastest Eternity time") ,
+    effect: () => Achievement(155).canBeApplied ? DC.C2P30 :
+      DC.D2.pow(60 / Math.max(Time.bestEternity.totalSeconds, 2)),
     cap: DC.C2P30,
     formatEffect: value => formatX(value, 2, 1)
   },

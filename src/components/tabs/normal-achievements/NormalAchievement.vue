@@ -59,10 +59,12 @@ export default {
       return {
         "o-achievement__tooltip__can-be-enhanced": this.canBeEnhanced || 
           (this.shiftDown && this.hasEnhancementEffect),
-        "o-achievement__tooltip": !this.canBeEnhanced,
+        "o-achievement__tooltip": !this.canBeEnhanced && !(this.shiftDown && this.hasEnhancementEffect),
         "l-column-one": this.achievement.column == 1,
-        "l-column-two": this.achievement.column == 2 && this.canBeEnhanced,
-        "l-column-seven": this.achievement.column == 7 && this.canBeEnhanced,
+        "l-column-two": this.achievement.column == 2 && (this.canBeEnhanced || 
+          (this.shiftDown && this.hasEnhancementEffect)),
+        "l-column-seven": this.achievement.column == 7 && (this.canBeEnhanced || 
+          (this.shiftDown && this.hasEnhancementEffect)),
         "l-column-eight": this.achievement.column == 8,
       };
     },
@@ -420,15 +422,15 @@ export default {
   border-top-width: 0.7rem;
   margin-bottom: -0.7rem;
 }
-/*The column styles here only have the purpose of aligning a specific element*/
+/*The column styles here only have the purpose of aligning the tail*/
 .l-column-one::after {
   left: 5rem;
 }
 .l-column-two::after {
-  left: 17rem;
+  right: 57.5%;
 }
 .l-column-seven::after {
-  left: 23rem;
+  right: 42.5%;
 }.l-column-eight::after {
   right: 5rem;
 }

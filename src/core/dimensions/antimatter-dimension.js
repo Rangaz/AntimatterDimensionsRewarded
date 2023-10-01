@@ -262,7 +262,10 @@ export function buyOneDimension(tier) {
 export function buyManyDimension(tier) {
   const dimension = AntimatterDimension(tier);
   if (Laitela.continuumActive || !dimension.isAvailableForPurchase || !dimension.isAffordableUntil10) return false;
-  if (!Achievement(10 + tier).isUnlocked) buyOneDimension(tier);
+  if (!Achievement(10 + tier).isUnlocked) {
+    buyOneDimension(tier);
+    return true; // Without this 'return' you may buy more than you can afford.
+  }
 
   const cost = dimension.costUntil10;
 

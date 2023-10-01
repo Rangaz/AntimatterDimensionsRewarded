@@ -9,8 +9,31 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 10, 1],
+    name: "Interlude",
+    info: `
+    <b>A minor update before the big ones arrive</b>
+    <br>
+    <br>
+    Changes:
+    <ul>
+    <li>Changed Achievement 23. It now reads "8th Antimatter Dimensions are stronger the first 
+    15 seconds after a Dimensional Sacrifice."</li>
+    <li>Similar changes to its Enhanced effect.</li>
+    <li>Buffed Achievement 38 yet again (x8 ➜ x10).</li>
+    <li>Achievement 106 now only takes into account purchased Replicanti Galaxies and not extra ones.</li>
+    <li>Achievement 113 now always gives at least x2 Eternities.</li>
+    <li>Achievement 155 now always maximizes temporal bonuses (like Achievements 23, 91 & 92), and bonuses
+    based on fastest time (like Achievement 113 and Time Study 92).</li>
+    <li>Timers in the Replicanti tab now take into account the effects of Achievements 106 and 108.</li>
+    <li>Fixed a bug where pressing a hotkey for an Antimatter Dimension could buy more than you can afford 
+    if you didn't have its respective row 1 Achievement.</li>
+    <br>
+    `
+  },
+  {
     date: [2023, 9, 30],
-    name: "Teresa ripoff update",
+    name: "Teresa ripoff",
     info: `
     <b>Introducing: Achievement Enhancement!</b>
     <br>

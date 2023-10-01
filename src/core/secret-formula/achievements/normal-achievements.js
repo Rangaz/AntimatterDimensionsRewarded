@@ -4,11 +4,12 @@ import { PlayerProgress } from "../../player-progress";
 /*
 TODO:
 -Reworded r23 <DONE>
--Make Rep Galaxy timer take into account r106 (and r108?) <DONE>
+-Make Rep Galaxy timer take into account r106 and r108 <DONE>
 -Make r113 have min of x2 <DONE>
 -Make r106 only take into account buyable galaxies <DONE>
--Make r155 also always maximize temporal effects
-
+-Make r155 also always maximize temporal effects <DONE>
+-Fix Shift behavior with the tail in already enhanced achievements <reduced>
+-Changelog entry
 */
 
 export const normalAchievements = [
@@ -142,14 +143,19 @@ export const normalAchievements = [
     name: "The 9th Dimension is a lie",
     get description() { return `Have exactly ${formatInt(99)} 8th Antimatter Dimensions.`; },
     checkRequirement: () => AntimatterDimension(8).amount.eq(99),
-    reward: "8th Antimatter Dimensions are stronger the first 15 seconds after a Dimensional Sacrifice.",
+    get reward () { return Achievement(155).canBeApplied ? 
+      "8th Antimatter Dimensions are stronger if you have a sacrifice (improved by Achievement 155)." : 
+      "8th Antimatter Dimensions are stronger the first 15 seconds after a Dimensional Sacrifice."},
     effect: () => Sacrifice.totalBoost.lte(1) ? 1 : 
-    Math.clamp(Time.timeSinceLastSacrifice.totalSeconds - 3, 0, 12) * -5 / 12 + 6,
+    Achievement(155).canBeApplied ? 6 : Math.clamp(Time.timeSinceLastSacrifice.totalSeconds - 3, 0, 12) * -5 / 12 + 6,
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
-      reward: "8th Antimatter Dimensions are way stronger the first million years after a Dimensional Sacrifice.",
+      get reward() { return Achievement(155).canBeApplied ? 
+        "8th Antimatter Dimensions are way stronger if you have a sacrifice (improved by Achievement 155)." :
+        "8th Antimatter Dimensions are way stronger the first million years after a Dimensional Sacrifice."},
       effect: () => Sacrifice.totalBoost.lte(1) ? DC.D1 : 
-      DC.E11111.pow(1 - Math.clampMax(Time.timeSinceLastSacrifice.totalYears / 1e6, 1)),
+        Achievement(155).canBeApplied ? DC.E11111 : 
+        DC.E11111.pow(1 - Math.clampMax(Time.timeSinceLastSacrifice.totalYears / 1e6, 1)),
       formatEffect: value => `${formatX(value, 1, 1)}`,
     }
   },
@@ -161,7 +167,7 @@ export const normalAchievements = [
     checkRequirement: () => Currency.antimatter.exponent >= 80,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return `2nd Antimatter Dimensions are slightly stronger based on current Antimatter.`; },
-    effect: () => Math.max(1, Math.pow(1.1, Math.pow(Currency.antimatter.exponent, 0.23) - 1.3)),
+    effect: () => Math.max(1, Math.pow(1.1, Math.pow(Currency.antimatter.exponent, 0.24) - 1.3)),
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "2nd Antimatter Dimensions are mildly stronger based on current Antimatter.",
@@ -388,9 +394,9 @@ export const normalAchievements = [
     },
     checkRequirement: () => player.requirementChecks.infinity.noSacrifice,
     checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
-    get reward() { return `8th Antimatter Dimensions are ${formatInt(8)} times stronger, 
+    get reward() { return `8th Antimatter Dimensions are ${formatInt(10)} times stronger, 
     but only if you have no sacrifices.`},
-    effect: DC.D8,
+    effect: DC.E1,
     effectCondition: () => Sacrifice.totalBoost.lte(1),
     enhanced: {
       get reward() { return `8th Antimatter Dimensions are ${formatPostBreak(DC.E45000)} times stronger, 
@@ -511,8 +517,8 @@ export const normalAchievements = [
     effect: () => DC.D1_007.pow(DimBoost.totalBoosts).recip(),
     formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
     enhanced: {
-      get reward() { return `Tickspeed is just over ${formatPercents(0.05)} faster per Dimension Boost.`; },
-      effect: () => DC.D0_95.pow(DimBoost.totalBoosts),
+      get reward() { return `Tickspeed is exactly ${formatPercents(0.08)} faster per Dimension Boost.`; },
+      effect: () => DC.D1_08.pow(DimBoost.totalBoosts).recip(),
       formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
     }
   },
@@ -660,10 +666,11 @@ export const normalAchievements = [
     checkRequirement: () => NormalChallenge(2).isOnlyActiveChallenge && Time.thisInfinityRealTime.totalMinutes <= 3,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() {
-      return `All Antimatter Dimensions are stronger in the first ${formatInt(3)} minutes of Infinities.`;
+      return Achievement(155).canBeApplied ? `All Antimatter Dimensions are stronger (improved by Achievement 155).` : 
+        `All Antimatter Dimensions are stronger in the first ${formatInt(3)} minutes of Infinities.`;
     },
-    effect: () => Math.max(6 / (Time.thisInfinity.totalMinutes + 3), 1),
-    effectCondition: () => Time.thisInfinity.totalMinutes < 3,
+    effect: () => Achievement(155).canBeApplied ? 2 : Math.max(6 / (Time.thisInfinity.totalMinutes + 3), 1),
+    effectCondition: () => Achievement(155).canBeApplied || Time.thisInfinity.totalMinutes < 3,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -713,10 +720,13 @@ export const normalAchievements = [
     get description() { return `Reach ${format(DC.E8)} Infinity Points per minute.`; },
     checkRequirement: () => Player.bestRunIPPM.exponent >= 8,
     checkEvent: GAME_EVENT.BIG_CRUNCH_AFTER,
-    get reward() { return `A small multiplier to Infinity points that fades over ${formatInt(60)}
+    get reward() { return Achievement(155).canBeApplied ? 
+      `A small multiplier to Infinity points (improved by Achievement 155).` : 
+      `A small multiplier to Infinity points that fades over ${formatInt(60)}
     seconds this Infinity.`},
-    effect: () => Math.max(1, 3 - Time.thisInfinity.totalSeconds / 30),
-    effectCondition: () => Time.thisInfinity.totalMinutes < 1,
+    effect: () => Achievement(155).canBeApplied ? 3 : 
+      Math.max(1, 3 - Time.thisInfinity.totalSeconds / 30),
+    effectCondition: () => Achievement(155).canBeApplied || Time.thisInfinity.totalMinutes < 1,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -748,11 +758,14 @@ export const normalAchievements = [
     checkRequirement: () => Time.challengeSum.totalMinutes < 3,
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER],
     get reward() {
-      return `All Antimatter Dimensions are stronger in the first ${formatInt(3)} minutes of Infinities,
-      but only in Challenges.`;
+      return Achievement(155).canBeApplied ? 
+        `All Antimatter Dimensions are stronger, but only in challenges (improved by Achievement 155).` :
+        `All Antimatter Dimensions are stronger in the first ${formatInt(3)} minutes of Infinities,
+        but only in Challenges.`;
     },
-    effect: () => (Player.isInAnyChallenge ? Math.max(4 / (Time.thisInfinity.totalMinutes + 1), 1) : 1),
-    effectCondition: () => Player.isInAnyChallenge && Time.thisInfinity.totalMinutes < 3,
+    effect: () => (Player.isInAnyChallenge ? Math.max(
+      4 / (Time.thisInfinity.totalMinutes * !Achievement(155).canBeApplied + 1), 1) : 1),
+    effectCondition: () => Player.isInAnyChallenge && (Time.thisInfinity.totalMinutes < 3),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -980,11 +993,13 @@ export const normalAchievements = [
     checkRequirement: () => gainedInfinityPoints().exponent >= 200 && Time.thisInfinityRealTime.totalSeconds <= 2,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() {
-      return `All Antimatter Dimensions are significantly stronger in the
+      return Achievement(155).canBeApplied ? 
+      `All Antimatter Dimensions are significantly stronger (improved by Achievement 155).` : 
+      `All Antimatter Dimensions are significantly stronger in the
       first ${formatInt(5)} seconds of Infinities.`;
     },
-    effect: () => Math.max((5 - Time.thisInfinity.totalSeconds) * 60, 1),
-    effectCondition: () => Time.thisInfinity.totalSeconds < 5,
+    effect: () => Achievement(155).canBeApplied ? 300 : Math.max((5 - Time.thisInfinity.totalSeconds) * 60, 1),
+    effectCondition: () => Achievement(155).canBeApplied || Time.thisInfinity.totalSeconds < 5,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -996,11 +1011,13 @@ export const normalAchievements = [
     checkRequirement: () => gainedInfinityPoints().exponent >= 250 && Time.thisInfinityRealTime.totalSeconds <= 20,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() {
-      return `All Antimatter Dimensions are significantly stronger in the
+      return Achievement(155).canBeApplied ? 
+      `All Antimatter Dimensions are significantly stronger (improved by Achievement 155).` :
+      `All Antimatter Dimensions are significantly stronger in the
       first ${formatInt(60)} seconds of Infinities.`;
     },
-    effect: () => Math.max((1 - Time.thisInfinity.totalMinutes) * 100, 1),
-    effectCondition: () => Time.thisInfinity.totalMinutes < 1,
+    effect: () => Achievement(155).canBeApplied ? 100 : Math.max((1 - Time.thisInfinity.totalMinutes) * 100, 1),
+    effectCondition: () => Achievement(155).canBeApplied || Time.thisInfinity.totalMinutes < 1,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -1050,11 +1067,14 @@ export const normalAchievements = [
     get description() { return `Get the sum of Infinity Challenge times under ${format(6.66, 2, 2)} seconds.`; },
     checkRequirement: () => Time.infinityChallengeSum.totalSeconds < 6.66,
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER],
-    get reward() { return Time.infinityChallengeSum.totalSeconds < 0.666 ? 
+    get reward() { return Achievement(155).canBeApplied ? 
+      "IC1's reward is raised (maxed by Achievement 155)." :
+      (Time.infinityChallengeSum.totalSeconds < 0.666 ? 
       "IC1's reward is raised based on sum of IC times (capped)." : 
-      "IC1's reward is raised based on sum of IC times." 
+      "IC1's reward is raised based on sum of IC times.") 
     },
-    effect: () => Math.max(6.66 / Math.max(Time.infinityChallengeSum.totalSeconds, 0.6), 1),
+    effect: () => Achievement(155).canBeApplied ? 11.1 : 
+      Math.max(6.66 / Math.max(Time.infinityChallengeSum.totalSeconds, 0.6), 1),
     formatEffect: value => `^${format(value, 2, 2)}`
   },
   {
@@ -1212,7 +1232,9 @@ export const normalAchievements = [
     get description() { return `Eternity in under ${formatInt(250)}ms.`; },
     checkRequirement: () => Time.thisEternity.totalMilliseconds <= 250,
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
-    get reward() { return `Gain more Eternities based on your fastest time, up to ${formatX(5)}.`; },
+    get reward() { return Achievement(155).canBeApplied ? 
+      `Gain more Eternities (maxed by Achievement 155).` :
+      `Gain more Eternities based on your fastest time, up to ${formatX(5)}.`; },
     effect: () => Math.clampMin(Math.floor(500 / Math.max(player.records.bestEternity.time, 100)), 2),
     formatEffect: value => {
       const mult = formatX(value);
@@ -1634,7 +1656,8 @@ export const normalAchievements = [
     get description() { return `Play for ${formatFloat(13.7, 1)} billion years.`; },
     checkRequirement: () => Time.totalTimePlayed.totalYears > 13.7e9,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `Black Hole durations are ${formatPercents(0.1)} longer.`; },
+    get reward() { return `Black Hole durations are ${formatPercents(0.1)} longer. Temporary effects, 
+      and effects based on fastest time, are always maximized.`; },
     effect: 1.1
   },
   {

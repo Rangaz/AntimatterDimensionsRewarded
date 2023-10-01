@@ -84,7 +84,7 @@ export default {
           // Because of discrete replication, we add "Approximately" at very low amounts
           // I want all the timers to take into account r108's 9 second x2 speed.
           this.remainingTimeText = `Approximately ${TimeSpan.fromSeconds(r108Timer > 0 && remainingTime - r108Timer > 0 ? 
-            remainingTime * 2 - r108Timer : remainingTime)} remaining until Infinite Replicanti`;
+            remainingTime * 2 : remainingTime)} remaining until Infinite Replicanti`;
         } else {
           this.remainingTimeText = `${TimeSpan.fromSeconds(r108Timer > 0 && remainingTime - r108Timer > 0 ? 
             remainingTime * 2 - r108Timer : remainingTime)} remaining until Infinite Replicanti`;
