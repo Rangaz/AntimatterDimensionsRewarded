@@ -3,26 +3,12 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Add the perk that unlocks Achievement Enhancement <DONE>
--Add an Enhanced effect to the first 4 rows of Achievements <DONE>
--Include a proper respec button, <DONE>
--Make them work <DONE>
--Add a way to gain Enhancement Points through row 14+ achievements <DONE>
--Allow to Enhance Achievements in Achievement tab <DONE>
--Modify the Achievements tab with the relevant information, including Shift functionality <DONE>
--Reality reminder <DONE>
--Multiplier tab functionality for Enhanced Achievements <DONE>
--An h2p section for Enhanced Achievements <DONE (In 'Achievements')>
--Changelog entry <DONE>
+-Reworded r23 <DONE>
+-Make Rep Galaxy timer take into account r106 (and r108?) <DONE>
+-Make r113 have min of x2 <DONE>
+-Make r106 only take into account buyable galaxies <DONE>
+-Make r155 also always maximize temporal effects
 
-Lower Priority:
--Make r45 work with free Dim Boosts <DONE>
--Merge r52 & r53's reward <DONE>
--Make r53's new effect <DONE>
--Change r64's effect <DONE>
--Change r72's effect <DONE>
--Make the color for the respec button more appropiate <DONE>
--Make Rep Galaxy timer take into account r106 (and r108?)
 */
 
 export const normalAchievements = [
@@ -156,15 +142,15 @@ export const normalAchievements = [
     name: "The 9th Dimension is a lie",
     get description() { return `Have exactly ${formatInt(99)} 8th Antimatter Dimensions.`; },
     checkRequirement: () => AntimatterDimension(8).amount.eq(99),
-    reward: "8th Antimatter Dimensions are stronger right after a Dimensional Sacrifice.",
-    effect: () => player.requirementChecks.infinity.noSacrifice ? 1 : 
-    Math.pow(0.88, Math.clampMin(Time.timeSinceLastSacrifice.totalSeconds - 3, 0)) * 4.99 + 1.01,
+    reward: "8th Antimatter Dimensions are stronger the first 15 seconds after a Dimensional Sacrifice.",
+    effect: () => Sacrifice.totalBoost.lte(1) ? 1 : 
+    Math.clamp(Time.timeSinceLastSacrifice.totalSeconds - 3, 0, 12) * -5 / 12 + 6,
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
-      reward: "8th Antimatter Dimensions are way stronger right after a Dimensional Sacrifice.",
-      effect: () => player.requirementChecks.infinity.noSacrifice ? DC.D1 : 
-      DC.D0_01.pow(Decimal.max(Time.timeSinceLastSacrifice.totalMilliseconds - 3000, 0)).times(DC.E11111).clampMin(1),
-      formatEffect: value => `${formatX(value)}`,
+      reward: "8th Antimatter Dimensions are way stronger the first million years after a Dimensional Sacrifice.",
+      effect: () => Sacrifice.totalBoost.lte(1) ? DC.D1 : 
+      DC.E11111.pow(1 - Math.clampMax(Time.timeSinceLastSacrifice.totalYears / 1e6, 1)),
+      formatEffect: value => `${formatX(value, 1, 1)}`,
     }
   },
   {
@@ -1149,9 +1135,10 @@ export const normalAchievements = [
     get description() { return `Get ${formatInt(10)} Replicanti Galaxies in ${formatInt(15)} seconds.`; },
     checkRequirement: () => Replicanti.galaxies.total >= 10 && Time.thisInfinity.totalSeconds <= 15,
     checkEvent: GAME_EVENT.REPLICANTI_TICK_AFTER,
-    get reward() {return `Replicanti speed ${formatX(2)} if you have less than ${formatInt(10)} Replicanti Galaxies.`},
+    get reward() {return `Replicanti speed ${formatX(2)} if you have bought less than ${formatInt(10)} 
+      Replicanti Galaxies.`},
     effect: 2,
-    effectCondition: () => Replicanti.galaxies.total < 10,
+    effectCondition: () => Replicanti.galaxies.bought < 10,
   },
   {
     // Implemented!
@@ -1226,7 +1213,7 @@ export const normalAchievements = [
     checkRequirement: () => Time.thisEternity.totalMilliseconds <= 250,
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
     get reward() { return `Gain more Eternities based on your fastest time, up to ${formatX(5)}.`; },
-    effect: () => Math.clampMin(Math.floor(500 / Math.max(player.records.bestEternity.time, 100)), 1),
+    effect: () => Math.clampMin(Math.floor(500 / Math.max(player.records.bestEternity.time, 100)), 2),
     formatEffect: value => {
       const mult = formatX(value);
       if (value < 5) {

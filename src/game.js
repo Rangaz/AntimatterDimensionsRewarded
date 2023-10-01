@@ -528,8 +528,7 @@ export function gameLoop(passDiff, options = {}) {
     player.records.realTimePlayed += realDiff;
     player.records.totalTimePlayed += diff;
     // There's now a 3 second grace window in r23's effect.
-    // r23 now uses Real Time because fast enough game speeds would turn the bonus to 1 instantly.
-    player.records.timeSinceLastSacrifice += realDiff; // For r23
+    player.records.timeSinceLastSacrifice += diff; // For r23
     player.records.timeWithExcessAMProd += diff; // For r44
     player.records.timeWithExcessIPowerProd += diff; // For r124
     player.records.thisInfinity.realTime += realDiff;
