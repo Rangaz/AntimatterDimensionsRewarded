@@ -1,4 +1,8 @@
 <script>
+import { Achievement } from '../../../core/globals';
+import { Time } from '../../../core/time';
+import { getGameSpeedupForDisplay } from '../../../game';
+
 export default {
   name: "ReplicantiGainText",
   data() {
@@ -21,6 +25,9 @@ export default {
 
       const replicantiAmount = Replicanti.amount;
       const minReplicanti = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
+      const fastR106Galaxies = Achievement(106).canBeApplied ? 10 : 0;
+      const r108Timer = Achievement(108).canBeApplied && !Achievement(155).canBeApplied ? 
+        Math.clampMin((9 - Time.thisEternity.totalSeconds) / getGameSpeedupForDisplay(), 0) : 0;
       const isAbove308 = Replicanti.isUncapped && replicantiAmount.log10() > LOG10_MAX_VALUE;
 
       if (isAbove308) {
@@ -38,7 +45,7 @@ export default {
         // The calculation seems to choke and return zero if the time is too large, probably because of rounding issues
         const timeEstimateText = timeToThousand.eq(0)
           ? "an extremely long time"
-          : `${TimeSpan.fromSeconds(timeToThousand.toNumber())}`;
+          : `${TimeSpan.fromSeconds(r108Timer > 0 ? timeToThousand.toNumber() * 2 - r108Timer : timeToThousand.toNumber())}`;
         this.remainingTimeText = `You are gaining ${formatX(gainFactorPerSecond, 2, 1)} Replicanti per second` +
           ` (${timeEstimateText} until ${format(nextMilestone)})`;
       } else {
@@ -75,16 +82,19 @@ export default {
             ${TimeSpan.fromSeconds(secondsPerGalaxy.toNumber())})`;
         } else if (replicantiAmount.lt(100)) {
           // Because of discrete replication, we add "Approximately" at very low amounts
-          this.remainingTimeText = `Approximately ${TimeSpan.fromSeconds(remainingTime)} remaining
-            until Infinite Replicanti`;
+          // I want all the timers to take into account r108's 9 second x2 speed.
+          this.remainingTimeText = `Approximately ${TimeSpan.fromSeconds(r108Timer > 0 && remainingTime - r108Timer > 0 ? 
+            remainingTime * 2 - r108Timer : remainingTime)} remaining until Infinite Replicanti`;
         } else {
-          this.remainingTimeText = `${TimeSpan.fromSeconds(remainingTime)} remaining until Infinite Replicanti`;
+          this.remainingTimeText = `${TimeSpan.fromSeconds(r108Timer > 0 && remainingTime - r108Timer > 0 ? 
+            remainingTime * 2 - r108Timer : remainingTime)} remaining until Infinite Replicanti`;
         }
       }
 
       // If the player can get RG, this text is redundant with text below. It denotes total time from 1 to e308
       if (Replicanti.galaxies.max === 0 && !isAbove308) {
-        this.remainingTimeText += ` (${TimeSpan.fromSeconds(totalTime)} total)`;
+        this.remainingTimeText += ` (${TimeSpan.fromSeconds(r108Timer > 0 && totalTime - r108Timer > 0 ? 
+            totalTime * 2 - r108Timer : totalTime)} total)`;
       }
 
 
@@ -101,7 +111,10 @@ export default {
           // Take the total time from zero replicanti to max RG + e308 replicanti and then subtract away the time which
           // has already elapsed. The time elapsed is calculated from your current RG total (including the current one)
           // and then subtracts away the time spent in the current RG so far.
-          const allGalaxyTime = Decimal.divide(effectiveMaxRG - effectiveCurrentRG, baseGalaxiesPerSecond).toNumber();
+          // I want this calculation to also take into account r106's effect.
+          const allGalaxyTime = Achievement(106).canBeApplied && effectiveMaxRG > fastR106Galaxies ? 
+            Decimal.divide(2 * effectiveMaxRG - fastR106Galaxies - effectiveCurrentRG, baseGalaxiesPerSecond).toNumber() : 
+            Decimal.divide(effectiveMaxRG - effectiveCurrentRG, baseGalaxiesPerSecond).toNumber();
 
           // Pending galaxy gain is here because the growth slows down significantly after
           // 1e308 normally. However, the seconds per galaxy code is calculated as if
@@ -120,7 +133,8 @@ export default {
           }
           const thisGalaxyTime = pending > 0 ? pendingTime : secondsPerGalaxy.toNumber() - remainingTime;
           this.galaxyText += ` (all Replicanti Galaxies within
-            ${TimeSpan.fromSeconds(Math.clampMin(allGalaxyTime - thisGalaxyTime, 0))})`;
+            ${TimeSpan.fromSeconds(Math.clampMin(r108Timer > 0 && allGalaxyTime - thisGalaxyTime - r108Timer > 0 ? 
+              (allGalaxyTime - thisGalaxyTime) * 2 - r108Timer : allGalaxyTime - thisGalaxyTime, 0))})`;
         }
       } else {
         this.galaxyText = ``;
