@@ -12,7 +12,7 @@ export const changelog = [
     date: [2023, 10, 1],
     name: "Interlude",
     info: `
-    <b>A minor update before the big ones arrive</b>
+    <b>A minor update before the big one arrives</b>
     <br>
     <br>
     Changes:
@@ -28,7 +28,13 @@ export const changelog = [
     <li>Timers in the Replicanti tab now take into account the effects of Achievements 106 and 108.</li>
     <li>Fixed a bug where pressing a hotkey for an Antimatter Dimension could buy more than you can afford 
     if you didn't have its respective row 1 Achievement.</li>
+    </ul>
     <br>
+    <br>
+    Post release changes:
+    <ul>
+    <li>(1/10)The Infinity upgrade that gives IP based on fastest Infinity is now disabled in cel-2's reality.</li>
+    </ul>
     `
   },
   {
