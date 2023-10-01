@@ -30,10 +30,13 @@ export const eternityUpgrades = {
   idMultICRecords: {
     id: 3,
     cost: 5e4,
-    description: "Infinity Dimensions multiplier based on sum of Infinity Challenge times",
+    description: () => "Infinity Dimensions multiplier " + (Achievement(155).canBeApplied ?
+    "(maxed by Achievement 155)" :
+    "based on sum of Infinity Challenge times"),
     // The cap limits this at a lower value, but we also need an explicit cap here because very old versions have
     // allowed EC12 to make all the challenge records sum to zero (causing a division by zero here)
-    effect: () => DC.D2.pow(30 / Math.clampMin(Time.infinityChallengeSum.totalSeconds, 0.1)),
+    effect: () => Achievement(155).canBeApplied ? DC.D2P30D0_61 :
+      DC.D2.pow(30 / Math.clampMin(Time.infinityChallengeSum.totalSeconds, 0.1)),
     cap: DC.D2P30D0_61,
     formatEffect: value => formatX(value, 2, 1)
   },
