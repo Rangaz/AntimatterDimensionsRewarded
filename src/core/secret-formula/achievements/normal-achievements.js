@@ -5,6 +5,7 @@ import { PlayerProgress } from "../../player-progress";
 TODO:
 -Make the "Base Tickspeed from achievements" expandable in multiplier tab <DONE>
 -Small powers in multiplier tab should show "<^1.001" <DONE>
+-Buff r78 <DONE>
 -Fix Reality reminder saying Enhanced Achievements before you unlock them.
 */
 
@@ -888,9 +889,9 @@ export const normalAchievements = [
     checkRequirement: () => Time.thisInfinityRealTime.totalMilliseconds <= 250,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() {
-      return `Start with ${format(5e25)} antimatter.`;
+      return `Start with ${format(5e40)} antimatter.`;
     },
-    effect: 5e25
+    effect: 5e40
   },
   {
     // Implemented!
@@ -1131,8 +1132,8 @@ export const normalAchievements = [
     get description() { return `Eternity in under ${formatInt(30)} seconds.`; },
     checkRequirement: () => Time.thisEternity.totalSeconds <= 30,
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
-    get reward() { return `Start Eternities with ${format(5e25)} Infinity Points.`; },
-    effect: 5e25
+    get reward() { return `Start Eternities with ${format(5e40)} Infinity Points.`; },
+    effect: 5e40
   },
   {
     id: 105,
