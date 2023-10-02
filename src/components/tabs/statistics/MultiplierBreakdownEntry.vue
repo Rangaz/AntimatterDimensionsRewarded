@@ -270,7 +270,11 @@ export default {
           values.push(formatFn(entry.data.mult.times(equivMult)));
         } else {
           if (Decimal.neq(entry.data.mult, 1)) values.push(formatFn(entry.data.mult));
-          if (entry.data.pow !== 1) values.push(formatPow(entry.data.pow, 2, 3));
+          if (entry.data.pow !== 1) {
+            if (entry.data.pow > 1 && entry.data.pow < 1.001) 
+              values.push(`<${formatPow(1.001, 3, 3)}`);
+            else values.push(formatPow(entry.data.pow, 2, 3));
+          }
         }
         valueStr = values.length === 0 ? "" : `(${values.join(", ")})`;
       }

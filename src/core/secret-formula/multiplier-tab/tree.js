@@ -3,7 +3,7 @@
 import { MultiplierTabHelper } from "./helper-functions";
 import { multiplierTabValues } from "./values";
 
-const dynamicGenProps = ["TP", "DT", "infinities", "eternities", "gamespeed", "replicanti"];
+const dynamicGenProps = ["TP", "DT", "tickspeed", "infinities", "eternities", "gamespeed", "replicanti"];
 const propList = {
   AD: ["purchase", "dimboost", "sacrifice", "achievementMult", "achievement", "infinityUpgrade",
     "breakInfinityUpgrade", "infinityPower", "infinityChallenge", "timeStudy", "eternityChallenge", "glyph", "v",
@@ -81,7 +81,7 @@ export const multiplierTabTree = {
     getProps("DT")
   ],
   tickspeed_total: [
-    ["tickspeed_base", "tickspeed_upgrades", "tickspeed_galaxies", "tickspeed_pelleTickspeedPow"]
+    ["tickspeed_achievement", "tickspeed_upgrades", "tickspeed_galaxies", "tickspeed_pelleTickspeedPow"]
   ],
   tickspeed_upgrades: [
     ["tickspeedUpgrades_purchased", "tickspeedUpgrades_fromShards", "tickspeedUpgrades_fromAchievements"]
@@ -114,7 +114,7 @@ multiplierTabTree.DT_total[0].unshift("TP_total");
 
 // Additional data specification for dynamically-generated props
 const dimTypes = ["AD", "ID", "TD"];
-const singleRes = ["IP", "EP", "DT", "infinities", "replicanti"];
+const singleRes = ["IP", "EP", "DT", "tickspeed", "infinities", "replicanti"];
 const targetedEffects = {
   achievement: { // Enhanced Achievements will be placed here as (1000 + actual number)
     // to distinguish them from the regular achievements
@@ -126,6 +126,7 @@ const targetedEffects = {
     IP: [62, 77, 85, 93, 116, 125, 141],
     EP: [153],
     DT: [132, 137],
+    tickspeed: [36, 1036, 45, 1045, 66, 135],
     infinities: [33, 1033, 87, 164],
     replicanti: [106, 108, 134]
   },

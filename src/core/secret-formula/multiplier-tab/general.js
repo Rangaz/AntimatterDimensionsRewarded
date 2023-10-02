@@ -19,6 +19,12 @@ export const general = {
         ach -= 1000;
         if (ach === 47) return 1; // Power effect
 
+        // The base tickspeed from achievements' effect is actually divisors, so 
+        // we want to show the reciprocal instead
+        if (ach === 36 || ach === 45) {
+          return Achievement(ach).enhancedEffect.canBeApplied ? 
+            DC.D1.divide(Achievement(ach).enhancedEffect.effectOrDefault(1)) : 1
+        }
         if (!dim) return Achievement(ach).enhancedEffect.canBeApplied ? 
           Achievement(ach).enhancedEffect.effectOrDefault(1) : 1;
 
@@ -48,6 +54,9 @@ export const general = {
       // There is also a buy10 effect, but we don't track that in the multiplier tab
       if (ach === 141) return Achievement(141).canBeApplied ? Achievement(141).effects.ipGain.effectOrDefault(1) : 1;
       if (ach === 72 || ach === 183) return 1;
+      if (ach === 36 || ach === 45 || ach === 66 || ach === 135) {
+        return DC.D1.divide(Achievement(ach).effectOrDefault(1));
+      }
       if (!dim) return Achievement(ach).canBeApplied ? Achievement(ach).effectOrDefault(1) : 1;
 
       if (dim?.length === 2) {
