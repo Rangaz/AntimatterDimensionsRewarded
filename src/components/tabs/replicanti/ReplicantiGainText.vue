@@ -26,7 +26,7 @@ export default {
       const replicantiAmount = Replicanti.amount;
       const minReplicanti = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
       const fastR106Galaxies = Achievement(106).canBeApplied ? 10 : 0;
-      const r108Timer = Achievement(108).canBeApplied && !Achievement(155).canBeApplied ? 
+      const r108Timer = Achievement(108).canBeApplied && !Achievement(145).canBeApplied ? 
         Math.clampMin((9 - Time.thisEternity.totalSeconds) / getGameSpeedupForDisplay(), 0) : 0;
       const isAbove308 = Replicanti.isUncapped && replicantiAmount.log10() > LOG10_MAX_VALUE;
 
