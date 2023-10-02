@@ -158,8 +158,8 @@ export const infinityUpgrades = {
     id: "passiveGen",
     cost: 10,
     checkRequirement: () => InfinityUpgrade.dimboostMult.isBought,
-    description: () => (Achievement(155).canBeApplied ? 
-    `Passively generate Infinity Points ${format(Number.MAX_VALUE, 1, 1)} times every second (maxed by Achievement 155)` :
+    description: () => (Achievement(145).canBeApplied ? 
+    `Passively generate Infinity Points ${format(Number.MAX_VALUE, 1, 1)} times every second (maxed by Achievement 145)` :
     `Passively generate Infinity Points ${formatInt(10)} times slower than your fastest Infinity`),
     // Cutting corners: this is not actual effect, but it is totalIPMult that is displyed on upgrade
     effect: () => (Teresa.isRunning || Effarig.isRunning || V.isRunning || Pelle.isDoomed ? 
@@ -167,8 +167,8 @@ export const infinityUpgrades = {
     formatEffect: value => {
       if (Teresa.isRunning || Effarig.isRunning || V.isRunning) return "Disabled in this reality";
       if (Pelle.isDoomed) return "Disabled";
-      if (player.records.bestInfinity.time >= 999999999999 && !Achievement(155).canBeApplied) return "Too slow to generate";
-      return `${format(value, 2)} every ${Achievement(155).canBeApplied ? `${format(1000/Number.MAX_VALUE, 1, 1)} ms` :
+      if (player.records.bestInfinity.time >= 999999999999 && !Achievement(145).canBeApplied) return "Too slow to generate";
+      return `${format(value, 2)} every ${Achievement(145).canBeApplied ? `${format(1000/Number.MAX_VALUE)} ms` :
         Time.bestInfinity.times(10).toStringShort()}`;
     },
     charged: {

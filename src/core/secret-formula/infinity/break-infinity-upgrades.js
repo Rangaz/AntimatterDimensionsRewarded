@@ -64,10 +64,10 @@ export const breakInfinityUpgrades = {
   slowestChallengeMult: {
     id: "challengeMult",
     cost: 1e7,
-    description: () => (Achievement(155).canBeApplied ? 
-      "Antimatter Dimensions gain a multiplier (maxed by Achievement 155)" :
+    description: () => (Achievement(145).canBeApplied ? 
+      "Antimatter Dimensions gain a multiplier (maxed by Achievement 145)" :
       "Antimatter Dimensions gain a multiplier based on slowest challenge run"),
-    effect: () => Achievement(155).canBeApplied ? DC.D3E4 : 
+    effect: () => Achievement(145).canBeApplied ? DC.D3E4 : 
       Decimal.clampMin(50 / Time.worstChallenge.totalMinutes, 1),
     formatEffect: value => formatX(value, 2, 2),
     hasCap: true,
@@ -76,10 +76,10 @@ export const breakInfinityUpgrades = {
   infinitiedGen: {
     id: "infinitiedGeneration",
     cost: 2e7,
-    description: () => (Achievement(155).canBeApplied ? 
-    "Passively generate Infinities (maxed by Achievement 155)" :
+    description: () => (Achievement(145).canBeApplied ? 
+    "Passively generate Infinities (maxed by Achievement 145)" :
     "Passively generate Infinities based on your fastest Infinity"),
-    effect: () => Achievement(155).canBeApplied ? 50 : player.records.bestInfinity.time,
+    effect: () => Achievement(145).canBeApplied ? 50 : player.records.bestInfinity.time,
     formatEffect: value => {
       if (value === Number.MAX_VALUE && !Pelle.isDoomed) return "No Infinity generation";
       let infinities = DC.D1;
@@ -89,7 +89,7 @@ export const breakInfinityUpgrades = {
         Ra.unlocks.continuousTTBoost.effects.infinity
       );
       infinities = infinities.times(getAdjustedGlyphEffect("infinityinfmult"));
-      const timeStr = Time.bestInfinity.totalMilliseconds <= 50 || Achievement(155).canBeApplied
+      const timeStr = Time.bestInfinity.totalMilliseconds <= 50 || Achievement(145).canBeApplied
         ? `${TimeSpan.fromMilliseconds(100).toStringShort()} (capped)`
         : `${Time.bestInfinity.times(2).toStringShort()}`;
       return `${quantify("Infinity", infinities)} every ${timeStr}`;
