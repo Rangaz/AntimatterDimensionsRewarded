@@ -3,13 +3,9 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Reworded r23 <DONE>
--Make Rep Galaxy timer take into account r106 and r108 <DONE>
--Make r113 have min of x2 <DONE>
--Make r106 only take into account buyable galaxies <DONE>
--Make r155 also always maximize temporal effects <DONE>
--Fix Shift behavior with the tail in already enhanced achievements <reduced>
--Changelog entry
+-Make the "Base Tickspeed from achievements" expandable in multiplier tab <DONE>
+-Small powers in multiplier tab should show "<^1.001" <DONE>
+-Fix Reality reminder saying Enhanced Achievements before you unlock them.
 */
 
 export const normalAchievements = [
@@ -1235,7 +1231,8 @@ export const normalAchievements = [
     get reward() { return Achievement(155).canBeApplied ? 
       `Gain more Eternities (maxed by Achievement 155).` :
       `Gain more Eternities based on your fastest time, up to ${formatX(5)}.`; },
-    effect: () => Math.clampMin(Math.floor(500 / Math.max(player.records.bestEternity.time, 100)), 2),
+    effect: () => Achievement(155).canBeApplied ? 5 : 
+      Math.clampMin(Math.floor(500 / Math.max(player.records.bestEternity.time, 100)), 2),
     formatEffect: value => {
       const mult = formatX(value);
       if (value < 5) {

@@ -25,7 +25,7 @@ export const tickspeed = {
     overlay: ["<i class='fa-solid fa-clock' />"],
     icon: MultiplierTabIcons.TICKSPEED,
   },
-  base: {
+  achievement: {
     name: "Base Tickspeed from Achievements",
     displayOverride: () => {
       const val = DC.D1.dividedByEffectsOf(
