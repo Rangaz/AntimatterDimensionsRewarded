@@ -38,6 +38,8 @@ export const changelog = [
     <br>
     Post release changes:
     <ul>
+    <li>(3/10) Achievement 136 also resets Time Shards and Time Dimensions when exiting an
+    Eternity Challenge.</li>
     <li>(3/10) Made Achievement 145 now affect offline Eternity gain.</li>
     </ul>
     `
