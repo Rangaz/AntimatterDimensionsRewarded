@@ -1,4 +1,5 @@
 import { DC } from "./constants";
+import { Achievement } from "./globals";
 
 export class Sacrifice {
   // This is tied to the "buying an 8th dimension" achievement in order to hide it from new players before they reach
@@ -7,10 +8,14 @@ export class Sacrifice {
     return Achievement(18).isUnlocked || PlayerProgress.realityUnlocked();
   }
 
+  // I want the sacrifice to take into account the effects of Achievement 38 and Achivement 23 
+  // (if you have Achievement 145) such that there's no net negative effect.
   static get canSacrifice() {
-    return DimBoost.purchasedBoosts > 4 && !EternityChallenge(3).isRunning && this.nextBoost.gt(DC.D1.timesEffectsOf(Achievement(38), Achievement(38).enhancedEffect)) &&
-      AntimatterDimension(8).totalAmount.gt(0) && Currency.antimatter.lt(Player.infinityLimit) &&
-      !Enslaved.isRunning;
+    return DimBoost.purchasedBoosts > 4 && !EternityChallenge(3).isRunning && this.nextBoost.gt(
+      this.totalBoost.gt(1) ? 1 : DC.D1.timesEffectsOf(Achievement(38), Achievement(38).enhancedEffect).divide(
+      Achievement(145).canBeApplied && Achievement(23).isUnlocked ? (Achievement(23).isEnhanced ? DC.E11111 : 6) : 1)) 
+      && AntimatterDimension(8).totalAmount.gt(0)
+      && Currency.antimatter.lt(Player.infinityLimit) && !Enslaved.isRunning;
   }
 
   static get disabledCondition() {
@@ -19,6 +24,13 @@ export class Sacrifice {
     if (DimBoost.purchasedBoosts < 5) return `Requires ${formatInt(5)} Dimension Boosts`;
     if (AntimatterDimension(8).totalAmount.eq(0)) return "No 8th Antimatter Dimensions";
     if (this.nextBoost.lte(1)) return `${formatX(1)} multiplier`;
+    if (Achievement(145).canBeApplied && Achievement(23).isUnlocked) {
+      if (this.nextBoost.lt(
+        DC.D1.divide(Achievement(23).isEnhanced ? DC.E11111 : DC.D6).times(Achievement(38).effectOrDefault(
+        Achievement(38).enhancedEffect.effectOrDefault(1))))) {
+        return `Wouldn't be beneficial`;
+      }
+    }
     if (this.nextBoost.lt(Achievement(38).effectOrDefault(1))) return `Wouldn't be beneficial`;
     if (this.nextBoost.lt(Achievement(38).enhancedEffect.effectOrDefault(1))) return `Wouldn't be beneficial`;
     if (Player.isInAntimatterChallenge) return "Challenge goal reached";
