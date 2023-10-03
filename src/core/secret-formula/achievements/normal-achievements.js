@@ -6,7 +6,10 @@ TODO:
 -Make the "Base Tickspeed from achievements" expandable in multiplier tab <DONE>
 -Small powers in multiplier tab should show "<^1.001" <DONE>
 -Buff r78 <DONE>
--Fix Reality reminder saying Enhanced Achievements before you unlock them.
+-Fix Reality reminder saying Enhanced Achievements before you unlock them. <DONE>
+-Move r155's new effect into r145 <DONE>
+-Make sacrifice possible if you have r145 & the effects of r23 would be enough to 
+not be net-negative because of r38 <DONE>
 */
 
 export const normalAchievements = [
@@ -114,8 +117,8 @@ export const normalAchievements = [
     description: "Go Infinite.",
     checkRequirement: () => true,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `Start with ${formatInt(100)} antimatter.`; },
-    effect: 100,
+    get reward() { return `Start with ${formatInt(200)} antimatter.`; },
+    effect: 200,
     enhanced: {
       get reward() { return `Multiply starting Antimatter by your Infinity amount.`},
       effect: () => Currency.infinitiesTotal.value.clampMin(1),
@@ -373,8 +376,8 @@ export const normalAchievements = [
     get description() { return `Infinity in under ${formatInt(2)} hours.`; },
     checkRequirement: () => Time.thisInfinityRealTime.totalHours <= 2,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `Start with ${formatInt(5000)} antimatter.`; },
-    effect: 5000,
+    get reward() { return `Start with ${formatInt(50000)} antimatter.`; },
+    effect: 50000,
     enhanced: {
       get reward() { return `Multiply starting Antimatter and Infinity Points by your Eternity amount.`;},
       effect: () => Decimal.clampMin(player.eternities, 1),
@@ -642,8 +645,8 @@ export const normalAchievements = [
     get description() { return `Infinity in ${formatInt(10)} minutes or less.`; },
     checkRequirement: () => Time.thisInfinityRealTime.totalMinutes <= 10,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `Start with ${format(5e5)} antimatter.`; },
-    effect: 5e5
+    get reward() { return `Start with ${format(5e6)} antimatter.`; },
+    effect: 5e6
   },
   {
     id: 55,
@@ -651,8 +654,8 @@ export const normalAchievements = [
     get description() { return `Infinity in ${formatInt(1)} minute or less.`; },
     checkRequirement: () => Time.thisInfinityRealTime.totalMinutes <= 1,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `Start with ${format(5e10)} antimatter.`; },
-    effect: 5e10
+    get reward() { return `Start with ${format(5e12)} antimatter.`; },
+    effect: 5e12
   },
   {
     id: 56,

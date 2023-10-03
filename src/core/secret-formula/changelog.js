@@ -9,6 +9,34 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 10, 2],
+    name: "HOW THE **** DOES TICKSPEED WORK",
+    info: `
+    <b>Another minor update, with some nice stuff</b>
+    <br>
+    <br>
+    Changes:
+    <ul>
+    <li>The multiplier tab entry for "Base Tickspeed from Achievements" is now expandable.</li>
+    <li>Very small power effects now show "<^1.001" instead of "^1.000".</li>
+    <li>Fixed Reality Reminder telling you about Enhanced Achievements when you don't have them unlocked.</li>
+    <li>Moved Achievement 155's new effect into Achievement 145.</li>
+    <li>You can now Sacrifice if you have (the new) Achievement 145, and the effects of Achievement 23 
+    would put you net-positive despite Achievement 38's effect.</li>
+    <li>Buffed all the Achievements that give starting resources:
+    <ul>
+    <li>Achievement 21: 100 AM ➜ 200 AM.</li>
+    <li>Achievement 37: 5000 AM ➜ 50,000 AM.</li>
+    <li>Achievement 54: 5e5 AM ➜ 5e6 AM.</li>
+    <li>Achievement 55: 5e10 AM ➜ 5e12 AM.</li>
+    <li>Achievement 78: 5e25 AM ➜ 5e40 AM.</li>
+    <li>Achievement 104: 5e25 IP ➜ 5e40 IP.</li>
+    </ul>
+    </li>
+    </ul>
+    `
+  },
+  {
     date: [2023, 10, 1],
     name: "Interlude",
     info: `
