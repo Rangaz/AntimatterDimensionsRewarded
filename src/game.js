@@ -243,7 +243,6 @@ export function getEternitiedMilestoneReward(ms, considerMilestoneReached) {
     Decimal.floor(gainedEternities().times(Achievement(102).effectOrDefault(0.5) / 33).times(ms)) :
     Decimal.floor(player.records.thisReality.bestEternitiesPerMs.times(ms).dividedBy(
     1 / Achievement(102).effectOrDefault(0.5)));
-  console.log(eternitiesToGain);
   return Autobuyer.eternity.autoEternitiesAvailable(considerMilestoneReached)
     ? eternitiesToGain
     : DC.D0;

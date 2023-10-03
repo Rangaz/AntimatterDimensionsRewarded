@@ -69,6 +69,9 @@ export function eternity(force, auto, specialConditions = {}) {
     // eslint-disable-next-line no-param-reassign
     force = true;
   }
+  // If we're exiting an EC it's important that r136 still resets TDs and Time shards
+  const exitingEC = player.challenge.eternity.current != 0;
+
   // We define this variable so we can use it in checking whether to give
   // the secret achievement for respec without studies.
   // Annoyingly, we need to check for studies right here; giveEternityRewards removes studies if we're in an EC,
@@ -133,8 +136,9 @@ export function eternity(force, auto, specialConditions = {}) {
   player.records.thisEternity.bestEPmin = DC.D0;
   player.records.thisEternity.bestInfinitiesPerMs = DC.D0;
   player.records.thisEternity.bestIPMsWithoutMaxAll = DC.D0;
-  // I want r136 to not reset Time Dimensions, if you're not entering Dilation or an EC
-  if (!Achievement(136).canBeApplied || specialConditions.switchingDilation || specialConditions.enteringEC) {
+  // I want r136 to not reset Time Dimensions, if you're not entering or exiting an EC, or Dilating
+  if (!Achievement(136).canBeApplied || specialConditions.switchingDilation || specialConditions.enteringEC
+    || exitingEC) {
     resetTimeDimensions();
   }
   resetTickspeed();

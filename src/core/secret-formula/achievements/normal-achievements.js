@@ -3,7 +3,7 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Make offline Eternities & Infinities maxed by r145 <DONE>
+-Make TDs reset after completing an Eternity Challenge with r136. <DONE>
 */
 
 export const normalAchievements = [
@@ -1479,7 +1479,8 @@ export const normalAchievements = [
     name: "I told you already, time is relative",
     description: "Dilate time.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-    reward: "Eternities no longer reset Time shards nor TD amounts, unless entering Eternity Challenges or Time Dilation."
+    reward: "Eternities no longer reset Time shards nor TD amounts, unless entering or exiting Eternity Challenges," +
+      " or Dilating."
   },
   {
     id: 137,

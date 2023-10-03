@@ -243,6 +243,13 @@ export class EternityChallengeState extends GameMechanicState {
       Player.antimatterChallenge.exit();
     }
     player.challenge.eternity.current = 0;
+
+    // Putting these resets here since exiting an EC should reset these regardless of r136, but
+    // I'm not sure if I should put 'false' as the 'auto' condition.
+    Currency.timeShards.reset();
+    resetTimeDimensions();
+    console.log("Am I exiting?");
+
     eternity(true);
   }
 
