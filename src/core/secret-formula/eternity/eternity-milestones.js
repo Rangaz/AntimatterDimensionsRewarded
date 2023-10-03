@@ -157,9 +157,11 @@ export const eternityMilestones = {
       // As far as I can tell, using templates here as Codefactor wants would lead to nested templates,
       // which seems messy to say the least.
       const realTime = PlayerProgress.seenAlteredSpeed() ? " real-time" : "";
+      // Achievement 145 will cap this effect so it always pretends you have a 33ms eternity.
       // eslint-disable-next-line prefer-template
-      return `While offline, gain Eternities at ${formatPercents(Achievement(102).isEffectActive ? 0.9 : 0.5)} the rate of your fastest${realTime} Eternity ` +
-        (eternities.gt(0) ? `(Currently ${format(eternities, 2, 2)}/hour)` : "(Inactive)");
+      return `While offline, gain Eternities at ${formatPercents(Achievement(102).isEffectActive ? 0.9 : 0.5)} `
+        + (Achievement(145).canBeApplied ? `efficiency every ${formatInt(33)} ms (improved by Achievement 145) ` : `the rate of your 
+        fastest${realTime} Eternity `) + (eternities.gt(0) ? `(Currently ${format(eternities, 2, 2)}/hour)` : "(Inactive)");
     },
     activeCondition: () => (player.options.offlineProgress
       ? `Must be outside of all Challenges and Dilation, and the Eternity Autobuyer must be set to Eternity at zero EP.

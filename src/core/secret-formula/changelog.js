@@ -34,6 +34,12 @@ export const changelog = [
     </ul>
     </li>
     </ul>
+    <br>
+    <br>
+    Post release changes:
+    <ul>
+    <li>(3/10) Made Achievement 145 now affect offline Eternity gain.</li>
+    </ul>
     `
   },
   {

@@ -3,13 +3,7 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Make the "Base Tickspeed from achievements" expandable in multiplier tab <DONE>
--Small powers in multiplier tab should show "<^1.001" <DONE>
--Buff r78 <DONE>
--Fix Reality reminder saying Enhanced Achievements before you unlock them. <DONE>
--Move r155's new effect into r145 <DONE>
--Make sacrifice possible if you have r145 & the effects of r23 would be enough to 
-not be net-negative because of r38 <DONE>
+-Make offline Eternities & Infinities maxed by r145 <DONE>
 */
 
 export const normalAchievements = [
