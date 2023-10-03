@@ -78,8 +78,10 @@ function bigCrunchUpdateStatistics() {
     player.records.bestInfinity.bestIPminEternity.clampMin(player.records.thisInfinity.bestIPmin);
   player.records.thisInfinity.bestIPmin = DC.D0;
 
+  // Since this stat is only used for the offline Infinity milestone, and r145 caps that,
+  // I can change this variable to reflect that. 
   player.records.thisEternity.bestInfinitiesPerMs = player.records.thisEternity.bestInfinitiesPerMs.clampMin(
-    gainedInfinities().round().dividedBy(Math.clampMin(33, player.records.thisInfinity.realTime))
+    gainedInfinities().round().dividedBy(Math.clampMin(33, player.records.thisInfinity.realTime * !Achievement(145).canBeApplied))
   );
 
   const infinityPoints = gainedInfinityPoints();

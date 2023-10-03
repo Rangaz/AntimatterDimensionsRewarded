@@ -201,9 +201,12 @@ export function resetInfinityRuns() {
 // milestone and turned on infinity autobuyer with 1 minute or less per crunch.
 // This amount increases to 90% with r102, but, since you get it anyway when you get this milestone,
 // I'll pretend it was always 90%.
+// r145 will cap it too, its effect is already in bestInfinitiesPerMs
 export function getInfinitiedMilestoneReward(ms, considerMilestoneReached) {
+  const infinitiesToGain = Decimal.floor(player.records.thisEternity.bestInfinitiesPerMs.
+    times(ms).dividedBy(1/.9));
   return Autobuyer.bigCrunch.autoInfinitiesAvailable(considerMilestoneReached)
-    ? Decimal.floor(player.records.thisEternity.bestInfinitiesPerMs.times(ms).dividedBy(1/.9))
+    ? infinitiesToGain
     : DC.D0;
 }
 
@@ -234,9 +237,15 @@ export function resetEternityRuns() {
 // Player gains 50% of the eternities they would get if they continuously repeated their fastest eternity, if they
 // have the auto-eternity milestone and turned on eternity autobuyer with 0 EP.
 // This amount increases to 90% with r102.
+// And r145 will always cap it.
 export function getEternitiedMilestoneReward(ms, considerMilestoneReached) {
+  const eternitiesToGain = Achievement(145).canBeApplied ? 
+    Decimal.floor(gainedEternities().times(Achievement(102).effectOrDefault(0.5) / 33).times(ms)) :
+    Decimal.floor(player.records.thisReality.bestEternitiesPerMs.times(ms).dividedBy(
+    1 / Achievement(102).effectOrDefault(0.5)));
+  console.log(eternitiesToGain);
   return Autobuyer.eternity.autoEternitiesAvailable(considerMilestoneReached)
-    ? Decimal.floor(player.records.thisReality.bestEternitiesPerMs.times(ms).dividedBy(1 / Achievement(102).effectOrDefault(0.5)))
+    ? eternitiesToGain
     : DC.D0;
 }
 
