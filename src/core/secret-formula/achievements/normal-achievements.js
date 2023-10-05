@@ -3,7 +3,9 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Make TDs reset after completing an Eternity Challenge with r136. <DONE>
+-Make r94 also affect Replicanti speed the first 4.333 minutes of each Infinity <DONE>
+-Make it work in Multiplier Tab <DONE>
+-Make the Replicanti timers take into account r94's replicanti effect
 */
 
 export const normalAchievements = [
@@ -286,7 +288,7 @@ export const normalAchievements = [
     effectCondition: () => Time.thisInfinity.totalSeconds > 60,
     enhanced: {
       reward: "Infinities give more Infinities the longer it lasts.",
-      effect: () => Math.clampMin(Math.pow(Math.log10(Time.thisInfinity.totalSeconds), 2), 1),
+      effect: () => Math.clampMin(Math.pow(Math.log10(Time.thisInfinity.totalSeconds + 1), 2), 1),
       formatEffect: value => `${formatX(value, 2, 2)}`
     }
   },
@@ -389,7 +391,8 @@ export const normalAchievements = [
     checkRequirement: () => player.requirementChecks.infinity.noSacrifice,
     checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
     get reward() { return `8th Antimatter Dimensions are ${formatInt(10)} times stronger, 
-    but only if you have no sacrifices.`},
+      but only if you have no sacrifices ${Sacrifice.totalBoost.gt(1) ? 
+      `(inactive)` : `(active)`}.`},
     effect: DC.E1,
     effectCondition: () => Sacrifice.totalBoost.lte(1),
     enhanced: {
@@ -824,7 +827,7 @@ export const normalAchievements = [
     checkRequirement: () => AntimatterDimensions.all.every(x => x.multiplier.gte(Decimal.NUMBER_MAX_VALUE)),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return `Raise Antimatter Dimensions such that, for every product of ${formatX(Decimal.NUMBER_MAX_VALUE, 1)},
-    they are ${formatPercents(0.31)} stronger.`},
+    they are ${formatPercents(0.308, 1, 1)} stronger.`},
     effect: 1.00038044
   },
   {
@@ -1029,8 +1032,17 @@ export const normalAchievements = [
     get description() { return `Reach ${format(DC.E260)} Infinity Power.`; },
     checkRequirement: () => Currency.infinityPower.exponent >= 260,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    reward: "Double Infinity Power gain.",
-    effect: 2
+    get reward() {
+      return `Infinity Power gain ${formatX(4.3333, 4, 4)}. ` + (Achievement(145).canBeApplied ? 
+        `Boost Replicanti speed by +${formatPercents(0.43333)} (improved by Achievement 145).` :
+        `The first ${format(4.3333, 4, 4)} minutes of each Infinity boost Replicanti speed by 
+        +${formatPercents(0.43333, 3, 3)} ${Time.thisInfinity.totalMinutes > 4.3333 ? `(inactive)` : `(active)`}.`);
+    },
+    effects: {
+      infinityPowerGain: 4.3333,
+      replicantiSpeed: () => Time.thisInfinity.totalMinutes <= 4.3333 || Achievement(145).canBeApplied ?
+        1.43333 : 1,
+    }
   },
   {
     id: 95,
@@ -1150,7 +1162,7 @@ export const normalAchievements = [
     checkRequirement: () => Replicanti.galaxies.total >= 10 && Time.thisInfinity.totalSeconds <= 15,
     checkEvent: GAME_EVENT.REPLICANTI_TICK_AFTER,
     get reward() {return `Replicanti speed ${formatX(2)} if you have bought less than ${formatInt(10)} 
-      Replicanti Galaxies.`},
+      Replicanti Galaxies ${Replicanti.galaxies.bought >= 10 ? `(inactive)` : `(active)`}.`},
     effect: 2,
     effectCondition: () => Replicanti.galaxies.bought < 10,
   },
@@ -1180,7 +1192,8 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
     get reward() {
       return `You'll always have at least ${formatInt(9)} Replicanti. Gain ${formatX(2)} 
-      Replicanti speed the first ${formatInt(9)} seconds of each Eternity.`;
+        Replicanti speed the first ${formatInt(9)} seconds of each Eternity 
+        ${Time.thisEternity.totalSeconds > 9 ? `(inactive)` : `(active)`}.`;
     },
     effects: {
       minReplicanti: 9,

@@ -1,7 +1,8 @@
 <script>
-import { Achievement } from '../../../core/globals';
+import { Achievement, getReplicantiInterval } from '../../../core/globals';
 import { Time } from '../../../core/time';
 import { getGameSpeedupForDisplay } from '../../../game';
+
 
 export default {
   name: "ReplicantiGainText",
@@ -25,10 +26,16 @@ export default {
 
       const replicantiAmount = Replicanti.amount;
       const minReplicanti = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
+      const isAbove308 = Replicanti.isUncapped && replicantiAmount.log10() > LOG10_MAX_VALUE;
+
+      // The Achievements that give conditional Replicanti speed. We need to use 
+      // player.replicanti.timer because, at long intervals, the text may appear to
+      // tick up incorrectly.
+      const r94Timer = Achievement(94).canBeApplied && !Achievement(145).canBeApplied ? 
+        Math.clampMin((260 - Time.thisInfinity.totalSeconds + player.replicanti.timer / 1000) / getGameSpeedupForDisplay(), 0) : 0;
       const fastR106Galaxies = Achievement(106).canBeApplied ? 10 : 0;
       const r108Timer = Achievement(108).canBeApplied && !Achievement(145).canBeApplied ? 
-        Math.clampMin((9 - Time.thisEternity.totalSeconds) / getGameSpeedupForDisplay(), 0) : 0;
-      const isAbove308 = Replicanti.isUncapped && replicantiAmount.log10() > LOG10_MAX_VALUE;
+        Math.clampMin((9 - Time.thisEternity.totalSeconds + player.replicanti.timer / 1000) / getGameSpeedupForDisplay(), 0) : 0;
 
       if (isAbove308) {
         const postScale = Math.log10(ReplicantiGrowth.scaleFactor) / ReplicantiGrowth.scaleLog10;
@@ -41,18 +48,26 @@ export default {
         const milestoneStep = Pelle.isDoomed ? 100 : 1000;
         const nextMilestone = Decimal.pow10(milestoneStep * Math.floor(replicantiAmount.log10() / milestoneStep + 1));
         const coeff = Decimal.divide(updateRateMs / 1000, logGainFactorPerTick.times(postScale));
-        const timeToThousand = coeff.times(nextMilestone.divide(replicantiAmount).pow(postScale).minus(1));
+        let timeToThousand = coeff.times(nextMilestone.divide(replicantiAmount).pow(postScale).minus(1));
+        // The timer has to take into account the effects of r94 & r108, since they are time based.
+        if (r94Timer > 0 && timeToThousand - r94Timer > 0) {
+          timeToThousand = timeToThousand * 1.43333 - r94Timer * 0.43333;
+        }
+        if (r108Timer > 0 && timeToThousand - r108Timer > 0) {
+          timeToThousand = timeToThousand * 2 - r108Timer;
+        }
+
         // The calculation seems to choke and return zero if the time is too large, probably because of rounding issues
         const timeEstimateText = timeToThousand.eq(0)
           ? "an extremely long time"
-          : `${TimeSpan.fromSeconds(r108Timer > 0 ? timeToThousand.toNumber() * 2 - r108Timer : timeToThousand.toNumber())}`;
+          : `${TimeSpan.fromSeconds(timeToThousand.toNumber())}`;
         this.remainingTimeText = `You are gaining ${formatX(gainFactorPerSecond, 2, 1)} Replicanti per second` +
           ` (${timeEstimateText} until ${format(nextMilestone)})`;
       } else {
         this.remainingTimeText = "";
       }
 
-      const totalTime = (LOG10_MAX_VALUE - minReplicanti.log10()) / (ticksPerSecond * log10GainFactorPerTick.toNumber());
+      let totalTime = (LOG10_MAX_VALUE - minReplicanti.log10()) / (ticksPerSecond * log10GainFactorPerTick.toNumber());
       let remainingTime = (LOG10_MAX_VALUE - replicantiAmount.log10()) /
         (ticksPerSecond * log10GainFactorPerTick.toNumber());
       if (remainingTime < 0) {
@@ -81,20 +96,40 @@ export default {
           this.remainingTimeText = `At Infinite Replicanti (normally takes
             ${TimeSpan.fromSeconds(secondsPerGalaxy.toNumber())})`;
         } else if (replicantiAmount.lt(100)) {
+          // I want the timers to take into account temporal Achievement effects.
+          // In this case, since the timer is not continous, I'll accept that the timer won't
+          // be acurrate and simply multiply the time. Otherwise it might look like the
+          // timer is ticking up.
+          if (r94Timer > 0 && remainingTime - r94Timer > 0) {
+            remainingTime = remainingTime * 1.43333;
+          }
+          if (r108Timer > 0 && remainingTime - r108Timer > 0) {
+            remainingTime = remainingTime * 2;
+          }
           // Because of discrete replication, we add "Approximately" at very low amounts
-          // I want all the timers to take into account r108's 9 second x2 speed.
-          this.remainingTimeText = `Approximately ${TimeSpan.fromSeconds(r108Timer > 0 && remainingTime - r108Timer > 0 ? 
-            remainingTime * 2 : remainingTime)} remaining until Infinite Replicanti`;
+          this.remainingTimeText = `Approximately ${TimeSpan.fromSeconds(remainingTime)} remaining until Infinite Replicanti`;
         } else {
-          this.remainingTimeText = `${TimeSpan.fromSeconds(r108Timer > 0 && remainingTime - r108Timer > 0 ? 
-            remainingTime * 2 - r108Timer : remainingTime)} remaining until Infinite Replicanti`;
+          if (r94Timer > 0 && remainingTime - r94Timer > 0) {
+            remainingTime = remainingTime * 1.43333 - r94Timer * 0.43333;
+          }
+          if (r108Timer > 0 && remainingTime - r108Timer > 0) {
+            remainingTime = remainingTime * 2 - r108Timer;
+          }
+          console.log("R94: " + r94Timer);
+          console.log(remainingTime);
+          this.remainingTimeText = `${TimeSpan.fromSeconds(remainingTime)} remaining until Infinite Replicanti`;
         }
       }
 
       // If the player can get RG, this text is redundant with text below. It denotes total time from 1 to e308
       if (Replicanti.galaxies.max === 0 && !isAbove308) {
-        this.remainingTimeText += ` (${TimeSpan.fromSeconds(r108Timer > 0 && totalTime - r108Timer > 0 ? 
-            totalTime * 2 - r108Timer : totalTime)} total)`;
+        if (r94Timer > 0 && totalTime - r94Timer > 0) {
+            totalTime = totalTime * 1.43333 - r94Timer * 0.43333;
+          }
+          if (r108Timer > 0 && totalTime - r108Timer > 0) {
+            totalTime = totalTime * 2 - r108Timer;
+          }
+        this.remainingTimeText += ` (${TimeSpan.fromSeconds(totalTime)} total)`;
       }
 
 

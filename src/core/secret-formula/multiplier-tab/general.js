@@ -5,18 +5,22 @@ import { MultiplierTabIcons } from "./icons";
 
 // See index.js for documentation
 export const general = {
-  achievement: { // Enhanced effects are 1000 + actual achievement number
+  achievement: { // Enhanced effects are 10000 + actual achievement number
+    // If an Achievement has more than 1 effect they may be labelled as
+    // 1000/2000 + number. Those are special cases.
     name: (ach, dim) => { 
-      let name = ach > 1000 ? "Enhanced Achievement " : "Achievement ";
-      if (ach > 1000) ach -= 1000;
+      let name = ach > 10000 ? "Enhanced Achievement " : "Achievement ";
+      // We only want the first 3 digits of ach. We essentially substract ach
+      // by almost itself, cancelling out everything but the 3 digits.
+      ach -= Math.floor(ach / 1000) * 1000;
       name = name.concat(ach);
       return dim?.length === 2
       ? name.concat(" (", dim, ")")
       : name},
     multValue: (ach, dim) => {
       // If it's an enhanced effect...
-      if (ach > 1000) {
-        ach -= 1000;
+      if (ach > 10000) {
+        ach -= 10000;
         if (ach === 47) return 1; // Power effect
 
         // The base tickspeed from achievements' effect is actually divisors, so 
@@ -34,7 +38,7 @@ export const general = {
             let singleEffect;
             if (ach === 43) singleEffect = Achievement(43).enhancedEffect.canBeApplied ? 
               DC.E250.pow(tier) : 1;
-            else singleEffect = (MultiplierTabHelper.achievementDimCheck(ach + 1000, `${dim}${tier}`) &&
+            else singleEffect = (MultiplierTabHelper.achievementDimCheck(ach + 10000, `${dim}${tier}`) &&
                 Achievement(ach).enhancedEffect.canBeApplied) ? 
                 Achievement(ach).enhancedEffect.effectOrDefault(1) : 1;
             totalEffect = totalEffect.times(singleEffect);
@@ -49,6 +53,9 @@ export const general = {
       }
       
       // For unenhanced achievements...
+      // Handle those with multiple effects
+      if (ach === 1094) return Achievement(94).effects.infinityPowerGain.effectOrDefault(1);
+      if (ach === 2094) return Achievement(94).effects.replicantiSpeed.effectOrDefault(1);
       if (ach === 108) return Achievement(108).canBeApplied && Time.thisEternity.totalSeconds < 9 ? 
         Achievement(108).effects.replicantiSpeed.effectOrDefault(1) : 1;
       // There is also a buy10 effect, but we don't track that in the multiplier tab
@@ -78,14 +85,15 @@ export const general = {
     // 183 is the only time a power effect is in an Achievement, so we special-case it here and return a x1 multiplier.
     // ...or that would be the case if it wasn't for my achievements (r72 & Er47).
     powValue: ach => (ach === 183 ? Achievement(183).effectOrDefault(1) : 1) * 
-      (ach === 1047 ? Achievement(47).enhancedEffect.effectOrDefault(1) : 1) *
+      (ach === 10047 ? Achievement(47).enhancedEffect.effectOrDefault(1) : 1) *
       (ach === 72 ? Achievement(72).effectOrDefault(1) : 1),
-    isActive: ach => ach > 1000 ? Achievement(ach - 1000).enhancedEffect.canBeApplied : Achievement(ach).canBeApplied,
+    isActive: ach => ach > 10000 ? Achievement(ach - 10000).enhancedEffect.canBeApplied : 
+      Achievement(ach - Math.floor(ach / 1000) * 1000).canBeApplied,
     icon: ach => {
       const base = MultiplierTabIcons.ACHIEVEMENT;
       return {
         color: base.color,
-        symbol: `${base.symbol}${ach > 1000 ? ach - 1000 : ach}`,
+        symbol: `${base.symbol}${ach - Math.floor(ach / 1000) * 1000}`,
       };
     },
   },

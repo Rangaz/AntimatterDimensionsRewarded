@@ -116,19 +116,21 @@ multiplierTabTree.DT_total[0].unshift("TP_total");
 const dimTypes = ["AD", "ID", "TD"];
 const singleRes = ["IP", "EP", "DT", "tickspeed", "infinities", "replicanti"];
 const targetedEffects = {
-  achievement: { // Enhanced Achievements will be placed here as (1000 + actual number)
-    // to distinguish them from the regular achievements
+  achievement: { 
+    // Enhanced Achievements will be placed here as (10000 + actual number)
+    // to distinguish them from the regular achievements, and 
+    // 1000/2000 + actual number for when they have more than 1 effect to keep track of
     checkFn: MultiplierTabHelper.achievementDimCheck,
-    AD: [23, 1023, 24, 1024, 28, 1028, 31, 1031, 34, 1034, 35, 1035, 38, 1038, 42, 1042, 43, 1043, 44, 1044, 46, 1046, 
-      47, 1047, 48, 1048, 56, 64, 65, 67, 68, 71, 72, 73, 74, 76, 84, 91, 92, 101, 183],
-    ID: [1035, 48, 1048, 94, 107, 124],
-    TD: [1035, 48, 1048, 105, 112, 123, 128],
+    AD: [23, 10023, 24, 10024, 28, 10028, 31, 10031, 34, 10034, 35, 10035, 38, 10038, 42, 10042, 43, 10043, 
+      44, 10044, 46, 10046, 47, 10047, 48, 10048, 56, 64, 65, 67, 68, 71, 72, 73, 74, 76, 84, 91, 92, 101, 183],
+    ID: [10035, 48, 10048, 1094, 107, 124],
+    TD: [10035, 48, 10048, 105, 112, 123, 128],
     IP: [62, 77, 85, 93, 116, 125, 141],
     EP: [153],
     DT: [132, 137],
-    tickspeed: [36, 1036, 45, 1045, 66, 135],
-    infinities: [33, 1033, 87, 164],
-    replicanti: [106, 108, 134]
+    tickspeed: [36, 10036, 45, 10045, 66, 135],
+    infinities: [33, 10033, 87, 164],
+    replicanti: [2094, 106, 108, 134]
   },
   timeStudy: {
     checkFn: MultiplierTabHelper.timeStudyDimCheck,

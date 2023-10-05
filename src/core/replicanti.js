@@ -139,6 +139,7 @@ export function totalReplicantiSpeedMult(overCap) {
   if (Pelle.isDisabled("replicantiIntervalMult")) return totalMult;
 
   const preCelestialEffects = Effects.product(
+    Achievement(94).effects.replicantiSpeed,
     Achievement(106),
     TimeStudy(62),
     TimeStudy(213),

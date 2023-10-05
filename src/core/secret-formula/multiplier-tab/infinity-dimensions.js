@@ -139,7 +139,7 @@ export const ID = {
       for (let tier = 1; tier <= 8; tier++) {
         if (tier === 1) {
           dimMults[tier] = dimMults[tier].timesEffectsOf(
-            Achievement(94),
+            Achievement(94).effects.infinityPowerGain,
             Achievement(124),
           );
         }
