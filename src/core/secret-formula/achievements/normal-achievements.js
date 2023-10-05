@@ -5,7 +5,7 @@ import { PlayerProgress } from "../../player-progress";
 TODO:
 -Make r94 also affect Replicanti speed the first 4.333 minutes of each Infinity <DONE>
 -Make it work in Multiplier Tab <DONE>
--Make the Replicanti timers take into account r94's replicanti effect
+-Make the Replicanti timers take into account r94's replicanti effect <DONE>
 */
 
 export const normalAchievements = [
