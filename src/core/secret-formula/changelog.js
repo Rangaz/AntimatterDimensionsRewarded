@@ -38,6 +38,11 @@ export const changelog = [
     <br>
     Post release changes:
     <ul>
+    <li>(5/10) Achievement 94 buffed! Now gives x2 ➜ x4.3333 Infinity Power, and also boosts 
+    Replicanti speed by +43.3333% in the first +4.3333 minutes of Infinity.</li>
+    <li>(5/10) Achievements 38, 94, 106 and 108 now show if their conditional effect is active 
+    in their tooltip.</li>
+    <li>(5/10) Fixed Enhanced Achievement 33 having a weird value the first frame of an Infinity.</li>
     <li>(3/10) Achievement 136 also resets Time Shards and Time Dimensions when exiting an
     Eternity Challenge.</li>
     <li>(3/10) Made Achievement 145 now affect offline Eternity gain.</li>
