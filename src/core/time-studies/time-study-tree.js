@@ -9,7 +9,7 @@
  * - Unless commitToGameState() is called, this only ever creates a "virtual" tree object which does not change the
  *   overall game state. This class serves the purpose of having all the purchasing and locking logic in one place.
  *   Only upon calling commitToGameState() will the game actually try to get every study specified in tree.
- * - The general intent is that the logic in this class is meant to pull minimally from the extrenal game state; for
+ * - The general intent is that the logic in this class is meant to pull minimally from the external game state; for
  *   example, how many dimension paths are allowed or which ECs are unlockable depend on only the data in the tree
  *   object itself and should not depend on the actual current game state
  * - All study entries must be Strings because numbers (normal TS) and EC# (ECs) need to be supported

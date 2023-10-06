@@ -4,8 +4,12 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Make sure you can't cheese r122 <???>
--Make r98 also make Replicanty upgrades free of cost <DONE>
+-Add presets for Achievement Enhancement
+-Row 16 rewards
+-Enhanced rows 5-9 rewards
+-Rework V
+-TEST
+-Changelog
 */
 
 export const normalAchievements = [

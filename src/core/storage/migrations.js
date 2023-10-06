@@ -427,7 +427,13 @@ export const migrations = {
       player.reality.totalEnhancementPoints = 0;
       player.reality.disEnhance = false;
       player.reality.maxEnhancedRow = 4;
-
+    },
+    31: player => {
+      // The Happy V-Day version
+      player.reality.enhancedPresets = new Array(6).fill({
+        name: "",
+        enhancements: new Set(),
+      })
     }
   },
 
