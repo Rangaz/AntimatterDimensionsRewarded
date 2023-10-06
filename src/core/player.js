@@ -363,7 +363,7 @@ window.player = {
     previousRuns: {}
   },
   IPMultPurchases: 0,
-  version: 30,
+  version: 31,
   infinityPower: DC.D1,
   postC4Tier: 0,
   eternityPoints: DC.D0,
@@ -525,6 +525,10 @@ window.player = {
     enhancementPoints: 0,
     disEnhance: false,
     enhancedAchievements: new Set(),
+    enhancedPresets: new Array(6).fill({
+      name: "",
+      enhancements: new Set(),
+    }),
     maxEnhancedRow: 4,
     automator: {
       state: {
