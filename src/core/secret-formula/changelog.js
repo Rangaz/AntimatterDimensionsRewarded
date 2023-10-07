@@ -38,6 +38,7 @@ export const changelog = [
     <br>
     Post release changes:
     <ul>
+    <li>(7/10) Fixed some issues with the Replicanti timers.</li>
     <li>(5/10) Achievement 94 buffed! Now gives x2 ➜ x4.3333 Infinity Power, and also boosts 
     Replicanti speed by +43.3333% in the first +4.3333 minutes of Infinity.</li>
     <li>(5/10) Achievements 38, 94, 106 and 108 now show if their conditional effect is active 
