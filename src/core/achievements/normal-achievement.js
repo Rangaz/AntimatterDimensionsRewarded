@@ -237,6 +237,23 @@ export const Achievements = {
     GameUI.notify.info("Attempted to load a preset");
   },
 
+  // Return the current enhancements as a preset.
+  // I use Array.from() to use its sort() function, as that returns a nicer string.
+  // Otherwise it'll return the ids in purchase order, which looks messier.
+  returnCurrrentEnhancementsAsPreset() {
+    let enhancedAchievements = Array.from(player.reality.enhancedAchievements);
+    enhancedAchievements.sort();
+    let presetString = "";
+    for (const id of enhancedAchievements) {
+      presetString = presetString + id + ",";
+    }
+    // The string will end with a ",", so we'll remove the last character if there's anything at all
+    if (presetString.length) {
+      presetString = presetString.slice(0, -1);
+    }
+    return presetString;
+  },
+
   disEnhanceAll() {
     const enhancedAchievements = Achievements.preReality;
     for (const achievement of enhancedAchievements) {

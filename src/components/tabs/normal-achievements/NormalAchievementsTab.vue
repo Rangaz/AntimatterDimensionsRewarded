@@ -2,6 +2,7 @@
 import NormalAchievementRow from "./NormalAchievementRow";
 import PrimaryToggleButton from "@/components/PrimaryToggleButton";
 import PrimaryButton from "@/components/PrimaryButton";
+import EnhancementSaveLoadButton from "./EnhancementSaveLoadButton";
 import SwapAchievementImagesButton from "./SwapAchievementImagesButton";
 import { Pelle } from "../../../core/globals";
 
@@ -10,6 +11,7 @@ export default {
   components: {
     SwapAchievementImagesButton,
     NormalAchievementRow,
+    EnhancementSaveLoadButton,
     PrimaryToggleButton,
     PrimaryButton
   },
@@ -171,6 +173,13 @@ export default {
         @click="respecEnhancements = !respecEnhancements"
       >Respec Enhanced Achievements on next Reality</PrimaryButton>
       
+      <!--Later on make it hidden until 1 V-ach-->
+      <EnhancementSaveLoadButton
+        v-if="isEnhancementUnlocked"
+        v-for="saveslot in 6"
+        :key="saveslot"
+        :saveslot="saveslot"
+            />
     </div>
     <div class="c-achievements-tab__header c-achievements-tab__header--multipliers">
       <span v-if="isDoomed">
