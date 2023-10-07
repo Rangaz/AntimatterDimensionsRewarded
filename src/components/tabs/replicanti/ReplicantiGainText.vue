@@ -149,8 +149,6 @@ export default {
           let allGalaxyTime = Achievement(106).canBeApplied && effectiveMaxRG > fastR106Galaxies ? 
             Decimal.divide(2 * effectiveMaxRG - fastR106Galaxies - effectiveCurrentRG, baseGalaxiesPerSecond).toNumber() : 
             Decimal.divide(effectiveMaxRG - effectiveCurrentRG, baseGalaxiesPerSecond).toNumber();
-          
-          console.log("R94: " + r94Timer);
 
           if (r94Timer > 0 && allGalaxyTime - r94Timer > 0) {
             allGalaxyTime = allGalaxyTime * 1.43333 - r94Timer * 0.43333;
@@ -159,7 +157,6 @@ export default {
             allGalaxyTime = allGalaxyTime * 2 - r108Timer;
           }
 
-          console.log("AllGalaxies: " + allGalaxyTime)
           // Pending galaxy gain is here because the growth slows down significantly after
           // 1e308 normally. However, the seconds per galaxy code is calculated as if
           // uncapped since nobody would wait for 1e52345325 replicanti to buy an RG.
@@ -189,7 +186,6 @@ export default {
               thisGalaxyTime = secondsPerGalaxy.toNumber() * 2 - r108Timer - remainingTime;
             }
           }
-          console.log("ThisGalaxy: " + thisGalaxyTime)
           const allTime = allGalaxyTime - thisGalaxyTime;
           this.galaxyText += ` (all Replicanti Galaxies within
             ${TimeSpan.fromSeconds(Math.clampMin(allTime, 0))})`;
