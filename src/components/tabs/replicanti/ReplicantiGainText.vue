@@ -32,10 +32,10 @@ export default {
       // player.replicanti.timer because, at long intervals, the text may appear to
       // tick up incorrectly.
       const r94Timer = Achievement(94).canBeApplied && !Achievement(145).canBeApplied ? 
-        Math.clampMin((260 - Time.thisInfinity.totalSeconds + player.replicanti.timer / 1000) / getGameSpeedupForDisplay(), 0) : 0;
+        Math.clampMin((260 - Time.thisInfinity.totalSeconds) / getGameSpeedupForDisplay(), 0) : 0;
       const fastR106Galaxies = Achievement(106).canBeApplied ? 10 : 0;
       const r108Timer = Achievement(108).canBeApplied && !Achievement(145).canBeApplied ? 
-        Math.clampMin((9 - Time.thisEternity.totalSeconds + player.replicanti.timer / 1000) / getGameSpeedupForDisplay(), 0) : 0;
+        Math.clampMin((9 - Time.thisEternity.totalSeconds) / getGameSpeedupForDisplay(), 0) : 0;
 
       if (isAbove308) {
         const postScale = Math.log10(ReplicantiGrowth.scaleFactor) / ReplicantiGrowth.scaleLog10;
@@ -48,13 +48,13 @@ export default {
         const milestoneStep = Pelle.isDoomed ? 100 : 1000;
         const nextMilestone = Decimal.pow10(milestoneStep * Math.floor(replicantiAmount.log10() / milestoneStep + 1));
         const coeff = Decimal.divide(updateRateMs / 1000, logGainFactorPerTick.times(postScale));
-        let timeToThousand = coeff.times(nextMilestone.divide(replicantiAmount).pow(postScale).minus(1));
+        let timeToThousand = coeff.times(nextMilestone.divide(replicantiAmount).pow(postScale).minus(1)).minus(player.replicanti.timer / 1000);
         // The timer has to take into account the effects of r94 & r108, since they are time based.
-        if (r94Timer > 0 && timeToThousand - r94Timer > 0) {
-          timeToThousand = timeToThousand * 1.43333 - r94Timer * 0.43333;
+        if (r94Timer > 0 && timeToThousand.minus(r94Timer).gt(0)) {
+          timeToThousand = timeToThousand.times(1.43333).minus(r94Timer * 0.43333);
         }
-        if (r108Timer > 0 && timeToThousand - r108Timer > 0) {
-          timeToThousand = timeToThousand * 2 - r108Timer;
+        if (r108Timer > 0 && timeToThousand.minus(r108Timer).gt(0)) {
+          timeToThousand = timeToThousand.times(2).minus(r108Timer);
         }
 
         // The calculation seems to choke and return zero if the time is too large, probably because of rounding issues
@@ -69,7 +69,7 @@ export default {
 
       let totalTime = (LOG10_MAX_VALUE - minReplicanti.log10()) / (ticksPerSecond * log10GainFactorPerTick.toNumber());
       let remainingTime = (LOG10_MAX_VALUE - replicantiAmount.log10()) /
-        (ticksPerSecond * log10GainFactorPerTick.toNumber());
+        (ticksPerSecond * log10GainFactorPerTick.toNumber()) - player.replicanti.timer / 1000;
       if (remainingTime < 0) {
         // If the cap is raised via Effarig Infinity but the player doesn't have TS192, this will be a negative number
         remainingTime = 0;
@@ -115,8 +115,7 @@ export default {
           if (r108Timer > 0 && remainingTime - r108Timer > 0) {
             remainingTime = remainingTime * 2 - r108Timer;
           }
-          console.log("R94: " + r94Timer);
-          console.log(remainingTime);
+
           this.remainingTimeText = `${TimeSpan.fromSeconds(remainingTime)} remaining until Infinite Replicanti`;
         }
       }
@@ -126,7 +125,7 @@ export default {
         if (r94Timer > 0 && totalTime - r94Timer > 0) {
             totalTime = totalTime * 1.43333 - r94Timer * 0.43333;
           }
-          if (r108Timer > 0 && totalTime - r108Timer > 0) {
+        if (r108Timer > 0 && totalTime - r108Timer > 0) {
             totalTime = totalTime * 2 - r108Timer;
           }
         this.remainingTimeText += ` (${TimeSpan.fromSeconds(totalTime)} total)`;
@@ -147,9 +146,16 @@ export default {
           // has already elapsed. The time elapsed is calculated from your current RG total (including the current one)
           // and then subtracts away the time spent in the current RG so far.
           // I want this calculation to also take into account r106's effect.
-          const allGalaxyTime = Achievement(106).canBeApplied && effectiveMaxRG > fastR106Galaxies ? 
+          let allGalaxyTime = Achievement(106).canBeApplied && effectiveMaxRG > fastR106Galaxies ? 
             Decimal.divide(2 * effectiveMaxRG - fastR106Galaxies - effectiveCurrentRG, baseGalaxiesPerSecond).toNumber() : 
             Decimal.divide(effectiveMaxRG - effectiveCurrentRG, baseGalaxiesPerSecond).toNumber();
+
+          if (r94Timer > 0 && allGalaxyTime - r94Timer > 0) {
+            allGalaxyTime = allGalaxyTime * 1.43333 - r94Timer * 0.43333;
+          }
+          if (r108Timer > 0 && allGalaxyTime - r108Timer > 0) {
+            allGalaxyTime = allGalaxyTime * 2 - r108Timer;
+          }
 
           // Pending galaxy gain is here because the growth slows down significantly after
           // 1e308 normally. However, the seconds per galaxy code is calculated as if
@@ -166,10 +172,23 @@ export default {
             const leftPercentAfterGalaxy = replicantiAmount.log10() / LOG10_MAX_VALUE - pending;
             pendingTime += leftPercentAfterGalaxy * secondsPerGalaxy.toNumber();
           }
-          const thisGalaxyTime = pending > 0 ? pendingTime : secondsPerGalaxy.toNumber() - remainingTime;
+          let thisGalaxyTime = 0;
+
+          if (pending > 0) {
+            thisGalaxyTime = pendingTime;
+          }
+          else {
+            thisGalaxyTime = secondsPerGalaxy.toNumber() - remainingTime;
+            if (r94Timer > 0 && secondsPerGalaxy.toNumber() - r94Timer > 0) {
+              thisGalaxyTime = secondsPerGalaxy.toNumber() * 1.43333 - r94Timer * 0.43333 - remainingTime;
+            }
+            if (r108Timer > 0 && secondsPerGalaxy.toNumber() - r108Timer > 0) {
+              thisGalaxyTime = secondsPerGalaxy.toNumber() * 2 - r108Timer - remainingTime;
+            }
+          }
+          const allTime = allGalaxyTime - thisGalaxyTime;
           this.galaxyText += ` (all Replicanti Galaxies within
-            ${TimeSpan.fromSeconds(Math.clampMin(r108Timer > 0 && allGalaxyTime - thisGalaxyTime - r108Timer > 0 ? 
-              (allGalaxyTime - thisGalaxyTime) * 2 - r108Timer : allGalaxyTime - thisGalaxyTime, 0))})`;
+            ${TimeSpan.fromSeconds(Math.clampMin(allTime, 0))})`;
         }
       } else {
         this.galaxyText = ``;
