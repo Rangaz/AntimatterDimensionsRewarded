@@ -345,8 +345,8 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       get reward() { return Laitela.isUnlocked ? "Small multiplier to all Dimensions, excluding Dark Matter Dimensions, "
-      + "based on time played (real time)": "Small multiplier to all Dimensions "
-      + "based on time played (real time)";
+      + "based on time played (real time).": "Small multiplier to all Dimensions "
+      + "based on time played (real time).";
       },
       effect: () => Math.pow(Time.realTimePlayed.totalMilliseconds, 10),
       formatEffect: value => `${formatX(value, 2, 2)}`,
