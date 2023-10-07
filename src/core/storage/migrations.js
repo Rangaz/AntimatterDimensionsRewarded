@@ -432,7 +432,7 @@ export const migrations = {
       // The Happy V-Day version
       player.reality.enhancedPresets = new Array(6).fill({
         name: "",
-        enhancements: new Set(),
+        enhancements: "",
       })
     }
   },

@@ -527,7 +527,7 @@ window.player = {
     enhancedAchievements: new Set(),
     enhancedPresets: new Array(6).fill({
       name: "",
-      enhancements: new Set(),
+      enhancements: "",
     }),
     maxEnhancedRow: 4,
     automator: {
