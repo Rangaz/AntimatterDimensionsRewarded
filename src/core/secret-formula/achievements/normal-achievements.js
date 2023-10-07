@@ -4,7 +4,13 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Add presets for Achievement Enhancement
+-Add presets for Achievement Enhancement <IN PROGRESS>
+ ->Make presets work <DONE>
+ ->Add buttons <DONE>
+ ->Allow Save & Load <DONE>
+ ->Make "Respec & Load" work
+ ->Make a new modal to edit Enhancement presets
+ ->Style the new buttons better
 -Row 16 rewards
 -Enhanced rows 5-9 rewards
 -Rework V
