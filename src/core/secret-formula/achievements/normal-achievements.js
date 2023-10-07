@@ -1037,7 +1037,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() {
       return `Infinity Power gain ${formatX(4.3333, 4, 4)}. ` + (Achievement(145).canBeApplied ? 
-        `Boost Replicanti speed by +${formatPercents(0.43333)} (improved by Achievement 145).` :
+        `Boost Replicanti speed by +${formatPercents(0.43333, 3, 3)} (improved by Achievement 145).` :
         `The first ${format(4.3333, 4, 4)} minutes of each Infinity boost Replicanti speed by 
         +${formatPercents(0.43333, 3, 3)} ${Time.thisInfinity.totalMinutes > 4.3333 ? `(inactive)` : `(active)`}.`);
     },
