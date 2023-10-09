@@ -1,8 +1,10 @@
 import { DC } from "../../constants";
+//import { AntimatterDimension } from "../../globals";
 import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
+
 -Add presets for Achievement Enhancement <IN PROGRESS>
  ->Make presets work <DONE>
  ->Add buttons <DONE>
@@ -1101,7 +1103,7 @@ export const normalAchievements = [
     description: "Unlock the 8th Infinity Dimension.",
     checkRequirement: () => InfinityDimension(8).isUnlocked,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    reward: "Infinity Dimensions no longer spend Infinity Points.",
+    reward: "Infinity Dimensions and Replicanti upgrades no longer spend Infinity Points.",
   },
 
   {
