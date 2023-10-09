@@ -80,7 +80,7 @@ export default {
     },
     deletePreset() {
       this.hideContextMenu();
-      if (this.preset.enhancements) Modal.studyString.show({ id: this.saveslot - 1, deleting: true });
+      if (this.preset.enhancements) Modal.enhancementString.show({ id: this.saveslot - 1, deleting: true });
       else Modal.message.show("This Enhancements list currently contains no Achievements.");
     },
     handleExport() {

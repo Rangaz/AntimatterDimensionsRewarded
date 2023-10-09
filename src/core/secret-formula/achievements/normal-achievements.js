@@ -11,7 +11,7 @@ TODO:
  ->Make "Respec & Load" work <DONE>
  ->Make the appearing tooltip appear below the buttons <DONE>
  ->Make a new modal to edit Enhancement presets <DONE>
- ->Make the "Format string" button work
+ ->Make the "Format string" button work <DONE>
  ->Style the new buttons better
 -Row 16 rewards
 -Enhanced rows 5-9 rewards

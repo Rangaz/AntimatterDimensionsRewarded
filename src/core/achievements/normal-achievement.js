@@ -263,6 +263,12 @@ export const Achievements = {
       .replace(/,{2,}/gu, ",")
   },
 
+  // Instead of "11,12,13,14,15", it'll return "11, 12, 13, 14, 15"
+  formatAchievementsList(input) {
+    const internal = input.toLowerCase().replaceAll(" ", "");
+    return internal.replaceAll(",", ", ");
+  },
+
   disEnhanceAll() {
     const enhancedAchievements = Achievements.preReality;
     for (const achievement of enhancedAchievements) {
