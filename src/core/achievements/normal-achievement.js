@@ -249,6 +249,15 @@ export const Achievements = {
     return presetString;
   },
 
+  truncateInput(input) {
+    let internal = input.toLowerCase();
+    return internal
+      .replace(/[|,]$/u, "")
+      .replaceAll(" ", "")
+      // Allows 11,,21 to be parsed as 11,21
+      .replace(/,{2,}/gu, ",")
+  },
+
   disEnhanceAll() {
     const enhancedAchievements = Achievements.preReality;
     for (const achievement of enhancedAchievements) {
