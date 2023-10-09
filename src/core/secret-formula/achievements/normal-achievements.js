@@ -1,11 +1,11 @@
 import { DC } from "../../constants";
+//import { AntimatterDimension } from "../../globals";
 import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Make r94 also affect Replicanti speed the first 4.333 minutes of each Infinity <DONE>
--Make it work in Multiplier Tab <DONE>
--Make the Replicanti timers take into account r94's replicanti effect <DONE>
+-Make sure you can't cheese r122 <???>
+-Make r98 also make Replicanty upgrades free of cost <DONE>
 */
 
 export const normalAchievements = [
@@ -1090,7 +1090,7 @@ export const normalAchievements = [
     description: "Unlock the 8th Infinity Dimension.",
     checkRequirement: () => InfinityDimension(8).isUnlocked,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    reward: "Infinity Dimensions no longer spend Infinity Points.",
+    reward: "Infinity Dimensions and Replicanti upgrades no longer spend Infinity Points.",
   },
 
   {
