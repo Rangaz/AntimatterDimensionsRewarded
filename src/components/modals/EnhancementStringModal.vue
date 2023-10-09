@@ -8,6 +8,8 @@ import { Achievements } from "../../core/globals";
 
 let savedImportString = "";
 
+// This is totally a 100% original modal for Enhancement presets and not
+// a copy-paste of the Time Study presets modal
 export default {
   name: "EnhancementStringModal",
   components: {
@@ -189,11 +191,9 @@ export default {
         this.savePreset();
       }
     },
-    /*
-    convertInputShorthands() {
-      this.input = TimeStudyTree.formatStudyList(this.input);
+    formatInput() {
+      this.input = Achievements.formatAchievementsList(this.input);
     },
-    */
     importTree() {
       if (!this.inputIsValid) return;
       if (this.inputIsSecret) SecretAchievement(37).unlock();
@@ -211,7 +211,7 @@ export default {
     deletePreset() {
       const name = player.reality.enhancedPresets[this.id].name;
       const presetName = name ? `Enhancement preset "${name}"` : "Enhancement preset";
-      player.reality.enhancedPresets[this.id].studies = "";
+      player.reality.enhancedPresets[this.id].enhancements = "";
       player.reality.enhancedPresets[this.id].name = "";
       GameUI.notify.reality(`${presetName} deleted from slot ${this.id + 1}`);
     },
@@ -298,15 +298,13 @@ export default {
     </div>
     <div v-if="!isImporting && inputIsValidTree">
       <br>
-      <!--
       <PrimaryButton
         v-if="!deleting"
-        v-tooltip="'This will format the Enhancement preset text, for example, changing \'a,b,c|d\' to \'a, b, c | d\'.'"
-        @click="convertInputShorthands"
+        v-tooltip="'This will format the Enhancement preset text, for example, changing \'a,b,c,d\' to \'a, b, c, d\'.'"
+        @click="formatInput"
       >
         Format Preset Text
       </PrimaryButton>
-      -->
     </div>
     <span v-if="isImporting">
       <br>
