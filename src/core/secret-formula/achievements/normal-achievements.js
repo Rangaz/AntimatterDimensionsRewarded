@@ -4,8 +4,21 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Make sure you can't cheese r122 <???>
--Make r98 also make Replicanty upgrades free of cost <DONE>
+
+-Add presets for Achievement Enhancement <IN PROGRESS>
+ ->Make presets work <DONE>
+ ->Add buttons <DONE>
+ ->Allow Save & Load <DONE>
+ ->Make "Respec & Load" work <DONE>
+ ->Make the appearing tooltip appear below the buttons <DONE>
+ ->Make a new modal to edit Enhancement presets <DONE>
+ ->Make the "Format string" button work <DONE>
+ ->Style the new buttons better
+-Row 16 rewards
+-Enhanced rows 5-9 rewards
+-Rework V
+-TEST
+-Changelog
 */
 
 export const normalAchievements = [
@@ -342,8 +355,8 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       get reward() { return Laitela.isUnlocked ? "Small multiplier to all Dimensions, excluding Dark Matter Dimensions, "
-      + "based on time played (real time)": "Small multiplier to all Dimensions "
-      + "based on time played (real time)";
+      + "based on time played (real time).": "Small multiplier to all Dimensions "
+      + "based on time played (real time).";
       },
       effect: () => Math.pow(Time.realTimePlayed.totalMilliseconds, 10),
       formatEffect: value => `${formatX(value, 2, 2)}`,
@@ -1034,7 +1047,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() {
       return `Infinity Power gain ${formatX(4.3333, 4, 4)}. ` + (Achievement(145).canBeApplied ? 
-        `Boost Replicanti speed by +${formatPercents(0.43333)} (improved by Achievement 145).` :
+        `Boost Replicanti speed by +${formatPercents(0.43333, 3, 3)} (improved by Achievement 145).` :
         `The first ${format(4.3333, 4, 4)} minutes of each Infinity boost Replicanti speed by 
         +${formatPercents(0.43333, 3, 3)} ${Time.thisInfinity.totalMinutes > 4.3333 ? `(inactive)` : `(active)`}.`);
     },
