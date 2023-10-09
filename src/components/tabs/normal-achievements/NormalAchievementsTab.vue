@@ -178,7 +178,9 @@ export default {
     </div>
     <div class="c-enhancement-load-button-area">
       <!--Later on make it hidden until 1 V-ach-->
-      <span class="c-enhancement-save-load-text">{{ saveLoadText }}</span>
+      <span 
+        v-if="isEnhancementUnlocked"
+        class="c-enhancement-save-load-text">{{ saveLoadText }}</span>
       <EnhancementSaveLoadButton
         v-if="isEnhancementUnlocked"
         v-for="saveslot in 6"
