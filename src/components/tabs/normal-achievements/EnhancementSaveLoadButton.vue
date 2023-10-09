@@ -97,10 +97,10 @@ export default {
 </script>
 
 <template>
-  <HoverMenu class="l-tt-save-load-btn__wrapper">
+  <HoverMenu class="l-acheh-save-load-btn__wrapper">
     <template #object>
       <button
-        class="l-tt-save-load-btn c-tt-buy-button c-tt-buy-button--unlocked"
+        class="l-acheh-save-load-btn c-acheh-save-load-btn"
         @click.shift.exact="save"
         @click.exact="load"
       >
@@ -108,48 +108,48 @@ export default {
       </button>
     </template>
     <template #menu>
-      <div class="l-tt-save-load-btn__menu c-tt-save-load-btn__menu">
+      <div class="l-acheh-save-load-btn__menu c-acheh-save-load-btn__menu">
         <span ach-tooltip="Set a custom name (up to 4 ASCII characters)">
           <input
             type="text"
             size="4"
             maxlength="4"
-            class="l-tt-save-load-btn__menu-rename c-tt-save-load-btn__menu-rename"
+            class="l-acheh-save-load-btn__menu-rename c-acheh-save-load-btn__menu-rename"
             :value="name"
             @keyup.esc="hideContextMenu"
             @blur="nicknameBlur"
           >
         </span>
         <div
-          class="l-tt-save-load-btn__menu-item c-tt-save-load-btn__menu-item"
+          class="l-acheh-save-load-btn__menu-item c-acheh-save-load-btn__menu-item"
           @click="edit"
         >
           Edit
         </div>
         <div
-          class="l-tt-save-load-btn__menu-item c-tt-save-load-btn__menu-item"
+          class="l-acheh-save-load-btn__menu-item c-acheh-save-load-btn__menu-item"
           @click="handleExport"
         >
           Export
         </div>
         <div
-          class="l-tt-save-load-btn__menu-item c-tt-save-load-btn__menu-item"
+          class="l-acheh-save-load-btn__menu-item c-acheh-save-load-btn__menu-item"
           @click="save"
         >
           Save
         </div>
-        <div class="l-tt-save-load-btn__menu-item">
+        <div class="l-acheh-save-load-btn__menu-item">
           <div
-            class="c-tt-save-load-btn__menu-item"
+            class="c-acheh-save-load-btn__menu-item"
             @click="load"
           >
             Load
           </div>
-          <div class="c-tt-save-load-btn__menu-item__hover-options">
+          <div class="c-acheh-save-load-btn__menu-item__hover-options">
             <div
               :class="{
-                'c-tt-save-load-btn__menu-item__hover-option': true,
-                'c-tt-save-load-btn__menu-item__hover-option--disabled': !canReality,
+                'c-acheh-save-load-btn__menu-item__hover-option': true,
+                'c-acheh-save-load-btn__menu-item__hover-option--disabled': !canReality,
               }"
               @click="respecAndLoad"
             >
@@ -158,7 +158,7 @@ export default {
           </div>
         </div>
         <div
-          class="l-tt-save-load-btn__menu-item c-tt-save-load-btn__menu-item"
+          class="l-acheh-save-load-btn__menu-item c-acheh-save-load-btn__menu-item"
           @click="deletePreset"
         >
           Delete
@@ -169,16 +169,32 @@ export default {
 </template>
 
 <style scoped>
-.l-tt-save-load-btn__wrapper {
+.c-acheh-save-load-btn {
+  font-family: Typewriter, serif;
+  font-size: 1.35rem;
+  font-weight: bold;
+  border: 0.1rem solid #98a51f;
+  border-radius: var(--var-border-radius, 4px);
+  transition-duration: 0.2s;
+  color: #c6d63a;
+  background: #232028;
+  cursor: pointer;
+}
+.c-acheh-save-load-btn:hover {
+  color: #232028;
+  background: #c6d63a;
+}
+
+.l-acheh-save-load-btn__wrapper {
   position: relative;
   margin: 0.3rem;
 }
 
-.l-tt-save-load-btn {
+.l-acheh-save-load-btn {
   min-width: 2rem;
 }
 
-.l-tt-save-load-btn__menu {
+.l-acheh-save-load-btn__menu {
   position: absolute;
   top: 19.7rem;
   left: 50%;
@@ -187,7 +203,7 @@ export default {
   transform: translate(-50%, -100%);
 }
 
-.c-tt-save-load-btn__menu {
+.c-acheh-save-load-btn__menu {
   text-align: left;
   font-family: Typewriter;
   font-size: 1.4rem;
@@ -197,7 +213,7 @@ export default {
   border-radius: var(--var-border-radius, 0.5rem);
 }
 
-.l-tt-save-load-btn__menu::after {
+.l-acheh-save-load-btn__menu::after {
   content: "";
   position: absolute;
   top: -0.6rem;
@@ -209,11 +225,11 @@ export default {
   margin-left: -0.5rem;
 }
 
-.l-tt-save-load-btn__menu-rename {
+.l-acheh-save-load-btn__menu-rename {
   margin: 0.3rem 0.5rem 0.5rem 0.7rem;
 }
 
-.c-tt-save-load-btn__menu-rename {
+.c-acheh-save-load-btn__menu-rename {
   text-align: left;
   font-family: Typewriter;
   font-size: 1.4rem;
@@ -223,22 +239,22 @@ export default {
   padding: 0.2rem;
 }
 
-.l-tt-save-load-btn__menu-item {
+.l-acheh-save-load-btn__menu-item {
   position: relative;
   cursor: pointer;
 }
 
-.c-tt-save-load-btn__menu-item {
+.c-acheh-save-load-btn__menu-item {
   text-align: left;
   padding: 0.25rem 1rem;
 }
 
-.c-tt-save-load-btn__menu-item:hover {
+.c-acheh-save-load-btn__menu-item:hover {
   color: black;
   background: white;
 }
 
-.c-tt-save-load-btn__menu-item__hover-options {
+.c-acheh-save-load-btn__menu-item__hover-options {
   visibility: hidden;
   width: fit-content;
   position: absolute;
@@ -255,12 +271,12 @@ export default {
   cursor: pointer;
 }
 
-.c-tt-save-load-btn__menu-item__hover-option {
+.c-acheh-save-load-btn__menu-item__hover-option {
   white-space: nowrap;
   padding: 0.25rem 1rem;
 }
 
-.c-tt-save-load-btn__menu-item__hover-options::after {
+.c-acheh-save-load-btn__menu-item__hover-options::after {
   content: "";
   position: absolute;
   /* A single menu item is 26px tall, minus 5px from the border */
@@ -271,24 +287,24 @@ export default {
   border-bottom: 0.5rem solid transparent;
 }
 
-.c-tt-save-load-btn__menu-item:hover,
-.c-tt-save-load-btn__menu-item__hover-option:hover {
+.c-acheh-save-load-btn__menu-item:hover,
+.c-acheh-save-load-btn__menu-item__hover-option:hover {
   color: black;
   background: white;
 }
 
-.l-tt-save-load-btn__menu-item:hover .c-tt-save-load-btn__menu-item__hover-options {
+.l-acheh-save-load-btn__menu-item:hover .c-acheh-save-load-btn__menu-item__hover-options {
   visibility: visible;
   opacity: 1;
   transition-delay: 0s;
 }
 
-.c-tt-save-load-btn__menu-item__hover-option--disabled {
+.c-acheh-save-load-btn__menu-item__hover-option--disabled {
   opacity: 0.7;
   cursor: default;
 }
 
-.c-tt-save-load-btn__menu-item__hover-option--disabled:hover {
+.c-acheh-save-load-btn__menu-item__hover-option--disabled:hover {
   color: white;
   background: transparent;
 }
