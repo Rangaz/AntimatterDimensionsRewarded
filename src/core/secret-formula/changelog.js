@@ -38,6 +38,9 @@ export const changelog = [
     <br>
     Post release changes:
     <ul>
+    <li>(9/10) Achievement 98 now also affects Replicanti upgrades.</li>
+    <li>(9/10) Fixed exploit allowing Achievement 122 to be unlocked with Achievement 53's 
+    starting 8th AD.</li>
     <li>(7/10) Fixed some issues with the Replicanti timers.</li>
     <li>(5/10) Achievement 94 buffed! Now gives x2 ➜ x4.3333 Infinity Power, and also boosts 
     Replicanti speed by +43.3333% in the first +4.3333 minutes of Infinity.</li>
