@@ -685,11 +685,14 @@ export const AntimatterDimensions = {
     for (const dimension of AntimatterDimensions.all) {
       dimension.reset();
     }
-    // r53 makes you keep up to 1 8th AD between EVERY reset, if possible
+    // r53 makes you start 1 8th AD between EVERY reset, if possible
     if (Achievement(53).canBeApplied && player.dimensionBoosts >= 4 && !NormalChallenge(10).isRunning && 
       !InfinityChallenge(1).isRunning) {
       AntimatterDimension(8).amount = DC.D1;
       AntimatterDimension(8).bought = 1;
+      // If this is active it'll also invalidate other checks
+      player.requirementChecks.eternity.onlyAD1 = false;
+      player.requirementChecks.infinity.noAD8 = false;
     }
     GameCache.dimensionMultDecrease.invalidate();
   },

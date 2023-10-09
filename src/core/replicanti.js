@@ -316,7 +316,7 @@ class ReplicantiUpgradeState {
 
   purchase() {
     if (!this.canBeBought) return;
-    Currency.infinityPoints.subtract(this.cost);
+    if (!Achievement(98).canBeApplied) Currency.infinityPoints.subtract(this.cost);
     this.baseCost = Decimal.times(this.baseCost, this.costIncrease);
     this.value = this.nextValue;
     if (EternityChallenge(8).isRunning) player.eterc8repl--;
@@ -372,7 +372,7 @@ export const ReplicantiUpgrade = {
       N = Math.round((Math.min(this.value + 0.01 * Math.floor(N), this.cap) - this.value) * 100);
       if (N <= 0) return;
       const totalCost = this.cost.times(Decimal.pow(this.costIncrease, N).minus(1).dividedBy(this.costIncrease - 1));
-      Currency.infinityPoints.subtract(totalCost);
+      if (!Achievement(98).canBeApplied) Currency.infinityPoints.subtract(totalCost);
       this.baseCost = this.baseCost.times(Decimal.pow(this.costIncrease, N));
       this.value = this.nearestPercent(this.value + 0.01 * N);
     }
@@ -465,14 +465,16 @@ export const ReplicantiUpgrade = {
     }
 
     autobuyerTick() {
+      // Achievement 98 makes these upgrades free of cost
+      const freeUpgrades = Achievement(98).canBeApplied;
       // This isn't a hot enough autobuyer to worry about doing an actual inverse.
       const bulk = bulkBuyBinarySearch(Currency.infinityPoints.value, {
         costFunction: x => this.baseCostAfterCount(x).dividedByEffectOf(TimeStudy(233)),
         firstCost: this.cost,
-        cumulative: true,
+        cumulative: !freeUpgrades,
       }, this.value);
       if (!bulk) return;
-      Currency.infinityPoints.subtract(bulk.purchasePrice);
+      if (!freeUpgrades) Currency.infinityPoints.subtract(bulk.purchasePrice);
       this.value += bulk.quantity;
       this.baseCost = this.baseCostAfterCount(this.value);
     }
