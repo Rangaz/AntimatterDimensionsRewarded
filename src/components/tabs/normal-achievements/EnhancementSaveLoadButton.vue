@@ -31,7 +31,7 @@ export default {
     update() {
       this.name = player.reality.enhancedPresets[this.saveslot - 1].name;
       this.displayName = this.name === "" ? this.saveslot : this.name;
-      this.canReality = false;//Player.canReality; // Change this
+      this.canReality = TimeStudy.reality.isBought;
     },
     nicknameBlur(event) {
       const newName = event.target.value.slice(0, 4).trim();
@@ -69,13 +69,13 @@ export default {
         Modal.message.show("This Enhancements list currently contains no Achievements.");
       }
     },
+    // This function assumes you can auto-reality, which should be true at the time you unlock presets.
     respecAndLoad() {
-      // TODO: Figure out what condition to give here
-      if (false) {//Player.canReality) {
+      if (this.canReality) {
         player.reality.disEnhance = true;
         
-        // I don't know if this works yet
-        animateAndReality(() => Achievements.enhanceFromPreset(this.preset.enhancements));
+        autoReality();
+        Achievements.enhanceFromPreset(this.preset.enhancements);
       }
     },
     deletePreset() {
@@ -90,7 +90,7 @@ export default {
       GameUI.notify.reality(`${presetName} exported from slot ${this.saveslot} to your clipboard`);
     },
     edit() {
-      Modal.studyString.show({ id: this.saveslot - 1 });
+      Modal.enhancementString.show({ id: this.saveslot - 1 });
     }
   },
 };
@@ -180,9 +180,10 @@ export default {
 
 .l-tt-save-load-btn__menu {
   position: absolute;
-  top: -0.5rem;
+  top: 19.7rem;
   left: 50%;
   padding: 0.5rem 0;
+  z-index: 2;
   transform: translate(-50%, -100%);
 }
 
@@ -199,11 +200,12 @@ export default {
 .l-tt-save-load-btn__menu::after {
   content: "";
   position: absolute;
-  top: 100%;
+  top: -0.6rem;
   left: 50%;
+  rotate: 180deg;
   border-color: black transparent transparent;
   border-style: solid;
-  border-width: var(--var-border-width, 0.5rem);
+  border-width: var(--var-border-width, -0.5rem);
   margin-left: -0.5rem;
 }
 
