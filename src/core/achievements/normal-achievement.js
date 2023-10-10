@@ -110,8 +110,13 @@ class AchievementState extends GameMechanicState {
   unlock(auto) {
     if (this.isUnlocked) return;
     player.achievementBits[this.row - 1] |= this._bitmask;
-    if (this.id === 85 || this.id === 93) {
+
+    // r85 multiplies IP gain by 4, and r93 by 6
+    if (this.id === 85) {
       Autobuyer.bigCrunch.bumpAmount(4);
+    }
+    if (this.id === 93) {
+      Autobuyer.bigCrunch.bumpAmount(6);
     }
     if (this.id === 55 && !PlayerProgress.realityUnlocked()) {
       Modal.message.show(`Since you performed an Infinity in under a minute, the UI changed on the screen.
