@@ -38,6 +38,11 @@ export const changelog = [
     <br>
     Post release changes:
     <ul>
+    <li>(10/10) Changed Achievement 71. Now reads "1st Antimatter Dimensions are stronger the longer you don't buy an 
+    Antimatter Dimension or Tickspeed upgrade. Caps at 3 minutes." Its effect ranges from x2 to x20.</li>
+    <li>(10/10) Buffed Achievement 93: x4 ➜ x6 IP.</li>
+    <li>(10/10) Reworded Achievement 145 to avoid balance conflicts with "Replicative Rapidity".
+    No changes were made to its current effects.</li>
     <li>(9/10) Achievement 98 now also affects Replicanti upgrades.</li>
     <li>(9/10) Fixed exploit allowing Achievement 122 to be unlocked with Achievement 53's 
     starting 8th AD.</li>
