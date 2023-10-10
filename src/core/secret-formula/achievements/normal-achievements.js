@@ -1,4 +1,5 @@
 import { DC } from "../../constants";
+//import { DimBoost } from "../../dimboost";
 //import { AntimatterDimension } from "../../globals";
 import { PlayerProgress } from "../../player-progress";
 
@@ -14,7 +15,7 @@ TODO:
  ->Make the "Format string" button work <DONE>
  ->Style the new buttons better <DONE>
 -Row 16 rewards <DONE>
--Enhanced rows 5-9 rewards
+-Enhanced rows 5-9 rewards <IN PROGRESS>
 -Rework V
 -TEST
 -Changelog
@@ -129,7 +130,7 @@ export const normalAchievements = [
     effect: 200,
     enhanced: {
       get reward() { return `Multiply starting Antimatter by your Infinity amount.`},
-      effect: () => Currency.infinitiesTotal.value.clampMin(1),
+      effect: () => Currency.infinitiesTotal.value.clampMin(1).powEffectOf(Achievement(55).enhancedEffect),
       formatEffect: value => `${formatX(value, 2, 2)}`
     }
   },
@@ -388,7 +389,7 @@ export const normalAchievements = [
     effect: 50000,
     enhanced: {
       get reward() { return `Multiply starting Antimatter and Infinity Points by your Eternity amount.`;},
-      effect: () => Decimal.clampMin(player.eternities, 1),
+      effect: () => Decimal.clampMin(player.eternities, 1).powEffectOf(Achievement(55).enhancedEffect),
       formatEffect: value => `${formatX(value, 2, 2)}`
     }
   },
@@ -611,20 +612,23 @@ export const normalAchievements = [
     }
   },
 
-  // ----------------------------------------------------------------
-  // Enhanced rewards later than this point won't be developed until later.
-
   {
-    // Implemented!
+    // Enhanced!
     id: 51,
     name: "Limit Break",
     description: "Break Infinity.",
     checkRequirement: () => player.break,
     checkEvent: [GAME_EVENT.BREAK_INFINITY, GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
     reward: "All Dimension Boosts affect all Antimatter Dimensions.",
+    enhanced: {
+      reward: "All Dimension boosts affect all Antimatter Dimensions, and all Time Dimensions" + 
+        " at a greatly reduced rate.",
+      effect: () => DimBoost.multiplierToNDTier(1).pow(0.000015),
+      formatEffect: value => `${formatX(value, 2, 2)}`
+    }
   },
   {
-    // Implemented! And modified!
+    // Enhanced!
     id: 52,
     name: "Age of Automation",
     description: "Max the interval for Antimatter Dimension and Tickspeed upgrade autobuyers.",
@@ -632,6 +636,9 @@ export const normalAchievements = [
       .every(a => a.isUnlocked && a.hasMaxedInterval),
     checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
     reward: "Antimatter Dimensions and Tickspeed Upgrades no longer spend Antimatter.",
+    enhanced: {
+      reward: "Antimatter Dimensions and Tickspeed Upgrades give their Antimatter cost when purchased."
+    }
   },
   {
     // Implemented! And modified!
@@ -647,26 +654,47 @@ export const normalAchievements = [
     reward: "Start with an 8th AD, if possible. Disabled if the 8th AD autobuyer is also disabled.",
     effect: 1,
     effectCondition: () => Autobuyer.antimatterDimension(8).isActive && player.auto.autobuyersOn,
+    enhanced: {
+      get reward() {
+        return `Start with a free 8th AD, that doesn't affect costs, when possible. +${formatInt(1)} for every
+          Antimatter Galaxy bought.`;
+      },
+      effect: () => player.galaxies + 1
+    }
   },
   {
+    // Enhanced!
     id: 54,
     name: "That's FASTER!",
     get description() { return `Infinity in ${formatInt(10)} minutes or less.`; },
     checkRequirement: () => Time.thisInfinityRealTime.totalMinutes <= 10,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `Start with ${format(5e6)} antimatter.`; },
-    effect: 5e6
+    effect: 5e6,
+    enhanced: {
+      reward: "Multiply your starting AM, IP and EP amount by your Reality amount.",
+      effect: () => Decimal.clampMin(player.realities, 1).powEffectOf(Achievement(55).enhancedEffect),
+      formatEffect: value => `${formatX(value, 2, 2)}`
+    }
   },
   {
+    // Enhanced!
     id: 55,
     name: "Forever isn't that long",
     get description() { return `Infinity in ${formatInt(1)} minute or less.`; },
     checkRequirement: () => Time.thisInfinityRealTime.totalMinutes <= 1,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `Start with ${format(5e12)} antimatter.`; },
-    effect: 5e12
+    effect: 5e12,
+    enhanced: {
+      get reward() {
+        return `Raise the Enhanced effects affecting starting resources by ${formatPow(50)}.`;
+      },
+      effect: 50
+    }
   },
   {
+    // Enhanced! But kinda lame
     id: 56,
     name: "Many Deaths",
     get description() {
@@ -680,9 +708,16 @@ export const normalAchievements = [
     },
     effect: () => Achievement(145).canBeApplied ? 2 : Math.max(6 / (Time.thisInfinity.totalMinutes + 3), 1),
     effectCondition: () => Achievement(145).canBeApplied || Time.thisInfinity.totalMinutes < 3,
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      get reward() {
+        return `All Antimatter Dimensions are ${formatX(DC.E100000)} stronger.`;
+      },
+      effect: DC.E100000
+    }
   },
   {
+    // Enhanced!
     id: 57,
     name: "Gift from the Gods",
     get description() {
@@ -692,14 +727,27 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() {
       return `Dimensional Sacrifice is stronger.
-      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
+        ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
         "Achievement57": false, "Achievement88": false })} ➜
-      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
+        ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
         "Achievement57": true, "Achievement88": false })}`;
     },
-    effect: 0.1
+    effect: 0.1,
+    enhanced: {
+      get reward() { return  Achievement(32).isEnhanced ? `Dimensional Sacrifice is mildly stronger.
+        ${Sacrifice.getSacrificeDescription({ "Achievement57": true, "Enhancement57": false})} ➜
+        ${Sacrifice.getSacrificeDescription({ "Achievement57": false ,"Enhancement57": true})}` :
+        `Enhance Achievement 32 to unlock this effect.`;
+      },
+      // I don't want order to matter for Achievement Enhancement, but I want this, and Er88's effect,
+      // to be applied only if r32 is enhanced, so that the display works. 
+      // So, if r32 is not enhanced, this is a debuff.
+      effect: 0.16,
+      effectCondition: () => Achievement(32).isEnhanced
+    }
   },
   {
+    // Enhanced!
     id: 58,
     name: "This is fine.",
     get description() { return `Complete the Tickspeed Autobuyer Challenge in ${formatInt(3)} minutes or less.`; },
@@ -708,7 +756,13 @@ export const normalAchievements = [
     get reward() {
       return `Increase the multiplier for buying ${formatInt(10)} Antimatter Dimensions by +${formatPercents(0.01)}.`;
     },
-    effect: 1.01
+    effect: 1.01,
+    enhanced: {
+      get reward() {
+        return `Increase the multiplier for buying ${formatInt(10)} Antimatter Dimensions by +${formatPercents(0.60)}.`;
+      },
+      effect: 1.6
+    }
   },
   {
     id: 61,
@@ -1104,6 +1158,9 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Infinity Dimensions and Replicanti upgrades no longer spend Infinity Points.",
   },
+
+  // ----------------------------------------------------------------
+  // Enhanced rewards later than this point won't be developed until later.
 
   {
     // Implemented! Likely the messiest code, but it's just multiplication.
