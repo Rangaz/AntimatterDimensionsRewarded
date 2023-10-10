@@ -28,7 +28,7 @@ export const eternityChallenges = [
     reward: {
       description: "1st Infinity Dimension multiplier based on Infinity Power",
       effect: completions => Currency.infinityPower.value.pow(1.5 / (700 - completions * 100)).clampMin(1),
-      cap: DC.E100,
+      cap: () => DC.E100.pow(Achievement(163).effectOrDefault(1)),
       formatEffect: value => formatX(value, 2, 1)
     }
   },
@@ -59,7 +59,7 @@ export const eternityChallenges = [
     reward: {
       description: "Infinity Dimension multiplier based on unspent IP",
       effect: completions => Currency.infinityPoints.value.pow(0.003 + completions * 0.002),
-      cap: DC.E200,
+      cap: () => DC.E200.pow(Achievement(163).effectOrDefault(1)),
       formatEffect: value => formatX(value, 2, 1)
     }
   },
@@ -138,7 +138,7 @@ export const eternityChallenges = [
     reward: {
       description: "Infinity Dimension multiplier based on Time Shards",
       effect: completions => Currency.timeShards.value.pow(completions * 0.1).clampMin(1),
-      cap: DC.E400,
+      cap: () => DC.E400.pow(Achievement(163).effectOrDefault(1)),
       formatEffect: value => formatX(value, 2, 1)
     }
   },

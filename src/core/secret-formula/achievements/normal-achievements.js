@@ -13,7 +13,7 @@ TODO:
  ->Make a new modal to edit Enhancement presets <DONE>
  ->Make the "Format string" button work <DONE>
  ->Style the new buttons better <DONE>
--Row 16 rewards
+-Row 16 rewards <DONE>
 -Enhanced rows 5-9 rewards
 -Rework V
 -TEST
@@ -1713,20 +1713,21 @@ export const normalAchievements = [
     get reward() { return `Black Hole power increased by ${formatPercents(0.1)}.`; },
     effect: 1.1
   },
-    
-  // ----------------------------------------------------------------------
-  // Anything at this point forward won't start developing until later
 
   {
-    // Reward not implemented
+    // Implemented!
     id: 161,
     name: "that's where you're wrong kiddo",
     get description() { return `Get ${formatPostBreak(DC.E1E8)} antimatter while Dilated.`; },
     checkRequirement: () => Currency.antimatter.exponent >= 100000000 && player.dilation.active,
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() {
+      return `Time Dilation effect is slightly weaker (${formatPow(1.01, 2, 2)} after reduction).`;
+    },
+    effect: 1.01,
   },
   {
-    // Reward not implemented
+    // Implemented!
     id: 162,
     name: "Reinstalled the game and rejoined the server",
     description: "Have every Time Study at once.",
@@ -1735,7 +1736,7 @@ export const normalAchievements = [
     reward: "Eternity Challenge 10 is no longer a requirement for any Time Studies."
   },
   {
-    // Reward not implemented
+    // Implemented!
     id: 163,
     name: "Actually, super easy! Barely an inconvenience!",
     get description() {
@@ -1744,7 +1745,11 @@ export const normalAchievements = [
     },
     checkRequirement: () => EternityChallenges.all.map(ec => ec.completions).min() >= 5 &&
       Time.thisReality.totalSeconds <= 1,
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() {
+      return `Raise EC2, EC4 and EC9's effect cap by ${formatPow(100)}.`;
+    },
+    effect: 100,
   },
   {
     id: 164,
@@ -1785,14 +1790,20 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
+    // Modified!
     id: 168,
     name: "Woah, we're halfway there",
     get description() { return `Get ${formatInt(50)} total Ra Celestial Memory levels.`; },
     checkRequirement: () => Ra.totalPetLevel >= 50,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `Get ${formatPercents(0.1)} more memories.`; },
+    get reward() { return `Get ${formatPercents(0.1)} more memories. Additionally, memory and 
+    memory chunk upgrades no longer spend memories.`; },
     effect: 1.1
   },
+      
+  // ----------------------------------------------------------------------
+  // Anything at this point forward won't start developing until later
+
   {
     id: 171,
     name: "The god is delighted",

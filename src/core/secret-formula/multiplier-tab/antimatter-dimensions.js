@@ -51,7 +51,7 @@ export const AD = {
     isActive: dim => (dim ? dim <= MultiplierTabHelper.activeDimCount("AD") : true),
     dilationEffect: () => {
       const baseEff = (player.dilation.active || Enslaved.isRunning)
-        ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty)
+        ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty, Achievement(161))
         : 1;
       return baseEff * (Effarig.isRunning ? Effarig.multDilation : 1);
     },
