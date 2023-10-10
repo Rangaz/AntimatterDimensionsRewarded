@@ -23,7 +23,7 @@ export function updateNormalAndInfinityChallenges(diff) {
     player.chall3Pow = player.chall3Pow.times(DC.D1_00038.pow(diff / 100)).clampMax(Decimal.NUMBER_MAX_VALUE);
   }
 
-  if (NormalChallenge(2).isRunning) {
+  if (NormalChallenge(2).isRunning || Achievement(71).canBeApplied) {
     player.chall2Pow = Math.min(player.chall2Pow + diff / 100 / 1800, 1);
   }
 

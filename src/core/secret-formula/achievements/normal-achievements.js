@@ -803,6 +803,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
+    // Modified!
     id: 71,
     name: "ERROR 909: Dimension not found",
     description:
@@ -814,8 +815,11 @@ export const normalAchievements = [
       DimBoost.purchasedBoosts === 0 &&
       player.galaxies === 0,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `1st Antimatter Dimensions are ${formatInt(3)} times stronger.`; },
-    effect: 3
+    get reward() { return `1st Antimatter Dimensions are stronger the longer you don't buy an 
+      Antimatter Dimension or Tickspeed upgrade. Caps at ${formatInt(3)} minutes${player.chall2Pow >= 1 ? 
+      ` (capped).` : `.`}`; },
+    effect: () => player.chall2Pow * 18 + 2,
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     // Buffed! And modified!
@@ -1023,8 +1027,8 @@ export const normalAchievements = [
     get description() { return `Big Crunch for ${format(DC.E300)} Infinity Points.`; },
     checkRequirement: () => gainedInfinityPoints().exponent >= 300,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `Additional ${formatX(4)} multiplier to Infinity Points.`; },
-    effect: 4
+    get reward() { return `Additional ${formatX(6)} multiplier to Infinity Points.`; },
+    effect: 6
   },
   {
     id: 94,
@@ -1582,8 +1586,8 @@ export const normalAchievements = [
     description: "Have either Black Hole interval smaller than its duration.",
     checkRequirement: () => BlackHoles.list.some(bh => bh.interval < bh.duration),
     checkEvent: GAME_EVENT.BLACK_HOLE_UPGRADE_BOUGHT,
-    get reward() { return `Black Hole intervals are ${formatPercents(0.1)} shorter. Temporary effects, 
-    and effects based on fastest time, are always maximized.`; },
+    get reward() { return `Black Hole intervals are ${formatPercents(0.1)} shorter. 
+      Pre-reality effects that are temporary or based on fastest time are always maximized.`; },
     effect: 0.9
   },
   {
