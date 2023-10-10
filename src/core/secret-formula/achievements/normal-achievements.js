@@ -1728,6 +1728,7 @@ export const normalAchievements = [
   // Anything at this point forward won't start developing until later
 
   {
+    // Reward not implemented
     id: 161,
     name: "that's where you're wrong kiddo",
     get description() { return `Get ${formatPostBreak(DC.E1E8)} antimatter while Dilated.`; },
@@ -1735,13 +1736,16 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER
   },
   {
+    // Reward not implemented
     id: 162,
     name: "Reinstalled the game and rejoined the server",
     description: "Have every Time Study at once.",
     checkRequirement: () => player.timestudy.studies.length >= 58,
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    reward: "Eternity Challenge 10 is no longer a requirement for any Time Studies."
   },
   {
+    // Reward not implemented
     id: 163,
     name: "Actually, super easy! Barely an inconvenience!",
     get description() {
