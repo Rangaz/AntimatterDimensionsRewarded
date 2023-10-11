@@ -38,6 +38,10 @@ export const changelog = [
     <br>
     Post release changes:
     <ul>
+    <li>(11/10) Achievement 68's effect grows a bit over 3% faster and has a slightly higher starting value.</li>
+    <li>Reworded Enhanced Achievement 33 and Achievement 122 for better clarity.</li>
+    <li>(11/10) Fixed Achievement 53's effect still being active if you only disable the AD autobuyers
+    as a group but not AD8 individually.</li>
     <li>(10/10) Changed Achievement 71. Now reads "1st Antimatter Dimensions are stronger the longer you don't buy an 
     Antimatter Dimension or Tickspeed upgrade. Caps at 3 minutes." Its effect ranges from x2 to x20.</li>
     <li>(10/10) Buffed Achievement 93: x4 ➜ x6 IP.</li>

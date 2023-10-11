@@ -287,7 +287,7 @@ export const normalAchievements = [
     effect: 2,
     effectCondition: () => Time.thisInfinity.totalSeconds > 60,
     enhanced: {
-      reward: "Infinities give more Infinities the longer it lasts.",
+      reward: "Gain more Infinities based on the length of your current Infinity.",
       effect: () => Math.clampMin(Math.pow(Math.log10(Time.thisInfinity.totalSeconds + 1), 2), 1),
       formatEffect: value => `${formatX(value, 2, 2)}`
     }
@@ -634,7 +634,7 @@ export const normalAchievements = [
     checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
     reward: "Start with an 8th AD, if possible. Disabled if the 8th AD autobuyer is also disabled.",
     effect: 1,
-    effectCondition: () => Autobuyer.antimatterDimension(8).isActive && player.auto.autobuyersOn,
+    effectCondition: () => Autobuyer.antimatterDimension(8).isActive && player.auto.autobuyersOn && player.auto.antimatterDims.isActive,
   },
   {
     id: 54,
@@ -798,7 +798,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `1st Antimatter Dimensions get an exponentially increasing multiplier that 
     resets after Dimension Boosts, Antimatter Galaxies, and Infinities.`; },
-    effect: () => player.chall3Pow.times(105).pow(1.5).clampMax(DC.E15),
+    effect: () => player.chall3Pow.times(108).pow(1.55).clampMax(DC.E15),
     effectCondition: () => !NormalChallenge(3).isRunning,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
@@ -1336,8 +1336,7 @@ export const normalAchievements = [
     checkRequirement: () => player.requirementChecks.eternity.onlyAD1,
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
     get reward() {
-      return `The Buy 10 Dimensions multiplier is +${formatPercents(0.5)} stronger on 1st 
-      Antimatter Dimensions.`;
+      return `Multiply the Buy 10 Dimensions multiplier for 1st Antimatter Dimensions by ${formatX(1.5, 1, 1)}`;
     },
     effect: () => Laitela.continuumActive ? DC.D1_5.pow(AntimatterDimension(1).continuumAmount / 10) : 
       DC.D1_5.pow(Math.floor(AntimatterDimension(1).bought / 10)).pow(getAdjustedGlyphEffect("effarigforgotten")),
