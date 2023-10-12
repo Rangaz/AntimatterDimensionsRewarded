@@ -33,8 +33,8 @@ export default {
 
       this.isInEffarig = Effarig.isRunning;
       if (this.isInEffarig) {
-        this.effarigMultNerfText = `${formatPow(0.25 + 0.25 * Effarig.nerfFactor(Currency.infinityPower.value), 0, 5)}`;
-        this.effarigTickNerfText = `${formatPow(0.7 + 0.1 * Effarig.nerfFactor(Currency.timeShards.value), 0, 5)}`;
+        this.effarigMultNerfText = `${formatPow(0.24 + 0.253333 * Effarig.nerfFactor(Currency.infinityPower.value), 0, 5)}`;
+        this.effarigTickNerfText = `${formatPow(0.36 + 0.213333 * Effarig.nerfFactor(Currency.timeShards.value), 0, 5)}`;
       }
       this.isInLaitela = Laitela.isRunning;
       if (this.isInLaitela) {
