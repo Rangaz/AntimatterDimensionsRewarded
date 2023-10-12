@@ -112,9 +112,13 @@ TimeStudy.allConnections = (function() {
 
     [TS(181), EC(10)],
 
-    [EC(10), TS(191)],
-    [EC(10), TS(192)],
-    [EC(10), TS(193)],
+    [EC(10), TS(191), () => Achievement(162).canBeApplied],
+    [EC(10), TS(192), () => Achievement(162).canBeApplied],
+    [EC(10), TS(193), () => Achievement(162).canBeApplied],
+
+    [TS(181), TS(191), () => !Achievement(162).canBeApplied],
+    [TS(181), TS(192), () => !Achievement(162).canBeApplied],
+    [TS(181), TS(193), () => !Achievement(162).canBeApplied],
 
     [TS(192), TS(201)],
 

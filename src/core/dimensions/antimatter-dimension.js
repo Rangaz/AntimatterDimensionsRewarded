@@ -28,6 +28,7 @@ export function antimatterDimensionCommonMultiplier() {
     Achievement(48),
     Achievement(48).enhancedEffect,
     Achievement(56),
+    Achievement(56).enhancedEffect,
     Achievement(65),
     Achievement(67),
     Achievement(73),
@@ -134,6 +135,7 @@ function applyNDMultipliers(mult, tier) {
   }
   if (tier === 8) {
     multiplier = multiplier.times(Sacrifice.totalBoost);
+
     multiplier = multiplier.timesEffectsOf(
       Achievement(23),
       Achievement(23).enhancedEffect,
@@ -234,8 +236,9 @@ export function buyOneDimension(tier) {
 
   if (tier === 8 && Enslaved.isRunning && AntimatterDimension(8).bought >= 1) return false;
 
-  // r52 makes Antimatter Dimensions no longer spend Antimatter.
-  if (!Achievement(52).isUnlocked) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
+  // r52 makes Antimatter Dimensions no longer spend Antimatter. And its Enhanced version gives its cost.
+  if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(cost);
+  else if (!Achievement(52).canBeApplied) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
 
   if (dimension.boughtBefore10 === 9) {
     dimension.challengeCostBump();
@@ -270,8 +273,8 @@ export function buyManyDimension(tier) {
   const cost = dimension.costUntil10;
 
   if (tier === 8 && Enslaved.isRunning) return buyOneDimension(8);
-
-  if (!Achievement(52).isUnlocked) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
+  if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(cost);
+  else if (!Achievement(52).canBeApplied) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
   dimension.challengeCostBump();
   dimension.amount = dimension.amount.plus(dimension.remainingUntil10);
   dimension.bought += dimension.remainingUntil10;
@@ -290,8 +293,8 @@ export function buyAsManyAsYouCanBuy(tier) {
   const cost = dimension.cost.times(howMany);
 
   if (tier === 8 && Enslaved.isRunning) return buyOneDimension(8);
-
-  if (!Achievement(52).isUnlocked) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
+  if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(cost);
+  else if (!Achievement(52).canBeApplied) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
   dimension.challengeCostBump();
   dimension.amount = dimension.amount.plus(howMany);
   dimension.bought += howMany;
@@ -345,7 +348,8 @@ export function buyMaxDimension(tier, bulk = Infinity) {
 
   // Buy any remaining until 10 before attempting to bulk-buy
   if (dimension.currencyAmount.gte(cost)) {
-    if (!Achievement(52).isUnlocked) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
+    if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(cost);
+    else if (!Achievement(52).canBeApplied) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
     buyUntilTen(tier);
     bulkLeft--;
   }
@@ -357,7 +361,8 @@ export function buyMaxDimension(tier, bulk = Infinity) {
     while (dimension.isAffordableUntil10 && dimension.cost.lt(goal) && bulkLeft > 0) {
       // We can use dimension.currencyAmount or Currency.antimatter here, they're the same,
       // but it seems safest to use dimension.currencyAmount for consistency.
-      if (!Achievement(52).isUnlocked) dimension.currencyAmount = dimension.currencyAmount.minus(dimension.costUntil10);
+      if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(dimension.costUntil10);
+      else if (!Achievement(52).canBeApplied) dimension.currencyAmount = dimension.currencyAmount.minus(dimension.costUntil10);
       buyUntilTen(tier);
       bulkLeft--;
     }
@@ -375,7 +380,8 @@ export function buyMaxDimension(tier, bulk = Infinity) {
   if (buying > bulkLeft) buying = bulkLeft;
   dimension.amount = dimension.amount.plus(10 * buying).round();
   dimension.bought += 10 * buying;
-  if (!Achievement(52).isUnlocked) dimension.currencyAmount = dimension.currencyAmount.minus(Decimal.pow10(maxBought.logPrice));
+  if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(Decimal.pow10(maxBought.logPrice));
+  else if (!Achievement(52).canBeApplied) dimension.currencyAmount = dimension.currencyAmount.minus(Decimal.pow10(maxBought.logPrice));
 }
 
 class AntimatterDimensionState extends DimensionState {
@@ -532,6 +538,16 @@ class AntimatterDimensionState extends DimensionState {
     else Currency.antimatter.value = value;
   }
 
+  /** 
+   * @returns {number}
+   */
+  get freeDimensions() {
+    if (this.tier != 8) return 0;
+    // These free Dimensions only make sense with 8th ADs. They don't trigger Buy 10 bonuses
+    // but can be used to buy Dim Boosts and Galaxies.
+    return Achievement(53).enhancedEffect.effectOrDefault(0);
+  }
+
   /**
    * @returns {number}
    */
@@ -569,7 +585,7 @@ class AntimatterDimensionState extends DimensionState {
    * @param {Decimal} value
    */
   get totalAmount() {
-    return this.amount.max(this.continuumAmount);
+    return this.amount.max(this.continuumAmount).plus(this.freeDimensions);
   }
 
   /**
@@ -685,7 +701,8 @@ export const AntimatterDimensions = {
     for (const dimension of AntimatterDimensions.all) {
       dimension.reset();
     }
-    // r53 makes you start 1 8th AD between EVERY reset, if possible
+    // Normal r53 makes you start 1 8th AD between EVERY reset, if possible.
+    // Its enhanced version will do something different
     if (Achievement(53).canBeApplied && player.dimensionBoosts >= 4 && !NormalChallenge(10).isRunning && 
       !InfinityChallenge(1).isRunning) {
       AntimatterDimension(8).amount = DC.D1;
@@ -713,7 +730,8 @@ export const AntimatterDimensions = {
 
     mult = mult.timesEffectsOf(
       InfinityUpgrade.buy10Mult,
-      Achievement(58)
+      Achievement(58),
+      Achievement(58).enhancedEffect
     ).times(getAdjustedGlyphEffect("powerbuy10"));
 
     mult = mult.pow(getAdjustedGlyphEffect("effarigforgotten")).powEffectOf(InfinityUpgrade.buy10Mult.chargedEffect);

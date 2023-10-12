@@ -212,8 +212,65 @@ export const Achievements = {
     return GameCache.achievementPeriod.value;
   },
 
+  // Method used to read a preset
+  // Presets will have the form "11, 12, 13, 21, 23, 27, 32, 87",
+  // Achievement ids separated in commas, similar to how Time Study presets work.
+  // We can afford to make the logic much simpler since we don't care about order.
+  readPreset(text) {
+    const enhancementArray = text.split(",");
+    let achievementsToEnhance = [];
+    for (const i of enhancementArray) {
+      const achievement = Achievements.all.filter(a => a.id == Number.parseInt(i));
+      achievementsToEnhance.push(achievement[0]);
+    }
+    return achievementsToEnhance;
+  },
+
+  enhanceFromArray(achievementsToEnhance) {
+    for (const achievement of achievementsToEnhance) {
+      achievement.enhance();
+    }
+  },
+
+  enhanceFromPreset(text) {
+    this.enhanceFromArray(this.readPreset(text));
+    GameUI.notify.info("Attempted to load a preset");
+  },
+
+  // Return the current enhancements as a preset.
+  // I use Array.from() to use its sort() function, as that returns a nicer string.
+  // Otherwise it'll return the ids in purchase order, which looks messier.
+  returnCurrrentEnhancementsAsPreset() {
+    let enhancedAchievements = Array.from(player.reality.enhancedAchievements);
+    enhancedAchievements.sort();
+    let presetString = "";
+    for (const id of enhancedAchievements) {
+      presetString = presetString + id + ",";
+    }
+    // The string will end with a ",", so we'll remove the last character if there's anything at all
+    if (presetString.length) {
+      presetString = presetString.slice(0, -1);
+    }
+    return presetString;
+  },
+
+  truncateInput(input) {
+    let internal = input.toLowerCase();
+    return internal
+      .replace(/[|,]$/u, "")
+      .replaceAll(" ", "")
+      // Allows 11,,21 to be parsed as 11,21
+      .replace(/,{2,}/gu, ",")
+  },
+
+  // Instead of "11,12,13,14,15", it'll return "11, 12, 13, 14, 15"
+  formatAchievementsList(input) {
+    const internal = input.toLowerCase().replaceAll(" ", "");
+    return internal.replaceAll(",", ", ");
+  },
+
   disEnhanceAll() {
-    const enhancedAchievements = Achievements.preReality
+    const enhancedAchievements = Achievements.preReality;
     for (const achievement of enhancedAchievements) {
       achievement.disEnhance();
     }

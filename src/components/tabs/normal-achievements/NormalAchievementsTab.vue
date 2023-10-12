@@ -2,6 +2,7 @@
 import NormalAchievementRow from "./NormalAchievementRow";
 import PrimaryToggleButton from "@/components/PrimaryToggleButton";
 import PrimaryButton from "@/components/PrimaryButton";
+import EnhancementSaveLoadButton from "./EnhancementSaveLoadButton";
 import SwapAchievementImagesButton from "./SwapAchievementImagesButton";
 import { Pelle } from "../../../core/globals";
 
@@ -10,6 +11,7 @@ export default {
   components: {
     SwapAchievementImagesButton,
     NormalAchievementRow,
+    EnhancementSaveLoadButton,
     PrimaryToggleButton,
     PrimaryButton
   },
@@ -60,10 +62,13 @@ export default {
       if (this.achMultToTT) boostList.push(`Time Theorem production: ${achievementPower}`);
       return `${boostList.join("<br>")}`;
     },
+    saveLoadText() {
+      return this.$viewModel.shiftDown ? "Save preset:" : "Load preset:";
+    },
     respecClassObject() {
       return {
         "o-primary-btn--subtab-option": true,
-        "o-primary-btn--enhanced-respec-active": this.respecEnhancements // Change the color later
+        "o-primary-btn--enhanced-respec-active": this.respecEnhancements 
       };
     },
   },
@@ -170,7 +175,18 @@ export default {
         :class="respecClassObject" 
         @click="respecEnhancements = !respecEnhancements"
       >Respec Enhanced Achievements on next Reality</PrimaryButton>
-      
+    </div>
+    <div class="c-enhancement-load-button-area">
+      <!--Later on make it hidden until 1 V-ach-->
+      <span 
+        v-if="isEnhancementUnlocked"
+        class="c-enhancement-save-load-text">{{ saveLoadText }}</span>
+      <EnhancementSaveLoadButton
+        v-if="isEnhancementUnlocked"
+        v-for="saveslot in 6"
+        :key="saveslot"
+        :saveslot="saveslot"
+            />
     </div>
     <div class="c-achievements-tab__header c-achievements-tab__header--multipliers">
       <span v-if="isDoomed">
@@ -226,6 +242,15 @@ export default {
 </template>
 
 <style scoped>
+.c-enhancement-save-load-text {
+  font-size: 14px;
+  margin-top: 0.4rem;
+}
+.c-enhancement-load-button-area {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
 .o-primary-btn--enhanced-respec-active {
   color: #ffffff;
   background-color: #aaaa33 !important;

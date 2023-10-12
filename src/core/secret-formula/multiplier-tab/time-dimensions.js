@@ -27,7 +27,7 @@ export const TD = {
       : (PlayerProgress.realityUnlocked() || TimeDimension(1).isProducing)),
     dilationEffect: () => {
       const baseEff = player.dilation.active
-        ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty)
+        ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty, Achievement(161))
         : 1;
       return baseEff * (Effarig.isRunning ? Effarig.multDilation : 1);
     },
@@ -108,6 +108,7 @@ export const TD = {
         Achievement(35).enhancedEffect,
         Achievement(48), 
         Achievement(48).enhancedEffect,
+        Achievement(51).enhancedEffect,
         Achievement(105), 
         Achievement(112), 
         Achievement(123), 
