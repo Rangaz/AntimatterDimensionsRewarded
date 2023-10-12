@@ -538,6 +538,16 @@ class AntimatterDimensionState extends DimensionState {
     else Currency.antimatter.value = value;
   }
 
+  /** 
+   * @returns {number}
+   */
+  get freeDimensions() {
+    if (this.tier != 8) return 0;
+    // These free Dimensions only make sense with 8th ADs. They don't trigger Buy 10 bonuses
+    // but can be used to buy Dim Boosts and Galaxies.
+    return Achievement(53).enhancedEffect.effectOrDefault(0);
+  }
+
   /**
    * @returns {number}
    */
@@ -575,7 +585,7 @@ class AntimatterDimensionState extends DimensionState {
    * @param {Decimal} value
    */
   get totalAmount() {
-    return this.amount.max(this.continuumAmount);
+    return this.amount.max(this.continuumAmount).plus(this.freeDimensions);
   }
 
   /**
@@ -691,11 +701,12 @@ export const AntimatterDimensions = {
     for (const dimension of AntimatterDimensions.all) {
       dimension.reset();
     }
-    // r53 makes you start 1 8th AD between EVERY reset, if possible
-    if (Achievement(53).isUnlocked && player.dimensionBoosts >= 4 && !NormalChallenge(10).isRunning && 
+    // Normal r53 makes you start 1 8th AD between EVERY reset, if possible.
+    // Its enhanced version will do something different
+    if (Achievement(53).canBeApplied && player.dimensionBoosts >= 4 && !NormalChallenge(10).isRunning && 
       !InfinityChallenge(1).isRunning) {
-      AntimatterDimension(8).amount = DC.D1.timesEffectOf(Achievement(53).enhancedEffect);
-      AntimatterDimension(8).bought = !Achievement(53).isEnhanced;
+      AntimatterDimension(8).amount = DC.D1;
+      AntimatterDimension(8).bought = 1;
       // If this is active it'll also invalidate other checks
       player.requirementChecks.eternity.onlyAD1 = false;
       player.requirementChecks.infinity.noAD8 = false;
