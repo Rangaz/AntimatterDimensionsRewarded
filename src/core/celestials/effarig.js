@@ -82,10 +82,10 @@ export const Effarig = {
     let c;
     switch (this.currentStage) {
       case EFFARIG_STAGES.INFINITY:
-        c = 1500;
+        c = 975;
         break;
       case EFFARIG_STAGES.ETERNITY:
-        c = 29.29;
+        c = 28;
         break;
       case EFFARIG_STAGES.REALITY:
       default:
@@ -95,10 +95,10 @@ export const Effarig = {
     return 3 * (1 - c / (c + Math.sqrt(power.pLog10())));
   },
   get tickDilation() {
-    return 0.7 + 0.1 * this.nerfFactor(Currency.timeShards.value);
+    return 0.36 + 0.213333 * this.nerfFactor(Currency.timeShards.value);
   },
   get multDilation() {
-    return 0.25 + 0.25 * this.nerfFactor(Currency.infinityPower.value);
+    return 0.24 + 0.253333 * this.nerfFactor(Currency.infinityPower.value);
   },
   get tickspeed() {
     const base = 3 + Tickspeed.baseValue.reciprocal().log10();

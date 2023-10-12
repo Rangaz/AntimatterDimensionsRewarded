@@ -658,6 +658,7 @@ export const normalAchievements = [
     checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
     reward: "Start with an 8th AD, if possible. Disabled if the 8th AD autobuyer is also disabled.",
     effect: 1,
+
     effectCondition: () => Autobuyer.antimatterDimension(8).isActive && player.auto.autobuyersOn &&
       player.auto.antimatterDims.isActive,
     enhanced: {
@@ -1426,7 +1427,7 @@ export const normalAchievements = [
     checkRequirement: () => player.requirementChecks.eternity.onlyAD1,
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
     get reward() {
-      return `Multiply the Buy 10 Dimensions multiplier for 1st Antimatter Dimensions by ${formatX(1.5)}`;
+      return `Multiply the Buy 10 Dimensions multiplier for 1st Antimatter Dimensions by ${formatX(1.5, 1, 1)}`;
     },
     effect: () => Laitela.continuumActive ? DC.D1_5.pow(AntimatterDimension(1).continuumAmount / 10) : 
       DC.D1_5.pow(Math.floor(AntimatterDimension(1).bought / 10)).pow(getAdjustedGlyphEffect("effarigforgotten")),
