@@ -6,18 +6,23 @@ import { PlayerProgress } from "../../player-progress";
 /*
 TODO:
 -Add presets for Achievement Enhancement <DONE FOR NOW>
- ->Make presets work <DONE>
- ->Add buttons <DONE>
- ->Allow Save & Load <DONE>
- ->Make "Respec & Load" work <DONE>
- ->Make the appearing tooltip appear below the buttons <DONE>
- ->Make a new modal to edit Enhancement presets <DONE>
- ->Make the "Format string" button work <DONE>
- ->Style the new buttons better <DONE>
+  ->Make presets work <DONE>
+  ->Add buttons <DONE>
+  ->Allow Save & Load <DONE>
+  ->Make "Respec & Load" work <DONE>
+  ->Make the appearing tooltip appear below the buttons <DONE>
+  ->Make a new modal to edit Enhancement presets <DONE>
+  ->Make the "Format string" button work <DONE>
+  ->Style the new buttons better <DONE>
 -Row 16 rewards <DONE>
 -Enhanced rows 5-9 rewards <IN PROGRESS>
+  ->Row 5 <DONE>
+  ->Row 6 <IN PROGRESS>
+  ->Row 7 
+  ->Row 8 
+  ->Row 9 
 -Rework V
--TEST
+-TEST & BALANCE
 -Changelog
 */
 
@@ -641,7 +646,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented! And modified!
+    // Enhanced!
     id: 53,
     name: "Definitely not worth it",
     description: "Max the intervals for all normal autobuyers.",
@@ -657,10 +662,11 @@ export const normalAchievements = [
       player.auto.antimatterDims.isActive,
     enhanced: {
       get reward() {
-        return `Start with a free 8th AD, that doesn't affect costs, when possible. +${formatInt(1)} for every
-          Antimatter Galaxy bought.`;
+        return `Gain free 8th ADs, that doesn't affect costs, equal to your Antimatter Galaxy amount +${
+          formatInt(1)}.`;
       },
-      effect: () => player.galaxies + 1
+      effect: () => player.galaxies + 1,
+      formatEffect: value => `+${formatInt(value)}`
     }
   },
   {
@@ -766,6 +772,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 61,
     name: "Bulked Up",
     get description() {
@@ -775,23 +782,36 @@ export const normalAchievements = [
     checkRequirement: () => Autobuyer.antimatterDimension.zeroIndexed.every(x => x.hasMaxedBulk),
     checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT,
       GAME_EVENT.SAVE_CONVERTED_FROM_PREVIOUS_VERSION],
-    reward: "Dimension Autobuyer bulks are unlimited."
+    reward: "Dimension Autobuyer bulks are unlimited.",
+    enhanced: {
+      get reward() {
+        return `Dimension Autobuyer bulks are unlimited, and the Dilation Autobuyers bulk buy 
+          ${formatX(2)} as much.`;
+      },
+      effect: 2
+    }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 62,
     name: "Oh, hey... You're still here?",
     get description() { return `Reach ${format(DC.E8)} Infinity Points per minute.`; },
     checkRequirement: () => Player.bestRunIPPM.exponent >= 8,
     checkEvent: GAME_EVENT.BIG_CRUNCH_AFTER,
     get reward() { return Achievement(145).canBeApplied ? 
-      `A small multiplier to Infinity points (improved by Achievement 145).` : 
-      `A small multiplier to Infinity points that fades over ${formatInt(60)}
+      `A small multiplier to Infinity Points (improved by Achievement 145).` : 
+      `A small multiplier to Infinity Points that fades over ${formatInt(60)}
     seconds this Infinity.`},
     effect: () => Achievement(145).canBeApplied ? 3 : 
       Math.max(1, 3 - Time.thisInfinity.totalSeconds / 30),
     effectCondition: () => Achievement(145).canBeApplied || Time.thisInfinity.totalMinutes < 1,
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      get reward() {
+        return `A ${formatX(DC.E10500)} multiplier to Infinity Points.`;
+      },
+      effect: DC.E10500
+    }
   },
   {
     // Implemented!
