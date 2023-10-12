@@ -634,7 +634,8 @@ export const normalAchievements = [
     checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
     reward: "Start with an 8th AD, if possible. Disabled if the 8th AD autobuyer is also disabled.",
     effect: 1,
-    effectCondition: () => Autobuyer.antimatterDimension(8).isActive && player.auto.autobuyersOn && player.auto.antimatterDims.isActive,
+    effectCondition: () => Autobuyer.antimatterDimension(8).isActive && player.auto.autobuyersOn && 
+      player.auto.antimatterDims.isActive,
   },
   {
     id: 54,
