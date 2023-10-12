@@ -1429,8 +1429,9 @@ export const normalAchievements = [
     get reward() {
       return `Multiply the Buy 10 Dimensions multiplier for 1st Antimatter Dimensions by ${formatX(1.5, 1, 1)}`;
     },
-    effect: () => Laitela.continuumActive ? DC.D1_5.pow(AntimatterDimension(1).continuumAmount / 10) : 
-      DC.D1_5.pow(Math.floor(AntimatterDimension(1).bought / 10)).pow(getAdjustedGlyphEffect("effarigforgotten")),
+    effect: () => Laitela.continuumActive ? DC.D1_5.pow(AntimatterDimension(1).continuumAmount / 10).pow(
+      getAdjustedGlyphEffect("effarigforgotten")) : DC.D1_5.pow(Math.floor(AntimatterDimension(1).bought / 10)).
+      pow(getAdjustedGlyphEffect("effarigforgotten")),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
