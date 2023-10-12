@@ -38,6 +38,14 @@ export const changelog = [
     <br>
     Post release changes:
     <ul>
+    <li>(12/10) Cel-2's Reality is rebalanced:
+    <ul>
+    <li>Tickspeed is dilated way more (Starting value: ^0.7 ➜ ^0.36).</li>
+    <li>Gamespeed and Dimensions are slightly more dilated (Starting value: ^0.25 ➜ ^0.24).</li>
+    <li>This makes Effarig's first 2 layers no longer trivial by Achievement Enhancement, but it should
+    be slightly faster still with the correct Glyph and Enhancements setup.</li>
+    </ul>
+    <li>(12/10) Fixed horrible crash if you attempted to run Normal Challenge 10 while inside Cel-3's reality.</li>
     <li>(11/10) Achievement 68's effect grows a bit over 3% faster and has a slightly higher starting value.</li>
     <li>Reworded Enhanced Achievement 33 and Achievement 122 for better clarity.</li>
     <li>(11/10) Fixed Achievement 53's effect still being active if you only disable the AD autobuyers
