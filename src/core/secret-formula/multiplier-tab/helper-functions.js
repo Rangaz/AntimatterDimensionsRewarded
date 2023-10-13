@@ -84,6 +84,7 @@ export const MultiplierTabHelper = {
       Achievement(45),
       Achievement(45).enhancedEffect,
       Achievement(66),
+      Achievement(66).enhancedEffect,
       Achievement(135),
     );
     let baseFrac = base.log10() / Tickspeed.perSecond.log10();

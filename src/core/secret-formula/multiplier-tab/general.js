@@ -25,7 +25,7 @@ export const general = {
 
         // The base tickspeed from achievements' effect is actually divisors, so 
         // we want to show the reciprocal instead
-        if (ach === 36 || ach === 45) {
+        if (ach === 36 || ach === 45 || ach === 66) {
           return Achievement(ach).enhancedEffect.canBeApplied ? 
             DC.D1.divide(Achievement(ach).enhancedEffect.effectOrDefault(1)) : 1
         }

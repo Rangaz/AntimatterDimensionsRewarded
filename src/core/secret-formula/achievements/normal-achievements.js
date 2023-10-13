@@ -884,7 +884,14 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return `Tickspeed is just over ${formatPercents(0.05)} faster per Antimatter Galaxy.`; },
     effect: () => DC.D0_95.pow(player.galaxies),
-    formatEffect: value => `${formatX(value.recip(), 2, 2)}`
+    formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
+    enhanced: {
+      get reward() { return `Tickspeed is ${formatX(3)} as fast for every Antimatter, Replicanti, 
+      and Tachyon Galaxy.`; },
+      effect: () => DC.D3.pow(player.galaxies + Replicanti.galaxies.total + 
+        player.dilation.totalTachyonGalaxies).recip(),
+      formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
+    }
   },
   {
     // Implemented!
@@ -893,7 +900,8 @@ export const normalAchievements = [
     description: "Complete an Infinity Challenge.",
     checkRequirement: () => InfinityChallenges.completed.length > 0,
     checkEvent: [GAME_EVENT.INFINITY_CHALLENGE_COMPLETED, GAME_EVENT.REALITY_RESET_AFTER],
-    get reward() {return `Antimatter Dimensions are ${formatPercents(0.3)} stronger for every Infinity Challenge completed.`;},
+    get reward() {return `Antimatter Dimensions are ${formatPercents(0.3)} stronger for every 
+      Infinity Challenge completed.`;},
     effect: () => Math.pow(1.3, InfinityChallenges.completed.length),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
