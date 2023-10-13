@@ -270,6 +270,8 @@ class InfinityDimensionState extends DimensionState {
 
     // r98 will make IDs free of cost
     if (!Achievement(98).isEffectActive) {Currency.infinityPoints.purchase(this.cost);}
+    // Enhanced r63 will make them give you their costs
+    if (Achievement(63).isEnhanced) Currency.infinityPoints.add(this.cost);
     this.cost = Decimal.round(this.cost.times(this.costMultiplier));
     // Because each ID purchase gives 10 IDs
     this.amount = this.amount.plus(10);
@@ -308,6 +310,7 @@ class InfinityDimensionState extends DimensionState {
     if (costScaling.purchases <= 0) return false;
 
     if (!Achievement(98).isEffectActive) {Currency.infinityPoints.purchase(costScaling.totalCost)};
+    if (Achievement(63).isEnhanced) {Currency.infinityPoints.add(costScaling.totalCost)};
     this.cost = this.cost.times(costScaling.totalCostMultiplier);
     // Because each ID purchase gives 10 IDs
     this.amount = this.amount.plus(10 * costScaling.purchases);
