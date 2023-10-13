@@ -1655,7 +1655,7 @@ export const normalAchievements = [
       away you are from obtaining ${formatPostBreak("1e4000")} EP.`},
     effect: () => DC.E4000.divide(Currency.eternityPoints.value).pow(0.04).clampMin(10),
     effectCondition: () => !isInCelestialReality(),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => isInCelestialReality() ? `Inactive` : `${formatX(value, 2, 2)}`
   },
   {
     id: 154,
