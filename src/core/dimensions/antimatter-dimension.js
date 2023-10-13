@@ -1,5 +1,5 @@
 import { DC } from "../constants";
-import { Achievement, InfinityChallenge, NormalChallenge } from "../globals";
+import { Achievement, Enslaved, InfinityChallenge, NormalChallenge } from "../globals";
 
 import { DimensionState } from "./dimension";
 
@@ -154,6 +154,7 @@ function applyNDMultipliers(mult, tier) {
     tier < 8 ? Achievement(34) : null,
     tier < 8 ? Achievement(34).enhancedEffect : null,
     tier <= 4 ? Achievement(64) : null,
+    tier <= 4 ? Achievement(64).enhancedEffect : null,
     tier < 8 ? TimeStudy(71) : null,
     tier > 1 && tier < 8 ? InfinityChallenge(8).reward : null
   );
@@ -542,7 +543,7 @@ class AntimatterDimensionState extends DimensionState {
    * @returns {number}
    */
   get freeDimensions() {
-    if (this.tier != 8) return 0;
+    if (this.tier != 8 || Enslaved.isRunning) return 0;
     // These free Dimensions only make sense with 8th ADs. They don't trigger Buy 10 bonuses
     // but can be used to buy Dim Boosts and Galaxies.
     return Achievement(53).enhancedEffect.effectOrDefault(0);
