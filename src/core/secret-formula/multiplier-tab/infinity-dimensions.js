@@ -27,7 +27,7 @@ export const ID = {
       : (PlayerProgress.eternityUnlocked() || InfinityDimension(1).isProducing)),
     dilationEffect: () => {
       const baseEff = player.dilation.active
-        ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty)
+        ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty, Achievement(161))
         : 1;
       return baseEff * (Effarig.isRunning ? Effarig.multDilation : 1);
     },
@@ -132,6 +132,7 @@ export const ID = {
         Achievement(35).enhancedEffect,
         Achievement(48),
         Achievement(48).enhancedEffect,
+        Achievement(67).enhancedEffect,
         Achievement(107),
       );
 

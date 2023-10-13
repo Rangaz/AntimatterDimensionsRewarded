@@ -232,7 +232,7 @@ Currency.antimatter = new class extends DecimalCurrency {
   }
 
   get startingValue() {
-    if (Pelle.isDisabled()) return new Decimal(100);
+    if (Pelle.isDisabled()) return new Decimal(200);
     return Effects.max(
       10,
       Perk.startAM,
@@ -241,7 +241,8 @@ Currency.antimatter = new class extends DecimalCurrency {
       Achievement(54),
       Achievement(55),
       Achievement(78)
-    ).toDecimal().timesEffectsOf(Achievement(21).enhancedEffect, Achievement(37).enhancedEffect);
+    ).toDecimal().timesEffectsOf(Achievement(21).enhancedEffect, Achievement(37).enhancedEffect,
+      Achievement(54).enhancedEffect);
   }
 }();
 
@@ -287,7 +288,7 @@ Currency.infinityPoints = new class extends DecimalCurrency {
       Perk.startIP1,
       Perk.startIP2,
       Achievement(104)
-    ).toDecimal().timesEffectOf(Achievement(37).enhancedEffect);
+    ).toDecimal().timesEffectsOf(Achievement(37).enhancedEffect, Achievement(54).enhancedEffect);
   }
 
   reset() {
@@ -337,7 +338,7 @@ Currency.eternityPoints = new class extends DecimalCurrency {
       Perk.startEP1,
       Perk.startEP2,
       Perk.startEP3
-    ).toDecimal();
+    ).toDecimal().timesEffectsOf(Achievement(54).enhancedEffect);
   }
 
   reset() {

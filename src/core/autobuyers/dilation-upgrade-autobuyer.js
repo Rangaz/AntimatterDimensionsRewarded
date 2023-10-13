@@ -24,7 +24,7 @@ export class DilationUpgradeAutobuyerState extends IntervaledAutobuyerState {
   }
 
   get bulk() {
-    return PerkShopUpgrade.bulkDilation.effectOrDefault(1);
+    return PerkShopUpgrade.bulkDilation.effectOrDefault(1) * Achievement(61).enhancedEffect.effectOrDefault(1);
   }
 
   tick() {
