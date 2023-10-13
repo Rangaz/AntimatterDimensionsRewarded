@@ -128,6 +128,7 @@ export const AD = {
         Achievement(56),
         Achievement(56).enhancedEffect,
         Achievement(65),
+        Achievement(65).enhancedEffect,
         Achievement(67),
         Achievement(73),
         Achievement(74),

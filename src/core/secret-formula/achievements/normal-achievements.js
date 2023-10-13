@@ -643,7 +643,8 @@ export const normalAchievements = [
     checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
     reward: "Antimatter Dimensions and Tickspeed Upgrades no longer spend Antimatter.",
     enhanced: {
-      reward: "Antimatter Dimensions and Tickspeed Upgrades give their Antimatter cost when purchased."
+      reward: "Antimatter Dimensions and Tickspeed Upgrades give their Antimatter cost " +
+        "when purchased, instead of spending them."
     }
   },
   {
@@ -664,7 +665,7 @@ export const normalAchievements = [
       player.auto.antimatterDims.isActive,
     enhanced: {
       get reward() {
-        return `Gain free 8th ADs, that doesn't affect costs, equal to your Antimatter Galaxy amount +${
+        return `Gain free 8th ADs, that don't affect costs, equal to your Antimatter Galaxy amount +${
           formatInt(1)}.`;
       },
       effect: () => player.galaxies + 1,
@@ -816,7 +817,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 63,
     name: "A new beginning",
     description: "Begin generation of Infinity Power.",
@@ -829,7 +830,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Modified!
+    // Enhanced!
     id: 64,
     name: "Zero Deaths",
     description: "Get to Infinity without Dimension Boosts or Antimatter Galaxies while in a Normal Challenge.",
@@ -856,14 +857,23 @@ export const normalAchievements = [
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER],
     get reward() {
       return Achievement(145).canBeApplied ? 
-        `All Antimatter Dimensions are stronger, but only in challenges (improved by Achievement 145).` :
+        `All Antimatter Dimensions are stronger, but only in Challenges (improved by Achievement 145).` :
         `All Antimatter Dimensions are stronger in the first ${formatInt(3)} minutes of Infinities,
         but only in Challenges.`;
     },
     effect: () => (Player.isInAnyChallenge ? Math.max(
       4 / (Time.thisInfinity.totalMinutes * !Achievement(145).canBeApplied + 1), 1) : 1),
-    effectCondition: () => Player.isInAnyChallenge && (Time.thisInfinity.totalMinutes < 3),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    effectCondition: () => Player.isInAnyChallenge && 
+      (Achievement(145).canBeApplied || Time.thisInfinity.totalMinutes < 3),
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: { 
+      get reward () {
+        return `All Antimatter Dimensions are ${formatPostBreak(DC.E110000)} times stronger, but only 
+          in Challenges${Player.isInAnyChallenge ? `` : ` (inactive)`}.`;
+      },
+      effect: DC.E110000,
+      effectCondition: () => Player.isInAnyChallenge
+    }
   },
   {
     // Modified!
