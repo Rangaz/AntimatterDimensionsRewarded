@@ -1742,9 +1742,11 @@ export const normalAchievements = [
     description: "Reality without producing antimatter.",
     checkRequirement: () => player.requirementChecks.reality.noAM,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
-    get reward() { return `Gain a multiplier to EP based on how far away you are to ${formatPostBreak("1e4000")} EP.`},
+    get reward() { return `In non-celestial Realities, gain a multiplier to EP based on 
+      how far away you are from obtaining ${formatPostBreak("1e4000")} EP.`},
     effect: () => DC.E4000.divide(Currency.eternityPoints.value).pow(0.04).clampMin(10),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    effectCondition: () => !isInCelestialReality(),
+    formatEffect: value => isInCelestialReality() ? `Inactive` : `${formatX(value, 2, 2)}`
   },
   {
     id: 154,
