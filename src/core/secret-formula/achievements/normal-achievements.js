@@ -824,6 +824,9 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return `Gain back those ${format(DC.E8)} IP you must have spent to get this Achievement.`},
     effect: DC.E8,
+    enhanced: {
+      reward: "Buying Infinity Dimensions give their Infinity Point cost to you."
+    }
   },
   {
     // Modified!
