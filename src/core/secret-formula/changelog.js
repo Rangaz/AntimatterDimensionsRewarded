@@ -38,6 +38,7 @@ export const changelog = [
     <br>
     Post release changes:
     <ul>
+    <li>(13/10) Achievement 153's effect now only works in non-celestial Realities.</li>
     <li>(12/10) Cel-2's Reality is rebalanced:
     <ul>
     <li>Tickspeed is dilated way more (Starting value: ^0.7 ➜ ^0.36).</li>
