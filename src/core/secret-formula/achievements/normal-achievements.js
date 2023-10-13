@@ -849,6 +849,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 65,
     name: "Not-so-challenging",
     get description() { return `Get the sum of all of your Normal Challenge times under ${formatInt(3)} minutes.`; },
@@ -875,7 +876,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Modified!
+    // Enhanced!
     id: 66,
     name: "Faster than a squared potato",
     get description() { return `Get more than ${format(DC.E58)} ticks per second.`; },
@@ -902,7 +903,20 @@ export const normalAchievements = [
     get reward() {return `Antimatter Dimensions are ${formatPercents(0.3)} stronger for every 
       Infinity Challenge completed.`;},
     effect: () => Math.pow(1.3, InfinityChallenges.completed.length),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      get reward() {
+        return `For every Celestial Reality beaten, all Dimensions${Laitela.isUnlocked ? 
+        `, excluding Dark Matter Dimensions,` : ``} are ${format(DC.E200)} times stronger.`
+      },
+      // At this point it is assumed that, since you need 14 V-achs to enhance this, 
+      // all previous Celestial Realities have been completed.
+      effect: () => DC.E200.pow(4 + 
+        (player.celestials.ra.pets.teresa.memories > 1) +
+        (Laitela.difficultyTier >= 1),
+      ),
+      formatEffect: value => `${formatX(value)}`
+    }
   },
   {
     // Modified!

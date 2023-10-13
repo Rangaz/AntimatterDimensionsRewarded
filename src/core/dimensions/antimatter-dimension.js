@@ -32,6 +32,7 @@ export function antimatterDimensionCommonMultiplier() {
     Achievement(65),
     Achievement(65).enhancedEffect,
     Achievement(67),
+    Achievement(67).enhancedEffect,
     Achievement(73),
     Achievement(74),
     Achievement(76),
