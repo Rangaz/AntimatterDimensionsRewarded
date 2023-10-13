@@ -18,8 +18,8 @@ TODO:
 -Row 16 rewards <DONE>
 -Enhanced rows 5-9 rewards <IN PROGRESS>
   ->Row 5 <DONE>
-  ->Row 6 <IN PROGRESS>
-  ->Row 7 
+  ->Row 6 <DONE>
+  ->Row 7 <IN PROGRESS>
   ->Row 8 
   ->Row 9 
 -Rework V
@@ -845,7 +845,7 @@ export const normalAchievements = [
     enhanced: {
       reward: "Antimatter Dimensions 1-4 are way stronger the less Dimension Boosts " +
         "and Antimatter Galaxies you have bought.",
-      effect: () => Decimal.pow(DC.E300000.pow(1 - player.galaxies / 100000), 
+      effect: () => Decimal.pow(DC.E300000.pow(1 - Math.clampMax(player.galaxies, 100000) / 100000), 
         1 - DimBoost.purchasedBoosts / 30000000).clampMin(100),
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
@@ -897,7 +897,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 67,
     name: "Infinitely Challenging",                                                                                                      
     description: "Complete an Infinity Challenge.",
@@ -922,7 +922,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Modified!
+    // Enhanced!
     id: 68,
     name: "You did this again just for the achievement right?",
     get description() {
