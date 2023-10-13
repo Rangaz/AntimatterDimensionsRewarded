@@ -101,6 +101,19 @@ export const Time = {
   /**
    * @returns {TimeSpan}
    */
+  get timeSinceLastReset() {
+    return this.fromMilliseconds(() => player.records.timeSinceLastReset);
+  },
+  /**
+   * @param {TimeSpan} timespan
+   */
+  set timeSinceLastReset(timespan) {
+    this.toMilliseconds(timespan, value => player.records.timeSinceLastReset = value);
+  },
+
+  /**
+   * @returns {TimeSpan}
+   */
   get timeWithExcessAMProd() {
     return this.fromMilliseconds(() => player.records.timeWithExcessAMProd);
   },

@@ -278,6 +278,7 @@ window.player = {
     previousRunRealTime: 0,
     totalAntimatter: DC.E1,
     timeSinceLastSacrifice: 0, // For r23
+    timeSinceLastReset: 0, // For r68
     timeWithExcessAMProd: 0, // For r44
     timeWithExcessIPowerProd: 0, // For r124
     recentInfinities: Array.range(0, 10).map(() =>

@@ -173,6 +173,7 @@ export function secondSoftReset(enteringAntimatterChallenge) {
   if (!Achievement(115).isEffectActive) InfinityDimensions.resetAmount();
   if (player.replicanti.unl) Replicanti.amount = DC.D1;
   player.replicanti.galaxies = 0;
+  player.records.timeSinceLastReset = 0;
   player.records.thisInfinity.time = 0;
   player.records.thisInfinity.lastBuyTime = 0;
   player.records.thisInfinity.realTime = 0;

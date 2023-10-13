@@ -429,6 +429,7 @@ export const migrations = {
       player.reality.maxEnhancedRow = 4;
     },
     31: player => {
+      player.records.timeSinceLastReset = 0;
       // The Happy V-Day version
       player.reality.enhancedPresets = new Array(6).fill({
         name: "",

@@ -267,7 +267,8 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "1st Antimatter Dimensions are way stronger based on achievements completed.",
-      effect: () => Decimal.pow(Achievements.effectiveCount , Decimal.pow(Achievements.effectiveCount, Achievements.effectiveCount / 15 - 5.64)),
+      effect: () => Decimal.pow(Achievements.effectiveCount, 
+        Decimal.pow(Achievements.effectiveCount, Achievements.effectiveCount / 15 - 5.64)),
       formatEffect: value => `${formatX(value, 2, 2)}`
     }
   },
@@ -909,11 +910,11 @@ export const normalAchievements = [
     enhanced: {
       get reward() {
         return `For every Celestial Reality beaten, all Dimensions${Laitela.isUnlocked ? 
-        `, excluding Dark Matter Dimensions,` : ``} are ${format(DC.E200)} times stronger.`
+        `, excluding Dark Matter Dimensions,` : ``} are ${format(DC.E250)} times stronger.`
       },
       // At this point it is assumed that, since you need 14 V-achs to enhance this, 
       // all previous Celestial Realities have been completed.
-      effect: () => DC.E200.pow(4 + 
+      effect: () => DC.E250.pow(4 + 
         (player.celestials.ra.pets.teresa.memories > 1) +
         (Laitela.difficultyTier >= 1),
       ),
@@ -929,11 +930,20 @@ export const normalAchievements = [
     },
     checkRequirement: () => NormalChallenge(3).isOnlyActiveChallenge && Time.thisInfinityRealTime.totalSeconds <= 10,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `1st Antimatter Dimensions get an exponentially increasing multiplier that 
-    resets after Dimension Boosts, Antimatter Galaxies, and Infinities.`; },
-    effect: () => player.chall3Pow.times(108).pow(1.55).clampMax(DC.E15),
-    effectCondition: () => !NormalChallenge(3).isRunning,
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    reward: "1st Antimatter Dimensions get an exponentially increasing multiplier that " +
+      "resets after Dimension Boosts, Antimatter Galaxies, and Infinities.",
+    effect: () => DC.D1_00038.pow(Time.timeSinceLastReset.totalSeconds * 20).times(1.2).clampMax(DC.E15),
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "1st Antimatter Dimensions get an uncapped exponentially increasing multiplier that " +
+        "resets after Dimension Boosts, Antimatter Galaxies, and Infinities.",
+      effect() {
+        const timeSinceLastReset = Time.timeSinceLastReset.totalSeconds;
+        return timeSinceLastReset < 1e70 ? DC.D2.pow(Math.pow(timeSinceLastReset, 0.1)).times(Number.MAX_VALUE) :
+        DC.D2.pow(1e7 * Math.pow(timeSinceLastReset / 1e70, 0.02)).times(Number.MAX_VALUE);
+      },
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
     // Modified!
