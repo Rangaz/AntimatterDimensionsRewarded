@@ -19,10 +19,10 @@ export function updateNormalAndInfinityChallenges(diff) {
   }
 
   // I'll take advantage over chall3Pow to use it as the base for r68. Very fitting.
-  if (NormalChallenge(3).isRunning || Achievement(68).isEffectActive) {
+  if (NormalChallenge(3).isRunning || Achievement(68).canBeApplied) {
     player.chall3Pow = player.chall3Pow.times(DC.D1_00038.pow(diff / 100)).clampMax(Decimal.NUMBER_MAX_VALUE);
   }
-
+  
   if (NormalChallenge(2).isRunning || Achievement(71).canBeApplied) {
     player.chall2Pow = Math.min(player.chall2Pow + diff / 100 / 1800, 1);
   }
