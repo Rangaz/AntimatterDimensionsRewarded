@@ -38,6 +38,9 @@ export const changelog = [
     <br>
     Post release changes:
     <ul>
+    <li>(13/10) Enhanced Achievement 24's effect scales slightly better.</li>
+    <li>(13/10) Achievement 108 is correctly buffed by Achievement 145.</li>
+    <li>(13/10) Fixed Achievement 134 appearing in multiplier tab when it should be inactive.</li>
     <li>(13/10) Fixed Achievement 65's effect still becoming inactive after 3 minutes if you have Achievement 145.</li>
     <li>(13/10) Achievement 153's effect now only works in non-celestial Realities.</li>
     <li>(12/10) Cel-2's Reality is rebalanced:

@@ -167,7 +167,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "2nd Antimatter Dimensions are mildly stronger based on current Antimatter.",
-      effect: () => DC.D1_3.pow(Math.pow(Currency.antimatter.exponent, 0.55)),
+      effect: () => DC.D1_3.pow(Math.pow(Currency.antimatter.exponent, 0.555)),
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
@@ -1198,8 +1198,9 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
     get reward() {
       return `You'll always have at least ${formatInt(9)} Replicanti. Gain ${formatX(2)} 
-        Replicanti speed the first ${formatInt(9)} seconds of each Eternity 
-        ${Time.thisEternity.totalSeconds > 9 ? `(inactive)` : `(active)`}.`;
+        Replicanti speed ${Achievement(145).canBeApplied ? `(improved by Achievement 145)` : 
+        `the first ${formatInt(9)} seconds of each Eternity 
+        ${Time.thisEternity.totalSeconds > 9 ? `(inactive)` : `(active)`}`}.`;
     },
     effects: {
       minReplicanti: 9,
@@ -1476,7 +1477,9 @@ export const normalAchievements = [
     get reward() {
       return `You gain Replicanti ${formatInt(2)} times faster under ${format(replicantiCap(), 1)} Replicanti.`;
     },
-    effect: 2
+    effect: 2,
+    // Why was this not done?
+    effectCondition: () => Replicanti.amount.lte(replicantiCap())
   },
   {
     // Implemented!

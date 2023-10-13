@@ -149,7 +149,8 @@ export function totalReplicantiSpeedMult(overCap) {
   );
   totalMult = totalMult.times(preCelestialEffects);
   
-  if (Achievement(108).isEffectActive && Time.thisEternity.totalSeconds < 9) {
+  if (Achievement(108).isEffectActive && (Time.thisEternity.totalSeconds < 9 
+    || Achievement(145).canBeApplied)) {
     totalMult = totalMult.timesEffectOf(Achievement(108).effects.replicantiSpeed);
   }
   if (TimeStudy(132).isBought && Perk.studyPassive.isBought) {

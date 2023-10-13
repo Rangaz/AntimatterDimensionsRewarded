@@ -28,9 +28,7 @@ export default {
       const minReplicanti = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
       const isAbove308 = Replicanti.isUncapped && replicantiAmount.log10() > LOG10_MAX_VALUE;
 
-      // The Achievements that give conditional Replicanti speed. We need to use 
-      // player.replicanti.timer because, at long intervals, the text may appear to
-      // tick up incorrectly.
+      // The Achievements that give conditional Replicanti speed.
       const r94Timer = Achievement(94).canBeApplied && !Achievement(145).canBeApplied ? 
         Math.clampMin((260 - Time.thisInfinity.totalSeconds) / getGameSpeedupForDisplay(), 0) : 0;
       const fastR106Galaxies = Achievement(106).canBeApplied ? 10 : 0;
