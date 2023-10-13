@@ -763,7 +763,8 @@ export const normalAchievements = [
     },
     effect: () => (Player.isInAnyChallenge ? Math.max(
       4 / (Time.thisInfinity.totalMinutes * !Achievement(145).canBeApplied + 1), 1) : 1),
-    effectCondition: () => Player.isInAnyChallenge && (Time.thisInfinity.totalMinutes < 3),
+    effectCondition: () => Player.isInAnyChallenge && 
+      (Achievement(145).canBeApplied || Time.thisInfinity.totalMinutes < 3),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
