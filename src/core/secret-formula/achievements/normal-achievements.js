@@ -1,4 +1,5 @@
 import { DC } from "../../constants";
+//import { Enslaved } from "../../globals";
 //import { DimBoost } from "../../dimboost";
 //import { AntimatterDimension } from "../../globals";
 import { PlayerProgress } from "../../player-progress";
@@ -667,7 +668,7 @@ export const normalAchievements = [
           formatInt(1)}.`;
       },
       effect: () => player.galaxies + 1,
-      formatEffect: value => `+${formatInt(value)}`
+      formatEffect: value => Enslaved.isRunning ? `Shattered by Nameless` : `+${formatInt(value)}`
     }
   },
   {
@@ -831,10 +832,18 @@ export const normalAchievements = [
     description: "Get to Infinity without Dimension Boosts or Antimatter Galaxies while in a Normal Challenge.",
     checkRequirement: () => player.galaxies === 0 && DimBoost.purchasedBoosts === 0 && NormalChallenge.isRunning,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    reward: "Antimatter Dimensions 1-4 are stronger the less Dimension Boosts and Antimatter Galaxies you have.",
+    reward: "Antimatter Dimensions 1-4 are stronger the less Dimension Boosts " +
+      "and Antimatter Galaxies you have bought.",
     effect: () => Math.pow(1.75 - Math.clampMax(player.galaxies, 50) / 100, 
       5 - Math.clampMax(DimBoost.purchasedBoosts, 200) / 50),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "Antimatter Dimensions 1-4 are way stronger the less Dimension Boosts " +
+        "and Antimatter Galaxies you have bought.",
+      effect: () => Decimal.pow(DC.E300000.pow(1 - player.galaxies / 100000), 
+        1 - DimBoost.purchasedBoosts / 30000000).clampMin(100),
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
     id: 65,

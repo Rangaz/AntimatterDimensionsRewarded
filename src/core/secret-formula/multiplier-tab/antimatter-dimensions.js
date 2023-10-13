@@ -170,6 +170,7 @@ export const AD = {
           tier < 8 ? Achievement(34) : null,
           tier < 8 ? Achievement(34).enhancedEffect : null,
           tier <= 4 ? Achievement(64) : null,
+          tier <= 4 ? Achievement(64).enhancedEffect : null,
         );
         if (Achievement(43).canBeApplied) {
           dimMults[tier] = dimMults[tier].times(1 + tier / 100);
