@@ -1962,9 +1962,8 @@ export const normalAchievements = [
     get description() { return `Get ${formatInt(50)} total Ra Celestial Memory levels.`; },
     checkRequirement: () => Ra.totalPetLevel >= 50,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `Get ${formatPercents(0.1)} more memories. Additionally, memory and 
-    memory chunk upgrades no longer spend memories.`; },
-    effect: 1.1
+    get reward() { return `Get ${formatPercents(0.15)} more memories.`; },
+    effect: 1.15
   },
       
   // ----------------------------------------------------------------------
