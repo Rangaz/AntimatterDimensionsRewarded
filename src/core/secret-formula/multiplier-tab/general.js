@@ -21,7 +21,7 @@ export const general = {
       // If it's an enhanced effect...
       if (ach > 10000) {
         ach -= 10000;
-        if (ach === 47) return 1; // Power effect
+        if (ach === 47 || ach === 72) return 1; // Power effect
 
         // The base tickspeed from achievements' effect is actually divisors, so 
         // we want to show the reciprocal instead
@@ -86,7 +86,8 @@ export const general = {
     // ...or that would be the case if it wasn't for my achievements (r72 & Er47).
     powValue: ach => (ach === 183 ? Achievement(183).effectOrDefault(1) : 1) * 
       (ach === 10047 ? Achievement(47).enhancedEffect.effectOrDefault(1) : 1) *
-      (ach === 72 ? Achievement(72).effectOrDefault(1) : 1),
+      (ach === 72 ? Achievement(72).effectOrDefault(1) : 1) *
+      (ach === 10072 ? Achievement(72).enhancedEffect.effectOrDefault(1) : 1),
     isActive: ach => ach > 10000 ? Achievement(ach - 10000).enhancedEffect.canBeApplied : 
       Achievement(ach - Math.floor(ach / 1000) * 1000).canBeApplied,
     icon: ach => {

@@ -33,8 +33,11 @@ export function antimatterDimensionCommonMultiplier() {
     Achievement(65).enhancedEffect,
     Achievement(67),
     Achievement(67).enhancedEffect,
+    Achievement(71).enhancedEffect,
     Achievement(73),
+    Achievement(73).enhancedEffect,
     Achievement(74),
+    Achievement(74).enhancedEffect,
     Achievement(76),
     Achievement(84),
     Achievement(91),
@@ -195,6 +198,7 @@ function applyNDPowers(mult, tier) {
       AlchemyResource.power,
       Achievement(47).enhancedEffect,
       Achievement(72),
+      Achievement(72).enhancedEffect,
       Achievement(183),
       PelleRifts.paradox
     );
