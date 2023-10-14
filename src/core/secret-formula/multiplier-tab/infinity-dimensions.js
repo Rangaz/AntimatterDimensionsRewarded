@@ -133,6 +133,7 @@ export const ID = {
         Achievement(48),
         Achievement(48).enhancedEffect,
         Achievement(67).enhancedEffect,
+        Achievement(74).enhancedEffect,
         Achievement(107),
       );
 

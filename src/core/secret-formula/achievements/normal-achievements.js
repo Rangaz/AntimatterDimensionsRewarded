@@ -940,13 +940,13 @@ export const normalAchievements = [
       effect() {
         const timeSinceLastReset = Time.timeSinceLastReset.totalSeconds;
         return timeSinceLastReset < 1e70 ? DC.D2.pow(Math.pow(timeSinceLastReset, 0.1)).times(Number.MAX_VALUE) :
-        DC.D2.pow(1e7 * Math.pow(timeSinceLastReset / 1e70, 0.02)).times(Number.MAX_VALUE);
+        DC.D2.pow(1e7 * Math.pow(timeSinceLastReset / 1e70, 0.018)).times(Number.MAX_VALUE);
       },
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
   {
-    // Modified!
+    // Enhanced!
     id: 71,
     name: "ERROR 909: Dimension not found",
     description:
@@ -959,13 +959,20 @@ export const normalAchievements = [
       player.galaxies === 0,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `1st Antimatter Dimensions are stronger the longer you don't buy an 
-      Antimatter Dimension or Tickspeed upgrade. Caps at ${formatInt(3)} minutes${player.chall2Pow >= 1 ? 
+      Antimatter Dimension or Tickspeed upgrade. Caps at ${formatInt(3)} minutes${
+        player.records.thisInfinity.time - player.records.thisInfinity.lastBuyTime >= 180000 ? 
       ` (capped).` : `.`}`; },
-    effect: () => player.chall2Pow * 18 + 2,
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    effect: () => Math.clamp(player.records.thisInfinity.time - player.records.thisInfinity.lastBuyTime, 0, 180000) * 0.0001 + 2,
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "All Antimatter Dimensions are way stronger the longer you don't buy an " +
+        "Antimatter Dimension or Tickspeed upgrade. Has no cap.",
+      effect: () => Decimal.pow(Math.clampMin(player.records.thisInfinity.time - player.records.thisInfinity.lastBuyTime, 1), 2000),
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
-    // Buffed! And modified!
+    // Enhanced!
     id: 72,
     name: "Can't hold all these infinities",
     get description() {
@@ -974,10 +981,16 @@ export const normalAchievements = [
     checkRequirement: () => AntimatterDimensions.all.every(x => x.multiplier.gte(Decimal.NUMBER_MAX_VALUE)),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return `Raise Antimatter Dimensions such that, for every product of ${formatX(Decimal.NUMBER_MAX_VALUE, 1)},
-    they are ${formatPercents(0.308, 1, 1)} stronger.`},
-    effect: 1.00038044
+      they are ${formatPercents(0.308, 1, 1)} stronger.`},
+    effect: 1.00038044,
+    enhanced: {
+      get reward() { return `Raise Antimatter Dimensions such that, for every product of ${formatX(Decimal.NUMBER_MAX_VALUE, 1)},
+        they are ${formatX(308)} times stronger.`},
+      effect: 1.008073158
+    }
   },
   {
+    // Enhanced!
     id: 73,
     name: "THIS ACHIEVEMENT DOESN'T EXIST",
     get description() { return `Get ${formatPostBreak(DC.D9_9999E9999, 4)} antimatter.`; },
@@ -985,7 +998,12 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Antimatter Dimensions gain a multiplier based on current antimatter.",
     effect: () => Currency.antimatter.value.pow(0.00002).plus(1),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "Antimatter Dimensions gain a bigger multiplier based on current antimatter.",
+      effect: () => Currency.antimatter.value.pow(0.000029).plus(1),
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
     id: 74,
@@ -995,7 +1013,12 @@ export const normalAchievements = [
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER],
     get reward() { return `All Antimatter Dimensions are ${formatPercents(0.4)} stronger, but only in challenges.`; },
     effect: 1.4,
-    effectCondition: () => Player.isInAnyChallenge
+    effectCondition: () => Player.isInAnyChallenge,
+    enhanced: {
+      get reward() { return `All Dimensions are ${formatX(DC.E1800)} stronger, but only in Celestial Realities.`; },
+      effect: DC.E1800,
+      effectCondition: () => isInCelestialReality()
+    }
   },
   {
     id: 75,
