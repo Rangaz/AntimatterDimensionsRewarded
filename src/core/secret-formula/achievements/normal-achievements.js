@@ -24,6 +24,7 @@ TODO:
   ->Row 9 
 -Rework V
 -TEST & BALANCE
+-Disallow holding shift for locked Enhanced effects
 -Changelog
 */
 
@@ -1004,6 +1005,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 74,
     name: "Not a second lost",
     get description() { return `Get the sum of all best Normal Challenge times under ${formatInt(5)} seconds.`; },
@@ -1019,13 +1021,23 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 75,
     name: "NEW DIMENSIONS???",
     description: "Unlock the 4th Infinity Dimension.",
     checkRequirement: () => InfinityDimension(4).isUnlocked,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Your Achievement bonus affects Infinity Dimensions.",
-    effect: () => Achievements.power
+    effect: () => Achievements.power,
+    enhanced: {
+      get reward() { return `Your Achievement bonus affects Infinity Dimensions, 
+        and raise the Achievement bonus to Dimensions by ${formatPow(80)}.`;
+      },
+      effects: {
+        infinityDimensions: () => Decimal.pow(Achievements.power, 80),
+        powEffect: 80
+      }
+    }
   },
   {
     id: 76,
@@ -1035,7 +1047,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Extremely small multiplier to Antimatter Dimensions based on time played.",
     effect: () => Math.max(Math.pow(Time.totalTimePlayed.totalDays / 2, 0.05), 1),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
   },
   {
     // Implemented!
@@ -1954,7 +1966,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
-    // Modified!
+    // Buffed!
     id: 168,
     name: "Woah, we're halfway there",
     get description() { return `Get ${formatInt(50)} total Ra Celestial Memory levels.`; },
