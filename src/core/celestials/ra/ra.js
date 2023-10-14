@@ -173,14 +173,14 @@ class RaPetState extends GameMechanicState {
   purchaseMemoryUpgrade() {
     if (!this.canBuyMemoryUpgrade || this.memoryUpgradeCapped) return;
 
-    if (Ra.totalPetLevel < 50) this.memories -= this.memoryUpgradeCost;
+    this.memories -= this.memoryUpgradeCost;
     this.data.memoryUpgrades++;
   }
 
   purchaseChunkUpgrade() {
     if (!this.canBuyChunkUpgrade || this.chunkUpgradeCapped) return;
 
-    if (Ra.totalPetLevel < 50) this.memories -= this.chunkUpgradeCost;
+    this.memories -= this.chunkUpgradeCost;
     this.data.chunkUpgrades++;
   }
 
