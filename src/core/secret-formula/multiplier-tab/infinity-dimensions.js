@@ -120,8 +120,9 @@ export const ID = {
   },
   achievementMult: {
     name: "Achievement Multiplier",
-    multValue: dim => Decimal.pow(Achievements.power, dim ? 1 : MultiplierTabHelper.activeDimCount("ID")),
-    isActive: () => Achievement(75).canBeApplied && !Pelle.isDoomed,
+    multValue: dim => Decimal.pow(Decimal.pow(Achievements.power, Achievement(75).enhancedEffect.effects.powEffect.
+    effectOrDefault(1)), dim ? 1 : MultiplierTabHelper.activeDimCount("ID")),
+    isActive: () => (Achievement(75).canBeApplied || Achievement(75).isEnhanced) && !Pelle.isDoomed,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   achievement: {

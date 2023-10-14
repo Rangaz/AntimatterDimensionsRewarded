@@ -18,6 +18,7 @@ export default {
   data() {
     return {
       achievementPower: 0,
+      achDimEffect: new Decimal(0),
       achTPEffect: 0,
       achCountdown: 0,
       totalCountdown: 0,
@@ -30,6 +31,7 @@ export default {
       isEnhancementUnlocked: false,
       respecEnhancements: false,
       hideCompletedRows: false,
+      enhancedAchMultToDims: false,
       achMultBreak: false,
       achMultToIDS: false,
       achMultToTDS: false,
@@ -47,6 +49,7 @@ export default {
     },
     boostText() {
       const achievementPower = formatX(this.achievementPower, 2, 3);
+      const achDimEffect = formatX(this.achDimEffect, 2, 3);
       const achTPEffect = formatX(this.achTPEffect, 2, 3);
 
       const boostList = [];
@@ -55,7 +58,7 @@ export default {
       dimMultList.push("Antimatter");
       if (this.achMultToIDS) dimMultList.push("Infinity");
       if (this.achMultToTDS) dimMultList.push("Time");
-      boostList.push(`${makeEnumeration(dimMultList)} Dimensions: ${achievementPower}`);
+      boostList.push(`${makeEnumeration(dimMultList)} Dimensions: ${achDimEffect}`);
 
       if (this.achMultToTP) boostList.push(`Tachyon Particles: ${achTPEffect}`);
       if (this.achMultToBH) boostList.push(`Black Hole Power: ${achievementPower}`);
@@ -94,6 +97,9 @@ export default {
     update() {
       const gameSpeedupFactor = getGameSpeedupFactor();
       this.achievementPower = Achievements.power;
+      this.enhancedAchMultToDims = Achievement(75).isEnhanced;
+      this.achDimEffect = this.enhancedAchMultToDims ? Decimal.pow(this.achievementPower, 80) :
+        this.achievementPower.toDecimal();
       this.achTPEffect = RealityUpgrade(8).config.effect();
       this.achCountdown = Achievements.timeToNextAutoAchieve / gameSpeedupFactor;
       this.totalCountdown = ((Achievements.preReality.countWhere(a => !a.isUnlocked) - 1) * Achievements.period +

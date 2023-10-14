@@ -128,7 +128,6 @@ export function timeDimensionCommonMultiplier() {
       TimeStudy(301),
       EternityChallenge(1).reward,
       EternityChallenge(10).reward,
-      EternityUpgrade.tdMultAchs,
       EternityUpgrade.tdMultTheorems,
       EternityUpgrade.tdMultRealTime,
       Replicanti.areUnlocked && Replicanti.amount.gt(1) ? DilationUpgrade.tdMultReplicanti : null,
@@ -136,6 +135,13 @@ export function timeDimensionCommonMultiplier() {
       AlchemyResource.dimensionality,
       PelleRifts.chaos
     );
+  
+  // The Achievement multiplier for Dimensions, since Er75 raises them by 80, must be decimalized
+  // and calculated if neccesary.
+  const achievementMultiplier = Achievement(75).isEnhanced ? Decimal.pow(EternityUpgrade.tdMultAchs.effectOrDefault(1), 
+    Achievement(75).enhancedEffect.effects.powEffect.effectOrDefault(1)) : EternityUpgrade.tdMultAchs.effectOrDefault(1);
+  
+  mult = mult.times(achievementMultiplier);
 
   if (EternityChallenge(9).isRunning) {
     mult = mult.times(

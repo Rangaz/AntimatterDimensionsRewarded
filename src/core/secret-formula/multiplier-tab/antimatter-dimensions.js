@@ -112,7 +112,9 @@ export const AD = {
   },
   achievementMult: {
     name: "Achievement Multiplier",
-    multValue: dim => Decimal.pow(Achievements.power, dim ? 1 : MultiplierTabHelper.activeDimCount("AD")),
+    // Er75 raises this by 60
+    multValue: dim => Decimal.pow(Decimal.pow(Achievements.power, Achievement(75).enhancedEffect.effects.powEffect.
+      effectOrDefault(1)), dim ? 1 : MultiplierTabHelper.activeDimCount("AD")),
     isActive: () => !Pelle.isDoomed && !EternityChallenge(11).isRunning,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
