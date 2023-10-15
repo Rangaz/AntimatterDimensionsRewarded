@@ -337,8 +337,8 @@ Currency.eternityPoints = new class extends DecimalCurrency {
       0,
       Perk.startEP1,
       Perk.startEP2,
-      Perk.startEP3
-    ).toDecimal().timesEffectsOf(Achievement(54).enhancedEffect);
+      Perk.startEP3,
+    ).toDecimal().clampMin(Achievement(96).enhancedEffect.effectOrDefault(0)).timesEffectsOf(Achievement(54).enhancedEffect);
   }
 
   reset() {

@@ -1302,6 +1302,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 94,
     name: "4.3333 minutes of Infinity",
     get description() { return `Reach ${format(DC.E260)} Infinity Power.`; },
@@ -1336,7 +1337,14 @@ export const normalAchievements = [
     checkRequirement: () =>
       (Replicanti.amount.eq(Decimal.NUMBER_MAX_VALUE) || player.replicanti.galaxies > 0) &&
       Time.thisInfinityRealTime.totalHours <= 1,
-    checkEvent: GAME_EVENT.REPLICANTI_TICK_AFTER
+    checkEvent: GAME_EVENT.REPLICANTI_TICK_AFTER,
+    enhanced: {
+      // This, with TS33, makes you lose no Galaxies on Infinity.
+      reward: "You keep your Replicanti and half your Replicanti Galaxies on Infinity. " +
+        "Increase your Replicanti speed based on Infinities.",
+      effect: () => Currency.infinitiesTotal.value.add(2).log2(),
+      formatEffect: value => `${formatX(value, 2, 2)}`
+    }
   },
   {
     // Implemented!
@@ -1348,7 +1356,14 @@ export const normalAchievements = [
     get reward() {
       return `Upon getting this achievement, gain ${formatInt(3)} Eternity Points. Use them wisely!`;
     },
-    effect: 3
+    effect: 3,
+    enhanced: {
+      get reward() {
+        return `Start every Reality with ${Achievement(55).isEnhanced ? `${formatPostBreak(DC.E2000)} (improved by Enhanced Achievement 55)` 
+        : format(1e40)} Eternity Points, and gain that amount upon Enhancing this achievement.`;
+      },
+      effect: () => DC.E40.powEffectOf(Achievement(55).enhancedEffect)
+    }
   },
   {
     // Implemented!
