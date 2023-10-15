@@ -1178,7 +1178,11 @@ export const normalAchievements = [
     checkRequirement: () => Tickspeed.multiplier.recip().gte(1000),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return `All Galaxies are ${formatPercents(0.01)} stronger.`; },
-    effect: 1.01
+    effect: 1.01,
+    enhanced: {
+      get reward() { return `All Galaxies are ${formatPercents(0.03)} stronger.`; },
+      effect: 1.03
+    }
   },
   {
     id: 87,
