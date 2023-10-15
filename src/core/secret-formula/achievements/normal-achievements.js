@@ -17,12 +17,12 @@ TODO:
   ->Style the new buttons better <DONE>
 -Disallow holding shift for locked Enhanced effects <DONE>
 -Row 16 rewards <DONE>
--Enhanced rows 5-9 rewards <IN PROGRESS>
+-Enhanced rows 5-9 rewards <DONE>
   ->Row 5 <DONE>
   ->Row 6 <DONE>
   ->Row 7 <DONE>
   ->Row 8 <DONE>
-  ->Row 9 <IN PROGRESS>
+  ->Row 9 <DONE>
 -Rework V
 -TEST & BALANCE
 -h2p entry for V
@@ -1330,6 +1330,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 95,
     name: "Is this safe?",
     get description() { return `Gain ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)} Replicanti in ${formatInt(1)} hour.`; },
@@ -1347,7 +1348,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 96,
     name: "Time is relative",
     description: "Go Eternal.",
@@ -1359,14 +1360,15 @@ export const normalAchievements = [
     effect: 3,
     enhanced: {
       get reward() {
-        return `Start every Reality with ${Achievement(55).isEnhanced ? `${formatPostBreak(DC.E2000)} (improved by Enhanced Achievement 55)` 
-        : format(1e40)} Eternity Points, and gain that amount upon Enhancing this achievement.`;
+        return `Start every Reality with ${Achievement(55).isEnhanced ? `${formatPostBreak(DC.E2000)} 
+          (improved by Enhanced Achievement 55)` : format(1e40)} Eternity Points, 
+          and gain that amount upon Enhancing this achievement.`;
       },
       effect: () => DC.E40.powEffectOf(Achievement(55).enhancedEffect)
     }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 97,
     name: "Like jumping on a lego",
     get description() { return `Get the sum of Infinity Challenge times under ${format(6.66, 2, 2)} seconds.`; },
@@ -1380,16 +1382,25 @@ export const normalAchievements = [
     },
     effect: () => Achievement(145).canBeApplied ? 11.1 : 
       Math.max(6.66 / Math.max(Time.infinityChallengeSum.totalSeconds, 0.6), 1),
-    formatEffect: value => `^${format(value, 2, 2)}`
+    formatEffect: value => `^${format(value, 2, 2)}`,
+    enhanced: {
+      get reward() { return `IC1 and IC3's reward is raised ${formatPow(16.66, 2, 2)}.`},
+      effect: 16.66
+    }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 98,
     name: "0 degrees from Infinity",
     description: "Unlock the 8th Infinity Dimension.",
     checkRequirement: () => InfinityDimension(8).isUnlocked,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Infinity Dimensions and Replicanti upgrades no longer spend Infinity Points.",
+    enhanced: {
+      get reward() { return `Infinity Dimensions and Replicanti upgrades no longer spend Infinity Points, and
+        raise their costs by ${formatPow(0.98, 2, 2)}.` },
+      effect: 0.98
+    }
   },
 
   // ----------------------------------------------------------------
@@ -1665,7 +1676,8 @@ export const normalAchievements = [
     },
     checkRequirement: () => Time.timeWithExcessIPowerProd.totalSeconds >= 60,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    reward: "1st Infinity Dimensions are stronger the longer your production surpasses your current Infinity Power. Slows down after 60 seconds.",
+    reward: "1st Infinity Dimensions are stronger the longer your production surpasses " + 
+      "your current Infinity Power. Slows down after 60 seconds.",
     effect() {
       const excessTimeProduction = Time.timeWithExcessIPowerProd.totalSeconds;
       return excessTimeProduction >= 60 ?
