@@ -54,11 +54,12 @@ export const EP = {
   achievement: {
     name: "Achievement rewards",
     displayOverride: () => {
-      const val = Achievement(153).effectOrDefault(1);
+      const val = Achievement(85).enhancedEffect.effectOrDefault(DC.D1).times(Achievement(153).effectOrDefault(1));
       return `${formatX(val, 2, 2)}`;
     },
-    multValue: () => Achievement(153).effectOrDefault(1),
-    isActive: () => PlayerProgress.eternityUnlocked() && Achievement(153).canBeApplied && !Pelle.isDoomed,
+    multValue: () => Achievement(85).enhancedEffect.effectOrDefault(DC.D1).times(Achievement(153).effectOrDefault(1)),
+    isActive: () => PlayerProgress.eternityUnlocked() && (Achievement(153).canBeApplied || Achievement(85).isEnhanced)
+      && !Pelle.isDoomed,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   timeStudy: {
