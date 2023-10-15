@@ -1,5 +1,5 @@
 import { GameMechanicState } from "../game-mechanics";
-
+import { DC } from "../constants";
 import { SteamRuntime } from "@/steam";
 
 // I probably want this for my enhanced achievements
@@ -88,6 +88,9 @@ class AchievementState extends GameMechanicState {
     // Enhancing Achievement 81 affects post-infinity scaling
     if (this.id === 81) {
       GameCache.dimensionMultDecrease.invalidate();
+    }
+    if (this.id === 96) {
+      player.eternityPoints = player.eternityPoints.plus(DC.E40.powEffectOf(Achievement(55).enhancedEffect));
     }
     player.reality.enhancedAchievements.add(this.id);
     player.reality.enhancementPoints -= 1;

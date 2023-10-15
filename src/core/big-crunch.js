@@ -131,7 +131,8 @@ export function bigCrunchResetValues(enteringAntimatterChallenge, enteringC10OrI
   let remainingGalaxies = 0;
   if (Achievement(95).isUnlocked && !Pelle.isDoomed) {
     Replicanti.amount = currentReplicanti;
-    remainingGalaxies += Math.min(currentReplicantiGalaxies, 1);
+    remainingGalaxies += Achievement(95).isEnhanced ? Math.ceil(currentReplicantiGalaxies / 2) :
+      Math.min(currentReplicantiGalaxies, 1);
   }
   if (TimeStudy(33).isBought && !Pelle.isDoomed) {
     remainingGalaxies += Math.floor(currentReplicantiGalaxies / 2);
@@ -141,7 +142,7 @@ export function bigCrunchResetValues(enteringAntimatterChallenge, enteringC10OrI
     remainingGalaxies = currentReplicantiGalaxies;
   }
   // I don't think this Math.clampMax is technically needed, but if we add another source
-  // of keeping Replicanti Galaxies then it might be.
+  // of keeping Replicanti Galaxies then it might be... like my Er95!
   player.replicanti.galaxies = Math.clampMax(remainingGalaxies, currentReplicantiGalaxies);
 }
 

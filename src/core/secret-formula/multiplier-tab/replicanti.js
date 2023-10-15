@@ -19,6 +19,7 @@ export const replicanti = {
       totalMult  = totalMult.timesEffectsOf(
         Achievement(94).effects.replicantiSpeed,
         Achievement(94).enhancedEffect.effects.replicantiSpeed, 
+        Achievement(95).enhancedEffect,
         Achievement(106)
       );
       if (Time.thisEternity.totalSeconds < 9 || Achievement(145).canBeApplied) {
