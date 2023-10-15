@@ -95,6 +95,7 @@ export function totalIPMult() {
       Achievement(62),
       Achievement(62).enhancedEffect,
       Achievement(77),
+      Achievement(77).enhancedEffect,
       Achievement(85),
       Achievement(93),
       Achievement(116),

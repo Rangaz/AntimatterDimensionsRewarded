@@ -19,8 +19,8 @@ TODO:
 -Enhanced rows 5-9 rewards <IN PROGRESS>
   ->Row 5 <DONE>
   ->Row 6 <DONE>
-  ->Row 7 <IN PROGRESS>
-  ->Row 8 
+  ->Row 7 <DONE>
+  ->Row 8 <IN PROGRESS>
   ->Row 9 
 -Rework V
 -TEST & BALANCE
@@ -1052,14 +1052,15 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       get reward() { 
-        return `Moderate multiplier to all Dimensions${Laitela.isUnlocked ? `, excluding Dark Matter Dimensions,` : ``}
-           based on time played.`},
-      effect: () => Decimal.pow(Time.totalTimePlayed.totalYears, Math.log2(Time.totalTimePlayed.totalYears) - 130),
+        return `Moderate multiplier to all Dimensions${Laitela.isUnlocked ? 
+          `, excluding Dark Matter Dimensions,` : ``} based on time played.`},
+      effect: () => Decimal.pow(Time.totalTimePlayed.totalYears, 
+        Math.log2(Time.totalTimePlayed.totalYears) - 135),
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 77,
     name: "1 Million is a lot",
     get description() { return `Reach ${format(1e6)} Infinity Power.`; },
@@ -1068,10 +1069,17 @@ export const normalAchievements = [
     reward: "A small multiplier to IP based on Infinity Power.",
     effect: () => Decimal.max(1, Decimal.pow(Decimal.log10(Currency.infinityPower.value) / 3, 0.5)),
     cap: () => Effarig.eternityCap,
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "A moderate multiplier to IP based on Infinity Power.",
+      effect: () => Decimal.pow(Currency.infinityPower.value, 0.001).clampMin(1),
+      cap: () => Effarig.eternityCap,
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
 
   },
   {
+    // Enhanced! But could be better...
     id: 78,
     name: "Blink of an eye",
     get description() { return `Infinity in under ${formatInt(250)}ms.`; },
@@ -1080,17 +1088,28 @@ export const normalAchievements = [
     get reward() {
       return `Start with ${format(5e40)} antimatter.`;
     },
-    effect: 5e40
+    effect: 5e40,
+    enhanced: {
+      get reward() {
+        return `Multiply starting antimatter by ${Achievement(55).isEnhanced ? 
+          `${formatPostBreak(DC.E60000)} (improved by Enhanced Achievement 55)` : formatPostBreak(DC.E1200)}.`
+      },
+      effect: () => DC.E1200.powEffectOf(Achievement(55).enhancedEffect)
+    }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 81,
     name: "Game Design Is My Passion",
     get description() { return `Beat Infinity Challenge 5 in ${formatInt(15)} seconds or less.`; },
     checkRequirement: () => InfinityChallenge(5).isRunning && Time.thisInfinityRealTime.totalSeconds <= 15,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() {return `Reduce post-infinity cost scaling for Antimatter Dimensions by -${format(0.01, 2, 2)}.`},
-    effect: 0.01
+    effect: 0.01,
+    enhanced: {
+      get reward() {return `Reduce post-infinity cost scaling for Antimatter Dimensions by -${format(0.03, 2, 2)}.`},
+      effect: 0.03
+    }
   },
   {
     // Implemented!
