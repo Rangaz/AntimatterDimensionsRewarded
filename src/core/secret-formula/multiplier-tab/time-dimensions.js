@@ -112,6 +112,7 @@ export const TD = {
         Achievement(51).enhancedEffect,
         Achievement(67).enhancedEffect,
         Achievement(74).enhancedEffect,
+        Achievement(76).enhancedEffect,
         Achievement(105), 
         Achievement(112), 
         Achievement(123), 
