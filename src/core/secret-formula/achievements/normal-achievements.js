@@ -20,11 +20,11 @@ TODO:
   ->Row 5 <DONE>
   ->Row 6 <DONE>
   ->Row 7 <DONE>
-  ->Row 8 <IN PROGRESS>
-  ->Row 9 
+  ->Row 8 <DONE>
+  ->Row 9 <IN PROGRESS>
 -Rework V
 -TEST & BALANCE
--Disallow holding shift for locked Enhanced effects
+-Disallow holding shift for locked Enhanced effects <DONE>
 -Changelog
 */
 
@@ -1213,6 +1213,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 88,
     name: "Yet another infinity reference",
     get description() {
@@ -1254,7 +1255,11 @@ export const normalAchievements = [
     },
     effect: () => Achievement(145).canBeApplied ? 300 : Math.max((5 - Time.thisInfinity.totalSeconds) * 60, 1),
     effectCondition: () => Achievement(145).canBeApplied || Time.thisInfinity.totalSeconds < 5,
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      get reward() {return `All Infinity Dimensions are ${formatX(DC.E10000)} stronger.`},
+      effect: DC.E10000
+    }
   },
   {
     id: 92,
