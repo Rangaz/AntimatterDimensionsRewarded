@@ -711,14 +711,18 @@ export const AntimatterDimensions = {
    */
   all: AntimatterDimension.index.compact(),
 
-  reset() {
+  // Because of my r53 reward the code is a lot more complicated, I know.
+  // We need to know if we're entering C10 or IC1 here because at a Big Crunch reset, 
+  // when ADs are reset, the challenge is still not set, so r53 could activate in
+  // challenges when it shouldn't.
+  reset(enteringC10OrIC1 = false) {
     for (const dimension of AntimatterDimensions.all) {
       dimension.reset();
     }
     // Normal r53 makes you start 1 8th AD between EVERY reset, if possible.
     // Its enhanced version will do something different
     if (Achievement(53).canBeApplied && player.dimensionBoosts >= 4 && !NormalChallenge(10).isRunning && 
-      !InfinityChallenge(1).isRunning) {
+      !InfinityChallenge(1).isRunning && !enteringC10OrIC1) {
       AntimatterDimension(8).amount = DC.D1;
       AntimatterDimension(8).bought = 1;
       // If this is active it'll also invalidate other checks

@@ -48,7 +48,8 @@ export function bigCrunchResetRequest(disableAnimation = false) {
 
 export function bigCrunchReset(
   forced = false,
-  enteringAntimatterChallenge = Player.isInAntimatterChallenge && player.options.retryChallenge
+  enteringAntimatterChallenge = Player.isInAntimatterChallenge && player.options.retryChallenge,
+  enteringC10OrIC1 = false // This one is very specifically for my r53 to work correctly
 ) {
   if (!forced && !Player.canCrunch) return;
 
@@ -58,7 +59,7 @@ export function bigCrunchReset(
     if (Pelle.isDoomed) PelleStrikes.infinity.trigger();
   }
 
-  bigCrunchResetValues(enteringAntimatterChallenge);
+  bigCrunchResetValues(enteringAntimatterChallenge, enteringC10OrIC1);
   EventHub.dispatch(GAME_EVENT.BIG_CRUNCH_AFTER);
 }
 
@@ -119,13 +120,13 @@ function bigCrunchTabChange(firstInfinity) {
   }
 }
 
-export function bigCrunchResetValues(enteringAntimatterChallenge) {
+export function bigCrunchResetValues(enteringAntimatterChallenge, enteringC10OrIC1) {
   const currentReplicanti = Replicanti.amount;
   const currentReplicantiGalaxies = player.replicanti.galaxies;
   // For unknown reasons, everything but keeping of RGs (including resetting of RGs)
   // is done in the function called below. For now, we're just trying to keep
   // code structure similar to what it was before to avoid new bugs.
-  secondSoftReset(enteringAntimatterChallenge);
+  secondSoftReset(enteringAntimatterChallenge, enteringC10OrIC1);
 
   let remainingGalaxies = 0;
   if (Achievement(95).isUnlocked && !Pelle.isDoomed) {
@@ -153,7 +154,7 @@ function bigCrunchCheckUnlocks() {
   }
 }
 
-export function secondSoftReset(enteringAntimatterChallenge) {
+export function secondSoftReset(enteringAntimatterChallenge, enteringC10OrIC1) {
   // r115 keeps up to 200 dim boosts and 50 galaxies, but only if their
   // respective autobuyers are on.
   if (Achievement(115).canBeApplied) {
@@ -169,7 +170,7 @@ export function secondSoftReset(enteringAntimatterChallenge) {
 
   player.records.thisInfinity.maxAM = DC.D0;
   Currency.antimatter.reset();
-  softReset(0, true, true, enteringAntimatterChallenge);
+  softReset(0, true, true, enteringAntimatterChallenge, enteringC10OrIC1);
   if (!Achievement(115).isEffectActive) InfinityDimensions.resetAmount();
   if (player.replicanti.unl) Replicanti.amount = DC.D1;
   player.replicanti.galaxies = 0;
