@@ -13,6 +13,7 @@ export function infinityDimensionCommonMultiplier() {
       Achievement(75),
       Achievement(75).enhancedEffect.effects.infinityDimensions,
       Achievement(76).enhancedEffect,
+      Achievement(91).enhancedEffect,
       Achievement(107),
       TimeStudy(82),
       TimeStudy(92),
