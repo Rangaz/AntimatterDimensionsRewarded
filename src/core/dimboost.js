@@ -182,7 +182,8 @@ export class DimBoost {
 }
 
 // eslint-disable-next-line max-params
-export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false, enteringAntimatterChallenge = false) {
+export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false, enteringAntimatterChallenge = false,
+  enteringC10OrIC1) {
   if (Currency.antimatter.gt(Player.infinityLimit)) return;
   const bulk = Math.min(tempBulk, DimBoost.maxBoosts - player.dimensionBoosts);
   EventHub.dispatch(GAME_EVENT.DIMBOOST_BEFORE, bulk);
@@ -193,7 +194,7 @@ export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false
     ? PelleUpgrade.dimBoostResetsNothing.canBeApplied
     : Perk.antimatterNoReset.canBeApplied;
   if (forcedADReset || !canKeepDimensions) {
-    AntimatterDimensions.reset();
+    AntimatterDimensions.reset(enteringC10OrIC1);
     player.sacrificed = DC.D0;
     resetTickspeed();
   }

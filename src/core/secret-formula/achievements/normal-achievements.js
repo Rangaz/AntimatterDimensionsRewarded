@@ -438,14 +438,16 @@ export const normalAchievements = [
     get reward() { return `1st Antimatter Dimensions are stronger based on your current
     Antimatter amount, but only if your production is larger.`},
     effect: () => Decimal.max(1, Decimal.pow(DC.D1_2, Math.pow(Math.log10(Currency.antimatter.exponent) - 1, 2))),
-    effectCondition: () => Time.timeWithExcessAMProd.totalMilliseconds >= 500,
-    formatEffect: value => `${formatX(value, 2, 2)}`,
+    effectCondition: () => Time.timeWithExcessAMProd.totalMilliseconds >= 200,
+    formatEffect: value => Time.timeWithExcessAMProd.totalMilliseconds >= 200 ? `${formatX(value, 2, 2)}` :
+    `Inactive (would be ${formatX(value, 2, 2)})`,
     enhanced: {
       get reward() { return `1st Antimatter Dimensions are way stronger based on your current
         Antimatter amount, but only if your production is larger.`},
-      effect: () => Decimal.pow(DC.D1_0000109, Math.pow(Currency.antimatter.exponent, 1.026)).clampMin(1),
-      effectCondition: () => Time.timeWithExcessAMProd.totalMilliseconds >= 500,
-      formatEffect: value => `${formatX(value, 2, 2)}`
+      effect: () => Decimal.pow(DC.D1_0000109, Math.pow(Currency.antimatter.exponent, 1.026)).clampMin(1).times(100),
+      effectCondition: () => Time.timeWithExcessAMProd.totalMilliseconds >= 200,
+      formatEffect: value => Time.timeWithExcessAMProd.totalMilliseconds >= 200 ? `${formatX(value, 2, 2)}` :
+      `Inactive (would be ${formatX(value, 2, 2)})`,
     }
   },
   {
@@ -489,7 +491,7 @@ export const normalAchievements = [
     effect() {
       const excessTimeProduction = Time.timeWithExcessAMProd.totalSeconds;
       return excessTimeProduction >= 30 ?
-      Math.pow(excessTimeProduction - 30, 0.5) / 100 + 1.3 : 
+      Math.pow(excessTimeProduction - 30, 0.55) / 100 + 1.3 : 
       1 + excessTimeProduction / 100;
     },
     formatEffect: value => `${formatX(value, 2, 2)}`,

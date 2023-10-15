@@ -50,7 +50,7 @@ class InfinityChallengeState extends GameMechanicState {
   start() {
     if (!this.isUnlocked || this.isRunning) return;
     // Forces big crunch reset but ensures IP gain, if any.
-    bigCrunchReset(true, true);
+    bigCrunchReset(true, true, this.id == 1);
     player.challenge.normal.current = 0;
     player.challenge.infinity.current = this.id;
     if (!Enslaved.isRunning) Tab.dimensions.antimatter.show();
