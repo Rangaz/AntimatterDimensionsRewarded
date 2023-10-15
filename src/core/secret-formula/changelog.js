@@ -38,6 +38,9 @@ export const changelog = [
     <br>
     Post release changes:
     <ul>
+    <li>(15/10) You can no longer hold Shift to see Enhancements if you don't have them unlocked.</li>
+    <li>(15/10) Enhanced Achievement 42's effect is multiplied by 100, and now shows when it's inactive.</li>
+    <li>(15/10) Fixed insta-completing Normal Challenges if you have more than 1.8e308 AM.</li>
     <li>(13/10) Enhanced Achievement 24's effect scales slightly better.</li>
     <li>(13/10) Achievement 108 is correctly buffed by Achievement 145.</li>
     <li>(13/10) Fixed Achievement 134 appearing in multiplier tab when it should be inactive.</li>

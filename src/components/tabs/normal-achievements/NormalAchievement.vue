@@ -25,6 +25,7 @@ export default {
     return {
       isDisabled: false,
       isUnlocked: false,
+      maxEnhancedRow: 0, // Will be 0 if Enhancement is not unlocked
       hasEnhancementEffect: false,
       canBeEnhanced: false,
       isEnhanced: false,
@@ -50,6 +51,9 @@ export default {
     shiftDown() {
       return ui.view.shiftDown;
     },
+    showEnhancedEffect() {
+      return this.canBeEnhanced || (this.shiftDown && this.achievement.row <= this.maxEnhancedRow);
+    },
     styleObject() {
       return {
         "background-position": `-${(this.achievement.column - 1) * 104}px -${(this.achievement.row - 1) * 104}px`
@@ -57,25 +61,22 @@ export default {
     },
     tooltipStyle() {
       return {
-        "o-achievement__tooltip__can-be-enhanced": this.canBeEnhanced || 
-          (this.shiftDown && this.hasEnhancementEffect),
-        "o-achievement__tooltip": !this.canBeEnhanced && !(this.shiftDown && this.hasEnhancementEffect),
+        "o-achievement__tooltip__can-be-enhanced": this.showEnhancedEffect,
+        "o-achievement__tooltip": !this.showEnhancedEffect,
         "l-column-one": this.achievement.column == 1,
-        "l-column-two": this.achievement.column == 2 && (this.canBeEnhanced || 
-          (this.shiftDown && this.hasEnhancementEffect)),
-        "l-column-seven": this.achievement.column == 7 && (this.canBeEnhanced || 
-          (this.shiftDown && this.hasEnhancementEffect)),
+        "l-column-two": this.achievement.column == 2 && this.showEnhancedEffect,
+        "l-column-seven": this.achievement.column == 7 && this.showEnhancedEffect,
         "l-column-eight": this.achievement.column == 8,
       };
     },
     tooltipPosition() {
       switch (this.achievement.column) {
         case 1: return {"margin-left": "0rem"};
-        case 2: return this.canBeEnhanced || (this.shiftDown && this.hasEnhancementEffect) ? 
+        case 2: return this.showEnhancedEffect ? 
           {"margin-left": "-11.4rem"} : null;
-        case 7: return this.canBeEnhanced || (this.shiftDown && this.hasEnhancementEffect) ? 
+        case 7: return this.showEnhancedEffect ? 
           {"margin-left": "-18rem"} : null;
-        case 8: return this.canBeEnhanced || (this.shiftDown && this.hasEnhancementEffect) ? 
+        case 8: return this.showEnhancedEffect ? 
           {"margin-left": "-29.4rem"} : {"margin-left": "-9.5rem"};
       };
     },
@@ -147,6 +148,7 @@ export default {
     update() {
       this.isDisabled = Pelle.disabledAchievements.includes(this.id) && Pelle.isDoomed;
       this.isUnlocked = this.achievement.isUnlocked && !this.isDisabled;
+      this.maxEnhancedRow = Perk.achievementEnhancement.isBought ? player.reality.maxEnhancedRow : 0;
       this.hasEnhancementEffect = this.achievement.hasEnhancedEffect;
       this.isEnhanced = this.achievement.isEnhanced && !Pelle.isDoomed;
       this.canBeEnhanced = this.achievement.canEnhance && !Pelle.isDoomed;
@@ -237,7 +239,7 @@ export default {
         </div>
         <table class="o-achievement__tooltip__table">
           <div
-            v-if="config.reward && (!isEnhanced || shiftDown)"
+            v-if="config.reward && (!isEnhanced || showEnhancedEffect)"
             class="o-achievement__tooltip__reward"
           >
             <span
@@ -252,10 +254,10 @@ export default {
               />
             </span>
           </div>
-          <td v-if="(shiftDown && hasEnhancementEffect) || canBeEnhanced" style="vertical-align: middle;">➜</td>
+          <td v-if="showEnhancedEffect" style="vertical-align: middle;">➜</td>
           <!--My Enhanced effect-->
           <div
-            v-if="(shiftDown && hasEnhancementEffect) || canBeEnhanced || isEnhanced"
+            v-if="showEnhancedEffect || isEnhanced"
             class="o-achievement__tooltip__enhanced"
           >
             <span
