@@ -1015,7 +1015,8 @@ export const normalAchievements = [
     effect: 1.4,
     effectCondition: () => Player.isInAnyChallenge,
     enhanced: {
-      get reward() { return `All Dimensions are ${formatX(DC.E1800)} stronger, but only in Celestial Realities.`; },
+      get reward() { return `All Dimensions${Laitela.isUnlocked ? `, excluding Dark Matter Dimensions,` : ``} 
+        are ${formatX(DC.E1800)} stronger, but only in Celestial Realities.`; },
       effect: DC.E1800,
       effectCondition: () => isInCelestialReality()
     }
@@ -1040,6 +1041,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 76,
     name: "One for each dimension",
     get description() { return `Play for ${formatInt(8)} days.`; },
@@ -1048,6 +1050,13 @@ export const normalAchievements = [
     reward: "Extremely small multiplier to Antimatter Dimensions based on time played.",
     effect: () => Math.max(Math.pow(Time.totalTimePlayed.totalDays / 2, 0.05), 1),
     formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      get reward() { 
+        return `Moderate multiplier to all Dimensions${Laitela.isUnlocked ? `, excluding Dark Matter Dimensions,` : ``}
+           based on time played.`},
+      effect: () => Decimal.pow(Time.totalTimePlayed.totalYears, Math.log2(Time.totalTimePlayed.totalYears) - 130),
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
     // Implemented!
