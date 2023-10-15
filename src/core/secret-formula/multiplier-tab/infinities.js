@@ -20,6 +20,7 @@ export const infinities = {
       Achievement(33),
       Achievement(33).enhancedEffect,
       Achievement(87),
+      Achievement(87).enhancedEffect,
       Achievement(164)
     ),
     isActive: () => Achievement(33).isUnlocked,

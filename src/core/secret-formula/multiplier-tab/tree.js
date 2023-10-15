@@ -130,7 +130,7 @@ const targetedEffects = {
     EP: [10085, 153],
     DT: [132, 137],
     tickspeed: [36, 10036, 45, 10045, 66, 10066, 135],
-    infinities: [33, 10033, 87, 164],
+    infinities: [33, 10033, 87, 10087, 164],
     replicanti: [2094, 106, 108, 134]
   },
   timeStudy: {

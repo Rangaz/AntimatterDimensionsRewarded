@@ -282,14 +282,18 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.SACRIFICE_RESET_AFTER,
     get reward() {
       return `Dimensional Sacrifice is stronger.
-      ${Sacrifice.getSacrificeDescription({ "Achievement32": false, "Achievement57": false, "Achievement88": false })} ➜
-      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Achievement57": false, "Achievement88": false })}`;
+      ${Sacrifice.getSacrificeDescription({ "Achievement32": false, "Enhancement32": false, 
+        "Achievement57": false, "Enhancement57": false, "Achievement88": false, "Enhancement88": false })} ➜
+      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
+        "Achievement57": false, "Enhancement57": false, "Achievement88": false, "Enhancement88": false })}`;
     },
     effect: 0.1,
     enhanced: {
       get reward() { return  `Dimensional Sacrifice is mildly stronger.
-      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false})} ➜
-      ${Sacrifice.getSacrificeDescription({ "Achievement32": false ,"Enhancement32": true})}`;
+      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
+        "Achievement57": true, "Enhancement57": false, "Achievement88": true, "Enhancement88": false})} ➜
+      ${Sacrifice.getSacrificeDescription({ "Achievement32": false ,"Enhancement32": true,
+        "Achievement57": true, "Enhancement57": false, "Achievement88": true, "Enhancement88": false})}`;
       },
       effect: 0.16
     }
@@ -741,15 +745,17 @@ export const normalAchievements = [
     get reward() {
       return `Dimensional Sacrifice is stronger.
         ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
-        "Achievement57": false, "Achievement88": false })} ➜
+        "Achievement57": false, "Enhancement57": false, "Achievement88": false, "Enhancement88": false })} ➜
         ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
-        "Achievement57": true, "Achievement88": false })}`;
+        "Achievement57": true, "Enhancement57": false, "Achievement88": false, "Enhancement88": false })}`;
     },
     effect: 0.1,
     enhanced: {
       get reward() { return  Achievement(32).isEnhanced ? `Dimensional Sacrifice is mildly stronger.
-        ${Sacrifice.getSacrificeDescription({ "Achievement57": true, "Enhancement57": false})} ➜
-        ${Sacrifice.getSacrificeDescription({ "Achievement57": false ,"Enhancement57": true})}` :
+        ${Sacrifice.getSacrificeDescription({ "Achievement57": true, "Enhancement57": false, 
+        "Achievement88": true, "Enhancement88": false})} ➜
+        ${Sacrifice.getSacrificeDescription({ "Achievement57": false, "Enhancement57": true, 
+        "Achievement88": true, "Enhancement88": false})}` :
         `Enhance Achievement 32 to unlock this effect.`;
       },
       // I don't want order to matter for Achievement Enhancement, but I want this, and Er88's effect,
@@ -1158,6 +1164,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 85,
     name: "ALL YOUR IP ARE BELONG TO US",
     get description() { return `Big Crunch for ${format(DC.E150)} Infinity Points.`; },
@@ -1172,6 +1179,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 86,
     name: "Do you even bend time bro?",
     get description() { return `Reach ${formatX(1000)} faster per Tickspeed upgrade.`; },
@@ -1185,6 +1193,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 87,
     name: "2 MILLION INFINITIES",
     get description() { return `Infinity ${format(DC.D2E6)} times.`; },
@@ -1195,7 +1204,13 @@ export const normalAchievements = [
       give ${formatX(250)} more Infinities.`;
     },
     effect: 250,
-    effectCondition: () => Time.thisInfinity.totalSeconds > 5
+    effectCondition: () => Time.thisInfinity.totalSeconds > 5,
+    enhanced: {
+      get reward() {
+        return `Gain ${formatX(DC.D2E6)} more Infinities.`;
+      },
+      effect: 2000000,
+    }
   },
   {
     id: 88,
@@ -1207,12 +1222,21 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.SACRIFICE_RESET_BEFORE,
     get reward() {
       return `Dimensional Sacrifice is stronger.
-      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
-        "Achievement57": true, "Achievement88": false })} ➜
-      ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
-        "Achievement57": true, "Achievement88": true })}`;
+        ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
+        "Achievement57": true, "Enhancement57": false, "Achievement88": false, "Enhancement88": false })} ➜
+        ${Sacrifice.getSacrificeDescription({ "Achievement32": true, "Enhancement32": false, 
+        "Achievement57": true, "Enhancement57": false, "Achievement88": true, "Enhancement88": false })}`;
     },
-    effect: 0.1
+    effect: 0.1,
+    enhanced: {
+      get reward() {
+        return Achievement(32).isEnhanced && Achievement(57).isEnhanced ? `Dimensional Sacrifice is mildly stronger.
+          ${Sacrifice.getSacrificeDescription({ "Achievement88": true, "Enhancement88": false})} ➜
+          ${Sacrifice.getSacrificeDescription({ "Achievement88": false, "Enhancement88": true})}` :
+          `Enhance Achievements 32 and 57 to unlock this effect.`;
+      },
+      effect: 0.16
+    }
   },
   {
     id: 91,
