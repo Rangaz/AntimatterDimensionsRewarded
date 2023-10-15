@@ -15,6 +15,7 @@ TODO:
   ->Make a new modal to edit Enhancement presets <DONE>
   ->Make the "Format string" button work <DONE>
   ->Style the new buttons better <DONE>
+-Disallow holding shift for locked Enhanced effects <DONE>
 -Row 16 rewards <DONE>
 -Enhanced rows 5-9 rewards <IN PROGRESS>
   ->Row 5 <DONE>
@@ -24,7 +25,7 @@ TODO:
   ->Row 9 <IN PROGRESS>
 -Rework V
 -TEST & BALANCE
--Disallow holding shift for locked Enhanced effects <DONE>
+-h2p entry for V
 -Changelog
 */
 
@@ -1242,6 +1243,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 91,
     name: "Ludicrous Speed",
     get description() {
@@ -1264,6 +1266,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 92,
     name: "I brake for NOBODY!",
     get description() {
@@ -1279,16 +1282,26 @@ export const normalAchievements = [
     },
     effect: () => Achievement(145).canBeApplied ? 100 : Math.max((1 - Time.thisInfinity.totalMinutes) * 100, 1),
     effectCondition: () => Achievement(145).canBeApplied || Time.thisInfinity.totalMinutes < 1,
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      get reward() {return `All Time Dimensions are ${formatX(DC.E2500)} stronger.`},
+      effect: DC.E2500
+    }
   },
   {
+    // Enhanced!
     id: 93,
     name: "MAXIMUM OVERDRIVE",
     get description() { return `Big Crunch for ${format(DC.E300)} Infinity Points.`; },
     checkRequirement: () => gainedInfinityPoints().exponent >= 300,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `Additional ${formatX(6)} multiplier to Infinity Points.`; },
-    effect: 6
+    effect: 6,
+    enhanced: {
+      get reward() { return `Raise Infinity Points such that, for every factor of ${format(DC.E300)},
+        gain ${formatX(6)} more.`},
+      effect: 1.002593839 // A power effect
+    }
   },
   {
     id: 94,
@@ -1306,6 +1319,15 @@ export const normalAchievements = [
       infinityPowerGain: 4.3333,
       replicantiSpeed: () => Time.thisInfinity.totalMinutes <= 4.3333 || Achievement(145).canBeApplied ?
         1.43333 : 1,
+    },
+    enhanced: {
+      get reward() {
+        return `Infinity Power gain ${formatX(DC.E260)}, and boost Replicanti speed by ${formatX(43.333, 3, 3)}.`;
+      },
+      effects: {
+        infinityPowerGain: 1e260,
+        replicantiSpeed: 43.333
+      }
     }
   },
   {
