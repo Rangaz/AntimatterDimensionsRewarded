@@ -85,6 +85,10 @@ class AchievementState extends GameMechanicState {
 
   enhance() {
     if (!this.canEnhance) return;
+    // Enhancing Achievement 81 affects post-infinity scaling
+    if (this.id === 81) {
+      GameCache.dimensionMultDecrease.invalidate();
+    }
     player.reality.enhancedAchievements.add(this.id);
     player.reality.enhancementPoints -= 1;
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENT_ENHANCED);
