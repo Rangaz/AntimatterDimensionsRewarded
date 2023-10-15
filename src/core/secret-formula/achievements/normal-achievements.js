@@ -1112,16 +1112,19 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented!
+    // Enhanced!
     id: 82,
     name: "Anti-antichallenged",
     get description() { return `Complete all ${formatInt(8)} Infinity Challenges.`; },
     checkRequirement: () => InfinityChallenges.completed.length === 8,
     checkEvent: [GAME_EVENT.INFINITY_CHALLENGE_COMPLETED, GAME_EVENT.REALITY_RESET_AFTER],
-    get reward() { return `The ${formatX(2)} IP multiplier upgrade no longer spends IP.`;}
+    get reward() { return `The ${formatX(2)} IP multiplier upgrade no longer spends IP.`;},
+    enhanced: {
+      get reward() { return `The ${formatX(2)} IP multiplier upgrade gives IP instead of spending them.`;}
+    }
   },
   {
-    // Modified!
+    // Enhanced! Now it's pre-release r26!
     id: 83,
     name: "YOU CAN GET 50 GALAXIES?!?!",
     get description() { return `Get ${formatInt(50)} Antimatter Galaxies.`; },
@@ -1129,7 +1132,12 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GALAXY_RESET_AFTER,
     get reward() { return `Every ${formatInt(10)} Antimatter Galaxies bought gives a free Tickspeed Upgrade.`; },
     effect: () => Math.floor(player.galaxies / 10),
-    formatEffect: value => `+${formatInt(value, 2, 2)}`
+    formatEffect: value => `+${formatInt(value, 2, 2)}`,
+    enhanced: {
+      get reward() { return `Every Antimatter Galaxy bought gives a free Tickspeed Upgrade.`; },
+      effect: () => player.galaxies,
+      formatEffect: value => `+${formatInt(value, 2, 2)}`,
+    }
   },
   {
     id: 84,
@@ -1139,7 +1147,12 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Antimatter Dimensions are stronger the more unspent antimatter you have.",
     effect: () => Currency.antimatter.value.pow(0.00002).plus(1),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "Antimatter Dimensions are way stronger the more unspent antimatter you have.",
+      effect: () => Currency.antimatter.value.pow(0.000031).plus(1),
+      formatEffect: value => `${formatX(value, 2, 2)}`
+    }
   },
   {
     id: 85,

@@ -141,6 +141,7 @@ export const AD = {
         Achievement(76),
         Achievement(76).enhancedEffect,
         Achievement(84),
+        Achievement(84).enhancedEffect,
         Achievement(91),
         Achievement(92)
       );
