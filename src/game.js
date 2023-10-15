@@ -122,6 +122,7 @@ function totalEPMult() {
       .times(ShopPurchase.EPPurchases.currentMult)
       .timesEffectsOf(
         EternityUpgrade.epMult,
+        Achievement(85).enhancedEffect,
         Achievement(153),
         TimeStudy(61),
         TimeStudy(122),

@@ -1142,6 +1142,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 84,
     name: "I got a few to spare",
     get description() { return `Reach ${formatPostBreak("1e35000")} antimatter.`; },
@@ -1163,7 +1164,12 @@ export const normalAchievements = [
     checkRequirement: () => gainedInfinityPoints().exponent >= 150,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `Additional ${formatX(4)} multiplier to Infinity Points.`; },
-    effect: 4
+    effect: 4,
+    enhanced: {
+      get reward() { return `Additional ${formatX(DC.E1500)} multiplier to 
+        Infinity Points and Eternity Points.`; },
+      effect: DC.E1500
+    }
   },
   {
     id: 86,
