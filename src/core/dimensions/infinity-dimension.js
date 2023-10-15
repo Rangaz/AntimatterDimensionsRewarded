@@ -154,6 +154,7 @@ class InfinityDimensionState extends DimensionState {
     let mult = GameCache.infinityDimensionCommonMultiplier.value
       .timesEffectsOf(
         tier === 1 ? Achievement(94).effects.infinityPowerGain : null,
+        tier === 1 ? Achievement(94).enhancedEffect.effects.infinityPowerGain : null,
         tier === 1 ? Achievement(124) : null,
         tier === 4 ? TimeStudy(72) : null,
         tier === 1 ? EternityChallenge(2).reward : null

@@ -101,6 +101,8 @@ export function gainedInfinityPoints() {
     ip = ip.min(DC.E200);
   }
   ip = ip.times(GameCache.totalIPMult.value);
+  // Pow effects from Achievements
+  ip = ip.pow(Achievement(93).enhancedEffect.effectOrDefault(1));
   if (Teresa.isRunning) {
     ip = ip.pow(0.55);
   } else if (V.isRunning) {

@@ -145,6 +145,7 @@ export const ID = {
         if (tier === 1) {
           dimMults[tier] = dimMults[tier].timesEffectsOf(
             Achievement(94).effects.infinityPowerGain,
+            Achievement(94).enhancedEffect.effects.infinityPowerGain,
             Achievement(124),
           );
         }

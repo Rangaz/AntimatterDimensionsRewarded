@@ -68,6 +68,7 @@ export const IP = {
       Achievement(125),
       Achievement(141).effects.ipGain,
     ),
+    powValue: () => Achievement(93).enhancedEffect.effectOrDefault(1),
     isActive: () => player.break && !Pelle.isDoomed,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
