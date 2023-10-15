@@ -204,7 +204,10 @@ export const eternityChallenges = [
     reward: {
       description: "Infinity Dimension cost multipliers are reduced",
       effect: completions => 1 - completions * 0.008,
-      formatEffect: value => `x${formatPow(value, 3, 3)}`
+      formatEffect: value => {
+        const total = Effects.product(EternityChallenge(12).reward, Achievement(98).enhancedEffect);
+        return `x${formatPow(value, 3, 3)} (x${formatPow(total, 3, 3)} total)`;
+      }
     }
   }
 ];

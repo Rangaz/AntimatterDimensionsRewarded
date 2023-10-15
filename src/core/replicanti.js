@@ -345,7 +345,8 @@ export const ReplicantiUpgrade = {
     }
 
     get cost() {
-      return player.replicanti.chanceCost.dividedByEffectOf(PelleRifts.vacuum.milestones[1]);
+      return player.replicanti.chanceCost.dividedByEffectOf(PelleRifts.vacuum.milestones[1]).
+        powEffectOf(Achievement(98).enhancedEffect);
     }
 
     get baseCost() { return player.replicanti.chanceCost; }
@@ -396,7 +397,8 @@ export const ReplicantiUpgrade = {
     }
 
     get cost() {
-      return player.replicanti.intervalCost.dividedByEffectOf(PelleRifts.vacuum.milestones[1]);
+      return player.replicanti.intervalCost.dividedByEffectOf(PelleRifts.vacuum.milestones[1]).
+        powEffectOf(Achievement(98).enhancedEffect);
     }
 
     get baseCost() { return player.replicanti.intervalCost; }
@@ -431,7 +433,8 @@ export const ReplicantiUpgrade = {
     }
 
     get cost() {
-      return this.baseCost.dividedByEffectsOf(TimeStudy(233), PelleRifts.vacuum.milestones[1]);
+      return this.baseCost.dividedByEffectsOf(TimeStudy(233), PelleRifts.vacuum.milestones[1]).
+      powEffectOf(Achievement(98).enhancedEffect);
     }
 
     get baseCost() { return player.replicanti.galCost; }
