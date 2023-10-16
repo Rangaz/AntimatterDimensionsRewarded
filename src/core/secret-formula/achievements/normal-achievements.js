@@ -802,7 +802,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `1st Antimatter Dimensions get an exponentially increasing multiplier that 
     resets after Dimension Boosts, Antimatter Galaxies, and Infinities.`; },
-    effect: () => player.chall3Pow.times(120).pow(2).clampMax(DC.E15),
+    effect: () => player.chall3Pow.times(110).pow(2).clampMax(DC.E15),
     effectCondition: () => !NormalChallenge(3).isRunning,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },

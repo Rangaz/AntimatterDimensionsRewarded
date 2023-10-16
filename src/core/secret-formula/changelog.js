@@ -38,7 +38,7 @@ export const changelog = [
     <br>
     Post release changes:
     <ul>
-    <li>(16/10) Achievement 68's initial value is increased to x1.44, and grows a nit under 30% faster.</li>
+    <li>(16/10) Achievement 68's initial value is increased to x1.21, and grows a bit under 30% faster.</li>
     <li>(16/10) Fixed Achievement 146 having its effect be 100 times weaker than intended.</li>
     <li>(15/10) You can no longer hold Shift to see Enhancements if you don't have them unlocked.</li>
     <li>(15/10) Enhanced Achievement 42's effect is multiplied by 100, and now shows when it's inactive.</li>
