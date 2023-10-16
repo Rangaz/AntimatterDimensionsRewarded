@@ -66,11 +66,12 @@ export const v = {
     {
       id: 0,
       name: "Glyph Knight",
-      description: value => `Unlock Reality with at most ${quantifyInt("Glyph", -value)} equipped.`,
+      description: value => `Unlock Reality with at most ${quantifyInt("Glyph", -value)} equipped and
+        ${quantifyInt("Achievement", -value)} Enhanced.`,
       // This achievement has internally negated values since the check is always greater than
       values: [-5, -4, -3, -2, -1, 0],
       condition: () => V.isRunning && TimeStudy.reality.isBought,
-      currentValue: () => -Glyphs.activeWithoutCompanion.length,
+      currentValue: () => -Math.max(Glyphs.activeWithoutCompanion.length, player.reality.enhancedAchievements.size),
       formatRecord: x => (x >= -5 ? formatInt(-x) : "Not reached"),
       shardReduction: () => 0,
       maxShardReduction: () => 0,
