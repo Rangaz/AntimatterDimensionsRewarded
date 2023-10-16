@@ -530,7 +530,7 @@ window.player = {
       name: "",
       enhancements: "",
     }),
-    maxEnhancedRow: 4,
+    //maxEnhancedRow: 4,
     automator: {
       state: {
         mode: AUTOMATOR_MODE.STOP,
