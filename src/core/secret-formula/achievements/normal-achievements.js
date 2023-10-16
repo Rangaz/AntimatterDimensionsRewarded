@@ -1064,7 +1064,7 @@ export const normalAchievements = [
         return `Moderate multiplier to all Dimensions${Laitela.isUnlocked ? 
           `, excluding Dark Matter Dimensions,` : ``} based on time played.`},
       effect: () => Decimal.pow(Time.totalTimePlayed.totalYears, 
-        Math.log2(Time.totalTimePlayed.totalYears) - 135),
+        Math.log10(Time.totalTimePlayed.totalYears) - 30),
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
