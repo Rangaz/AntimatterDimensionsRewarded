@@ -106,8 +106,8 @@ export default {
       this.totalCountdown = ((Achievements.preReality.countWhere(a => !a.isUnlocked) - 1) * Achievements.period +
         Achievements.timeToNextAutoAchieve) / gameSpeedupFactor;
       this.missingAchievements = Achievements.preReality.countWhere(a => !a.isUnlocked);
-      this.enhancementPoints = player.reality.enhancementPoints;
-      this.totalEnhancementPoints = player.reality.totalEnhancementPoints;
+      this.enhancementPoints = Achievements.enhancementPoints;
+      this.totalEnhancementPoints = Achievements.totalEnhancementPoints;
       this.enhancedAchievements = player.reality.enhancedAchievements.size;
       this.respecEnhancements = player.reality.disEnhance;
       this.isEnhancementUnlocked = Perk.achievementEnhancement.isBought && !this.isDoomed;

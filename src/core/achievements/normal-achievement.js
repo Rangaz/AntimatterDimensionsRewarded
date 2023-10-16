@@ -78,7 +78,7 @@ class AchievementState extends GameMechanicState {
       this.hasEnhancedEffect &&
       !this.isEnhanced &&
       this.row <= Achievements.maxEnhancedRow && // Maximum row allowed
-      player.reality.enhancementPoints !== 0 &&
+      Achievements.enhancementPoints !== 0 &&
       Perk.achievementEnhancement.isBought &&
       !Pelle.isDisabled("enhancedAchievements");
   }
@@ -93,7 +93,7 @@ class AchievementState extends GameMechanicState {
       player.eternityPoints = player.eternityPoints.plus(DC.E40.powEffectOf(Achievement(55).enhancedEffect));
     }
     player.reality.enhancedAchievements.add(this.id);
-    player.reality.enhancementPoints -= 1;
+    //player.reality.enhancementPoints -= 1;
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENT_ENHANCED);
   }
 
@@ -146,8 +146,10 @@ class AchievementState extends GameMechanicState {
       GameCache.staticGlyphWeights.invalidate();
     }
     // You must have Enhancement points equal to your row 14+ achievements.
-    player.reality.totalEnhancementPoints = Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality);
-    if (!this.isPreReality) player.reality.enhancementPoints++;
+    // But I'm no longer storing these in player. These variables are now
+    // handled by Achievements, and it's much cleaner that way.
+    //player.reality.totalEnhancementPoints = Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality);
+    //if (!this.isPreReality) player.reality.enhancementPoints++;
 
     if (auto) {
       GameUI.notify.reality(`Automatically unlocked: ${this.name}`);
@@ -219,6 +221,14 @@ export const Achievements = {
     return GameCache.achievementPeriod.value;
   },
 
+  get totalEnhancementPoints() {
+    return Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality);
+  },
+  
+  get enhancementPoints() {
+    return this.totalEnhancementPoints - player.reality.enhancedAchievements.size;
+  },
+
   get maxEnhancedRow() {
     return VUnlocks.maxEnhancedRow.effectOrDefault(4);
   },
@@ -285,7 +295,7 @@ export const Achievements = {
     for (const achievement of enhancedAchievements) {
       achievement.disEnhance();
     }
-    player.reality.enhancementPoints = player.reality.totalEnhancementPoints;
+    //player.reality.enhancementPoints = player.reality.totalEnhancementPoints;
     player.reality.disEnhance = false;
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENTS_DISENHANCED);
   },
