@@ -67,11 +67,13 @@ export default {
     runMilestones() {
       return [
         [
+          VUnlocks.enhancementPresets,
           VUnlocks.shardReduction,
           VUnlocks.adPow,
-          VUnlocks.fastAutoEC
+          VUnlocks.maxEnhancedRow
         ],
         [
+          VUnlocks.fastAutoEC,
           VUnlocks.autoAutoClean,
           VUnlocks.achievementBH,
           VUnlocks.raUnlock
