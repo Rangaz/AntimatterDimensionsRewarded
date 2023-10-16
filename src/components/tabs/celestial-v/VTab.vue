@@ -210,7 +210,7 @@ export default {
         <span v-if="!isDoomed">The Black Hole can now be used to slow down time if they are both permanent.</span>
         <br><br>
         Each Hard V-Achievement counts as two V-Achievements and will award {{ formatInt(2) }} Space Theorems
-        instead of {{ formatInt(1) }}.
+        and {{ formatInt(2) }} Enhanced Achievements instead of {{ formatInt(1) }}.
         <br>
         Goal reduction is significantly more expensive for Hard V-Achievements.
       </div>
@@ -308,6 +308,8 @@ export default {
           allowing you to purchase Time Studies which are normally locked.
           <br>
           Space Theorems can also be used as a Currency in the Automator.
+          <br>
+          V-Achievements also allow you to Enhance {{ formatInt(1) }} Achievement each.
         </span>
       </div>
       <br>
