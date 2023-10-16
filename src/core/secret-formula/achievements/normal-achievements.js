@@ -23,8 +23,8 @@ TODO:
   ->Row 7 <DONE>
   ->Row 8 <DONE>
   ->Row 9 <DONE>
--Rework V
--TEST & BALANCE
+-Rework V <DONE>
+-TEST & BALANCE <IN PROGRESS>
 -h2p entry for V
 -Changelog
 */
@@ -1904,14 +1904,14 @@ export const normalAchievements = [
     effect: 0.9
   },
   {
-    // Buffed!
+    // Buffed! For real!
     id: 146,
     name: "Perks of living",
     description: "Have all Perks bought.",
     checkRequirement: () => player.reality.perks.size === Perks.all.length,
     checkEvent: GAME_EVENT.PERK_BOUGHT,
     get reward() { return `+${formatPercents(0.05)} Glyph rarity.`; },
-    effect: 0.05
+    effect: 5
   },
   {
     id: 147,
