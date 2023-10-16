@@ -39,11 +39,13 @@ export const vQuotes = {
       "Your accomplishments pale in comparison to mine.",
     ],
   },
-  achievement6: {
+  achievement7: {
     id: 5,
-    requirement: () => V.spaceTheorems >= 6,
+    requirement: () => V.spaceTheorems >= 7,
     lines: [
-      "This is nothing.",
+      "'Enhancing' your Achievements?",
+      "Do you really think your accomplishments are worth more now?",
+      "They are nothing.",
       "Do not be so full of yourself.",
     ],
   },
