@@ -247,6 +247,23 @@ export const v = {
       description: () => `Have ${formatInt(36)} V-Achievements`,
       effect: 2,
       requirement: () => V.spaceTheorems >= 36
+    },
+    // These are my unlocks. They'll start at id 7 to avoid migration conflicts.
+    enhancementPresets: {
+      id: 7,
+      reward: "Unlock presets to Enhance Achievements.",
+      description: () => `Have ${formatInt(1)} V-Achievement`,
+      requirement: () => V.spaceTheorems >= 1
+    },
+    maxEnhancedRow: {
+      id: 8,
+      reward() {
+        return `For every ${formatInt(7)} V-Achievements unlock a new row to Enhance.`;
+      },
+      description: () => `Have ${formatInt(7)} V-Achievement`,
+      effect: () => 4 + Math.floor(V.spaceTheorems / 7),
+      format: x => `Up to row ${formatInt(x)}`,
+      requirement: () => V.spaceTheorems >= 7
     }
   }
 };
