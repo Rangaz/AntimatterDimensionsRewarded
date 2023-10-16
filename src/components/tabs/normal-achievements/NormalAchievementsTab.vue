@@ -30,6 +30,7 @@ export default {
       isAutoAchieveActive: false,
       isEnhancementUnlocked: false,
       respecEnhancements: false,
+      showEnhancementPresets: false,
       hideCompletedRows: false,
       enhancedAchMultToDims: false,
       achMultBreak: false,
@@ -113,6 +114,7 @@ export default {
       this.showAutoAchieve = PlayerProgress.realityUnlocked() && !Perk.achievementGroup5.isBought;
       this.isAutoAchieveActive = player.reality.autoAchieve;
       this.hideCompletedRows = player.options.hideCompletedAchievementRows;
+      this.showEnhancementPresets = VUnlocks.enhancementPresets.canBeApplied;
       this.achMultBreak = BreakInfinityUpgrade.achievementMult.canBeApplied;
       this.achMultToIDS = Achievement(75).isUnlocked;
       this.achMultToTDS = EternityUpgrade.tdMultAchs.isBought;
@@ -182,13 +184,12 @@ export default {
         @click="respecEnhancements = !respecEnhancements"
       >Respec Enhanced Achievements on next Reality</PrimaryButton>
     </div>
-    <div class="c-enhancement-load-button-area">
-      <!--Later on make it hidden until 1 V-ach-->
+    <div class="c-enhancement-load-button-area"
+      v-if="showEnhancementPresets && isEnhancementUnlocked"
+    >
       <span 
-        v-if="isEnhancementUnlocked"
         class="c-enhancement-save-load-text">{{ saveLoadText }}</span>
       <EnhancementSaveLoadButton
-        v-if="isEnhancementUnlocked"
         v-for="saveslot in 6"
         :key="saveslot"
         :saveslot="saveslot"
