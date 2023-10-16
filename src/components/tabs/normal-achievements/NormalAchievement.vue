@@ -52,7 +52,8 @@ export default {
       return ui.view.shiftDown;
     },
     showEnhancedEffect() {
-      return this.canBeEnhanced || (this.shiftDown && this.achievement.row <= this.maxEnhancedRow);
+      return this.canBeEnhanced || (this.shiftDown && this.achievement.row <= this.maxEnhancedRow &&
+        this.hasEnhancementEffect);
     },
     styleObject() {
       return {
