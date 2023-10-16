@@ -802,7 +802,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `1st Antimatter Dimensions get an exponentially increasing multiplier that 
     resets after Dimension Boosts, Antimatter Galaxies, and Infinities.`; },
-    effect: () => player.chall3Pow.times(108).pow(1.55).clampMax(DC.E15),
+    effect: () => player.chall3Pow.times(120).pow(2).clampMax(DC.E15),
     effectCondition: () => !NormalChallenge(3).isRunning,
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
@@ -1597,14 +1597,14 @@ export const normalAchievements = [
     effect: 0.9
   },
   {
-    // Buffed!
+    // Buffed! For real!
     id: 146,
     name: "Perks of living",
     description: "Have all Perks bought.",
     checkRequirement: () => player.reality.perks.size === Perks.all.length,
     checkEvent: GAME_EVENT.PERK_BOUGHT,
     get reward() { return `+${formatPercents(0.05)} Glyph rarity.`; },
-    effect: 0.05
+    effect: 5
   },
   {
     id: 147,
