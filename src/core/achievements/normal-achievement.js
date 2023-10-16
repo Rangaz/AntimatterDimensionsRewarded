@@ -77,7 +77,7 @@ class AchievementState extends GameMechanicState {
     return this.isUnlocked &&
       this.hasEnhancedEffect &&
       !this.isEnhanced &&
-      this.row <= player.reality.maxEnhancedRow && // Maximum row allowed
+      this.row <= Achievements.maxEnhancedRow && // Maximum row allowed
       player.reality.enhancementPoints !== 0 &&
       Perk.achievementEnhancement.isBought &&
       !Pelle.isDisabled("enhancedAchievements");
@@ -217,6 +217,10 @@ export const Achievements = {
 
   get period() {
     return GameCache.achievementPeriod.value;
+  },
+
+  get maxEnhancedRow() {
+    return VUnlocks.maxEnhancedRow.effectOrDefault(4);
   },
 
   // Method used to read a preset

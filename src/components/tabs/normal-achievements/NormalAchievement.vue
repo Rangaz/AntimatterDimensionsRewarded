@@ -148,7 +148,7 @@ export default {
     update() {
       this.isDisabled = Pelle.disabledAchievements.includes(this.id) && Pelle.isDoomed;
       this.isUnlocked = this.achievement.isUnlocked && !this.isDisabled;
-      this.maxEnhancedRow = Perk.achievementEnhancement.isBought ? player.reality.maxEnhancedRow : 0;
+      this.maxEnhancedRow = Perk.achievementEnhancement.isBought ? Achievements.maxEnhancedRow : 0;
       this.hasEnhancementEffect = this.achievement.hasEnhancedEffect;
       this.isEnhanced = this.achievement.isEnhanced && !Pelle.isDoomed;
       this.canBeEnhanced = this.achievement.canEnhance && !Pelle.isDoomed;
