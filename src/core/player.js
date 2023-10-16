@@ -522,8 +522,8 @@ window.player = {
     partEternitied: DC.D0,
     autoAchieve: true,
     gainedAutoAchievements: true,
-    totalEnhancementPoints: 0,
-    enhancementPoints: 0,
+    //totalEnhancementPoints: 0,
+    //enhancementPoints: 0,
     disEnhance: false,
     enhancedAchievements: new Set(),
     enhancedPresets: new Array(6).fill({

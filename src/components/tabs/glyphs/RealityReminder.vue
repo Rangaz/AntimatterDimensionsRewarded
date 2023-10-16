@@ -86,7 +86,7 @@ export default {
       this.ecCount = EternityChallenges.completions;
       this.missingAchievements = Achievements.preReality.countWhere(a => !a.isUnlocked);
       this.unenhancedAchievements = Perk.achievementEnhancement.isBought ? 
-        player.reality.enhancementPoints : 0; // If you don't have the perk, don't bother
+        Achievements.enhancementPoints : 0; // If you don't have the perk, don't bother
       // Repeatable dilation upgrades don't have isBought, but do have boughtAmount
       this.unpurchasedDilationUpgrades = DilationUpgrade.all
         .countWhere(u => (u.isBought === undefined ? u.boughtAmount === 0 : !u.isBought) && !u.config.pelleOnly);

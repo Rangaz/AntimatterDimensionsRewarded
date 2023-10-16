@@ -423,8 +423,8 @@ export const migrations = {
     30: player => {
       // The enhanced achievements version
       player.reality.enhancedAchievements = new Set();
-      player.reality.enhancementPoints = 0; // Later on add ways to retroactively get them.
-      player.reality.totalEnhancementPoints = 0;
+      //player.reality.enhancementPoints = 0;
+      //player.reality.totalEnhancementPoints = 0;
       player.reality.disEnhance = false;
       //player.reality.maxEnhancedRow = 4; No longer needed here
     },
@@ -436,8 +436,10 @@ export const migrations = {
         name: "",
         enhancements: "",
       });
-      // This value is no longer stored in player, but instead calculated in Achievements
+      // These values are no longer stored in player, but instead calculated in Achievements
       delete player.reality.maxEnhancedRow;
+      delete player.reality.enhancementPoints;
+      delete player.reality.totalEnhancementPoints;
     }
   },
 
