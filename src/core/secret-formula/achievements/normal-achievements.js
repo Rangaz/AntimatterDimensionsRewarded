@@ -24,9 +24,9 @@ TODO:
   ->Row 8 <DONE>
   ->Row 9 <DONE>
 -Rework V <DONE>
--TEST & BALANCE <IN PROGRESS>
--h2p entry for V
--Changelog
+-TEST & BALANCE <DONE FOR NOW>
+-h2p entry for V <DONE>
+-Changelog <DONE>
 */
 
 export const normalAchievements = [
@@ -653,8 +653,8 @@ export const normalAchievements = [
     reward: "Antimatter Dimensions and Tickspeed Upgrades no longer spend Antimatter.",
     enhanced: {
       get reward() { return `Antimatter Dimensions and Tickspeed Upgrades give their Antimatter cost 
-        when purchased, multiplied by the common Buy 10 factor (
-          ${formatX(AntimatterDimensions.buyTenMultiplier, 2, 2)}), instead of spending them.` }
+        when purchased, multiplied by the common Buy 10 factor 
+        (${formatX(AntimatterDimensions.buyTenMultiplier, 2, 2)}), instead of spending them.` }
     }
   },
   {
@@ -1895,6 +1895,7 @@ export const normalAchievements = [
     reward: "Time Dilation rebuyables no longer spend Dilated Time.",
   },
   {
+    // Modified!
     id: 145,
     name: "Are you sure these are the right way around?",
     description: "Have either Black Hole interval smaller than its duration.",

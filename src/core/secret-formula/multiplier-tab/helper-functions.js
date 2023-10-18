@@ -136,6 +136,7 @@ export const MultiplierTabHelper = {
       case 71:
         return dimStr === "AD1";
       case 1094:
+      case 11094:
       case 124:
         return dimStr === "ID1";
       case 34:
