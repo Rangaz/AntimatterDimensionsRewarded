@@ -108,7 +108,6 @@ export default {
       this.missingAchievements = Achievements.preReality.countWhere(a => !a.isUnlocked);
       this.enhancementPoints = Achievements.enhancementPoints;
       this.totalEnhancementPoints = Achievements.totalEnhancementPoints;
-      this.enhancedAchievements = player.reality.enhancedAchievements.size;
       this.respecEnhancements = player.reality.disEnhance;
       this.isEnhancementUnlocked = Perk.achievementEnhancement.isBought && !this.isDoomed;
       this.showAutoAchieve = PlayerProgress.realityUnlocked() && !Perk.achievementGroup5.isBought;
@@ -210,7 +209,7 @@ export default {
       style="font-size:small"
     >
       Hold shift to see enhanced effects. 
-      You have enhanced {{ formatInt(enhancedAchievements) }}/{{ formatInt(totalEnhancementPoints) }} Achievements.
+      You have enhanced {{ formatInt(totalEnhancementPoints - enhancementPoints) }}/{{ formatInt(totalEnhancementPoints) }} Achievements.
     </div>
     <div 
       v-if="isDoomed"

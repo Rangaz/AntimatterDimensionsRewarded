@@ -78,7 +78,7 @@ export function buyTickSpeed() {
   // its cost multiplied by the buy 10 factor
   if (Achievement(52).isEnhanced) Currency.antimatter.add(Tickspeed.cost.
     times(AntimatterDimensions.buyTenMultiplier));
-  else if (!Achievement(52).canBeApplied) Currency.antimatter.substract(Tickspeed.cost);
+  else if (!Achievement(52).canBeApplied) Currency.antimatter.subtract(Tickspeed.cost);
   player.totalTickBought++;
   player.records.thisInfinity.lastBuyTime = player.records.thisInfinity.time;
   player.requirementChecks.permanent.singleTickspeed++;

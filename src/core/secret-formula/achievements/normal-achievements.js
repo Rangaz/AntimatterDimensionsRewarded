@@ -6,27 +6,8 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Add presets for Achievement Enhancement <DONE FOR NOW>
-  ->Make presets work <DONE>
-  ->Add buttons <DONE>
-  ->Allow Save & Load <DONE>
-  ->Make "Respec & Load" work <DONE>
-  ->Make the appearing tooltip appear below the buttons <DONE>
-  ->Make a new modal to edit Enhancement presets <DONE>
-  ->Make the "Format string" button work <DONE>
-  ->Style the new buttons better <DONE>
--Disallow holding shift for locked Enhanced effects <DONE>
--Row 16 rewards <DONE>
--Enhanced rows 5-9 rewards <DONE>
-  ->Row 5 <DONE>
-  ->Row 6 <DONE>
-  ->Row 7 <DONE>
-  ->Row 8 <DONE>
-  ->Row 9 <DONE>
--Rework V <DONE>
--TEST & BALANCE <DONE FOR NOW>
--h2p entry for V <DONE>
--Changelog <DONE>
+-Fix Tickspeed single purchase bug <DONE>
+-Make Er22 free <DONE>
 */
 
 export const normalAchievements = [
@@ -151,7 +132,8 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.REALITY_RESET_AFTER,
     reward: "Add a fast-forward button to the news ticker.",
     enhanced: {
-      reward: "Add a fast-forward button and a skip button to the news ticker.",
+      reward: "Add a fast-forward button and a skip button to the news ticker. " +
+        "This Achievement can be Enhanced for free.",
     }
   },
   {

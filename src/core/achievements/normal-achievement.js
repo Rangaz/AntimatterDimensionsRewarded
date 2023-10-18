@@ -74,11 +74,17 @@ class AchievementState extends GameMechanicState {
   }
 
   get canEnhance() {
+    if (!Perk.achievementEnhancement.isBought) return false;
+
+    // Handle special cases first
+    // Er22 is free and should always be available
+    if (this.id === 22 && !this.isEnhanced) return true;
+
     return this.isUnlocked &&
       this.hasEnhancedEffect &&
       !this.isEnhanced &&
       this.row <= Achievements.maxEnhancedRow && // Maximum row allowed
-      Achievements.enhancementPoints !== 0 &&
+      Achievements.enhancementPoints > 0 &&
       Perk.achievementEnhancement.isBought &&
       !Pelle.isDisabled("enhancedAchievements");
   }
@@ -226,8 +232,10 @@ export const Achievements = {
       Math.floor(V.spaceTheorems / 2);
   },
   
+  // Er22 should be free, and we'll sneakily give +1 here so that it's practically free
   get enhancementPoints() {
-    return this.totalEnhancementPoints - player.reality.enhancedAchievements.size;
+    return this.totalEnhancementPoints - player.reality.enhancedAchievements.size +
+      Achievement(22).isEnhanced;
   },
 
   get maxEnhancedRow() {
