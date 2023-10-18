@@ -29,6 +29,12 @@ export const changelog = [
     <li>The timers used for Achievements 44 and 124 reset more consistently.</li>
     <li>The game will remind you if you have Perks you can purchase.</li>
     </ul>
+    <br>
+    <br>
+    <b>Post release changes:</b>
+    <ul>
+    <li>(18/10) Fixed typo causing the game to give errors when buying single Tickspeed Upgrades.</li>
+    <li>(18/10) Achievement 22 can now be Enhanced for free, meaning it won't count as an Enhanced Achievement.</li>
     `
   },
   {
