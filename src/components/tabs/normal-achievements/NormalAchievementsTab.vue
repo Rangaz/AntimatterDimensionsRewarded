@@ -99,7 +99,7 @@ export default {
       const gameSpeedupFactor = getGameSpeedupFactor();
       this.achievementPower = Achievements.power;
       this.enhancedAchMultToDims = Achievement(75).isEnhanced;
-      this.achDimEffect = this.enhancedAchMultToDims ? Decimal.pow(this.achievementPower, 80) :
+      this.achDimEffect = this.enhancedAchMultToDims ? Decimal.pow(this.achievementPower, 100) :
         this.achievementPower.toDecimal();
       this.achTPEffect = RealityUpgrade(8).config.effect();
       this.achCountdown = Achievements.timeToNextAutoAchieve / gameSpeedupFactor;
