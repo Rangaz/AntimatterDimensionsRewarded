@@ -256,7 +256,6 @@ export const Achievements = {
 
   enhanceFromPreset(text) {
     this.enhanceFromArray(this.readPreset(text));
-    GameUI.notify.info("Attempted to load a preset");
   },
 
   // Return the current enhancements as a preset.

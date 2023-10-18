@@ -9,6 +9,29 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 10, 18],
+    name: "Happy V-Day",
+    info: `
+    <b>V, the Celestial of Achievements, has been reworked!</b>
+    <br>
+    <ul>
+    <li>Most of the goals of V-Achievements have been modified to suit the addition of Enhanced Achievements.</li>
+    <li>There are Enhanced effects for rows 5-9, unlocked through V-Achievements.</li>
+    <li>V unlocks presets to Enhance Achievements after 1 V-Achievement. 
+    They work similarly to Time Study presets, allowing for editing, exporting, importing, saving, loading and naming.</li>
+    <li>Also here are row 16 rewards, for Achievements 161, 162 and 163.</li>
+    <li>Achievement 168 is also buffed: 10% ➜ 15%.</li>
+    </ul>
+    <br>
+    <br>
+    <b>Other changes:</b>
+    <ul>
+    <li>The timers used for Achievements 44 and 124 reset more consistently.</li>
+    <li>The game will remind you if you have Perks you can purchase.</li>
+    </ul>
+    `
+  },
+  {
     date: [2023, 10, 2],
     name: "HOW THE **** DOES TICKSPEED WORK",
     info: `
