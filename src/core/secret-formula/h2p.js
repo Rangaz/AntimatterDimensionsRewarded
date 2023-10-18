@@ -429,7 +429,7 @@ Achievement Enhancement is unlocked after you buy the perk ACHEH. It allows you 
 Reward of your choice, often overwriting its previous reward.
 <br>
 <br>
-The Achievements you can enhance are limited to the first 4 rows (and until I add more), and you permanently 
+The Achievements you can enhance are initially limited to the first 4 rows, and you permanently 
 gain an Enhancement Point for every Achievement unlocked in rows 14 and beyond.
 <br>
 <br>` : ``}
@@ -1484,12 +1484,14 @@ ${VUnlocks.vAchievementUnlock.isUnlocked
       <br>
       After completing the requirement, the V-Achievement threshold then increases and can be completed again
       if you can reach the new goal.  You can complete each category of V-Achievement up to six times.
-      Completed V-Achievements do two things:
+      Completed V-Achievements do three things:
       <br>
       - Upon reaching certain totals of V-Achievements, you automatically unlock upgrades on the V tab without needing
       to spend any resources.
       <br>
-      - Each V-Achievement also gives you one Space Theorem.
+      - Each V-Achievement gives you one Space Theorem.
+      <br>
+      - Every 2nd V-Achievement also allows you to Enhance 1 more Achievement.
       <br>
       <br>
       The goal reduction unlocked by having ${formatInt(2)} V-Achievements allows you to make some V-Achievement
