@@ -34,6 +34,7 @@ export const tickspeed = {
         Achievement(45),
         Achievement(45).enhancedEffect,
         Achievement(66),
+        Achievement(66).enhancedEffect,
         Achievement(135)
       );
       return `${format(val, 2, 2)}/sec`;

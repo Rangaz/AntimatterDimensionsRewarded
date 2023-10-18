@@ -67,11 +67,13 @@ export default {
     runMilestones() {
       return [
         [
+          VUnlocks.enhancementPresets,
           VUnlocks.shardReduction,
           VUnlocks.adPow,
-          VUnlocks.fastAutoEC
+          VUnlocks.maxEnhancedRow
         ],
         [
+          VUnlocks.fastAutoEC,
           VUnlocks.autoAutoClean,
           VUnlocks.achievementBH,
           VUnlocks.raUnlock
@@ -306,6 +308,8 @@ export default {
           allowing you to purchase Time Studies which are normally locked.
           <br>
           Space Theorems can also be used as a Currency in the Automator.
+          <br>
+          Every 2nd V-Achievement also allows you to Enhance {{ formatInt(1) }} more Achievement.
         </span>
       </div>
       <br>

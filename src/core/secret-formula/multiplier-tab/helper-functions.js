@@ -27,6 +27,7 @@ export const MultiplierTabHelper = {
       TimeStudy(212),
       TimeStudy(232),
       Achievement(86),
+      Achievement(86).enhancedEffect,
       Achievement(178),
       InfinityChallenge(5).reward,
       PelleUpgrade.galaxyPower,
@@ -84,6 +85,7 @@ export const MultiplierTabHelper = {
       Achievement(45),
       Achievement(45).enhancedEffect,
       Achievement(66),
+      Achievement(66).enhancedEffect,
       Achievement(135),
     );
     let baseFrac = base.log10() / Tickspeed.perSecond.log10();
@@ -130,15 +132,18 @@ export const MultiplierTabHelper = {
       case 44:
       case 10044:
       case 68:
+      case 10068:
       case 71:
         return dimStr === "AD1";
       case 1094:
+      case 11094:
       case 124:
         return dimStr === "ID1";
       case 34:
       case 10034:
         return dimStr.substr(0, 2) === "AD" && Number(dimStr.charAt(2)) !== 8;
       case 64:
+      case 10064:
         return dimStr.substr(0, 2) === "AD" && Number(dimStr.charAt(2)) <= 4;
       default:
         return true;

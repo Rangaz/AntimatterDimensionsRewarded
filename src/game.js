@@ -101,6 +101,8 @@ export function gainedInfinityPoints() {
     ip = ip.min(DC.E200);
   }
   ip = ip.times(GameCache.totalIPMult.value);
+  // Pow effects from Achievements
+  ip = ip.pow(Achievement(93).enhancedEffect.effectOrDefault(1));
   if (Teresa.isRunning) {
     ip = ip.pow(0.55);
   } else if (V.isRunning) {
@@ -122,6 +124,7 @@ function totalEPMult() {
       .times(ShopPurchase.EPPurchases.currentMult)
       .timesEffectsOf(
         EternityUpgrade.epMult,
+        Achievement(85).enhancedEffect,
         Achievement(153),
         TimeStudy(61),
         TimeStudy(122),
@@ -289,6 +292,7 @@ export function gainedInfinities() {
     RealityUpgrade(7),
     Achievement(33),
     Achievement(33).enhancedEffect,
+    Achievement(87).enhancedEffect,
     Achievement(164),
     Ra.unlocks.continuousTTBoost.effects.infinity
   );
@@ -538,6 +542,7 @@ export function gameLoop(passDiff, options = {}) {
     // There's now a 3 second grace window in r23's effect.
     player.records.timeSinceLastSacrifice += diff; // For r23
     player.records.timeWithExcessAMProd += diff; // For r44
+    player.records.timeSinceLastReset += diff; // For r68
     player.records.timeWithExcessIPowerProd += diff; // For r124
     player.records.thisInfinity.realTime += realDiff;
     player.records.thisInfinity.time += diff;

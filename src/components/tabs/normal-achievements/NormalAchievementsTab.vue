@@ -2,6 +2,7 @@
 import NormalAchievementRow from "./NormalAchievementRow";
 import PrimaryToggleButton from "@/components/PrimaryToggleButton";
 import PrimaryButton from "@/components/PrimaryButton";
+import EnhancementSaveLoadButton from "./EnhancementSaveLoadButton";
 import SwapAchievementImagesButton from "./SwapAchievementImagesButton";
 import { Pelle } from "../../../core/globals";
 
@@ -10,12 +11,14 @@ export default {
   components: {
     SwapAchievementImagesButton,
     NormalAchievementRow,
+    EnhancementSaveLoadButton,
     PrimaryToggleButton,
     PrimaryButton
   },
   data() {
     return {
       achievementPower: 0,
+      achDimEffect: new Decimal(0),
       achTPEffect: 0,
       achCountdown: 0,
       totalCountdown: 0,
@@ -27,7 +30,9 @@ export default {
       isAutoAchieveActive: false,
       isEnhancementUnlocked: false,
       respecEnhancements: false,
+      showEnhancementPresets: false,
       hideCompletedRows: false,
+      enhancedAchMultToDims: false,
       achMultBreak: false,
       achMultToIDS: false,
       achMultToTDS: false,
@@ -45,6 +50,7 @@ export default {
     },
     boostText() {
       const achievementPower = formatX(this.achievementPower, 2, 3);
+      const achDimEffect = formatX(this.achDimEffect, 2, 3);
       const achTPEffect = formatX(this.achTPEffect, 2, 3);
 
       const boostList = [];
@@ -53,17 +59,20 @@ export default {
       dimMultList.push("Antimatter");
       if (this.achMultToIDS) dimMultList.push("Infinity");
       if (this.achMultToTDS) dimMultList.push("Time");
-      boostList.push(`${makeEnumeration(dimMultList)} Dimensions: ${achievementPower}`);
+      boostList.push(`${makeEnumeration(dimMultList)} Dimensions: ${achDimEffect}`);
 
       if (this.achMultToTP) boostList.push(`Tachyon Particles: ${achTPEffect}`);
       if (this.achMultToBH) boostList.push(`Black Hole Power: ${achievementPower}`);
       if (this.achMultToTT) boostList.push(`Time Theorem production: ${achievementPower}`);
       return `${boostList.join("<br>")}`;
     },
+    saveLoadText() {
+      return this.$viewModel.shiftDown ? "Save preset:" : "Load preset:";
+    },
     respecClassObject() {
       return {
         "o-primary-btn--subtab-option": true,
-        "o-primary-btn--enhanced-respec-active": this.respecEnhancements // Change the color later
+        "o-primary-btn--enhanced-respec-active": this.respecEnhancements 
       };
     },
   },
@@ -89,19 +98,23 @@ export default {
     update() {
       const gameSpeedupFactor = getGameSpeedupFactor();
       this.achievementPower = Achievements.power;
+      this.enhancedAchMultToDims = Achievement(75).isEnhanced;
+      this.achDimEffect = this.enhancedAchMultToDims ? Decimal.pow(this.achievementPower, 100) :
+        this.achievementPower.toDecimal();
       this.achTPEffect = RealityUpgrade(8).config.effect();
       this.achCountdown = Achievements.timeToNextAutoAchieve / gameSpeedupFactor;
       this.totalCountdown = ((Achievements.preReality.countWhere(a => !a.isUnlocked) - 1) * Achievements.period +
         Achievements.timeToNextAutoAchieve) / gameSpeedupFactor;
       this.missingAchievements = Achievements.preReality.countWhere(a => !a.isUnlocked);
-      this.enhancementPoints = player.reality.enhancementPoints;
-      this.totalEnhancementPoints = player.reality.totalEnhancementPoints;
+      this.enhancementPoints = Achievements.enhancementPoints;
+      this.totalEnhancementPoints = Achievements.totalEnhancementPoints;
       this.enhancedAchievements = player.reality.enhancedAchievements.size;
       this.respecEnhancements = player.reality.disEnhance;
       this.isEnhancementUnlocked = Perk.achievementEnhancement.isBought && !this.isDoomed;
       this.showAutoAchieve = PlayerProgress.realityUnlocked() && !Perk.achievementGroup5.isBought;
       this.isAutoAchieveActive = player.reality.autoAchieve;
       this.hideCompletedRows = player.options.hideCompletedAchievementRows;
+      this.showEnhancementPresets = VUnlocks.enhancementPresets.canBeApplied;
       this.achMultBreak = BreakInfinityUpgrade.achievementMult.canBeApplied;
       this.achMultToIDS = Achievement(75).isUnlocked;
       this.achMultToTDS = EternityUpgrade.tdMultAchs.isBought;
@@ -170,7 +183,17 @@ export default {
         :class="respecClassObject" 
         @click="respecEnhancements = !respecEnhancements"
       >Respec Enhanced Achievements on next Reality</PrimaryButton>
-      
+    </div>
+    <div class="c-enhancement-load-button-area"
+      v-if="showEnhancementPresets && isEnhancementUnlocked"
+    >
+      <span 
+        class="c-enhancement-save-load-text">{{ saveLoadText }}</span>
+      <EnhancementSaveLoadButton
+        v-for="saveslot in 6"
+        :key="saveslot"
+        :saveslot="saveslot"
+            />
     </div>
     <div class="c-achievements-tab__header c-achievements-tab__header--multipliers">
       <span v-if="isDoomed">
@@ -226,6 +249,15 @@ export default {
 </template>
 
 <style scoped>
+.c-enhancement-save-load-text {
+  font-size: 14px;
+  margin-top: 0.4rem;
+}
+.c-enhancement-load-button-area {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
 .o-primary-btn--enhanced-respec-active {
   color: #ffffff;
   background-color: #aaaa33 !important;

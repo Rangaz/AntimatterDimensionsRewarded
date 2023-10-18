@@ -28,7 +28,7 @@ export const eternityChallenges = [
     reward: {
       description: "1st Infinity Dimension multiplier based on Infinity Power",
       effect: completions => Currency.infinityPower.value.pow(1.5 / (700 - completions * 100)).clampMin(1),
-      cap: DC.E100,
+      cap: () => DC.E100.pow(Achievement(163).effectOrDefault(1)),
       formatEffect: value => formatX(value, 2, 1)
     }
   },
@@ -59,7 +59,7 @@ export const eternityChallenges = [
     reward: {
       description: "Infinity Dimension multiplier based on unspent IP",
       effect: completions => Currency.infinityPoints.value.pow(0.003 + completions * 0.002),
-      cap: DC.E200,
+      cap: () => DC.E200.pow(Achievement(163).effectOrDefault(1)),
       formatEffect: value => formatX(value, 2, 1)
     }
   },
@@ -91,7 +91,8 @@ export const eternityChallenges = [
       description: "Further reduce Antimatter Dimension cost multiplier growth",
       effect: completions => completions * 0.2,
       formatEffect: value => {
-        const total = Math.round(Player.dimensionMultDecrease + Effects.sum(EternityChallenge(6).reward)) - Effects.sum(Achievement(81)) - value;
+        const total = Math.round(Player.dimensionMultDecrease + Effects.sum(EternityChallenge(6).reward)) - 
+          Effects.sum(Achievement(81), Achievement(81).enhancedEffect) - value;
         return `-${format(value, 2, 1)} (${formatX(total, 2, 2)} total)`;
       }
     },
@@ -138,7 +139,7 @@ export const eternityChallenges = [
     reward: {
       description: "Infinity Dimension multiplier based on Time Shards",
       effect: completions => Currency.timeShards.value.pow(completions * 0.1).clampMin(1),
-      cap: DC.E400,
+      cap: () => DC.E400.pow(Achievement(163).effectOrDefault(1)),
       formatEffect: value => formatX(value, 2, 1)
     }
   },
@@ -203,7 +204,10 @@ export const eternityChallenges = [
     reward: {
       description: "Infinity Dimension cost multipliers are reduced",
       effect: completions => 1 - completions * 0.008,
-      formatEffect: value => `x${formatPow(value, 3, 3)}`
+      formatEffect: value => {
+        const total = Effects.product(EternityChallenge(12).reward, Achievement(98).enhancedEffect);
+        return `x${formatPow(value, 3, 3)} (x${formatPow(total, 3, 3)} total)`;
+      }
     }
   }
 ];

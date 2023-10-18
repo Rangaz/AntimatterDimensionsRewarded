@@ -66,11 +66,12 @@ export const v = {
     {
       id: 0,
       name: "Glyph Knight",
-      description: value => `Unlock Reality with at most ${quantifyInt("Glyph", -value)} equipped.`,
+      description: value => `Unlock Reality with at most ${quantifyInt("Glyph", -value)} equipped and
+        ${quantifyInt("Achievement", -value)} Enhanced.`,
       // This achievement has internally negated values since the check is always greater than
       values: [-5, -4, -3, -2, -1, 0],
       condition: () => V.isRunning && TimeStudy.reality.isBought,
-      currentValue: () => -Glyphs.activeWithoutCompanion.length,
+      currentValue: () => -Math.max(Glyphs.activeWithoutCompanion.length, player.reality.enhancedAchievements.size),
       formatRecord: x => (x >= -5 ? formatInt(-x) : "Not reached"),
       shardReduction: () => 0,
       maxShardReduction: () => 0,
@@ -80,7 +81,7 @@ export const v = {
       id: 1,
       name: "AntiStellar",
       description: value => `Have ${formatInt(value)} total Galaxies from all types.`,
-      values: [4000, 4300, 4600, 4900, 5200, 5500],
+      values: [4000, 4300, 4600, 4950, 5250, 5600],
       condition: () => V.isRunning,
       currentValue: () => Replicanti.galaxies.total + player.galaxies + player.dilation.totalTachyonGalaxies,
       formatRecord: x => formatInt(x),
@@ -93,13 +94,13 @@ export const v = {
       id: 2,
       name: "Se7en deadly matters",
       description: value => `Get ${format(Decimal.pow10(value))} Infinity Points in Eternity Challenge 7.`,
-      values: [6e5, 7.2e5, 8.4e5, 9.6e5, 1.08e6, 1.2e6],
+      values: [7e5, 8.4e5, 9.8e5, 1.12e6, 1.26e6, 1.4e6],
       condition: () => V.isRunning && EternityChallenge(7).isRunning,
       currentValue: () => Currency.infinityPoints.value.log10(),
       formatRecord: x => format(Decimal.pow10(x), 2),
-      shardReduction: tiers => 1.2e5 * tiers,
-      maxShardReduction: goal => goal - 6e5,
-      perReductionStep: DC.E1200,
+      shardReduction: tiers => 1.4e5 * tiers,
+      maxShardReduction: goal => goal - 7e5,
+      perReductionStep: DC.E1400,
       mode: V_REDUCTION_MODE.DIVISION
     },
     {
@@ -107,7 +108,7 @@ export const v = {
       name: "Young Boy",
       description: value => `Get ${format(Decimal.pow10(value))} Antimatter in Eternity Challenge 12 without
         unlocking Time Dilation.`,
-      values: [400e6, 450e6, 500e6, 600e6, 700e6, 800e6],
+      values: [400e6, 450e6, 525e6, 625e6, 800e6, 1.3e9],
       condition: () => V.isRunning && EternityChallenge(12).isRunning && !PlayerProgress.dilationUnlocked(),
       currentValue: () => Currency.antimatter.value.log10(),
       formatRecord: x => format(Decimal.pow10(x)),
@@ -120,7 +121,7 @@ export const v = {
       id: 4,
       name: "Eternal Sunshine",
       description: value => `Get ${format(Decimal.pow10(value))} Eternity Points.`,
-      values: [7000, 7600, 8200, 8800, 9400, 10000],
+      values: [7000, 7600, 8300, 9100, 10000, 12000],
       condition: () => V.isRunning,
       currentValue: () => Currency.eternityPoints.value.log10(),
       formatRecord: x => format(Decimal.pow10(x), 2),
@@ -133,7 +134,7 @@ export const v = {
       id: 5,
       name: "Matterception",
       description: value => `Get ${formatInt(value)} Dimension Boosts while Dilated and inside Eternity Challenge 5.`,
-      values: [51, 52, 53, 54, 55, 56],
+      values: [52, 53, 55, 57, 59, 61],
       condition: () => V.isRunning && player.dilation.active && EternityChallenge(5).isRunning,
       currentValue: () => DimBoost.purchasedBoosts,
       formatRecord: x => formatInt(x),
@@ -247,6 +248,23 @@ export const v = {
       description: () => `Have ${formatInt(36)} V-Achievements`,
       effect: 2,
       requirement: () => V.spaceTheorems >= 36
+    },
+    // These are my unlocks. They'll start at id 7 to avoid migration conflicts.
+    enhancementPresets: {
+      id: 7,
+      reward: "Unlock presets to Enhance Achievements.",
+      description: () => `Have ${formatInt(1)} V-Achievement`,
+      requirement: () => V.spaceTheorems >= 1
+    },
+    maxEnhancedRow: {
+      id: 8,
+      reward() {
+        return `For every ${formatInt(7)} V-Achievements unlock a new row to Enhance.`;
+      },
+      description: () => `Have ${formatInt(7)} V-Achievements`,
+      effect: () => 4 + Math.floor(V.spaceTheorems / 7),
+      format: x => `Up to row ${formatInt(x)}`,
+      requirement: () => V.spaceTheorems >= 7
     }
   }
 };

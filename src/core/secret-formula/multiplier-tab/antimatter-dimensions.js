@@ -51,7 +51,7 @@ export const AD = {
     isActive: dim => (dim ? dim <= MultiplierTabHelper.activeDimCount("AD") : true),
     dilationEffect: () => {
       const baseEff = (player.dilation.active || Enslaved.isRunning)
-        ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty)
+        ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty, Achievement(161))
         : 1;
       return baseEff * (Effarig.isRunning ? Effarig.multDilation : 1);
     },
@@ -112,7 +112,9 @@ export const AD = {
   },
   achievementMult: {
     name: "Achievement Multiplier",
-    multValue: dim => Decimal.pow(Achievements.power, dim ? 1 : MultiplierTabHelper.activeDimCount("AD")),
+    // Er75 raises this by 60
+    multValue: dim => Decimal.pow(Decimal.pow(Achievements.power, Achievement(75).enhancedEffect.effects.powEffect.
+      effectOrDefault(1)), dim ? 1 : MultiplierTabHelper.activeDimCount("AD")),
     isActive: () => !Pelle.isDoomed && !EternityChallenge(11).isRunning,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
@@ -126,12 +128,20 @@ export const AD = {
         Achievement(48),
         Achievement(48).enhancedEffect,
         Achievement(56),
+        Achievement(56).enhancedEffect,
         Achievement(65),
+        Achievement(65).enhancedEffect,
         Achievement(67),
+        Achievement(67).enhancedEffect,
+        Achievement(71).enhancedEffect,
         Achievement(73),
+        Achievement(73).enhancedEffect,
         Achievement(74),
+        Achievement(74).enhancedEffect,
         Achievement(76),
+        Achievement(76).enhancedEffect,
         Achievement(84),
+        Achievement(84).enhancedEffect,
         Achievement(91),
         Achievement(92)
       );
@@ -149,6 +159,7 @@ export const AD = {
             Achievement(44),
             Achievement(44).enhancedEffect,
             Achievement(68),
+            Achievement(68).enhancedEffect,
             Achievement(71),
           );
         }
@@ -169,6 +180,7 @@ export const AD = {
           tier < 8 ? Achievement(34) : null,
           tier < 8 ? Achievement(34).enhancedEffect : null,
           tier <= 4 ? Achievement(64) : null,
+          tier <= 4 ? Achievement(64).enhancedEffect : null,
         );
         if (Achievement(43).canBeApplied) {
           dimMults[tier] = dimMults[tier].times(1 + tier / 100);
@@ -186,7 +198,7 @@ export const AD = {
       return totalMult;
     },
     powValue: () => Achievement(183).effectOrDefault(1) * Achievement(47).enhancedEffect.effectOrDefault(1) *
-    Achievement(72).effectOrDefault(1),
+    Achievement(72).effectOrDefault(1) * Achievement(72).enhancedEffect.effectOrDefault(1),
     isActive: () => !EternityChallenge(11).isRunning,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },

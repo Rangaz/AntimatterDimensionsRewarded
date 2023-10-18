@@ -1,5 +1,5 @@
 import { GameMechanicState } from "../game-mechanics";
-
+import { DC } from "../constants";
 import { SteamRuntime } from "@/steam";
 
 // I probably want this for my enhanced achievements
@@ -77,16 +77,23 @@ class AchievementState extends GameMechanicState {
     return this.isUnlocked &&
       this.hasEnhancedEffect &&
       !this.isEnhanced &&
-      this.row <= player.reality.maxEnhancedRow && // Maximum row allowed
-      player.reality.enhancementPoints !== 0 &&
+      this.row <= Achievements.maxEnhancedRow && // Maximum row allowed
+      Achievements.enhancementPoints !== 0 &&
       Perk.achievementEnhancement.isBought &&
       !Pelle.isDisabled("enhancedAchievements");
   }
 
   enhance() {
     if (!this.canEnhance) return;
+    // Enhancing Achievement 81 affects post-infinity scaling
+    if (this.id === 81) {
+      GameCache.dimensionMultDecrease.invalidate();
+    }
+    if (this.id === 96) {
+      player.eternityPoints = player.eternityPoints.plus(DC.E40.powEffectOf(Achievement(55).enhancedEffect));
+    }
     player.reality.enhancedAchievements.add(this.id);
-    player.reality.enhancementPoints -= 1;
+    //player.reality.enhancementPoints -= 1;
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENT_ENHANCED);
   }
 
@@ -139,8 +146,10 @@ class AchievementState extends GameMechanicState {
       GameCache.staticGlyphWeights.invalidate();
     }
     // You must have Enhancement points equal to your row 14+ achievements.
-    player.reality.totalEnhancementPoints = Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality);
-    if (!this.isPreReality) player.reality.enhancementPoints++;
+    // But I'm no longer storing these in player. These variables are now
+    // handled by Achievements, and it's much cleaner that way.
+    //player.reality.totalEnhancementPoints = Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality);
+    //if (!this.isPreReality) player.reality.enhancementPoints++;
 
     if (auto) {
       GameUI.notify.reality(`Automatically unlocked: ${this.name}`);
@@ -212,12 +221,81 @@ export const Achievements = {
     return GameCache.achievementPeriod.value;
   },
 
+  get totalEnhancementPoints() {
+    return Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality) + 
+      Math.floor(V.spaceTheorems / 2);
+  },
+  
+  get enhancementPoints() {
+    return this.totalEnhancementPoints - player.reality.enhancedAchievements.size;
+  },
+
+  get maxEnhancedRow() {
+    return VUnlocks.maxEnhancedRow.effectOrDefault(4);
+  },
+
+  // Method used to read a preset
+  // Presets will have the form "11, 12, 13, 21, 23, 27, 32, 87",
+  // Achievement ids separated in commas, similar to how Time Study presets work.
+  // We can afford to make the logic much simpler since we don't care about order.
+  readPreset(text) {
+    const enhancementArray = text.split(",");
+    let achievementsToEnhance = [];
+    for (const i of enhancementArray) {
+      const achievement = Achievements.all.filter(a => a.id == Number.parseInt(i));
+      achievementsToEnhance.push(achievement[0]);
+    }
+    return achievementsToEnhance;
+  },
+
+  enhanceFromArray(achievementsToEnhance) {
+    for (const achievement of achievementsToEnhance) {
+      achievement.enhance();
+    }
+  },
+
+  enhanceFromPreset(text) {
+    this.enhanceFromArray(this.readPreset(text));
+  },
+
+  // Return the current enhancements as a preset.
+  // I use Array.from() to use its sort() function, as that returns a nicer string.
+  // Otherwise it'll return the ids in purchase order, which looks messier.
+  returnCurrrentEnhancementsAsPreset() {
+    let enhancedAchievements = Array.from(player.reality.enhancedAchievements);
+    enhancedAchievements.sort();
+    let presetString = "";
+    for (const id of enhancedAchievements) {
+      presetString = presetString + id + ",";
+    }
+    // The string will end with a ",", so we'll remove the last character if there's anything at all
+    if (presetString.length) {
+      presetString = presetString.slice(0, -1);
+    }
+    return presetString;
+  },
+
+  truncateInput(input) {
+    let internal = input.toLowerCase();
+    return internal
+      .replace(/[|,]$/u, "")
+      .replaceAll(" ", "")
+      // Allows 11,,21 to be parsed as 11,21
+      .replace(/,{2,}/gu, ",")
+  },
+
+  // Instead of "11,12,13,14,15", it'll return "11, 12, 13, 14, 15"
+  formatAchievementsList(input) {
+    const internal = input.toLowerCase().replaceAll(" ", "");
+    return internal.replaceAll(",", ", ");
+  },
+
   disEnhanceAll() {
-    const enhancedAchievements = Achievements.preReality
+    const enhancedAchievements = Achievements.preReality;
     for (const achievement of enhancedAchievements) {
       achievement.disEnhance();
     }
-    player.reality.enhancementPoints = player.reality.totalEnhancementPoints;
+    //player.reality.enhancementPoints = player.reality.totalEnhancementPoints;
     player.reality.disEnhance = false;
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENTS_DISENHANCED);
   },

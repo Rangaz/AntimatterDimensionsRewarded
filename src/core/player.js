@@ -278,6 +278,7 @@ window.player = {
     previousRunRealTime: 0,
     totalAntimatter: DC.E1,
     timeSinceLastSacrifice: 0, // For r23
+    timeSinceLastReset: 0, // For r68
     timeWithExcessAMProd: 0, // For r44
     timeWithExcessIPowerProd: 0, // For r124
     recentInfinities: Array.range(0, 10).map(() =>
@@ -363,7 +364,7 @@ window.player = {
     previousRuns: {}
   },
   IPMultPurchases: 0,
-  version: 30,
+  version: 31,
   infinityPower: DC.D1,
   postC4Tier: 0,
   eternityPoints: DC.D0,
@@ -521,11 +522,15 @@ window.player = {
     partEternitied: DC.D0,
     autoAchieve: true,
     gainedAutoAchievements: true,
-    totalEnhancementPoints: 0,
-    enhancementPoints: 0,
+    //totalEnhancementPoints: 0,
+    //enhancementPoints: 0,
     disEnhance: false,
     enhancedAchievements: new Set(),
-    maxEnhancedRow: 4,
+    enhancedPresets: new Array(6).fill({
+      name: "",
+      enhancements: "",
+    }),
+    //maxEnhancedRow: 4,
     automator: {
       state: {
         mode: AUTOMATOR_MODE.STOP,

@@ -16,15 +16,19 @@ export const replicanti = {
     // r134 is explicitly 2 in the replicanti code as well, inside of a replicanti amount check (for some reason)
     multValue: () => {
       let totalMult = DC.D1;
-      totalMult  = totalMult.timesEffectOf(Achievement(94).effects.replicantiSpeed);
-      totalMult  = totalMult.timesEffectOf(Achievement(106));
+      totalMult  = totalMult.timesEffectsOf(
+        Achievement(94).effects.replicantiSpeed,
+        Achievement(94).enhancedEffect.effects.replicantiSpeed, 
+        Achievement(95).enhancedEffect,
+        Achievement(106)
+      );
       if (Time.thisEternity.totalSeconds < 9 || Achievement(145).canBeApplied) {
         totalMult = totalMult.timesEffectOf(Achievement(108).effects.replicantiSpeed);
       }
       if (Replicanti.amount.lte(replicantiCap())) totalMult  = totalMult.timesEffectOf(Achievement(134));
       return totalMult;
     },
-    isActive: () => [106, 108, 134].some(a => Achievement(a).canBeApplied),
+    isActive: () => [94, 106, 108, 134].some(a => Achievement(a).canBeApplied || Achievement(a).isEnhanced),
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   timeStudy: {

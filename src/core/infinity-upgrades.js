@@ -93,8 +93,11 @@ export function totalIPMult() {
       TimeStudy(142),
       TimeStudy(143),
       Achievement(62),
+      Achievement(62).enhancedEffect,
       Achievement(77),
+      Achievement(77).enhancedEffect,
       Achievement(85),
+      Achievement(85).enhancedEffect,
       Achievement(93),
       Achievement(116),
       Achievement(125),
@@ -201,6 +204,10 @@ class InfinityIPMultUpgrade extends GameMechanicState {
     // r82 makes this upgrade no longer spend IP
     if (!Achievement(82).isUnlocked) {
       Currency.infinityPoints.subtract(Decimal.sumGeometricSeries(amount, this.cost, this.costIncrease, 0));
+    }
+    // And Er82 makes this upgrade give IP
+    if (Achievement(82).isEnhanced) {
+      Currency.infinityPoints.add(Decimal.sumGeometricSeries(amount, this.cost, this.costIncrease, 0));
     }
     player.IPMultPurchases += amount;
     GameUI.update();

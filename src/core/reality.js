@@ -625,6 +625,9 @@ export function finishProcessReality(realityProps) {
   Currency.infinitiesBanked.reset();
   player.records.bestInfinity.time = 999999999999;
   player.records.bestInfinity.realTime = 999999999999;
+  player.records.timeSinceLastReset = 0;
+  player.records.timeWithExcessAMProd = 0;
+  player.records.timeWithExcessIPowerProd = 0;
   player.records.thisInfinity.time = 0;
   player.records.thisInfinity.lastBuyTime = 0;
   player.records.thisInfinity.realTime = 0;

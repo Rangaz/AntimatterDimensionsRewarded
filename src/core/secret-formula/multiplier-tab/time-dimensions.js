@@ -27,7 +27,7 @@ export const TD = {
       : (PlayerProgress.realityUnlocked() || TimeDimension(1).isProducing)),
     dilationEffect: () => {
       const baseEff = player.dilation.active
-        ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty)
+        ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty, Achievement(161))
         : 1;
       return baseEff * (Effarig.isRunning ? Effarig.multDilation : 1);
     },
@@ -96,7 +96,8 @@ export const TD = {
 
   achievementMult: {
     name: "Eternity Upgrade - Achievement Multiplier",
-    multValue: dim => Decimal.pow(EternityUpgrade.tdMultAchs.effectOrDefault(1),
+    multValue: dim => Decimal.pow(Decimal.pow(EternityUpgrade.tdMultAchs.effectOrDefault(1), 
+      Achievement(75).enhancedEffect.effects.powEffect.effectOrDefault(1)),
       dim ? 1 : MultiplierTabHelper.activeDimCount("TD")),
     isActive: () => EternityUpgrade.tdMultAchs.canBeApplied && !Pelle.isDoomed,
     icon: MultiplierTabIcons.ACHIEVEMENT,
@@ -108,6 +109,11 @@ export const TD = {
         Achievement(35).enhancedEffect,
         Achievement(48), 
         Achievement(48).enhancedEffect,
+        Achievement(51).enhancedEffect,
+        Achievement(67).enhancedEffect,
+        Achievement(74).enhancedEffect,
+        Achievement(76).enhancedEffect,
+        Achievement(92).enhancedEffect,
         Achievement(105), 
         Achievement(112), 
         Achievement(123), 

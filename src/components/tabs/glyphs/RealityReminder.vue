@@ -7,6 +7,7 @@ export default {
       isVisible: false,
       isExpanded: false,
       ecCount: 0,
+      missingPerks: 0,
       missingAchievements: 0,
       unenhancedAchievements: 0,
       unpurchasedDilationUpgrades: 0,
@@ -23,6 +24,9 @@ export default {
       const arr = [];
       if (this.purchasableTS > 0) {
         arr.push(`Purchase more Time Studies (${formatInt(this.purchasableTS)} available)`);
+      }
+      if (this.missingPerks > 0) {
+        arr.push(`Purchase more Perks (${formatInt(this.missingPerks)} left)`);
       }
       if (this.missingAchievements > 0) {
         arr.push(`Complete the rest of your Achievements (${formatInt(this.missingAchievements)} left)`);
@@ -85,8 +89,9 @@ export default {
       this.isVisible = !isInCelestialReality();
       this.ecCount = EternityChallenges.completions;
       this.missingAchievements = Achievements.preReality.countWhere(a => !a.isUnlocked);
+      this.missingPerks = Math.min(Currency.perkPoints.value, Perks.all.length - player.reality.perks.size);
       this.unenhancedAchievements = Perk.achievementEnhancement.isBought ? 
-        player.reality.enhancementPoints : 0; // If you don't have the perk, don't bother
+        Achievements.enhancementPoints : 0; // If you don't have the perk, don't bother
       // Repeatable dilation upgrades don't have isBought, but do have boughtAmount
       this.unpurchasedDilationUpgrades = DilationUpgrade.all
         .countWhere(u => (u.isBought === undefined ? u.boughtAmount === 0 : !u.isBought) && !u.config.pelleOnly);

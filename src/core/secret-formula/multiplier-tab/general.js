@@ -21,11 +21,16 @@ export const general = {
       // If it's an enhanced effect...
       if (ach > 10000) {
         ach -= 10000;
-        if (ach === 47) return 1; // Power effect
+
+        // Handle those with multiple effects
+        if (ach === 1094) return Achievement(94).enhancedEffect.effects.infinityPowerGain.effectOrDefault(1);
+        if (ach === 2094) return Achievement(94).enhancedEffect.effects.replicantiSpeed.effectOrDefault(1);
+
+        if (ach === 47 || ach === 72 || ach === 93) return 1; // Power effect
 
         // The base tickspeed from achievements' effect is actually divisors, so 
         // we want to show the reciprocal instead
-        if (ach === 36 || ach === 45) {
+        if (ach === 36 || ach === 45 || ach === 66) {
           return Achievement(ach).enhancedEffect.canBeApplied ? 
             DC.D1.divide(Achievement(ach).enhancedEffect.effectOrDefault(1)) : 1
         }
@@ -83,11 +88,15 @@ export const general = {
         ? Achievement(ach).effectOrDefault(1) : 1;
     },
     // 183 is the only time a power effect is in an Achievement, so we special-case it here and return a x1 multiplier.
-    // ...or that would be the case if it wasn't for my achievements (r72 & Er47).
-    powValue: ach => (ach === 183 ? Achievement(183).effectOrDefault(1) : 1) * 
-      (ach === 10047 ? Achievement(47).enhancedEffect.effectOrDefault(1) : 1) *
-      (ach === 72 ? Achievement(72).effectOrDefault(1) : 1),
-    isActive: ach => ach > 10000 ? Achievement(ach - 10000).enhancedEffect.canBeApplied : 
+    // ...or that would be the case if it wasn't for my achievements (r72, Er47 & Er93).
+    powValue: ach => {
+      switch (ach) {
+        case 183: return Achievement(183).effectOrDefault(1); 
+        case 10047: return Achievement(47).enhancedEffect.effectOrDefault(1);
+        case 72: return Achievement(72).effectOrDefault(1);
+        case 10072: return Achievement(72).enhancedEffect.effectOrDefault(1);
+        case 10093: return Achievement(93).enhancedEffect.effectOrDefault(1);}} ,
+    isActive: ach => ach > 10000 ? Achievement(ach - Math.floor(ach / 1000) * 1000).enhancedEffect.canBeApplied : 
       Achievement(ach - Math.floor(ach / 1000) * 1000).canBeApplied,
     icon: ach => {
       const base = MultiplierTabIcons.ACHIEVEMENT;

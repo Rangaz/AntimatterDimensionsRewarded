@@ -9,7 +9,8 @@ export const infinityChallenges = [
     isQuickResettable: true,
     reward: {
       description: () => `${formatX(1.3, 1, 1)} on all Infinity Dimensions for each Infinity Challenge completed`,
-      effect: () => Decimal.pow(1.3, InfinityChallenges.completed.length).powEffectOf(Achievement(97)),
+      effect: () => Decimal.pow(1.3, InfinityChallenges.completed.length).powEffectsOf(
+        Achievement(97), Achievement(97).enhancedEffect),
       formatEffect: value => formatX(value, 1, 1)
     },
     unlockAM: DC.E2000,
@@ -40,7 +41,9 @@ export const infinityChallenges = [
       description: `Antimatter Dimension multiplier based on Antimatter Galaxies and Tickspeed purchases`,
       effect: () => (Laitela.continuumActive
         ? Decimal.pow(1.05 + (player.galaxies * 0.005), Tickspeed.continuumValue)
-        : Decimal.pow(1.05 + (player.galaxies * 0.005), player.totalTickBought)),
+          .powEffectOf(Achievement(97).enhancedEffect)
+        : Decimal.pow(1.05 + (player.galaxies * 0.005), player.totalTickBought)
+          .powEffectOf(Achievement(97).enhancedEffect)),
       formatEffect: value => formatX(value, 2, 2),
     },
     unlockAM: DC.E12000,

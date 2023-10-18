@@ -27,7 +27,7 @@ export const ID = {
       : (PlayerProgress.eternityUnlocked() || InfinityDimension(1).isProducing)),
     dilationEffect: () => {
       const baseEff = player.dilation.active
-        ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty)
+        ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty, Achievement(161))
         : 1;
       return baseEff * (Effarig.isRunning ? Effarig.multDilation : 1);
     },
@@ -120,8 +120,9 @@ export const ID = {
   },
   achievementMult: {
     name: "Achievement Multiplier",
-    multValue: dim => Decimal.pow(Achievements.power, dim ? 1 : MultiplierTabHelper.activeDimCount("ID")),
-    isActive: () => Achievement(75).canBeApplied && !Pelle.isDoomed,
+    multValue: dim => Decimal.pow(Decimal.pow(Achievements.power, Achievement(75).enhancedEffect.effects.powEffect.
+    effectOrDefault(1)), dim ? 1 : MultiplierTabHelper.activeDimCount("ID")),
+    isActive: () => (Achievement(75).canBeApplied || Achievement(75).isEnhanced) && !Pelle.isDoomed,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   achievement: {
@@ -132,6 +133,10 @@ export const ID = {
         Achievement(35).enhancedEffect,
         Achievement(48),
         Achievement(48).enhancedEffect,
+        Achievement(67).enhancedEffect,
+        Achievement(74).enhancedEffect,
+        Achievement(76).enhancedEffect,
+        Achievement(91).enhancedEffect,
         Achievement(107),
       );
 
@@ -140,6 +145,7 @@ export const ID = {
         if (tier === 1) {
           dimMults[tier] = dimMults[tier].timesEffectsOf(
             Achievement(94).effects.infinityPowerGain,
+            Achievement(94).enhancedEffect.effects.infinityPowerGain,
             Achievement(124),
           );
         }
