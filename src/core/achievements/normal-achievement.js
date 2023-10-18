@@ -222,7 +222,8 @@ export const Achievements = {
   },
 
   get totalEnhancementPoints() {
-    return Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality) + V.spaceTheorems;
+    return Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality) + 
+      Math.floor(V.spaceTheorems / 2);
   },
   
   get enhancementPoints() {

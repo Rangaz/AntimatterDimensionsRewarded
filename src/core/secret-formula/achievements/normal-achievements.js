@@ -652,8 +652,9 @@ export const normalAchievements = [
     checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
     reward: "Antimatter Dimensions and Tickspeed Upgrades no longer spend Antimatter.",
     enhanced: {
-      reward: "Antimatter Dimensions and Tickspeed Upgrades give their Antimatter cost " +
-        "when purchased, instead of spending them."
+      get reward() { return `Antimatter Dimensions and Tickspeed Upgrades give their Antimatter cost 
+        when purchased, multiplied by the common Buy 10 factor (
+          ${formatX(AntimatterDimensions.buyTenMultiplier, 2, 2)}), instead of spending them.` }
     }
   },
   {
@@ -897,9 +898,9 @@ export const normalAchievements = [
     effect: () => DC.D0_95.pow(player.galaxies),
     formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
     enhanced: {
-      get reward() { return `Tickspeed is ${formatX(3)} as fast for every Antimatter, Replicanti, 
+      get reward() { return `Tickspeed is ${formatX(10)} as fast for every Antimatter, Replicanti, 
       and Tachyon Galaxy.`; },
-      effect: () => DC.D3.pow(player.galaxies + Replicanti.galaxies.total + 
+      effect: () => DC.E1.pow(player.galaxies + Replicanti.galaxies.total + 
         player.dilation.totalTachyonGalaxies).recip(),
       formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
     }
@@ -940,7 +941,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     reward: "1st Antimatter Dimensions get an exponentially increasing multiplier that " +
       "resets after Dimension Boosts, Antimatter Galaxies, and Infinities.",
-    effect: () => DC.D1_00038.pow(Time.timeSinceLastReset.totalSeconds * 20).times(1.2).clampMax(DC.E15),
+    effect: () => DC.D1_00038.pow(Time.timeSinceLastReset.totalSeconds * 20).times(1.21).clampMax(DC.E15),
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "1st Antimatter Dimensions get an uncapped exponentially increasing multiplier that " +
@@ -1041,11 +1042,11 @@ export const normalAchievements = [
     effect: () => Achievements.power,
     enhanced: {
       get reward() { return `Your Achievement bonus affects Infinity Dimensions, 
-        and raise the Achievement bonus to Dimensions by ${formatPow(80)}.`;
+        and raise the Achievement bonus to Dimensions by ${formatPow(100)}.`;
       },
       effects: {
-        infinityDimensions: () => Decimal.pow(Achievements.power, 80),
-        powEffect: 80
+        infinityDimensions: () => Decimal.pow(Achievements.power, 100),
+        powEffect: 100
       }
     }
   },
@@ -1648,9 +1649,9 @@ export const normalAchievements = [
     get reward() {
       return `Multiply the Buy 10 Dimensions multiplier for 1st Antimatter Dimensions by ${formatX(1.5, 1, 1)}`;
     },
-    effect: () => Laitela.continuumActive ? DC.D1_5.pow(AntimatterDimension(1).continuumAmount / 10).pow(
-      getAdjustedGlyphEffect("effarigforgotten")) : DC.D1_5.pow(Math.floor(AntimatterDimension(1).bought / 10)).
-      pow(getAdjustedGlyphEffect("effarigforgotten")),
+    effect: () => DC.D1_5.pow((Laitela.continuumActive ? AntimatterDimension(1).continuumAmount : AntimatterDimension(1).bought)
+       / 10).pow(getAdjustedGlyphEffect("effarigforgotten")).powEffectOf(InfinityUpgrade.buy10Mult.chargedEffect).
+       pow(ImaginaryUpgrade(14).effectOrDefault(1)),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {

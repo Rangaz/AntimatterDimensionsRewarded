@@ -74,8 +74,10 @@ export function buyTickSpeed() {
     Tickspeed.multiplySameCosts();
   }
   Tutorial.turnOffEffect(TUTORIAL_STATE.TICKSPEED);
-  // r52 makes Tickspeed upgrades no longer spend AM, and its enhanced effect gives its cost
-  if (Achievement(52).isEnhanced) Currency.antimatter.add(Tickspeed.cost);
+  // r52 makes Tickspeed upgrades no longer spend AM, and its enhanced effect gives 
+  // its cost multiplied by the buy 10 factor
+  if (Achievement(52).isEnhanced) Currency.antimatter.add(Tickspeed.cost.
+    times(AntimatterDimensions.buyTenMultiplier));
   else if (!Achievement(52).canBeApplied) Currency.antimatter.substract(Tickspeed.cost);
   player.totalTickBought++;
   player.records.thisInfinity.lastBuyTime = player.records.thisInfinity.time;
@@ -95,7 +97,7 @@ export function buyMaxTickSpeed() {
     let cost = Tickspeed.cost;
     while (Currency.antimatter.gt(cost) && cost.lt(goal)) {
       Tickspeed.multiplySameCosts();
-      if (Achievement(52).isEnhanced) Currency.antimatter.add(cost);
+      if (Achievement(52).isEnhanced) Currency.antimatter.add(cost.times(AntimatterDimensions.buyTenMultiplier));
       else if (!Achievement(52).canBeApplied) Currency.antimatter.subtract(cost);
       player.totalTickBought++;
       boughtTickspeed = true;
@@ -106,7 +108,8 @@ export function buyMaxTickSpeed() {
     if (purchases === null) {
       return;
     }
-    if (Achievement(52).isEnhanced) Currency.antimatter.add(Decimal.pow10(purchases.logPrice));
+    if (Achievement(52).isEnhanced) Currency.antimatter.add(
+      Decimal.pow10(purchases.logPrice).times(AntimatterDimensions.buyTenMultiplier));
     else if (!Achievement(52).canBeApplied) Currency.antimatter.subtract(Decimal.pow10(purchases.logPrice));
     player.totalTickBought += purchases.quantity;
     boughtTickspeed = true;

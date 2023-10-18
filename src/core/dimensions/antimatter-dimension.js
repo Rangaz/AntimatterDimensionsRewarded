@@ -250,8 +250,10 @@ export function buyOneDimension(tier) {
 
   if (tier === 8 && Enslaved.isRunning && AntimatterDimension(8).bought >= 1) return false;
 
-  // r52 makes Antimatter Dimensions no longer spend Antimatter. And its Enhanced version gives its cost.
-  if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(cost);
+  // r52 makes Antimatter Dimensions no longer spend Antimatter. And its Enhanced version gives its cost multiplied by the
+  // buy 10 factor. Note that, because of its wording, we don't have to worry about r122.
+  if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(
+    cost.times(AntimatterDimensions.buyTenMultiplier));
   else if (!Achievement(52).canBeApplied) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
 
   if (dimension.boughtBefore10 === 9) {
@@ -287,7 +289,8 @@ export function buyManyDimension(tier) {
   const cost = dimension.costUntil10;
 
   if (tier === 8 && Enslaved.isRunning) return buyOneDimension(8);
-  if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(cost);
+  if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(
+    cost.times(AntimatterDimensions.buyTenMultiplier));
   else if (!Achievement(52).canBeApplied) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
   dimension.challengeCostBump();
   dimension.amount = dimension.amount.plus(dimension.remainingUntil10);
@@ -307,7 +310,8 @@ export function buyAsManyAsYouCanBuy(tier) {
   const cost = dimension.cost.times(howMany);
 
   if (tier === 8 && Enslaved.isRunning) return buyOneDimension(8);
-  if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(cost);
+  if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(
+    cost.times(AntimatterDimensions.buyTenMultiplier));
   else if (!Achievement(52).canBeApplied) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
   dimension.challengeCostBump();
   dimension.amount = dimension.amount.plus(howMany);
@@ -362,7 +366,8 @@ export function buyMaxDimension(tier, bulk = Infinity) {
 
   // Buy any remaining until 10 before attempting to bulk-buy
   if (dimension.currencyAmount.gte(cost)) {
-    if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(cost);
+    if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(
+      cost.times(AntimatterDimensions.buyTenMultiplier));
     else if (!Achievement(52).canBeApplied) dimension.currencyAmount = dimension.currencyAmount.minus(cost);
     buyUntilTen(tier);
     bulkLeft--;
@@ -375,7 +380,8 @@ export function buyMaxDimension(tier, bulk = Infinity) {
     while (dimension.isAffordableUntil10 && dimension.cost.lt(goal) && bulkLeft > 0) {
       // We can use dimension.currencyAmount or Currency.antimatter here, they're the same,
       // but it seems safest to use dimension.currencyAmount for consistency.
-      if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(dimension.costUntil10);
+      if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(
+        dimension.costUntil10.times(AntimatterDimensions.buyTenMultiplier));
       else if (!Achievement(52).canBeApplied) dimension.currencyAmount = dimension.currencyAmount.minus(dimension.costUntil10);
       buyUntilTen(tier);
       bulkLeft--;
@@ -394,7 +400,8 @@ export function buyMaxDimension(tier, bulk = Infinity) {
   if (buying > bulkLeft) buying = bulkLeft;
   dimension.amount = dimension.amount.plus(10 * buying).round();
   dimension.bought += 10 * buying;
-  if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(Decimal.pow10(maxBought.logPrice));
+  if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(Decimal.pow10(maxBought.logPrice).times(
+    AntimatterDimensions.buyTenMultiplier));
   else if (!Achievement(52).canBeApplied) dimension.currencyAmount = dimension.currencyAmount.minus(Decimal.pow10(maxBought.logPrice));
 }
 
