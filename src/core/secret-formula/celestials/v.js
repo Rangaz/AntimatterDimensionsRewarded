@@ -108,7 +108,7 @@ export const v = {
       name: "Young Boy",
       description: value => `Get ${format(Decimal.pow10(value))} Antimatter in Eternity Challenge 12 without
         unlocking Time Dilation.`,
-      values: [400e6, 450e6, 525e6, 600e6, 725e6, 850e6],
+      values: [400e6, 450e6, 525e6, 625e6, 800e6, 1.3e9],
       condition: () => V.isRunning && EternityChallenge(12).isRunning && !PlayerProgress.dilationUnlocked(),
       currentValue: () => Currency.antimatter.value.log10(),
       formatRecord: x => format(Decimal.pow10(x)),
@@ -121,7 +121,7 @@ export const v = {
       id: 4,
       name: "Eternal Sunshine",
       description: value => `Get ${format(Decimal.pow10(value))} Eternity Points.`,
-      values: [7000, 7600, 8300, 9100, 10000, 11000],
+      values: [7000, 7600, 8300, 9100, 10000, 12000],
       condition: () => V.isRunning,
       currentValue: () => Currency.eternityPoints.value.log10(),
       formatRecord: x => format(Decimal.pow10(x), 2),
