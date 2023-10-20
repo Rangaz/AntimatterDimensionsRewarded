@@ -91,8 +91,10 @@ class AchievementState extends GameMechanicState {
 
   enhance() {
     if (!this.canEnhance) return;
-    // Enhancing Achievement 81 affects post-infinity scaling
-    if (this.id === 81) {
+    // Enhancing Achievement 81 affects post-infinity scaling, and so does Er11.
+    // However, since Er11 activates this effect only if the entire first row is Enhanced, 
+    // any row 1 Achievement could trigger this. Just to be safe, we invalidate with any row 1.
+    if (this.id === 81 || (this.id > 10 && this.id < 20)) {
       GameCache.dimensionMultDecrease.invalidate();
     }
     if (this.id === 96) {
