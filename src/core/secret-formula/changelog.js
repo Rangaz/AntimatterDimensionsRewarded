@@ -9,6 +9,32 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 10, 20],
+    name: "I can see!",
+    info: `
+    <b>Enhancement presets have been improved!</b>
+    <br>
+    Missing features will arrive in upcoming days.
+    <br>
+    <br>
+    <ul>
+    <li>Editing presets now show you an ordered list of what Achievements the preset can Enhannce.</li>
+    <li>Invalid IDs are now detected and can be automatically removed with the 'Fix preset' button.</li>
+    <li>The 'Format Preset Text' button is improved.</li>
+    <li>Coming soon: A warning when the preset can't Enhance all Achievements.</li>
+    <li>Coming soon: A visual preview f the Achievements the preset can Enhance.</li>
+    </ul>
+    <br>
+    <br>
+    <b>Other changes:</b>
+    <ul>
+    <li>Achievement 47 can no longer be Enhanced if you haven't unlocked Teresa.</li>
+    <li>Enhanced Achievement 66 has a bigger multiplier per Galaxy (x10 ➜ x16).</li>
+    </ul>
+    <br>
+    `
+  },
+  {
     date: [2023, 10, 18],
     name: "Happy V-Day",
     info: `

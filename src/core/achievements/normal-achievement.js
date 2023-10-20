@@ -79,6 +79,8 @@ class AchievementState extends GameMechanicState {
     // Handle special cases first
     // Er22 is free and should always be available
     if (this.id === 22 && !this.isEnhanced) return true;
+    // Er47 doesn't work if Teresa isn't unlocked, so avoid Enhancing it
+    if (this.id == 47 && !Teresa.isUnlocked) return false;
 
     return this.isUnlocked &&
       this.hasEnhancedEffect &&
@@ -93,7 +95,7 @@ class AchievementState extends GameMechanicState {
     if (!this.canEnhance) return;
     // Enhancing Achievement 81 affects post-infinity scaling, and so does Er11.
     // However, since Er11 activates this effect only if the entire first row is Enhanced, 
-    // any row 1 Achievement could trigger this. Just to be safe, we invalidate with any row 1.
+    // any row 1 Achievement could trigger this.
     if (this.id === 81 || (this.id > 10 && this.id < 20)) {
       GameCache.dimensionMultDecrease.invalidate();
     }
@@ -247,15 +249,37 @@ export const Achievements = {
   // Method used to read a preset
   // Presets will have the form "11, 12, 13, 21, 23, 27, 32, 87",
   // Achievement ids separated in commas, similar to how Time Study presets work.
-  // We can afford to make the logic much simpler since we don't care about order.
+  // This function will also return errors to inform the player.
   readPreset(text) {
     const enhancementArray = text.split(",");
     let achievementsToEnhance = [];
+    let invalidIds = [];
     for (const i of enhancementArray) {
+      // An empty string should do nothing
+      if (i == "") continue;
+      // Errors won't stop the function, as we want to inform if there are errors
+      if (isNaN(Number.parseInt(i))) {
+        invalidIds.push(i);
+        continue;
+      }
       const achievement = Achievements.all.filter(a => a.id == Number.parseInt(i));
+
+      // This is if i is a number but does not correspond to an existing Achievement
+      if (achievement[0] == undefined) {
+        invalidIds.push(i);
+        continue;
+      }
+
+      // We'll also show as invalid Achievements that don't have 
+      // an Enhancement effect or aren't unlocked
+      if (!achievement[0].hasEnhancedEffect || achievement[0].row > Achievements.maxEnhancedRow) {
+        invalidIds.push(i);
+        continue;
+      }
+
       achievementsToEnhance.push(achievement[0]);
     }
-    return achievementsToEnhance;
+    return [achievementsToEnhance, invalidIds];
   },
 
   enhanceFromArray(achievementsToEnhance) {
@@ -265,7 +289,7 @@ export const Achievements = {
   },
 
   enhanceFromPreset(text) {
-    this.enhanceFromArray(this.readPreset(text));
+    this.enhanceFromArray(this.readPreset(text)[0]);
   },
 
   // Return the current enhancements as a preset.
@@ -288,6 +312,7 @@ export const Achievements = {
   truncateInput(input) {
     let internal = input.toLowerCase();
     return internal
+      .trim()
       .replace(/[|,]$/u, "")
       .replaceAll(" ", "")
       // Allows 11,,21 to be parsed as 11,21
@@ -296,7 +321,7 @@ export const Achievements = {
 
   // Instead of "11,12,13,14,15", it'll return "11, 12, 13, 14, 15"
   formatAchievementsList(input) {
-    const internal = input.toLowerCase().replaceAll(" ", "");
+    const internal = this.truncateInput(input);
     return internal.replaceAll(",", ", ");
   },
 

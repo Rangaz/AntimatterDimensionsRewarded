@@ -61,7 +61,7 @@ export default {
     load() {
       this.hideContextMenu();
       if (this.preset.enhancements) {
-        Achievements.enhanceFromPreset(this.preset.enhancements);
+        Achievements.enhanceFromPreset(Achievements.truncateInput(this.preset.enhancements));
 
         const presetName = this.name ? `Enhancement preset "${this.name}"` : "Enhancement preset";
         GameUI.notify.reality(`${presetName} loaded from slot ${this.saveslot}`);

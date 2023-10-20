@@ -103,33 +103,29 @@ export default {
       if (this.deleting) return `Deleting Enhancement Preset "${this.name}"`;
       return this.isImporting ? "Input your Enhancements" : `Editing Enhancement Preset "${this.name}"`;
     },
-    // I'll think about invalidations later
-    /*
+
+    achievementsList() {
+      if (!this.hasInput || !this.inputIsValidTree) return null;
+      const achievementsList = this.truncatedInput.split(",").sort().join(", ");
+      return "Importing without Enhancements will Enhance Achievements: " + achievementsList;
+    },
+    
     invalidMessage() {
-      if (!this.inputIsValidTree || this.importedTree.invalidStudies.length === 0) return null;
+      if (!this.hasInput || this.inputIsValidTree) return null;
       // Pad the input with non-digits which we remove later in order to not cause erroneous extra matches within IDs
-      // and limit the string length to stop excessive UI stretch
-      let coloredString = `#${this.truncatedInput}#`;
+      // and limit the string length to stop excessive UI stretch.
+      // The extra ',' allow to properly find the ids if they are at the start or end of the string.
+      let coloredString = `#,${this.truncatedInput},#`;
       if (coloredString.length > 300) coloredString = `${coloredString.slice(0, 297)}...`;
 
-      for (const study of this.importedTree.invalidStudies) {
-        const id = `${study}`.match(/(EC)?(\d+)/u);
-        const num = parseInt(id[2], 10);
-        switch (id[1]) {
-          case "EC":
-            coloredString = coloredString.replaceAll(new RegExp(`\\|(${num})`, "gu"),
-              `|<span style="color: var(--color-bad);">$1</span>`);
-            break;
-          default:
-            coloredString = coloredString.replaceAll(new RegExp(`(\\D)(${num})(\\D)`, "gu"),
-              `$1<span style="color: var(--color-bad);">$2</span>$3`);
-            break;
-        }
+      for (const id of Achievements.readPreset(this.truncatedInput)[1]) {
+        coloredString = coloredString.replaceAll(`,${id},`,
+              `,<span style="color: var(--color-bad);">${id}</span>,`);
       }
-      return `Your import string has invalid study IDs: ${coloredString.replaceAll("#", "").replaceAll(",", ", ")}
-        <br><br>`;
+      return `Your import string has invalid achievement IDs: 
+        ${coloredString.replaceAll("#", "").slice(1, -1).replaceAll(",", ", ")}<br><br>`;
     },
-    */
+    
     truncatedInput() {
       return Achievements.truncateInput(this.input);
     },
@@ -140,7 +136,7 @@ export default {
       return this.inputIsValidTree || this.inputIsSecret;
     },
     inputIsValidTree() {
-      return true; // For now. I don't know if I'll need this
+      return Achievements.readPreset(this.truncatedInput)[1].length == 0;
     },
     inputIsSecret() {
       // The button to open the modal and the actual modal itself display two different strings;
@@ -186,7 +182,7 @@ export default {
           Achievements.enhanceFromPreset(this.truncatedInput)
           return;
         }
-        this.importTree();
+        this.importEnhancements();
       } else {
         this.savePreset();
       }
@@ -194,7 +190,18 @@ export default {
     formatInput() {
       this.input = Achievements.formatAchievementsList(this.input);
     },
-    importTree() {
+    fixInput() {
+      // Remove invalid ids from the preset text
+      if (!this.hasInput || Achievements.readPreset(this.truncatedInput)[1].length == 0) return;
+
+      let fixedString = `,${this.truncatedInput},`;
+      for (const id of Achievements.readPreset(this.truncatedInput)[1]) {
+        fixedString = fixedString.replaceAll(`,${id},`, `,`);
+      }
+
+      this.input = fixedString.slice(1, -1);
+    },
+    importEnhancements() {
       if (!this.inputIsValid) return;
       if (this.inputIsSecret) SecretAchievement(37).unlock();
       savedImportString = "";
@@ -215,8 +222,8 @@ export default {
       player.reality.enhancedPresets[this.id].name = "";
       GameUI.notify.reality(`${presetName} deleted from slot ${this.id + 1}`);
     },
-    studyString(study) {
-      return study instanceof ECTimeStudyState ? `EC${study.id}` : `${study.id}`;
+    achievementString(achievement) {
+      return `${achievement.id}`;
     }
   },
 };
@@ -248,42 +255,25 @@ export default {
         <div v-if="inputIsSecret">
           ???
         </div>
-        <template v-else-if="inputIsValidTree">
-          <!--
+        <template>
           <div
             v-if="invalidMessage"
             class="l-modal-import-tree__tree-info-line"
             v-html="invalidMessage"
           />
-          <StudyStringLine
-            v-if="isImporting"
-            :tree="combinedTree"
-            :into-empty="false"
+          <div
+            v-if="achievementsList"
+            class="l-modal-import-tree__tree-info-line"
+            v-html="achievementsList"
           />
-          <StudyStringLine
-            :tree="importedTree"
-            :into-empty="true"
-          />
-          <StudyTreeInfo
-            v-if="deleting && importedTree.hasInfo"
-            header-text="Study Preset contains:"
-            :tree-status="importedTree"
-          />
-          <StudyTreeInfo
-            v-if="!deleting && !isImporting && importedTree.hasInfo"
-            header-text="Status after loading with <b>no studies</b>:"
-            :tree-status="importedTree"
-          />
-          <StudyTreeInfo
-            v-if="!deleting && combinedTree.hasInfo"
-            header-text="Status after loading with <b>current tree</b>:"
-            :tree-status="combinedTree"
-          />
-          -->
         </template>
-        <div v-if="!deleting && !inputIsValidTree && hasInput">
-          Not a valid tree
-        </div>
+        <PrimaryButton 
+          v-if="!deleting && !inputIsValidTree && hasInput"
+          v-tooltip="'This will remove the invalid IDs in your preset.'"
+          @click="fixInput"
+        >
+          Fix preset
+        </PrimaryButton>
       </div>
       <!--
       <div class="c-study-preview">
