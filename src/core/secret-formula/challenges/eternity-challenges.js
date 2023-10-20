@@ -92,7 +92,7 @@ export const eternityChallenges = [
       effect: completions => completions * 0.2,
       formatEffect: value => {
         const total = Math.round(Player.dimensionMultDecrease + Effects.sum(EternityChallenge(6).reward)) - 
-          Effects.sum(Achievement(81), Achievement(81).enhancedEffect) - value;
+          Effects.sum(Achievement(11).enhancedEffect, Achievement(81), Achievement(81).enhancedEffect) - value;
         return `-${format(value, 2, 1)} (${formatX(total, 2, 2)} total)`;
       }
     },

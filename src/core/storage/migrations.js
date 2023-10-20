@@ -432,10 +432,10 @@ export const migrations = {
       // The Happy V-Day version
       player.records.timeSinceLastReset = 0;
       
-      player.reality.enhancedPresets = new Array(6).fill({
+      player.reality.enhancedPresets = new Array.range(0, 6).map(() => {return {
         name: "",
         enhancements: "",
-      });
+      }});
       // These values are no longer stored in player, but instead calculated in Achievements
       delete player.reality.maxEnhancedRow;
       delete player.reality.enhancementPoints;

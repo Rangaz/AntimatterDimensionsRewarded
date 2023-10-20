@@ -6,8 +6,8 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Fix Tickspeed single purchase bug <DONE>
--Make Er22 free <DONE>
+-Find out about naming presets <DONE>
+-Make Enhancing all of row 1 also decrease Post Infinity Cost Scaling <DONE>
 */
 
 export const normalAchievements = [
@@ -20,7 +20,14 @@ export const normalAchievements = [
     get reward() { return `1st Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
     enhanced: {
       get reward() { return `1st Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(2)}.`}
+        their initial cost scaling is ${formatX(2)}. If this row is fully Enhanced, decrease
+        post-infinity cost scaling for Antimatter Dimensions by -${format(0.01, 2, 2)}.`},
+      effect: () => {
+        for (let i = 1; i <= 8; i++) {
+          if (!Achievement(10 + i).isEnhanced) return 0;
+        }
+        return 0.01;
+      }
     }
   },
   {

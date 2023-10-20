@@ -176,6 +176,7 @@ export function secondSoftReset(enteringAntimatterChallenge, enteringC10OrIC1) {
   if (player.replicanti.unl) Replicanti.amount = DC.D1;
   player.replicanti.galaxies = 0;
   player.records.timeSinceLastReset = 0;
+  player.records.timeWithExcessAMProd = 0;
   player.records.thisInfinity.time = 0;
   player.records.thisInfinity.lastBuyTime = 0;
   player.records.thisInfinity.realTime = 0;

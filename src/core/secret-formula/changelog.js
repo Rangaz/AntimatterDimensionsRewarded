@@ -33,6 +33,8 @@ export const changelog = [
     <br>
     <b>Post release changes:</b>
     <ul>
+    <li>(19/10) Fully Enhancing row 1 Achievements now reduces post-infinity cost scaling of Antimatter Dimensions by -0.01.</li>
+    <li>(19/10) Fixed Enhancement Presets not being initialized correctly after loading an older save.</li>
     <li>(18/10) Fixed typo causing the game to give errors when buying single Tickspeed Upgrades.</li>
     <li>(18/10) Achievement 22 can now be Enhanced for free, meaning it won't count as an Enhanced Achievement.</li>
     `
