@@ -165,10 +165,11 @@ export default {
       // I think this has to have different values every time in order to update the speed.
       const randVar = Math.random() / 10;
       if (this.currentNews && this.currentNews.id === "a244") {
-        line.style.transform = `translateX(${randVar - 0.1})`;
+        line.style.transform = `translateX(${randVar - 0.1}%)`;
       } else {
         line.style.transform = `translateX(-${randVar + 100}%)`;
       }
+      console.log(line.style["transition-property"]);
       this.clearTimeouts();
       this.scrollTimeout = setTimeout(this.prepareNextMessage.bind(this), scrollDuration * 1000);
     },
@@ -177,9 +178,10 @@ export default {
       const line = this.$refs.line;
       this.timeAtNewsUpdate = Date.now();
 
-      line.style["transition-duration"] = "0s";
+      line.style["transition-duration"] = "0.5s";
+      line.style.transform = `translateX(-100%) scaleY(0.01)`;
       this.clearTimeouts();
-      this.prepareNextMessage();
+      this.scrollTimeout = setTimeout(this.prepareNextMessage.bind(this), 500);
     }
   }
 };

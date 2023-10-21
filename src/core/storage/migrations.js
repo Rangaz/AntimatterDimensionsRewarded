@@ -423,10 +423,7 @@ export const migrations = {
     30: player => {
       // The enhanced achievements version
       player.reality.enhancedAchievements = new Set();
-      //player.reality.enhancementPoints = 0;
-      //player.reality.totalEnhancementPoints = 0;
       player.reality.disEnhance = false;
-      //player.reality.maxEnhancedRow = 4; No longer needed here
     },
     31: player => {
       // The Happy V-Day version

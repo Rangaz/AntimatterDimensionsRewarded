@@ -20,14 +20,21 @@ export const changelog = [
     <ul>
     <li>Editing presets now show you an ordered list of what Achievements the preset can Enhannce.</li>
     <li>Invalid IDs are now detected and can be automatically removed with the 'Fix preset' button.</li>
+    <li>(21/10) Decimal values are now considered invalid IDs.</li>
     <li>The 'Format Preset Text' button is improved.</li>
+    <li>(21/10) The edit preset modal now warns you if Achievements 57 or 88 are in the preset but not
+    their requirements.</li>
     <li>Coming soon: A warning when the preset can't Enhance all Achievements.</li>
-    <li>Coming soon: A visual preview f the Achievements the preset can Enhance.</li>
-    </ul>
+    <li>Coming soon: A visual preview of the Achievements the preset can Enhance.</li>
+    </ul>o
     <br>
     <br>
     <b>Other changes:</b>
     <ul>
+    <li>(21/10) Enhancing Achievements 57 or 88 will automatically Enhance their required Achievements, and
+    can't be Enhanced if this can't be done.</li>
+    <li>(21/10) Skipping a news message now plays a little animation.</li>
+    <li>(21/10) Achievement 155 now also disables the 5 second penalty after unpausing a Black Hole.</li>
     <li>Achievement 47 can no longer be Enhanced if you haven't unlocked Teresa.</li>
     <li>Enhanced Achievement 66 has a bigger multiplier per Galaxy (x10 ➜ x16).</li>
     </ul>

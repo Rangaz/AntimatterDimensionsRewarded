@@ -6,16 +6,20 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Make better Enhancement presets <IN PROGRESS>
+-Make better edit Enhancement presets <IN PROGRESS>
   ->Display a list of Achievements that will be Enhanced if loading the preset <DONE>
   ->Show if there are invalid Achievement ids <DONE>
   ->Show a Fix button if there are invalid ids <DONE>
-  ->Show if not all Achievements can be Enhanced
+  ->Show if not all Achievements can be Enhanced <NEXT>
   ->Add a preview
+-Make preset text hopefully shorter
+  ->Make 'Row x' be parsed as the entire row x
+  ->Make 'aa-bb' be parsed as the Achievements aa, bb, and every other one between aa and bb
 -Disallow Achievement 47 from being Enhanced if you don't have Teresa unlocked <DONE>
--Make Enhancing Achievements 57 & 88 try to Enhance their required Achievements
-  ->Make presets silently fix it
+-Make Enhancing Achievements 57 & 88 try to Enhance their required Achievements <DONE>
+  ->Make presets warn if some of them are missing <DONE>
 -Allow only hiding completed & unenhancable Achievement rows
+-Make the 'show fast forward button' in Options not appear if you don't have r22 <DONE>
 */
 
 export const normalAchievements = [
@@ -751,16 +755,17 @@ export const normalAchievements = [
     },
     effect: 0.1,
     enhanced: {
-      get reward() { return  Achievement(32).isEnhanced ? `Dimensional Sacrifice is mildly stronger.
+      get reward() { return `Dimensional Sacrifice is mildly stronger.
         ${Sacrifice.getSacrificeDescription({ "Achievement57": true, "Enhancement57": false, 
         "Achievement88": true, "Enhancement88": false})} ➜
-        ${Sacrifice.getSacrificeDescription({ "Achievement57": false, "Enhancement57": true, 
-        "Achievement88": true, "Enhancement88": false})}` :
-        `Enhance Achievement 32 to unlock this effect.`;
+        ${Sacrifice.getSacrificeDescription({ "Achievement32": false, "Enhancement32": true, "Achievement57": false, 
+        "Enhancement57": true, "Achievement88": true, "Enhancement88": false})}. 
+        This requires Achievement 32 to be Enhanced.`;
       },
       // I don't want order to matter for Achievement Enhancement, but I want this, and Er88's effect,
-      // to be applied only if r32 is enhanced, so that the display works. 
+      // to be applied only if r32 is enhanced. 
       // So, if r32 is not enhanced, this is a debuff.
+      // The Enhancing logic prevents this from happening now.
       effect: 0.16,
       effectCondition: () => Achievement(32).isEnhanced
     }
@@ -1232,10 +1237,11 @@ export const normalAchievements = [
     effect: 0.1,
     enhanced: {
       get reward() {
-        return Achievement(32).isEnhanced && Achievement(57).isEnhanced ? `Dimensional Sacrifice is mildly stronger.
+        return `Dimensional Sacrifice is mildly stronger.
           ${Sacrifice.getSacrificeDescription({ "Achievement88": true, "Enhancement88": false})} ➜
-          ${Sacrifice.getSacrificeDescription({ "Achievement88": false, "Enhancement88": true})}` :
-          `Enhance Achievements 32 and 57 to unlock this effect.`;
+          ${Sacrifice.getSacrificeDescription({ "Achievement32": false, "Enhancement32": true, 
+          "Achievement57": false, "Enhancement57": true, "Achievement88": false, "Enhancement88": true})}. 
+          This requires Achievements 32 and 57 to be Enhanced.`;
       },
       effect: 0.16
     }
@@ -1986,7 +1992,8 @@ export const normalAchievements = [
     get description() { return `Play for ${formatFloat(13.7, 1)} billion years.`; },
     checkRequirement: () => Time.totalTimePlayed.totalYears > 13.7e9,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `Black Hole durations are ${formatPercents(0.1)} longer.`; },
+    get reward() { return `Black Hole durations are ${formatPercents(0.1)} longer, 
+      and remove the ${formatInt(5)} second unpause penalty.`; },
     effect: 1.1
   },
   {
