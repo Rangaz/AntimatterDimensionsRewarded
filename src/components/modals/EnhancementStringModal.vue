@@ -125,6 +125,26 @@ export default {
       return `Your import string has invalid achievement IDs: 
         ${coloredString.replaceAll("#", "").slice(1, -1).replaceAll(",", ", ")}<br><br>`;
     },
+
+    // Some Achievements, like 57 & 88, require other Achievements to be Enhanced.
+    // Warn if some of their requirements are missing in the preset.
+    warningMessage() {
+      if (!this.hasInput || !this.inputIsValidTree) return null;
+
+      const searchedString = `,${this.truncatedInput},`
+
+      if (searchedString.includes(",88,") && !searchedString.includes(",57,")) {
+        return "<span style='color: orange;'>Warning: Achievement 88 requires Achievement 57 to be Enhanced. " + 
+          "You may want to include 57 in your preset.</span>";
+      }
+
+      if (searchedString.includes(",57,") && !searchedString.includes(",32,")) {
+        return "<span style='color: orange;'>Warning: Achievement 57 requires Achievement 32 to be Enhanced. " + 
+          "You may want to include 32 in your preset.</span>";
+      }
+      // If it has reached this point it means that nothing's wrong.
+      return null;
+    },
     
     truncatedInput() {
       return Achievements.truncateInput(this.input);
@@ -262,9 +282,14 @@ export default {
             v-html="invalidMessage"
           />
           <div
-            v-if="achievementsList"
+          v-if="achievementsList"
+          class="l-modal-import-tree__tree-info-line"
+          v-html="achievementsList"
+          />
+          <div
+            v-if="warningMessage"
             class="l-modal-import-tree__tree-info-line"
-            v-html="achievementsList"
+            v-html="warningMessage"
           />
         </template>
         <PrimaryButton 

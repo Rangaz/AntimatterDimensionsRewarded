@@ -82,6 +82,17 @@ class AchievementState extends GameMechanicState {
     // Er47 doesn't work if Teresa isn't unlocked, so avoid Enhancing it
     if (this.id == 47 && !Teresa.isUnlocked) return false;
 
+    // Er57 requires Er32 first, so if there aren't enough Enhancement points to Enhance
+    // both this and r32, don't allow enhancing
+    if (this.id === 57 && !Achievement(32).isEnhanced && Achievements.enhancementPoints < 2) {
+      return false;
+    }
+    // Similar with Er88, that requires Er57 & Er32
+    if (this.id === 88 && Achievements.enhancementPoints <= (
+      !Achievement(32).isEnhanced + !Achievement(57).isEnhanced)) {
+      return false;
+    }
+
     return this.isUnlocked &&
       this.hasEnhancedEffect &&
       !this.isEnhanced &&
@@ -93,6 +104,19 @@ class AchievementState extends GameMechanicState {
 
   enhance() {
     if (!this.canEnhance) return;
+    // Enhancing Achievement 57 requires Enhancing Achievement 32, so do that if neccesary.
+    // The canEnhance() property already accounts for if this is possible beforehand.
+    if (this.id === 57 && !Achievement(32).isEnhanced) {
+      Achievement(32).enhance();
+      GameUI.notify.success("Achievement 32 has been automatically Enhanced");
+    }
+    // Similar logic with Er88
+    if (this.id === 88 && (!Achievement(32).isEnhanced || !Achievement(57).isEnhanced)) {
+      Achievement(32).enhance();
+      Achievement(57).enhance();
+      GameUI.notify.success("Achievements 32 and 57 have been automatically Enhanced");
+    }
+
     // Enhancing Achievement 81 affects post-infinity scaling, and so does Er11.
     // However, since Er11 activates this effect only if the entire first row is Enhanced, 
     // any row 1 Achievement could trigger this.
@@ -103,7 +127,6 @@ class AchievementState extends GameMechanicState {
       player.eternityPoints = player.eternityPoints.plus(DC.E40.powEffectOf(Achievement(55).enhancedEffect));
     }
     player.reality.enhancedAchievements.add(this.id);
-    //player.reality.enhancementPoints -= 1;
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENT_ENHANCED);
   }
 
@@ -155,11 +178,6 @@ class AchievementState extends GameMechanicState {
     if (this.id === 148 || this.id === 166) {
       GameCache.staticGlyphWeights.invalidate();
     }
-    // You must have Enhancement points equal to your row 14+ achievements.
-    // But I'm no longer storing these in player. These variables are now
-    // handled by Achievements, and it's much cleaner that way.
-    //player.reality.totalEnhancementPoints = Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality);
-    //if (!this.isPreReality) player.reality.enhancementPoints++;
 
     if (auto) {
       GameUI.notify.reality(`Automatically unlocked: ${this.name}`);
@@ -262,6 +280,12 @@ export const Achievements = {
         invalidIds.push(i);
         continue;
       }
+      // Anything that isn't a whole number (for now) will be forbidden too
+      if (Number.parseInt(i).toString() != i) {
+        invalidIds.push(i);
+        continue;
+      }
+
       const achievement = Achievements.all.filter(a => a.id == Number.parseInt(i));
 
       // This is if i is a number but does not correspond to an existing Achievement
@@ -330,7 +354,6 @@ export const Achievements = {
     for (const achievement of enhancedAchievements) {
       achievement.disEnhance();
     }
-    //player.reality.enhancementPoints = player.reality.totalEnhancementPoints;
     player.reality.disEnhance = false;
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENTS_DISENHANCED);
   },

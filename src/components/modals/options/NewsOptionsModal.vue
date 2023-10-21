@@ -19,6 +19,7 @@ export default {
       AIChance: 0,
       speed: 1,
       includeAnimated: false,
+      isFForwardUnlocked: false,
       showFForward: false,
     };
   },
@@ -82,6 +83,7 @@ export default {
       this.AIChance = options.AIChance;
       this.speed = options.speed;
       this.includeAnimated = options.includeAnimated;
+      this.isFForwardUnlocked = Achievement(22).isUnlocked;
       this.showFForward = options.showFForward;
     },
     adjustSliderValueRepeatBuffer(value) {
@@ -144,6 +146,7 @@ export default {
       text="Animation Effects:"
     />
     <ModalOptionsToggleButton
+      v-if="isFForwardUnlocked"
       v-model="showFForward"
       class="o-primary-btn o-primary-btn--option-wide"
       text="Show fast forward button:"
