@@ -6,8 +6,16 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Find out about naming presets <DONE>
--Make Enhancing all of row 1 also decrease Post Infinity Cost Scaling <DONE>
+-Make better Enhancement presets <IN PROGRESS>
+  ->Display a list of Achievements that will be Enhanced if loading the preset <DONE>
+  ->Show if there are invalid Achievement ids <DONE>
+  ->Show a Fix button if there are invalid ids <DONE>
+  ->Show if not all Achievements can be Enhanced
+  ->Add a preview
+-Disallow Achievement 47 from being Enhanced if you don't have Teresa unlocked <DONE>
+-Make Enhancing Achievements 57 & 88 try to Enhance their required Achievements
+  ->Make presets silently fix it
+-Allow only hiding completed & unenhancable Achievement rows
 */
 
 export const normalAchievements = [
@@ -887,9 +895,9 @@ export const normalAchievements = [
     effect: () => DC.D0_95.pow(player.galaxies),
     formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
     enhanced: {
-      get reward() { return `Tickspeed is ${formatX(10)} as fast for every Antimatter, Replicanti, 
+      get reward() { return `Tickspeed is ${formatX(16)} as fast for every Antimatter, Replicanti, 
       and Tachyon Galaxy.`; },
-      effect: () => DC.E1.pow(player.galaxies + Replicanti.galaxies.total + 
+      effect: () => DC.D16.pow(player.galaxies + Replicanti.galaxies.total + 
         player.dilation.totalTachyonGalaxies).recip(),
       formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
     }
