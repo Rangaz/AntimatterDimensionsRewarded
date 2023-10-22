@@ -24,13 +24,18 @@ export const changelog = [
     <li>The 'Format Preset Text' button is improved.</li>
     <li>(21/10) The edit preset modal now warns you if Achievements 57 or 88 are in the preset but not
     their requirements.</li>
-    <li>Coming soon: A warning when the preset can't Enhance all Achievements.</li>
+    <li>(22/10) There's now a warning if the preset can't possibly Enhance all Achievements.</li>
+    <li>(22/10) There's now a warning if there are duplicate numbers in the preset.</li>
+    <li>Coming soon: Allowing "Row 1" and "11-18" notation in presets.</li>
     <li>Coming soon: A visual preview of the Achievements the preset can Enhance.</li>
-    </ul>o
+    </ul>
     <br>
     <br>
     <b>Other changes:</b>
     <ul>
+    <li>(22/10) Reworked Achievement 38! It now reads 
+    "8th Antimatter Dimensions are stronger the less sacrifices you have".</li>
+    <li>(22/10) Removed Sacrifice behavior concerning old Achievement 38.</li>
     <li>(21/10) Enhancing Achievements 57 or 88 will automatically Enhance their required Achievements, and
     can't be Enhanced if this can't be done.</li>
     <li>(21/10) Skipping a news message now plays a little animation.</li>
