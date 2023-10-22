@@ -102,19 +102,21 @@ class AchievementState extends GameMechanicState {
       !Pelle.isDisabled("enhancedAchievements");
   }
 
-  enhance() {
+  // The fromPreset argument is so that we can avoid notifications about Achievements being auto-Enhanced
+  // if we're using a preset. This is useful if, fo example, 57 is written before 32.
+  enhance(fromPreset = false) {
     if (!this.canEnhance) return;
     // Enhancing Achievement 57 requires Enhancing Achievement 32, so do that if neccesary.
     // The canEnhance() property already accounts for if this is possible beforehand.
     if (this.id === 57 && !Achievement(32).isEnhanced) {
       Achievement(32).enhance();
-      GameUI.notify.success("Achievement 32 has been automatically Enhanced");
+      if (!fromPreset) GameUI.notify.success("Achievement 32 has been automatically Enhanced");
     }
     // Similar logic with Er88
     if (this.id === 88 && (!Achievement(32).isEnhanced || !Achievement(57).isEnhanced)) {
       Achievement(32).enhance();
       Achievement(57).enhance();
-      GameUI.notify.success("Achievements 32 and 57 have been automatically Enhanced");
+      if (!fromPreset) GameUI.notify.success("Achievements 32 and 57 have been automatically Enhanced");
     }
 
     // Enhancing Achievement 81 affects post-infinity scaling, and so does Er11.
@@ -308,7 +310,7 @@ export const Achievements = {
 
   enhanceFromArray(achievementsToEnhance) {
     for (const achievement of achievementsToEnhance) {
-      achievement.enhance();
+      achievement.enhance(true);
     }
   },
 
