@@ -128,20 +128,50 @@ export default {
 
     // Some Achievements, like 57 & 88, require other Achievements to be Enhanced.
     // Warn if some of their requirements are missing in the preset.
+    // Also warn if your preset has more Achievements than you can Enhance
     warningMessage() {
       if (!this.hasInput || !this.inputIsValidTree) return null;
 
       const searchedString = `,${this.truncatedInput},`
 
       if (searchedString.includes(",88,") && !searchedString.includes(",57,")) {
-        return "<span style='color: orange;'>Warning: Achievement 88 requires Achievement 57 to be Enhanced. " + 
-          "You may want to include 57 in your preset.</span>";
+        return "Warning: Achievement 88 requires Achievement 57 to be Enhanced. " + 
+          "You may want to include 57 in your preset.";
       }
 
       if (searchedString.includes(",57,") && !searchedString.includes(",32,")) {
-        return "<span style='color: orange;'>Warning: Achievement 57 requires Achievement 32 to be Enhanced. " + 
-          "You may want to include 32 in your preset.</span>";
+        return "Warning: Achievement 57 requires Achievement 32 to be Enhanced. " + 
+          "You may want to include 32 in your preset.";
       }
+
+      // An array with every Achievement id
+      const achievementsInString = searchedString.slice(1, -1).split(",");
+      const achievementAmount = achievementsInString.length;
+      // We want to look for duplicate ids, then display them
+      // I don't know if performance is going to be a problem here
+      const duplicates = [];
+      for (const id of achievementsInString) {
+        if (achievementsInString.indexOf(id) != achievementsInString.lastIndexOf(id)) {
+          duplicates.push(id);
+          // Removing the farthest duplicate helps in doing less comparisons, and
+          // avoid showing duplicate ids multiple times. They'll still appear more than
+          // once if they are repeated 3 or more times, but I doubt I'll have to worry about that.
+          achievementsInString.splice(achievementsInString.lastIndexOf(id), 1);
+          console.log(achievementsInString);
+        }
+      }
+      if (duplicates.length > 0) {
+        return `Warning: Your preset includes the following duplicated IDs: ${duplicates.join(", ")}.
+          You may want to remove the duplicates.`
+      }
+
+      // We calculate how many elements are in the preset
+      if (achievementAmount > Achievements.totalEnhancementPoints) {
+        return `Warning: Your preset includes ${formatInt(achievementAmount - 
+          Achievements.totalEnhancementPoints)} more Achievements than you can Enhance.
+          You may want to remove some IDs in your preset.`;
+      }
+
       // If it has reached this point it means that nothing's wrong.
       return null;
     },
@@ -289,6 +319,7 @@ export default {
           <div
             v-if="warningMessage"
             class="l-modal-import-tree__tree-info-line"
+            style="color:orange"
             v-html="warningMessage"
           />
         </template>
