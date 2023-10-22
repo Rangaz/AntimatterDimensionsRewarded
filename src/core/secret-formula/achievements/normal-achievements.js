@@ -21,7 +21,7 @@ TODO:
 -Allow only hiding completed & unenhancable Achievement rows
 -Make the 'show fast forward button' in Options not appear if you don't have r22 <DONE>
 -Rework r38 <DONE>
-  ->Remove old r38 logic
+  ->Remove old r38 logic <DONE>
 */
 
 export const normalAchievements = [
@@ -420,7 +420,7 @@ export const normalAchievements = [
     checkRequirement: () => player.requirementChecks.infinity.noSacrifice,
     checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
     reward: "8th Antimatter Dimensions are stronger the less sacrifices you have.",
-    effect: () => DC.E1.divide(Sacrifice.totalBoost.pow(0.25)).clampMin(1),
+    effect: () => DC.E1.divide(Sacrifice.totalBoost.pow(0.2)).clampMin(1),
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "8th Antimatter Dimensions are way stronger the less sacrifices you have.",

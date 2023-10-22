@@ -146,7 +146,9 @@ export default {
 
       // An array with every Achievement id
       const achievementsInString = searchedString.slice(1, -1).split(",");
-      const achievementAmount = achievementsInString.length;
+
+      // Since Achievement 22 is free, we need to account for that.
+      const achievementAmount = achievementsInString.length - achievementsInString.includes("22");
       // We want to look for duplicate ids, then display them
       // I don't know if performance is going to be a problem here
       const duplicates = [];
@@ -157,7 +159,6 @@ export default {
           // avoid showing duplicate ids multiple times. They'll still appear more than
           // once if they are repeated 3 or more times, but I doubt I'll have to worry about that.
           achievementsInString.splice(achievementsInString.lastIndexOf(id), 1);
-          console.log(achievementsInString);
         }
       }
       if (duplicates.length > 0) {
@@ -165,8 +166,8 @@ export default {
           You may want to remove the duplicates.`
       }
 
-      // We calculate how many elements are in the preset
-      if (achievementAmount > Achievements.totalEnhancementPoints) {
+      // We calculate how many elements are in the preset.
+      if (achievementAmount > (Achievements.totalEnhancementPoints)) {
         return `Warning: Your preset includes ${formatInt(achievementAmount - 
           Achievements.totalEnhancementPoints)} more Achievements than you can Enhance.
           You may want to remove some IDs in your preset.`;
