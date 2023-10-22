@@ -10,7 +10,7 @@ TODO:
   ->Display a list of Achievements that will be Enhanced if loading the preset <DONE>
   ->Show if there are invalid Achievement ids <DONE>
   ->Show a Fix button if there are invalid ids <DONE>
-  ->Show if not all Achievements can be Enhanced <NEXT>
+  ->Show if not all Achievements can be Enhanced <DONE>
   ->Add a preview
 -Make preset text hopefully shorter
   ->Make 'Row x' be parsed as the entire row x
@@ -20,6 +20,8 @@ TODO:
   ->Make presets warn if some of them are missing <DONE>
 -Allow only hiding completed & unenhancable Achievement rows
 -Make the 'show fast forward button' in Options not appear if you don't have r22 <DONE>
+-Rework r38 <DONE>
+  ->Remove old r38 logic
 */
 
 export const normalAchievements = [
@@ -417,16 +419,13 @@ export const normalAchievements = [
     },
     checkRequirement: () => player.requirementChecks.infinity.noSacrifice,
     checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
-    get reward() { return `8th Antimatter Dimensions are ${formatInt(10)} times stronger, 
-      but only if you have no sacrifices ${Sacrifice.totalBoost.gt(1) ? 
-      `(inactive)` : `(active)`}.`},
-    effect: DC.E1,
-    effectCondition: () => Sacrifice.totalBoost.lte(1),
+    reward: "8th Antimatter Dimensions are stronger the less sacrifices you have.",
+    effect: () => DC.E1.divide(Sacrifice.totalBoost.pow(0.25)).clampMin(1),
+    formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
-      get reward() { return `8th Antimatter Dimensions are ${formatPostBreak(DC.E45000)} times stronger, 
-      but only if you have no sacrifices.`},
-      effect: DC.E45000,
-      effectCondition: () => Sacrifice.totalBoost.lte(1),
+      reward: "8th Antimatter Dimensions are way stronger the less sacrifices you have.",
+      effect: () => DC.E22500.divide(Sacrifice.totalBoost.pow(0.001)).clampMin(10),
+      formatEffect: value => `${formatX(value, 2, 2)}`
     }
   },
   {
