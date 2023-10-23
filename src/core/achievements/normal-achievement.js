@@ -2,7 +2,6 @@ import { GameMechanicState } from "../game-mechanics";
 import { DC } from "../constants";
 import { SteamRuntime } from "@/steam";
 
-// I probably want this for my enhanced achievements
 class EnhancedAchievementState extends GameMechanicState {
   constructor(config, achievement) {
     super(config);
@@ -266,10 +265,58 @@ export const Achievements = {
     return VUnlocks.maxEnhancedRow.effectOrDefault(4);
   },
 
-  // Method used to read a preset
-  // Presets will have the form "11, 12, 13, 21, 23, 27, 32, 87",
-  // Achievement ids separated in commas, similar to how Time Study presets work.
-  // This function will also return errors to inform the player.
+  /** 
+   * Method used to interpret "row X", and eventually "aa-bb", into the achievement ids that correspond.
+   * This should go before readPreset() 
+   * @param {String} input 
+   * @returns {String}
+  */
+  parseInput(input) {
+    let parsedString = this.truncateInput(input);
+    // Looks at strings containing "row" and, either 1 and a digit, or a single digit
+    const rowsToParse = Array.from(parsedString.matchAll(/row\d+/g));
+    
+    for (const row of rowsToParse) {
+      const parsedRow = Array.range(0, 8).map(value => 
+        {return Number.parseInt(row.toString().slice(3)) * 10 + value + 1}
+      )
+      parsedString = parsedString.replace(row, parsedRow.toString());
+    }
+    return parsedString;
+  },
+
+  /** 
+   * Makes the preset get rid of whitespaces so that it's easier to read in readPreset()
+   * @param {String} input 
+   * @returns {String}
+  */
+  truncateInput(input) {
+    let internal = input.toLowerCase();
+    return internal
+      .trim()
+      .replace(/[|,]$/u, "")
+      .replaceAll(" ", "")
+      // Allows 11,,21 to be parsed as 11,21
+      .replace(/,{2,}/gu, ",")
+  },
+
+  /** Instead of "11,12,13,14,15,row2", it'll return "11, 12, 13, 14, 15, row 2"
+   * @param {String} input
+   * @returns {String}
+  */
+  formatAchievementsList(input) {
+    const internal = this.truncateInput(input);
+    return internal.replaceAll(",", ", ").replaceAll("row", "row ");
+  },
+
+  /** 
+   * Method used to read a preset
+   * Presets will have the form "11, 12, 13, 21, 23, 27, 32, 87",
+   * Achievement ids separated in commas, similar to how Time Study presets work.
+   * This function will also return errors to inform the player.
+   * @param {String} text 
+   * @returns {Array}
+   */
   readPreset(text) {
     const enhancementArray = text.split(",");
     let achievementsToEnhance = [];
@@ -333,22 +380,6 @@ export const Achievements = {
       presetString = presetString.slice(0, -1);
     }
     return presetString;
-  },
-
-  truncateInput(input) {
-    let internal = input.toLowerCase();
-    return internal
-      .trim()
-      .replace(/[|,]$/u, "")
-      .replaceAll(" ", "")
-      // Allows 11,,21 to be parsed as 11,21
-      .replace(/,{2,}/gu, ",")
-  },
-
-  // Instead of "11,12,13,14,15", it'll return "11, 12, 13, 14, 15"
-  formatAchievementsList(input) {
-    const internal = this.truncateInput(input);
-    return internal.replaceAll(",", ", ");
   },
 
   disEnhanceAll() {
