@@ -40,65 +40,6 @@ export default {
     isImporting() {
       return this.id === -1;
     },
-    /*
-    // This represents the state reached from importing into an empty tree
-    importedTree() {
-      if (!this.inputIsValidTree) return {};
-      const importedTree = new TimeStudyTree(this.truncatedInput);
-      const newStudiesArray = importedTree.purchasedStudies.map(s => this.studyString(s));
-      return {
-        timeTheorems: importedTree.spentTheorems[0],
-        spaceTheorems: importedTree.spentTheorems[1],
-        newStudies: makeEnumeration(newStudiesArray),
-        newStudiesArray,
-        invalidStudies: importedTree.invalidStudies,
-        firstPaths: makeEnumeration(importedTree.dimensionPaths),
-        secondPaths: makeEnumeration(importedTree.pacePaths),
-        ec: importedTree.ec,
-        startEC: importedTree.startEC,
-        hasInfo: makeEnumeration(importedTree.dimensionPaths) || importedTree.ec > 0,
-      };
-    },
-    */
-    /*
-    // This is only shown when importing; when modifying a preset we assume that generally the current state of the
-    // tree is irrelevant because if it mattered then the player would simply import instead
-    combinedTree() {
-      if (!this.inputIsValidTree) return {};
-      const currentStudyTree = GameCache.currentStudyTree.value;
-      const combinedTree = this.combinedTreeObject;
-      const newStudiesArray = combinedTree.purchasedStudies
-        .filter(s => !currentStudyTree.purchasedStudies.includes(s)).map(s => this.studyString(s));
-      // To start an EC using the ! functionality, we want to make sure all the following are true:
-      // - The imported string needs to end with "!" (this is parsed out in time-study-tree.js and stored into the
-      //   canStart prop for tree objects)
-      // - We can unlock the EC in the string. This requires either no EC currently unlocked, or we coincidentally
-      //   already have it unlocked
-      // - The ECs in the tree object and the import string MUST match; the only EC we want to try to enter is the
-      //   one which is being imported, and the tree object will contain a different EC if we already have one
-      const stringEC = TimeStudyTree.getECFromString(this.truncatedInput);
-      const hasExclamationPoint = combinedTree.startEC;
-      const canUnlockEC = [0, stringEC].includes(player.challenge.eternity.current);
-      const hasECMismatch = combinedTree.ec !== stringEC;
-      return {
-        timeTheorems: combinedTree.spentTheorems[0] - currentStudyTree.spentTheorems[0],
-        spaceTheorems: combinedTree.spentTheorems[1] - currentStudyTree.spentTheorems[1],
-        newStudies: makeEnumeration(newStudiesArray),
-        newStudiesArray,
-        firstPaths: makeEnumeration(combinedTree.dimensionPaths),
-        secondPaths: makeEnumeration(combinedTree.pacePaths),
-        ec: combinedTree.ec,
-        startEC: hasExclamationPoint && canUnlockEC && !hasECMismatch,
-        hasInfo: makeEnumeration(combinedTree.dimensionPaths) || combinedTree.ec > 0,
-      };
-    },
-    combinedTreeObject() {
-      const combinedTree = new TimeStudyTree();
-      combinedTree.attemptBuyArray(TimeStudyTree.currentStudies, false);
-      combinedTree.attemptBuyArray(combinedTree.parseStudyImport(this.truncatedInput), true);
-      return combinedTree;
-    },
-    */
     modalTitle() {
       if (this.deleting) return `Deleting Enhancement Preset "${this.name}"`;
       return this.isImporting ? "Input your Enhancements" : `Editing Enhancement Preset "${this.name}"`;
@@ -106,7 +47,7 @@ export default {
 
     achievementsList() {
       if (!this.hasInput || !this.inputIsValidTree) return null;
-      const achievementsList = this.truncatedInput.split(",").sort().join(", ");
+      const achievementsList = this.parsedInput.split(",").sort().join(", ");
       return "Importing without Enhancements will Enhance Achievements: " + achievementsList;
     },
     
@@ -115,10 +56,10 @@ export default {
       // Pad the input with non-digits which we remove later in order to not cause erroneous extra matches within IDs
       // and limit the string length to stop excessive UI stretch.
       // The extra ',' allow to properly find the ids if they are at the start or end of the string.
-      let coloredString = `#,${this.truncatedInput},#`;
+      let coloredString = `#,${this.parsedInput},#`;
       if (coloredString.length > 300) coloredString = `${coloredString.slice(0, 297)}...`;
 
-      for (const id of Achievements.readPreset(this.truncatedInput)[1]) {
+      for (const id of Achievements.readPreset(this.parsedInput)[1]) {
         coloredString = coloredString.replaceAll(`,${id},`,
               `,<span style="color: var(--color-bad);">${id}</span>,`);
       }
@@ -132,7 +73,7 @@ export default {
     warningMessage() {
       if (!this.hasInput || !this.inputIsValidTree) return null;
 
-      const searchedString = `,${this.truncatedInput},`
+      const searchedString = `,${this.parsedInput},`
 
       if (searchedString.includes(",88,") && !searchedString.includes(",57,")) {
         return "Warning: Achievement 88 requires Achievement 57 to be Enhanced. " + 
@@ -180,6 +121,9 @@ export default {
     truncatedInput() {
       return Achievements.truncateInput(this.input);
     },
+    parsedInput() {
+      return Achievements.parseInput(this.truncatedInput);
+    },
     hasInput() {
       return this.truncatedInput !== "";
     },
@@ -187,7 +131,7 @@ export default {
       return this.inputIsValidTree || this.inputIsSecret;
     },
     inputIsValidTree() {
-      return Achievements.readPreset(this.truncatedInput)[1].length == 0;
+      return Achievements.readPreset(this.parsedInput)[1].length == 0;
     },
     inputIsSecret() {
       // The button to open the modal and the actual modal itself display two different strings;
@@ -227,10 +171,8 @@ export default {
       } else if (this.isImporting) {
         if (this.respecAndLoad && this.canReality) {
           player.reality.disEnhance = true;
-          //const tree = new TimeStudyTree(this.truncatedInput);
-          //animateAndEternity(() => TimeStudyTree.commitToGameState(tree.purchasedStudies, false, tree.startEC));
           autoReality();
-          Achievements.enhanceFromPreset(this.truncatedInput)
+          Achievements.enhanceFromPreset(this.parsedInput)
           return;
         }
         this.importEnhancements();
@@ -243,10 +185,24 @@ export default {
     },
     fixInput() {
       // Remove invalid ids from the preset text
-      if (!this.hasInput || Achievements.readPreset(this.truncatedInput)[1].length == 0) return;
+      if (!this.hasInput || Achievements.readPreset(this.parsedInput)[1].length == 0) return;
 
       let fixedString = `,${this.truncatedInput},`;
-      for (const id of Achievements.readPreset(this.truncatedInput)[1]) {
+      // First remove invalid "row X"s
+      const allRows = Array.from(fixedString.matchAll(/row\d+/g))
+      let invalidRows = allRows.map(value => {
+        return value.toString().slice(3);
+      });
+
+      for (const rowId of invalidRows) {
+        if (1 <= Number.parseInt(rowId) && Number.parseInt(rowId) <= Achievements.maxEnhancedRow) {
+          
+          continue;
+        }
+        fixedString = fixedString.replaceAll(`,row${rowId},`, `,`);
+      }
+
+      for (const id of Achievements.readPreset(Achievements.parseInput(fixedString))[1]) {
         fixedString = fixedString.replaceAll(`,${id},`, `,`);
       }
 

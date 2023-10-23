@@ -12,8 +12,8 @@ TODO:
   ->Show a Fix button if there are invalid ids <DONE>
   ->Show if not all Achievements can be Enhanced <DONE>
   ->Add a preview
--Make preset text hopefully shorter
-  ->Make 'Row x' be parsed as the entire row x
+-Make preset text hopefully shorter <IN PROGRESS>
+  ->Make 'Row x' be parsed as the entire row x <DONE>
   ->Make 'aa-bb' be parsed as the Achievements aa, bb, and every other one between aa and bb
 -Disallow Achievement 47 from being Enhanced if you don't have Teresa unlocked <DONE>
 -Make Enhancing Achievements 57 & 88 try to Enhance their required Achievements <DONE>
@@ -22,6 +22,7 @@ TODO:
 -Make the 'show fast forward button' in Options not appear if you don't have r22 <DONE>
 -Rework r38 <DONE>
   ->Remove old r38 logic <DONE>
+-Add asaned's mobile friendly Glyph option as an option <NEXT>
 */
 
 export const normalAchievements = [
