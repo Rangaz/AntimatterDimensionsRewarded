@@ -522,15 +522,12 @@ window.player = {
     partEternitied: DC.D0,
     autoAchieve: true,
     gainedAutoAchievements: true,
-    //totalEnhancementPoints: 0,
-    //enhancementPoints: 0,
     disEnhance: false,
     enhancedAchievements: new Set(),
     enhancedPresets: new Array(6).fill({
       name: "",
       enhancements: "",
     }),
-    //maxEnhancedRow: 4,
     automator: {
       state: {
         mode: AUTOMATOR_MODE.STOP,
@@ -825,6 +822,7 @@ window.player = {
     saveFileName: "",
     exportedFileCount: 0,
     hideCompletedAchievementRows: false,
+    mobileFriendlyGlyphs: false,
     glyphTextColors: true,
     headerTextColored: false,
     showNewGlyphIcon: true,
