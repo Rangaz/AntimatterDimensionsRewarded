@@ -22,7 +22,7 @@ TODO:
 -Make the 'show fast forward button' in Options not appear if you don't have r22 <DONE>
 -Rework r38 <DONE>
   ->Remove old r38 logic <DONE>
--Add asaned's mobile friendly Glyph option as an option <NEXT>
+-Add asaned's mobile friendly Glyph option as an option <DONE>
 */
 
 export const normalAchievements = [
