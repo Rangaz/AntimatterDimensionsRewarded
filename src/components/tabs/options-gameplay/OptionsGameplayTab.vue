@@ -20,7 +20,9 @@ export default {
       offlineSlider: 0,
       offlineTicks: 0,
       automaticTabSwitching: false,
+      mobileFriendlyGlyphs: false,
       infinityUnlocked: false,
+      realityUnlocked: false,
       automatorUnlocked: false,
       automatorLogSize: 0,
     };
@@ -61,6 +63,9 @@ export default {
     automaticTabSwitching(newValue) {
       player.options.automaticTabSwitching = newValue;
     },
+    mobileFriendlyGlyphs(newValue) {
+      player.options.mobileFriendlyGlyphs = newValue;
+    },
     automatorLogSize(newValue) {
       player.options.automatorEvents.maxEntries = parseInt(newValue, 10);
     },
@@ -80,7 +85,9 @@ export default {
       this.hotkeys = options.hotkeys;
       this.offlineTicks = player.options.offlineTicks;
       this.automaticTabSwitching = options.automaticTabSwitching;
+      this.mobileFriendlyGlyphs = options.mobileFriendlyGlyphs;
       this.infinityUnlocked = PlayerProgress.current.isInfinityUnlocked;
+      this.realityUnlocked = PlayerProgress.realityUnlocked();
       this.automatorUnlocked = Player.automatorUnlocked;
       this.automatorLogSize = options.automatorEvents.maxEntries;
     },
@@ -158,6 +165,14 @@ export default {
             :value="automatorLogSize"
             @input="adjustSliderValueAutomatorLogSize($event)"
           />
+        </div>
+        <div>
+          <PrimaryToggleButton
+          v-if="realityUnlocked"
+          v-model="mobileFriendlyGlyphs"
+          class="o-primary-btn--option l-options-grid__button"
+          label="Mobile friendly Glyphs:"
+        />
         </div>
       </div>
       <OpenModalHotkeysButton />
