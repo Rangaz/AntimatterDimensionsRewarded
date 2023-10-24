@@ -27,7 +27,7 @@ export const changelog = [
     <li>(22/10) There's now a warning if the preset can't possibly Enhance all Achievements.</li>
     <li>(22/10) There's now a warning if there are duplicate numbers in the preset.</li>
     <li>(23/10) You can now use "Row 1" notation in presets.</li>
-    <li>Coming soon: Allowing "11-18" notation in presets.</li>
+    <li>(24/10) You can now use "11-18" notation in presets.</li>
     <li>Coming soon: A visual preview of the Achievements the preset can Enhance.</li>
     </ul>
     <br>
@@ -35,6 +35,7 @@ export const changelog = [
     <b>Other changes:</b>
     <ul>
     <li>Coming soon: An option to hide Achievement rows that are both completed and can't be Enhanced.</li>
+    <li>(24/10) Enhanced Achievement 21 is now affected by Time Study 31.</li>
     <li>(23/10) Added an option taht allows to pick Glyphs on mobile (thanks asaned!).</li>
     <li>(22/10) Reworked Achievement 38! It now reads 
     "8th Antimatter Dimensions are stronger the less sacrifices you have".</li>
