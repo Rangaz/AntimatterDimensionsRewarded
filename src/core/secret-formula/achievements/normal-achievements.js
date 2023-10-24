@@ -141,8 +141,14 @@ export const normalAchievements = [
     effect: 200,
     enhanced: {
       get reward() { return `Multiply starting Antimatter by your Infinity amount.`},
-      effect: () => Currency.infinitiesTotal.value.clampMin(1).powEffectOf(Achievement(55).enhancedEffect),
-      formatEffect: value => `${formatX(value, 2, 2)}`
+      effect: () => Currency.infinitiesTotal.value.clampMin(1).powEffectsOf(Achievement(55).enhancedEffect, TimeStudy(31)),
+      formatEffect: value => {
+        // Since TS31 is already accounted for in the effect prop, we need to "undo" it to display the base value here
+        const mult = formatX(value, 2, 2);
+        return TimeStudy(31).canBeApplied
+          ? `${formatX(value.pow(1 / TimeStudy(31).effectValue), 2, 1)} (After TS31: ${mult})`
+          : mult;
+      }
     }
   },
   {
