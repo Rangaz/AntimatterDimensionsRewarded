@@ -188,8 +188,29 @@ export default {
       if (!this.hasInput || Achievements.readPreset(this.parsedInput)[1].length == 0) return;
 
       let fixedString = `,${this.truncatedInput},`;
-      // First remove invalid "row X"s
-      const allRows = Array.from(fixedString.matchAll(/row\d+/g))
+      // First fix invalid "rows a-b"s
+      const allGroupedRows = Array.from(fixedString.matchAll(/rows?\d+-\d+/g));
+      for (const groupedRow of allGroupedRows) {
+        let boundaries = groupedRow.toString().slice(3 + groupedRow.toString().includes("s")).split("-");
+        // If the group is inversed, flip it
+        if (Number.parseInt(boundaries[0]) > Number.parseInt(boundaries[1])) {
+          boundaries.reverse();
+        }
+        // If the left boundary is already too high, we'll remove the entire group.
+        // If the right boundary is too high, we can fix that.
+        if (Number.parseInt(boundaries[0]) > Achievements.maxEnhancedRow) {
+          fixedString = fixedString.replaceAll(`,${groupedRow},`, `,`);
+          continue;
+        }
+        if (Number.parseInt(boundaries[1]) > Achievements.maxEnhancedRow) {
+          const fixedGroupedRow = "row" + boundaries[0].toString() + "-" + Achievements.maxEnhancedRow;
+          fixedString = fixedString.replaceAll(groupedRow.toString(), fixedGroupedRow);
+        }
+      }
+
+
+      // Next remove invalid "row X"s
+      const allRows = Array.from(fixedString.matchAll(/row\d+/g));
       let invalidRows = allRows.map(value => {
         return value.toString().slice(3);
       });
@@ -200,6 +221,27 @@ export default {
           continue;
         }
         fixedString = fixedString.replaceAll(`,row${rowId},`, `,`);
+      }
+
+      // Then we fix invalid "aa-bb"s. Because of how they work, they only give errors
+      // if the Achievements they refer to can't be Enhanced
+      const allGroups = Array.from(fixedString.matchAll(/\d+-\d+/g));
+      for (const group of allGroups) {
+        let boundaries = group.toString().split("-");
+        // If the group is inversed, flip it
+        if (Number.parseInt(boundaries[0]) > Number.parseInt(boundaries[1])) {
+          boundaries.reverse();
+        }
+        // If the left boundary is already too high, we'll remove the entire group.
+        // If the right boundary is too high, we can fix that.
+        if (Number.parseInt(boundaries[0]) > Achievements.maxEnhancedRow * 10 + 8) {
+          fixedString = fixedString.replaceAll(`,${group},`, `,`);
+          continue;
+        }
+        if (Number.parseInt(boundaries[1]) > Achievements.maxEnhancedRow * 10 + 8) {
+          const fixedGroup = boundaries[0].toString() + "-" + Achievements.maxEnhancedRow + "9";
+          fixedString = fixedString.replaceAll(group.toString(), fixedGroup);
+        }
       }
 
       for (const id of Achievements.readPreset(Achievements.parseInput(fixedString))[1]) {
