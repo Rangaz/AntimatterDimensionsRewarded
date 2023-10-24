@@ -272,8 +272,26 @@ export const Achievements = {
    * @returns {String}
   */
   parseInput(input) {
+    const ROW_LIMIT = 20;
+    const GROUP_LIMIT = 200;
     let parsedString = this.truncateInput(input);
-    // Looks at strings containing "row" and, either 1 and a digit, or a single digit
+    // Grouped rows refer to "row 1-4" or "rows 1-4" notation.
+    // This is parsed first as "row 1, row 2, row 3, row 4", so later those rows get parsed.
+    const groupedRowsToParse = Array.from(parsedString.matchAll(/rows?\d+-\d+/g));
+    for (const groupedRow of groupedRowsToParse) {
+      // The "s" in "rowS" must be accounted for to slice correctly
+      const boundaries = groupedRow.toString().slice(3 + groupedRow.toString().includes("s")).split("-");
+      const potentialRows = Array.range(Math.min(Number.parseInt(boundaries[0]), Number.parseInt(boundaries[1])), 
+        Math.clampMax(Math.abs(Number.parseInt(boundaries[1]) - Number.parseInt(boundaries[0])) + 1, ROW_LIMIT));
+      let parsedGroupedRows = "";
+      potentialRows.forEach(value => {
+        parsedGroupedRows += "row" + value + ",";
+      })
+      // parsedGroupedRows ends in a ",", we should remove it
+      parsedString = parsedString.replace(groupedRow, parsedGroupedRows.slice(0, -1));
+    }
+
+    // Looks at strings containing "row" and some amount of digits
     const rowsToParse = Array.from(parsedString.matchAll(/row\d+/g));
     
     for (const row of rowsToParse) {
@@ -282,6 +300,27 @@ export const Achievements = {
       )
       parsedString = parsedString.replace(row, parsedRow.toString());
     }
+
+    // Looks at strings containing digits surrounding a "-"
+    const groupsToParse = Array.from(parsedString.matchAll(/\d+-\d+/g));
+
+    for (const group of groupsToParse) {
+      const boundaries = group.toString().split("-");
+
+      // We want to avoid unnecesarily expensive operations if by mistake you write 11-3437
+      // We also want something like "66-61" to be valid
+      const potentialIds = Array.range(Math.min(Number.parseInt(boundaries[0]), Number.parseInt(boundaries[1])), 
+        Math.clampMax(Math.abs(Number.parseInt(boundaries[1]) - Number.parseInt(boundaries[0])) + 1, GROUP_LIMIT));
+      let parsedGroup = [];
+      for (const id of potentialIds) {
+        if (Achievement(id) != undefined) parsedGroup.push(id);
+      }
+      // If the group contains no Achievements, don't parse it so that it's displayed as an error
+      if (parsedGroup.length == 0) continue;
+
+      parsedString = parsedString.replace(group, parsedGroup.toString());
+    }
+
     return parsedString;
   },
 
