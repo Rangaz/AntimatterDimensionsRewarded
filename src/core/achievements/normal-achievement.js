@@ -2,7 +2,6 @@ import { GameMechanicState } from "../game-mechanics";
 import { DC } from "../constants";
 import { SteamRuntime } from "@/steam";
 
-// I probably want this for my enhanced achievements
 class EnhancedAchievementState extends GameMechanicState {
   constructor(config, achievement) {
     super(config);
@@ -102,19 +101,21 @@ class AchievementState extends GameMechanicState {
       !Pelle.isDisabled("enhancedAchievements");
   }
 
-  enhance() {
+  // The fromPreset argument is so that we can avoid notifications about Achievements being auto-Enhanced
+  // if we're using a preset. This is useful if, fo example, 57 is written before 32.
+  enhance(fromPreset = false) {
     if (!this.canEnhance) return;
     // Enhancing Achievement 57 requires Enhancing Achievement 32, so do that if neccesary.
     // The canEnhance() property already accounts for if this is possible beforehand.
     if (this.id === 57 && !Achievement(32).isEnhanced) {
       Achievement(32).enhance();
-      GameUI.notify.success("Achievement 32 has been automatically Enhanced");
+      if (!fromPreset) GameUI.notify.success("Achievement 32 has been automatically Enhanced");
     }
     // Similar logic with Er88
     if (this.id === 88 && (!Achievement(32).isEnhanced || !Achievement(57).isEnhanced)) {
       Achievement(32).enhance();
       Achievement(57).enhance();
-      GameUI.notify.success("Achievements 32 and 57 have been automatically Enhanced");
+      if (!fromPreset) GameUI.notify.success("Achievements 32 and 57 have been automatically Enhanced");
     }
 
     // Enhancing Achievement 81 affects post-infinity scaling, and so does Er11.
@@ -264,10 +265,97 @@ export const Achievements = {
     return VUnlocks.maxEnhancedRow.effectOrDefault(4);
   },
 
-  // Method used to read a preset
-  // Presets will have the form "11, 12, 13, 21, 23, 27, 32, 87",
-  // Achievement ids separated in commas, similar to how Time Study presets work.
-  // This function will also return errors to inform the player.
+  /** 
+   * Method used to interpret "row X", and eventually "aa-bb", into the achievement ids that correspond.
+   * This should go before readPreset() 
+   * @param {String} input 
+   * @returns {String}
+  */
+  parseInput(input) {
+    const ROW_LIMIT = 20;
+    const GROUP_LIMIT = 200;
+    let parsedString = this.truncateInput(input);
+    // Grouped rows refer to "row 1-4" or "rows 1-4" notation.
+    // This is parsed first as "row 1, row 2, row 3, row 4", so later those rows get parsed.
+    const groupedRowsToParse = Array.from(parsedString.matchAll(/rows?\d+-\d+/g));
+    for (const groupedRow of groupedRowsToParse) {
+      // The "s" in "rowS" must be accounted for to slice correctly
+      const boundaries = groupedRow.toString().slice(3 + groupedRow.toString().includes("s")).split("-");
+      const potentialRows = Array.range(Math.min(Number.parseInt(boundaries[0]), Number.parseInt(boundaries[1])), 
+        Math.clampMax(Math.abs(Number.parseInt(boundaries[1]) - Number.parseInt(boundaries[0])) + 1, ROW_LIMIT));
+      let parsedGroupedRows = "";
+      potentialRows.forEach(value => {
+        parsedGroupedRows += "row" + value + ",";
+      })
+      // parsedGroupedRows ends in a ",", we should remove it
+      parsedString = parsedString.replace(groupedRow, parsedGroupedRows.slice(0, -1));
+    }
+
+    // Looks at strings containing "row" and some amount of digits
+    const rowsToParse = Array.from(parsedString.matchAll(/row\d+/g));
+    
+    for (const row of rowsToParse) {
+      const parsedRow = Array.range(0, 8).map(value => 
+        {return Number.parseInt(row.toString().slice(3)) * 10 + value + 1}
+      )
+      parsedString = parsedString.replace(row, parsedRow.toString());
+    }
+
+    // Looks at strings containing digits surrounding a "-"
+    const groupsToParse = Array.from(parsedString.matchAll(/\d+-\d+/g));
+
+    for (const group of groupsToParse) {
+      const boundaries = group.toString().split("-");
+
+      // We want to avoid unnecesarily expensive operations if by mistake you write 11-3437
+      // We also want something like "66-61" to be valid
+      const potentialIds = Array.range(Math.min(Number.parseInt(boundaries[0]), Number.parseInt(boundaries[1])), 
+        Math.clampMax(Math.abs(Number.parseInt(boundaries[1]) - Number.parseInt(boundaries[0])) + 1, GROUP_LIMIT));
+      let parsedGroup = [];
+      for (const id of potentialIds) {
+        if (Achievement(id) != undefined) parsedGroup.push(id);
+      }
+      // If the group contains no Achievements, don't parse it so that it's displayed as an error
+      if (parsedGroup.length == 0) continue;
+
+      parsedString = parsedString.replace(group, parsedGroup.toString());
+    }
+
+    return parsedString;
+  },
+
+  /** 
+   * Makes the preset get rid of whitespaces so that it's easier to read in readPreset()
+   * @param {String} input 
+   * @returns {String}
+  */
+  truncateInput(input) {
+    let internal = input.toLowerCase();
+    return internal
+      .trim()
+      .replace(/[|,]$/u, "")
+      .replaceAll(" ", "")
+      // Allows 11,,21 to be parsed as 11,21
+      .replace(/,{2,}/gu, ",")
+  },
+
+  /** Instead of "11,12,13,14,15,row2", it'll return "11, 12, 13, 14, 15, row 2"
+   * @param {String} input
+   * @returns {String}
+  */
+  formatAchievementsList(input) {
+    const internal = this.truncateInput(input);
+    return internal.replaceAll(",", ", ").replaceAll("row", "row ");
+  },
+
+  /** 
+   * Method used to read a preset
+   * Presets will have the form "11, 12, 13, 21, 23, 27, 32, 87",
+   * Achievement ids separated in commas, similar to how Time Study presets work.
+   * This function will also return errors to inform the player.
+   * @param {String} text 
+   * @returns {Array}
+   */
   readPreset(text) {
     const enhancementArray = text.split(",");
     let achievementsToEnhance = [];
@@ -308,7 +396,7 @@ export const Achievements = {
 
   enhanceFromArray(achievementsToEnhance) {
     for (const achievement of achievementsToEnhance) {
-      achievement.enhance();
+      achievement.enhance(true);
     }
   },
 
@@ -331,22 +419,6 @@ export const Achievements = {
       presetString = presetString.slice(0, -1);
     }
     return presetString;
-  },
-
-  truncateInput(input) {
-    let internal = input.toLowerCase();
-    return internal
-      .trim()
-      .replace(/[|,]$/u, "")
-      .replaceAll(" ", "")
-      // Allows 11,,21 to be parsed as 11,21
-      .replace(/,{2,}/gu, ",")
-  },
-
-  // Instead of "11,12,13,14,15", it'll return "11, 12, 13, 14, 15"
-  formatAchievementsList(input) {
-    const internal = this.truncateInput(input);
-    return internal.replaceAll(",", ", ");
   },
 
   disEnhanceAll() {

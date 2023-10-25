@@ -13,6 +13,7 @@ export default {
   data() {
     return {
       firstReality: false,
+      isMobileFriendlyActive: false,
       hasSpace: true,
       hasChoice: false,
       hasFilter: false,
@@ -86,6 +87,7 @@ export default {
   methods: {
     update() {
       this.firstReality = player.realities === 0;
+      this.isMobileFriendlyActive = player.options.mobileFriendlyGlyphs;
       this.hasChoice = Perk.firstPerk.isEffectActive;
       this.effarigUnlocked = TeresaUnlocks.effarig.canBeApplied;
       this.hasFilter = EffarigUnlock.glyphFilter.isUnlocked;
@@ -167,6 +169,16 @@ export default {
         :show-sacrifice="canSacrifice"
         @click.native="select(index)"
       />
+    </div>
+	  <div
+      v-if="!firstReality && isMobileFriendlyActive"
+      class="l-glyph-selection__row"
+    >
+      <PrimaryButton
+	      class="l-glyph-equip-button"
+        v-for="(glyph, index) in glyphs"
+        @click.native="select(index)"
+      >Select glyph n°{{index+1}}</PrimaryButton>
     </div>
     <div v-if="!firstReality">
       {{ levelStats }}

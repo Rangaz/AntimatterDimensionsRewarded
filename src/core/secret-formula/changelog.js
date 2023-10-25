@@ -20,17 +20,26 @@ export const changelog = [
     <ul>
     <li>Editing presets now show you an ordered list of what Achievements the preset can Enhannce.</li>
     <li>Invalid IDs are now detected and can be automatically removed with the 'Fix preset' button.</li>
-    <li>(21/10) Decimal values are now considered invalid IDs.</li>
     <li>The 'Format Preset Text' button is improved.</li>
+    <li>(21/10) Decimal values are now considered invalid IDs.</li>
     <li>(21/10) The edit preset modal now warns you if Achievements 57 or 88 are in the preset but not
     their requirements.</li>
-    <li>Coming soon: A warning when the preset can't Enhance all Achievements.</li>
+    <li>(22/10) There's now a warning if the preset can't possibly Enhance all Achievements.</li>
+    <li>(22/10) There's now a warning if there are duplicate numbers in the preset.</li>
+    <li>(23/10) You can now use "Row 1" notation in presets.</li>
+    <li>(24/10) You can now use "11-18" notation in presets.</li>
     <li>Coming soon: A visual preview of the Achievements the preset can Enhance.</li>
-    </ul>o
+    </ul>
     <br>
     <br>
     <b>Other changes:</b>
     <ul>
+    <li>Coming soon: An option to hide Achievement rows that are both completed and can't be Enhanced.</li>
+    <li>(24/10) Enhanced Achievement 21 is now affected by Time Study 31.</li>
+    <li>(23/10) Added an option taht allows to pick Glyphs on mobile (thanks asaned!).</li>
+    <li>(22/10) Reworked Achievement 38! It now reads 
+    "8th Antimatter Dimensions are stronger the less sacrifices you have".</li>
+    <li>(22/10) Removed Sacrifice behavior concerning old Achievement 38.</li>
     <li>(21/10) Enhancing Achievements 57 or 88 will automatically Enhance their required Achievements, and
     can't be Enhanced if this can't be done.</li>
     <li>(21/10) Skipping a news message now plays a little animation.</li>
@@ -67,7 +76,7 @@ export const changelog = [
     <b>Post release changes:</b>
     <ul>
     <li>(19/10) Fully Enhancing row 1 Achievements now reduces post-infinity cost scaling of Antimatter Dimensions by -0.01.</li>
-    <li>(19/10) Fixed Enhancement Presets not being initialized correctly after loading an older save.</li>
+    <li>(19/10) Fixed Enhancement Presets not being initialized correctly after loading an older save (thanks Hexa!).</li>
     <li>(18/10) Fixed typo causing the game to give errors when buying single Tickspeed Upgrades.</li>
     <li>(18/10) Achievement 22 can now be Enhanced for free, meaning it won't count as an Enhanced Achievement.</li>
     `
@@ -134,7 +143,7 @@ export const changelog = [
     starting 8th AD.</li>
     <li>(7/10) Fixed some issues with the Replicanti timers.</li>
     <li>(5/10) Achievement 94 buffed! Now gives x2 ➜ x4.3333 Infinity Power, and also boosts 
-    Replicanti speed by +43.3333% in the first +4.3333 minutes of Infinity.</li>
+    Replicanti speed by +43.3333% in the first +4.3333 minutes of Infinity (thanks Amity for the suggestion!).</li>
     <li>(5/10) Achievements 38, 94, 106 and 108 now show if their conditional effect is active 
     in their tooltip.</li>
     <li>(5/10) Fixed Enhanced Achievement 33 having a weird value the first frame of an Infinity.</li>

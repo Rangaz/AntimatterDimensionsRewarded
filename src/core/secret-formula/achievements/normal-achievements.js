@@ -10,21 +10,24 @@ TODO:
   ->Display a list of Achievements that will be Enhanced if loading the preset <DONE>
   ->Show if there are invalid Achievement ids <DONE>
   ->Show a Fix button if there are invalid ids <DONE>
-  ->Show if not all Achievements can be Enhanced <NEXT>
+  ->Show if not all Achievements can be Enhanced <DONE>
   ->Add a preview
--Make preset text hopefully shorter
-  ->Make 'Row x' be parsed as the entire row x
-  ->Make 'aa-bb' be parsed as the Achievements aa, bb, and every other one between aa and bb
+-Make preset text hopefully shorter <DONE>
+  ->Make 'Row x' be parsed as the entire row x <DONE>
+  ->Make 'aa-bb' be parsed as the Achievements aa, bb, and every other one between aa and bb <DONE>
 -Disallow Achievement 47 from being Enhanced if you don't have Teresa unlocked <DONE>
 -Make Enhancing Achievements 57 & 88 try to Enhance their required Achievements <DONE>
   ->Make presets warn if some of them are missing <DONE>
--Allow only hiding completed & unenhancable Achievement rows
+-Allow only hiding completed & unenhancable Achievement rows <NEXT>
 -Make the 'show fast forward button' in Options not appear if you don't have r22 <DONE>
+-Rework r38 <DONE>
+  ->Remove old r38 logic <DONE>
+-Add asaned's mobile friendly Glyph option as an option <DONE>
 */
 
 export const normalAchievements = [
   {
-    // Row 1 rewards enhanced!
+    // Row 1 rewards implemented & enhanced!
     id: 11,
     name: "You gotta start somewhere",
     description: "Buy a 1st Antimatter Dimension.",
@@ -128,7 +131,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Buffed & Enhanced!
     id: 21,
     name: "To infinity!",
     description: "Go Infinite.",
@@ -138,12 +141,18 @@ export const normalAchievements = [
     effect: 200,
     enhanced: {
       get reward() { return `Multiply starting Antimatter by your Infinity amount.`},
-      effect: () => Currency.infinitiesTotal.value.clampMin(1).powEffectOf(Achievement(55).enhancedEffect),
-      formatEffect: value => `${formatX(value, 2, 2)}`
+      effect: () => Currency.infinitiesTotal.value.clampMin(1).powEffectsOf(Achievement(55).enhancedEffect, TimeStudy(31)),
+      formatEffect: value => {
+        // Since TS31 is already accounted for in the effect prop, we need to "undo" it to display the base value here
+        const mult = formatX(value, 2, 2);
+        return TimeStudy(31).canBeApplied
+          ? `${formatX(value.pow(1 / TimeStudy(31).effectValue), 2, 1)} (After TS31: ${mult})`
+          : mult;
+      }
     }
   },
   {
-    // Enhanced! Biggest challenge so far, and I'm very happy with it!
+    // Implemented & Enhanced! Biggest challenge so far, and I'm very happy with it!
     id: 22,
     name: "FAKE NEWS!",
     get description() { return `Encounter ${formatInt(50)} different news messages.`; },
@@ -156,7 +165,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Modified & Enhanced!
     id: 23,
     name: "The 9th Dimension is a lie",
     get description() { return `Have exactly ${formatInt(99)} 8th Antimatter Dimensions.`; },
@@ -178,7 +187,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 24,
     name: "Antimatter Apocalypse",
     get description() { return `Get over ${format(DC.E80)} antimatter.`; },
@@ -194,7 +203,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 25,
     name: "Boosting to the max",
     get description() { return `Buy ${formatInt(10)} Dimension Boosts.`; },
@@ -208,7 +217,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced! Surprisingly difficult.
+    // Implemented & Enhanced! Surprisingly difficult.
     id: 26,
     name: "You got past The Big Wall",
     description: "Buy an Antimatter Galaxy.",
@@ -222,7 +231,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 27,
     name: "Double Galaxy",
     get description() { return `Buy ${formatInt(2)} Antimatter Galaxies.`; },
@@ -240,7 +249,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Modified & Enhanced!
     id: 28,
     name: "There's no point in doing that...",
     get description() {
@@ -258,7 +267,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Modified & Enhanced!
     id: 31,
     name: "I forgot to nerf that",
     get description() { return `Get any Antimatter Dimension multiplier over ${formatX(DC.E31)}.`; },
@@ -301,7 +310,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 33,
     name: "That's a lot of infinites",
     get description() { return `Reach Infinity ${formatInt(10)} times.`; },
@@ -320,7 +329,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Modified & Enhanced!
     id: 34,
     name: "You didn't need it anyway",
     description: "Infinity without having any 8th Antimatter Dimensions.",
@@ -350,7 +359,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 35,
     name: "Don't you dare sleep",
     get description() {
@@ -377,7 +386,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Buffed & Enhanced!
     id: 36,
     name: "Claustrophobic",
     get description() {
@@ -393,7 +402,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Buffed & Enhanced!
     id: 37,
     name: "That's FAST!",
     get description() { return `Infinity in under ${formatInt(2)} hours.`; },
@@ -408,7 +417,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 38,
     name: "I don't believe in Gods",
     get description() {
@@ -417,16 +426,13 @@ export const normalAchievements = [
     },
     checkRequirement: () => player.requirementChecks.infinity.noSacrifice,
     checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
-    get reward() { return `8th Antimatter Dimensions are ${formatInt(10)} times stronger, 
-      but only if you have no sacrifices ${Sacrifice.totalBoost.gt(1) ? 
-      `(inactive)` : `(active)`}.`},
-    effect: DC.E1,
-    effectCondition: () => Sacrifice.totalBoost.lte(1),
+    reward: "8th Antimatter Dimensions are stronger the less sacrifices you have.",
+    effect: () => DC.E1.divide(Sacrifice.totalBoost.pow(0.2)).clampMin(1),
+    formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
-      get reward() { return `8th Antimatter Dimensions are ${formatPostBreak(DC.E45000)} times stronger, 
-      but only if you have no sacrifices.`},
-      effect: DC.E45000,
-      effectCondition: () => Sacrifice.totalBoost.lte(1),
+      reward: "8th Antimatter Dimensions are way stronger the less sacrifices you have.",
+      effect: () => DC.E22500.divide(Sacrifice.totalBoost.pow(0.001)).clampMin(10),
+      formatEffect: value => `${formatX(value, 2, 2)}`
     }
   },
   {
@@ -451,7 +457,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced! This one has been a nightmare
+    // Implemented & Enhanced! This one has been a nightmare
     // Lesson: Don't use production per second in rewards, causes recursion.
     id: 42,
     name: "Super Sanic",
@@ -504,7 +510,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 44,
     name: "Over in 30 Seconds",
     get description() {
@@ -533,7 +539,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Modified & Enhanced!
     id: 45,
     name: "Faster than a potato",
     get description() { return `Get more than ${format(DC.E29)} ticks per second.`; },
@@ -549,7 +555,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced! Very happy about this one, the code might be better
+    // Implemented & Enhanced! Very happy about this one, the code might be better
     id: 46,
     name: "Multidimensional",
     get description() { return `Reach ${format(DC.E12)} of all Antimatter Dimensions except the 8th.`; },
@@ -570,7 +576,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced! :)
+    // Implemented & Enhanced! :)
     id: 47,
     name: "Daredevil",
     get description() { return `Complete ${formatInt(3)} Normal Challenges.`; },
@@ -598,7 +604,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Modified & Enhanced!
     id: 48,
     name: "Antichallenged",
     get description() { return `Complete all ${formatInt(12)} Normal Challenges.`; },
@@ -629,7 +635,7 @@ export const normalAchievements = [
   },
 
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 51,
     name: "Limit Break",
     description: "Break Infinity.",
@@ -644,7 +650,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 52,
     name: "Age of Automation",
     description: "Max the interval for Antimatter Dimension and Tickspeed upgrade autobuyers.",
@@ -659,7 +665,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 53,
     name: "Definitely not worth it",
     description: "Max the intervals for all normal autobuyers.",
@@ -684,7 +690,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Buffed & Enhanced!
     id: 54,
     name: "That's FASTER!",
     get description() { return `Infinity in ${formatInt(10)} minutes or less.`; },
@@ -699,7 +705,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Buffed & Enhanced!
     id: 55,
     name: "Forever isn't that long",
     get description() { return `Infinity in ${formatInt(1)} minute or less.`; },
@@ -809,7 +815,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 62,
     name: "Oh, hey... You're still here?",
     get description() { return `Reach ${format(DC.E8)} Infinity Points per minute.`; },
@@ -831,7 +837,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 63,
     name: "A new beginning",
     description: "Begin generation of Infinity Power.",
@@ -844,7 +850,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Modified & Enhanced!
     id: 64,
     name: "Zero Deaths",
     description: "Get to Infinity without Dimension Boosts or Antimatter Galaxies while in a Normal Challenge.",
@@ -892,7 +898,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Modified & Enhanced!
     id: 66,
     name: "Faster than a squared potato",
     get description() { return `Get more than ${format(DC.E58)} ticks per second.`; },
@@ -910,7 +916,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 67,
     name: "Infinitely Challenging",                                                                                                      
     description: "Complete an Infinity Challenge.",
@@ -935,7 +941,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Modified & Enhanced!
     id: 68,
     name: "You did this again just for the achievement right?",
     get description() {
@@ -959,7 +965,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Modified & Enhanced!
     id: 71,
     name: "ERROR 909: Dimension not found",
     description:
@@ -985,7 +991,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Modified & Enhanced!
     id: 72,
     name: "Can't hold all these infinities",
     get description() {
@@ -1074,7 +1080,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 77,
     name: "1 Million is a lot",
     get description() { return `Reach ${format(1e6)} Infinity Power.`; },
@@ -1093,7 +1099,7 @@ export const normalAchievements = [
 
   },
   {
-    // Enhanced! But could be better...
+    // Buffed & Enhanced! But could be better...
     id: 78,
     name: "Blink of an eye",
     get description() { return `Infinity in under ${formatInt(250)}ms.`; },
@@ -1112,7 +1118,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 81,
     name: "Game Design Is My Passion",
     get description() { return `Beat Infinity Challenge 5 in ${formatInt(15)} seconds or less.`; },
@@ -1126,7 +1132,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 82,
     name: "Anti-antichallenged",
     get description() { return `Complete all ${formatInt(8)} Infinity Challenges.`; },
@@ -1138,7 +1144,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced! Now it's pre-release r26!
+    // Modified & Enhanced! Now it's pre-release r26!
     id: 83,
     name: "YOU CAN GET 50 GALAXIES?!?!",
     get description() { return `Get ${formatInt(50)} Antimatter Galaxies.`; },
@@ -1293,7 +1299,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Buffed & Enhanced!
     id: 93,
     name: "MAXIMUM OVERDRIVE",
     get description() { return `Big Crunch for ${format(DC.E300)} Infinity Points.`; },
@@ -1308,7 +1314,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Modified & Enhanced!
     id: 94,
     name: "4.3333 minutes of Infinity",
     get description() { return `Reach ${format(DC.E260)} Infinity Power.`; },
@@ -1354,7 +1360,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 96,
     name: "Time is relative",
     description: "Go Eternal.",
@@ -1374,7 +1380,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 97,
     name: "Like jumping on a lego",
     get description() { return `Get the sum of Infinity Challenge times under ${format(6.66, 2, 2)} seconds.`; },
@@ -1395,7 +1401,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Enhanced!
+    // Implemented & Enhanced!
     id: 98,
     name: "0 degrees from Infinity",
     description: "Unlock the 8th Infinity Dimension.",
