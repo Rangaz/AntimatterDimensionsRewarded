@@ -275,7 +275,7 @@ export const Achievements = {
     const ROW_LIMIT = 20;
     const GROUP_LIMIT = 200;
     let parsedString = this.truncateInput(input);
-    // If there's no texxt here, we'll return an empty string
+    // If there's no text here, we'll return an empty string
     if (parsedString == undefined) return "";
 
     // Grouped rows refer to "row 1-4" or "rows 1-4" notation.
@@ -348,7 +348,7 @@ export const Achievements = {
   */
   formatAchievementsList(input) {
     const internal = this.truncateInput(input);
-    return internal.replaceAll(",", ", ").replaceAll("row", "row ");
+    return internal.replaceAll(",", ", ").replaceAll("row", "row ").replaceAll("row s", "rows ");
   },
 
   /** 
