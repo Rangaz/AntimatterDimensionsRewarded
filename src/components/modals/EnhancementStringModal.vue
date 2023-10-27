@@ -337,8 +337,8 @@ export default {
       
       <div class="c-enhancement-preview">
         <EnhancementStringPreview
-          :show-preview="false"
-          
+          :show-preview="inputIsValidTree && hasInput"
+          :new-enhancements="parsedInput"
           :disregard-current-enhancements="!isImporting || (canReality && respecAndLoad)"
         />
       </div>
