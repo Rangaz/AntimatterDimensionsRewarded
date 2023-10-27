@@ -18,7 +18,7 @@ TODO:
 -Disallow Achievement 47 from being Enhanced if you don't have Teresa unlocked <DONE>
 -Make Enhancing Achievements 57 & 88 try to Enhance their required Achievements <DONE>
   ->Make presets warn if some of them are missing <DONE>
--Allow only hiding completed & unenhancable Achievement rows <IN PROGRESS>
+-Allow only hiding completed & unenhancable Achievement rows <DONE>
 -Make the 'show fast forward button' in Options not appear if you don't have r22 <DONE>
 -Rework r38 <DONE>
   ->Remove old r38 logic <DONE>

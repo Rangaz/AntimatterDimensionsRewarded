@@ -14,8 +14,6 @@ export const changelog = [
     info: `
     <b>Enhancement presets have been improved!</b>
     <br>
-    Missing features will arrive in upcoming days.
-    <br>
     <br>
     <ul>
     <li>Editing presets now show you an ordered list of what Achievements the preset can Enhannce.</li>
@@ -28,13 +26,14 @@ export const changelog = [
     <li>(22/10) There's now a warning if there are duplicate numbers in the preset.</li>
     <li>(23/10) You can now use "Row 1" notation in presets.</li>
     <li>(24/10) You can now use "11-18" notation in presets.</li>
-    <li>Coming soon: A visual preview of the Achievements the preset can Enhance.</li>
+    <li>(27/10) There's now a visual preview of the Achievements the preset can Enhance.</li>
     </ul>
     <br>
     <br>
     <b>Other changes:</b>
     <ul>
-    <li>Coming soon: An option to hide Achievement rows that are both completed and can't be Enhanced.</li>
+    <li>(27/10) You can now hide only Achievement rows that are both completed and can't be Enhanced.</li>
+    <li>(27/10) Fixed the Format Preset button writing "rows" as "row s".</li>
     <li>(24/10) Enhanced Achievement 21 is now affected by Time Study 31.</li>
     <li>(23/10) Added an option taht allows to pick Glyphs on mobile (thanks asaned!).</li>
     <li>(22/10) Reworked Achievement 38! It now reads 
@@ -130,7 +129,7 @@ export const changelog = [
     </ul>
     <li>(12/10) Fixed horrible crash if you attempted to run Normal Challenge 10 while inside Cel-3's reality.</li>
     <li>(11/10) Achievement 68's effect grows a bit over 3% faster and has a slightly higher starting value.</li>
-    <li>Reworded Enhanced Achievement 33 and Achievement 122 for better clarity.</li>
+    <li>(11/10) Reworded Enhanced Achievement 33 and Achievement 122 for better clarity.</li>
     <li>(11/10) Fixed Achievement 53's effect still being active if you only disable the AD autobuyers
     as a group but not AD8 individually.</li>
     <li>(10/10) Changed Achievement 71. Now reads "1st Antimatter Dimensions are stronger the longer you don't buy an 
@@ -322,7 +321,7 @@ export const changelog = [
     info: `
 Hello! I'm Rangaz, the developer of the mod you are playing right now!
 <br>
-What you're paying right now is a modification of the game that adds a unique achievement reward to every single 
+This is a modification of the game that adds a unique achievement reward to every single 
 achievement that didn't have one, and also modifies or buffs many of the existing ones! The game is the same
 otherwise.
 <br>

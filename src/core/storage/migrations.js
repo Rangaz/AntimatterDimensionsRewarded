@@ -440,10 +440,13 @@ export const migrations = {
     },
     32: player => {
       // The I can see! update
-      player.options.hideAchievementRows = 0 + player.options.hideCompletedAchievementRows;
+      // Pre-reality saves may not have hideCompletedAchievementRows, and if that happens this is NaN.
+      if (player.options.hideCompletedAchievementRows != undefined) {
+        player.options.hideAchievementRows = Number(player.options.hideCompletedAchievementRows);
+      }
 
       // Is it safe to do this?
-      delete player.options.hideCompletedAchievementRows
+      delete player.options.hideCompletedAchievementRows;
     }
   },
 
