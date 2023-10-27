@@ -437,6 +437,13 @@ export const migrations = {
       delete player.reality.maxEnhancedRow;
       delete player.reality.enhancementPoints;
       delete player.reality.totalEnhancementPoints;
+    },
+    32: player => {
+      // The I can see! update
+      player.options.hideAchievementRows = 0 + player.options.hideCompletedAchievementRows;
+
+      // Is it safe to do this?
+      delete player.options.hideCompletedAchievementRows
     }
   },
 
