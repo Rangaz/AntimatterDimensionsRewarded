@@ -3,6 +3,9 @@ import { sha512_256 } from "js-sha512";
 
 import ModalWrapperChoice from "@/components/modals/ModalWrapperChoice";
 import PrimaryButton from "@/components/PrimaryButton";
+
+import EnhancementStringPreview from "./enhancement-modal-preview/EnhancementStringPreview.vue";
+
 import { autoReality } from "../../core/reality";
 import { Achievements } from "../../core/globals";
 
@@ -15,6 +18,7 @@ export default {
   components: {
     ModalWrapperChoice,
     PrimaryButton,
+    EnhancementStringPreview
   },
   props: {
     id: {
@@ -330,16 +334,15 @@ export default {
           Fix preset
         </PrimaryButton>
       </div>
-      <!--
-      <div class="c-study-preview">
-        <StudyStringPreview
-          :show-preview="inputIsValidTree"
-          :new-studies="!isImporting || (canReality && respecAndLoad) ? importedTree.newStudiesArray
-            : combinedTree.newStudiesArray"
-          :disregard-current-studies="!isImporting || (canReality && respecAndLoad)"
+      
+      <div class="c-enhancement-preview">
+        <EnhancementStringPreview
+          :show-preview="inputIsValidTree && hasInput"
+          :new-enhancements="parsedInput"
+          :disregard-current-enhancements="!isImporting || (canReality && respecAndLoad)"
         />
       </div>
-      -->
+      
     </div>
     <div v-if="!isImporting && inputIsValidTree">
       <br>
@@ -398,7 +401,7 @@ export default {
   padding: 0 2rem;
 }
 
-.c-study-preview {
+.c-enhancement-preview {
   height: 100%;
   margin-right: 3rem;
 }

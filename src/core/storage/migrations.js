@@ -437,6 +437,16 @@ export const migrations = {
       delete player.reality.maxEnhancedRow;
       delete player.reality.enhancementPoints;
       delete player.reality.totalEnhancementPoints;
+    },
+    32: player => {
+      // The I can see! update
+      // Pre-reality saves may not have hideCompletedAchievementRows, and if that happens this is NaN.
+      if (player.options.hideCompletedAchievementRows != undefined) {
+        player.options.hideAchievementRows = Number(player.options.hideCompletedAchievementRows);
+      }
+
+      // Is it safe to do this?
+      delete player.options.hideCompletedAchievementRows;
     }
   },
 
