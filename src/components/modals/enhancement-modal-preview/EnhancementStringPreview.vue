@@ -32,14 +32,14 @@ export default {
       type: Boolean,
       default: false
     },
-    newEnhancements: {
-      required: false, // Change this!!,
-      validator: newEnhancements => Array.isArray(newEnhancements) || newEnhancements === undefined,
-    },
     showPreview: {
       type: Boolean,
       default: true
-    }
+    },
+    newEnhancements: {
+      type: String,
+      required: true, 
+    },
   },
   data() {
     return {
@@ -48,29 +48,33 @@ export default {
     };
   },
   computed: {
-    layout() {
-      return TimeStudyTreeLayout.create(this.layoutType, 0.15);
-    },
-    studies() {
-      return this.layout.studies;
-    },
-    treeStyleObject() {
+    previewStyleObject() {
       return {
-        width: `${this.layout.width}rem`,
-        height: `${this.layout.height}rem`
+        display: this.showPreview ? "block" : "none"
       };
     },
+    
     respecClassObject() {
       return {
         "o-primary-btn--subtab-option": true,
         "o-primary-btn--respec-active": this.respec
       };
-    }
+    },
+    
   },
   watch: {
-    vAchievements() {
-      // When vAchievements changes, we recompute the enhancement grid because of new rows
-      this.$recompute("layout");
+    newEnhancements(newVal) {
+      // Update Enhanced Achievements when the string changes
+      const achievementsToEnhance = newVal.split(",");
+      for (const pseudoAchievement of this.$refs.id)
+        if (achievementsToEnhance.includes(pseudoAchievement.innerHTML)) {
+          pseudoAchievement.style["background-color"] = 'yellow';
+          pseudoAchievement.style["color"] = 'black';
+        }
+        else {
+          pseudoAchievement.style["background-color"] = '#40b050';
+          pseudoAchievement.style["color"] = 'white';
+        }
     }
   },
   methods: {
@@ -78,6 +82,7 @@ export default {
       this.maxEnhancedRow = Achievements.maxEnhancedRow;
       this.vAchievements = V.spaceTheorems;
     },
+    /*
     studyString(study) {
       switch (study.type) {
         case TIME_STUDY_TYPE.NORMAL: case TIME_STUDY_TYPE.TRIAD: return `${study.id}`;
@@ -95,18 +100,33 @@ export default {
         this.newEnhancements.includes(this.studyString(setup.connection.from)))
         ? ForceBoughtState.bought
         : ForceBoughtState.notBought;
-    }
+    },
+    */
   }
 };
 </script>
 
 <template>
-  <div class="l-enhancements-preview__tree--wrapper">
+  <div class="l-enhancements-preview__table--wrapper">
+    <!--I can't simpy use v-if="showPreview" here because that makes the later v-fors not work,
+    and the Enhance Achievements function in the watcher triggered before the v-if, causing it to 
+    not work properly. This method of putting display:"none" in previewStyleObject() apparently works.-->
     <div
-      v-if="showPreview"
-      class="l-enhancements-preview__tree"
-      
+      class="l-enhancements-preview__table"
+      ref="preview"
+      :style="previewStyleObject"
     >
+      <table>
+        <tr 
+          v-for="row of Array.range(1, maxEnhancedRow)"
+        >
+          <td
+            v-for="column of Array.range(row * 10 + 1, 8)"
+            class="o-pseudo-achievement"
+            ref="id"
+          >{{ column }}</td>
+        </tr>
+      </table>
       <!--
       <PseudoTimeStudyButton
         v-for="setup in studies"
@@ -119,7 +139,7 @@ export default {
       
     </div>
     <span
-      v-else
+      v-if="!showPreview"
       class="c-unavailable-warning"
     >
       Preview Unavailable
@@ -128,17 +148,31 @@ export default {
 </template>
 
 <style scoped>
-.l-enhancements-preview__tree--wrapper {
+.l-enhancements-preview__table--wrapper {
   display: flex;
   overflow-y: auto;
   width: 20rem;
-  height: 44.5rem;
+  height: 31.5rem;
   position: relative;
   justify-content: center;
   border: var(--color-text) solid var(--var-border-width, 0.3rem);
   border-radius: var(--var-border-radius, 0.3rem);
   margin: auto;
   padding: 0.5rem;
+}
+.o-pseudo-achievement {
+  width: 2.3rem;
+  height: 2.3rem;
+  text-align: center;
+  font-family: Typewriter, serif;
+  font-size: 0.85rem;
+  color: white;
+  background-color: #40b050;
+  border: 0.1rem solid;
+  border-radius: var(--var-border-radius, 0.2rem);
+  padding: 0;
+  transition-duration: 0.2s;
+  pointer-events: none;
 }
 
 .c-unavailable-warning {

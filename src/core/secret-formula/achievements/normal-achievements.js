@@ -6,12 +6,12 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Make better edit Enhancement presets <IN PROGRESS>
+-Make better edit Enhancement presets <DONE FOR NOW>
   ->Display a list of Achievements that will be Enhanced if loading the preset <DONE>
   ->Show if there are invalid Achievement ids <DONE>
   ->Show a Fix button if there are invalid ids <DONE>
   ->Show if not all Achievements can be Enhanced <DONE>
-  ->Add a preview
+  ->Add a preview <DONE FOR NOW>
 -Make preset text hopefully shorter <DONE>
   ->Make 'Row x' be parsed as the entire row x <DONE>
   ->Make 'aa-bb' be parsed as the Achievements aa, bb, and every other one between aa and bb <DONE>
