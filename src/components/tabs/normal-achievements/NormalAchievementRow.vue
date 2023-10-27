@@ -14,6 +14,10 @@ export default {
     isObscured: {
       type: Boolean,
       required: false
+    },
+    canBeEnhanced: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -36,7 +40,12 @@ export default {
     update() {
       this.isCompleted = this.row.every(a => a.isUnlocked);
       this.isFullyEnhanced = this.row.every(a => a.isEnhanced);
-      this.isHidden = this.isCompleted && player.options.hideCompletedAchievementRows;
+      switch (player.options.hideAchievementRows) {
+        case 0: {this.isHidden = false; break;}
+        case 1: {this.isHidden = this.isCompleted && !this.canBeEnhanced; break;}
+        case 2: this.isHidden = this.isCompleted;
+      }
+      //this.isHidden = this.isCompleted && player.options.hideCompletedAchievementRows;
     }
   }
 };

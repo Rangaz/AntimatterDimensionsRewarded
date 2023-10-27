@@ -364,7 +364,7 @@ window.player = {
     previousRuns: {}
   },
   IPMultPurchases: 0,
-  version: 31,
+  version: 32,
   infinityPower: DC.D1,
   postC4Tier: 0,
   eternityPoints: DC.D0,
@@ -821,7 +821,8 @@ window.player = {
     showTimeSinceSave: true,
     saveFileName: "",
     exportedFileCount: 0,
-    hideCompletedAchievementRows: false,
+    //hideCompletedAchievementRows: false, // Deprecated
+    hideAchievementRows: 0,
     mobileFriendlyGlyphs: false,
     glyphTextColors: true,
     headerTextColored: false,

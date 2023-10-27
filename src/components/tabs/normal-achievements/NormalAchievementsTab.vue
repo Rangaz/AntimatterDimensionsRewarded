@@ -22,6 +22,7 @@ export default {
       achTPEffect: 0,
       achCountdown: 0,
       totalCountdown: 0,
+      maxEnhancedRow: 0,
       totalEnhancementPoints: 0,
       enhancementPoints: 0,
       enhancedAchievements: 0,
@@ -31,7 +32,7 @@ export default {
       isEnhancementUnlocked: false,
       respecEnhancements: false,
       showEnhancementPresets: false,
-      hideCompletedRows: false,
+      hideRows: 0,
       enhancedAchMultToDims: false,
       achMultBreak: false,
       achMultToIDS: false,
@@ -69,6 +70,13 @@ export default {
     saveLoadText() {
       return this.$viewModel.shiftDown ? "Save preset:" : "Load preset:";
     },
+    hiddenRowsText() {
+      switch (this.hideRows) {
+        case 0: return "No";
+        case 1: return this.isEnhancementUnlocked ? "Completed & can't be enhanced" : "Completed";
+        case 2: return "Completed";
+      }
+    },
     respecClassObject() {
       return {
         "o-primary-btn--subtab-option": true,
@@ -79,10 +87,6 @@ export default {
   watch: {
     isAutoAchieveActive(newValue) {
       player.reality.autoAchieve = newValue;
-    },
-    hideCompletedRows(newValue) {
-      player.options.hideCompletedAchievementRows = newValue;
-      this.startRowRendering();
     },
     respecEnhancements(newValue) {
       player.reality.disEnhance = newValue;
@@ -110,9 +114,10 @@ export default {
       this.totalEnhancementPoints = Achievements.totalEnhancementPoints;
       this.respecEnhancements = player.reality.disEnhance;
       this.isEnhancementUnlocked = Perk.achievementEnhancement.isBought && !this.isDoomed;
+      this.maxEnhancedRow = Achievements.maxEnhancedRow * this.isEnhancementUnlocked;
       this.showAutoAchieve = PlayerProgress.realityUnlocked() && !Perk.achievementGroup5.isBought;
       this.isAutoAchieveActive = player.reality.autoAchieve;
-      this.hideCompletedRows = player.options.hideCompletedAchievementRows;
+      this.hideRows = player.options.hideAchievementRows;
       this.showEnhancementPresets = VUnlocks.enhancementPresets.canBeApplied;
       this.achMultBreak = BreakInfinityUpgrade.achievementMult.canBeApplied;
       this.achMultToIDS = Achievement(75).isUnlocked;
@@ -121,23 +126,43 @@ export default {
       this.achMultToBH = VUnlocks.achievementBH.canBeApplied;
       this.achMultToTT = Ra.unlocks.achievementTTMult.canBeApplied;
     },
+    changeHiddenRows() {
+      player.options.hideAchievementRows++;
+      if (player.options.hideAchievementRows >= 3 - !this.isEnhancementUnlocked) player.options.hideAchievementRows = 0;
+      this.startRowRendering();
+    },
     startRowRendering() {
-      const unlockedRows = [];
+      const unlockedAndUnenhantableRows = []; // That can't be Enhanced
+      const unlockedAndEnhantableRows = []; // That can be Enhanced
       const lockedRows = [];
-      for (let i = 0; i < this.rows.length; i++) {
-        const targetArray = this.rows[i].every(a => a.isUnlocked) ? unlockedRows : lockedRows;
+      for (let i = 0; i < this.maxEnhancedRow; i++) {
+        const targetArray = this.rows[i].every(a => a.isUnlocked) ? unlockedAndEnhantableRows : lockedRows;
+        targetArray.push(i);
+      }
+      for (let i = this.maxEnhancedRow; i < this.rows.length; i++) {
+        const targetArray = this.rows[i].every(a => a.isUnlocked) ? unlockedAndUnenhantableRows : lockedRows;
         targetArray.push(i);
       }
       const renderedLockedRows = lockedRows.filter(row => this.renderedRowIndices.includes(row));
       const nonRenderedLockedRows = lockedRows.filter(row => !this.renderedRowIndices.includes(row));
       let rowsToRender;
-      if (player.options.hideCompletedAchievementRows) {
-        this.renderedRowIndices = unlockedRows.concat(renderedLockedRows);
-        rowsToRender = nonRenderedLockedRows;
-      } else {
-        this.renderedRowIndices = renderedLockedRows;
-        rowsToRender = unlockedRows.concat(nonRenderedLockedRows);
+      switch (player.options.hideAchievementRows) {
+        case 0: { // Hide nothing
+          this.renderedRowIndices = renderedLockedRows;
+          rowsToRender = unlockedAndEnhantableRows.concat(unlockedAndUnenhantableRows, nonRenderedLockedRows);
+          break;
+        }
+        case 1: { // Hide completed & unenhantable rows
+          this.renderedRowIndices = unlockedAndEnhantableRows.concat(unlockedAndUnenhantableRows, renderedLockedRows);
+          rowsToRender = unlockedAndEnhantableRows.concat(nonRenderedLockedRows);
+          break;
+        }
+        case 2: { // Hide all completed rows
+          this.renderedRowIndices = unlockedAndEnhantableRows.concat(unlockedAndUnenhantableRows, renderedLockedRows);
+          rowsToRender = nonRenderedLockedRows;
+        }
       }
+
       const stepThroughRendering = () => {
         const ROWS_PER_FRAME = 2;
         for (let i = 0; i < ROWS_PER_FRAME; i++) {
@@ -165,11 +190,12 @@ export default {
 <template>
   <div class="l-achievements-tab">
     <div class="c-subtab-option-container">
-      <PrimaryToggleButton
-        v-model="hideCompletedRows"
-        class="o-primary-btn--subtab-option"
-        label="Hide completed rows:"
-      />
+      <button
+        class="o-primary-btn o-primary-btn--subtab-option"
+        @click="changeHiddenRows"
+      >Hide rows: {{ hiddenRowsText }}
+      </button>
+      
       <PrimaryToggleButton
         v-if="showAutoAchieve"
         v-model="isAutoAchieveActive"
@@ -242,6 +268,7 @@ export default {
         :key="i"
         :row="row"
         :is-obscured="isObscured(i)"
+        :can-be-enhanced="i + 1 <= maxEnhancedRow"
       />
     </div>
   </div>
