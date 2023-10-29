@@ -6,23 +6,10 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Make better edit Enhancement presets <DONE FOR NOW>
-  ->Display a list of Achievements that will be Enhanced if loading the preset <DONE>
-  ->Show if there are invalid Achievement ids <DONE>
-  ->Show a Fix button if there are invalid ids <DONE>
-  ->Show if not all Achievements can be Enhanced <DONE>
-  ->Add a preview <DONE FOR NOW>
--Make preset text hopefully shorter <DONE>
-  ->Make 'Row x' be parsed as the entire row x <DONE>
-  ->Make 'aa-bb' be parsed as the Achievements aa, bb, and every other one between aa and bb <DONE>
--Disallow Achievement 47 from being Enhanced if you don't have Teresa unlocked <DONE>
--Make Enhancing Achievements 57 & 88 try to Enhance their required Achievements <DONE>
-  ->Make presets warn if some of them are missing <DONE>
--Allow only hiding completed & unenhancable Achievement rows <DONE>
--Make the 'show fast forward button' in Options not appear if you don't have r22 <DONE>
--Rework r38 <DONE>
-  ->Remove old r38 logic <DONE>
--Add asaned's mobile friendly Glyph option as an option <DONE>
+-Add an ENHANCE command to the automator
+  ->Make it work similarly to STUDIES 
+  ->Add documentation <DONE FOR NOW>
+  ->Expand the Currency list with Total/Achievements Enhanced
 */
 
 export const normalAchievements = [
