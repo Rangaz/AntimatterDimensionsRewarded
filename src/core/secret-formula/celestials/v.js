@@ -252,7 +252,7 @@ export const v = {
     // These are my unlocks. They'll start at id 7 to avoid migration conflicts.
     enhancementPresets: {
       id: 7,
-      reward: "Unlock presets to Enhance Achievements.",
+      reward: "Unlock presets and automator commands to Enhance Achievements.",
       description: () => `Have ${formatInt(1)} V-Achievement`,
       requirement: () => V.spaceTheorems >= 1
     },

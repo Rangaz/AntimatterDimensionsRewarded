@@ -3,6 +3,7 @@ import { automatorTemplates } from "../script-templates";
 export const automator = {
   categoryNames: [
     "Time Studies",
+    "Achievement Enhancement",
     "Event Triggers",
     "Alter Settings",
     "Information",
@@ -103,7 +104,7 @@ export const automator = {
       id: 3,
       isUnlocked: () => true,
       keyword: "PRESTIGE",
-      category: 1,
+      category: 2,
       syntax: `
         <b>infinity</b> [nowait]<br>
         <b>eternity</b> [nowait] [respec]<br>
@@ -144,7 +145,7 @@ export const automator = {
       id: 4,
       isUnlocked: () => true,
       keyword: "UNLOCK",
-      category: 1,
+      category: 2,
       syntax: "<b>unlock</b> [nowait] <u>feature</u>",
       description: "Unlocks the specified Eternity Challenge or Time Dilation.",
       sections: [
@@ -170,7 +171,7 @@ export const automator = {
       id: 5,
       isUnlocked: () => true,
       keyword: "START",
-      category: 1,
+      category: 2,
       syntax: `
         <b>start</b> ec<u>N</u><br>
         <b>start</b> dilation`,
@@ -187,7 +188,7 @@ export const automator = {
       id: 6,
       isUnlocked: () => true,
       keyword: "AUTO",
-      category: 2,
+      category: 3,
       syntax: `<b>auto infinity</b> [setting]<br>
         <b>auto eternity</b> [setting]<br>
         <b>auto reality</b> [setting]`,
@@ -233,7 +234,7 @@ export const automator = {
       id: 7,
       isUnlocked: () => BlackHole(1).isUnlocked,
       keyword: "BLACK HOLE",
-      category: 2,
+      category: 3,
       syntax: "<b>black hole</b> <u>state</u>",
       description: `Toggles the speedup effect from the Black Hole on or off. Turning the Black Hole on via the
         Automator does not bypass the gradual acceleration from off to max speed which occurs before they are
@@ -247,7 +248,7 @@ export const automator = {
       id: 8,
       isUnlocked: () => Enslaved.isUnlocked,
       keyword: "STORE GAME TIME",
-      category: 2,
+      category: 3,
       syntax: "<b>store game time</b> <u>action</u>",
       description: `Changes whether or not the Black Hole is storing time. Also allows usage of stored time.`,
       sections: [
@@ -279,7 +280,7 @@ export const automator = {
       id: 9,
       isUnlocked: () => true,
       keyword: "NOTIFY",
-      category: 3,
+      category: 4,
       syntax: "<b>notify</b> \"<u>text</u>\"",
       description: `Takes the specified text and posts it in the top-right corner as
         a text notification, in the same spot and style as other notifications such as auto-save
@@ -294,7 +295,7 @@ export const automator = {
       id: 10,
       isUnlocked: () => true,
       keyword: "Adding Comments",
-      category: 3,
+      category: 4,
       syntax: "<b>#</b> text<br><b>//</b> text",
       description: `Allows you to leave a note to yourself within your script. This may be
         useful for organizing or keeping track of which parts of your script do various things,
@@ -334,7 +335,7 @@ export const automator = {
       id: 11,
       isUnlocked: () => true,
       keyword: "WAIT",
-      category: 4,
+      category: 5,
       syntax: "<b>wait</b> <u>condition</u>",
       description: `Forces Automator to wait for some condition or event. To wait for a certain duration of time,
         use the PAUSE command instead.`,
@@ -380,7 +381,7 @@ export const automator = {
       id: 12,
       isUnlocked: () => true,
       keyword: "PAUSE",
-      category: 4,
+      category: 5,
       syntax: "<b>pause</b> <u>interval</u>",
       description: `Tells the automator to stop moving forward and executing commands for a certain amount of time.
         Note that if the pause duration is shorter than the automator's execution speed, the automator will wait until
@@ -436,7 +437,7 @@ export const automator = {
       id: 13,
       isUnlocked: () => true,
       keyword: "IF",
-      category: 4,
+      category: 5,
       syntax: `<b>if</b> <u>condition</u> {<br>
         <blockquote>commands</blockquote>
         }`,
@@ -452,7 +453,7 @@ export const automator = {
       id: 14,
       isUnlocked: () => true,
       keyword: "UNTIL",
-      category: 4,
+      category: 5,
       syntax: `<b>until</b> <u>comparison</u> {<br>
         <blockquote>commands</blockquote>
         }<br><b>until</b> <u>prestige_event</u> {<br>
@@ -475,7 +476,7 @@ export const automator = {
       id: 15,
       isUnlocked: () => true,
       keyword: "WHILE",
-      category: 4,
+      category: 5,
       syntax: `<b>while</b> <u>comparison</u> {<br>
         <blockquote>commands</blockquote>
       }`,
@@ -491,7 +492,7 @@ export const automator = {
       id: 16,
       isUnlocked: () => true,
       keyword: "STOP",
-      category: 4,
+      category: 5,
       syntax: `<b>stop</b>`,
       description: `When the Automator runs this line, it will stop execution as if you clicked the
         <i class="fas fa-stop"></i> button on the control panel in the top-left of the Automator. This
@@ -507,7 +508,7 @@ export const automator = {
       id: 17,
       isUnlocked: () => true,
       keyword: "Currency List",
-      category: 4,
+      category: 5,
       syntax: "<i>You can use these in any IF, WHILE, UNTIL, or WAIT command</i>",
       description: () => {
         const filterText = EffarigUnlock.glyphFilter.isUnlocked
@@ -550,7 +551,7 @@ export const automator = {
       id: 18,
       isUnlocked: () => true,
       keyword: "Formatting Comparisons",
-      category: 4,
+      category: 5,
       syntax: "<u>resource1</u> <u>condition</u> <u>resource2</u>",
       description: `
         Comparisons are used within certain commands, which allow you to control the behavior of the automator based
@@ -589,7 +590,7 @@ export const automator = {
       id: 19,
       isUnlocked: () => true,
       keyword: "Commands with inner blocks",
-      category: 4,
+      category: 5,
       syntax: `<b>header_command</b> {<br>
         <blockquote>inner_commands</blockquote>
         }`,
@@ -618,6 +619,78 @@ export const automator = {
           pause 10s<br>
           eternity respec</blockquote>
         }`
+      ]
+    },
+    {
+      id: 20,
+      isUnlocked: () => Perk.achievementEnhancement.isBought,
+      keyword: "ENHANCE RESPEC",
+      category: 1,
+      syntax: `<b>enhance respec</b>`,
+      description: `This command turns on the respec option, which will respec your Enhanced Achievements on the next manual or
+        automatic Reality. Note that this does not actually perform a reality on its own; make sure your Autobuyer
+        is on, or you manually run the REALITY command, if you have them unlocked.`,
+      examples: [
+        `enhance respec`,
+      ]
+    },
+    {
+      id: 21,
+      isUnlocked: () => VUnlocks.enhancementPresets.canBeApplied,
+      keyword: "ENHANCE LOAD",
+      category: 1,
+      syntax: `<b>enhance</b> <b>load id</b> <u>selector</u><br>
+        <b>enhance</b> <b>load name</b> <u>name</u>`,
+      description: `Loads an Enhancement preset, as if you had clicked on the button in the Achievements tab.`,
+      sections: [
+        {
+          name: "INPUTS",
+          items: [
+            {
+              header: "<i>selector</i>",
+              description: `
+                Finds and loads the specified Enhancement preset by its slot number. This is numbered one through six,
+                ordered from left to right.`
+            },
+            {
+              header: "<i>name</i>",
+              description: "Finds and loads the specified Enhancement preset by its given name. This is case-sensitive."
+            },
+          ]
+        }
+      ],
+      examples: [
+        `enhance load id 2`,
+        `enhance load name RM`,
+      ]
+    },
+    {
+      id: 22,
+      isUnlocked: () => VUnlocks.enhancementPresets.canBeApplied,
+      keyword: "ENHANCE",
+      category: 1,
+      syntax: `<b>enhance <u>enhancements_list</u></b>`,
+      description: "Enhance Achievements specified from a list of Achievements.",
+      sections: [
+        {
+          name: "INPUTS",
+          items: [
+            {
+              header: "<i>enhancements_list</i>",
+              description: `
+                The exported Enhancements format is supported here, which is simply a list of Achievement IDs
+                separated by commas. This command also supports a more flexible formatting, additionally allowing
+                ranges of Achievements (for example, <u>22-28</u>), and rows (for example, <u>row 1</u>).
+                A variable name may be used in place of the entire Enhancements list as well (see the definition panel),
+                although in that case the shorthand ranges and rows are not allowed.`
+            },
+          ]
+        }
+      ],
+      examples: [
+        "enhance 11,21,31",
+        "enhance row1, 22-28, 32, 41-44",
+        "enhance glyphFarm",
       ]
     },
   ],
