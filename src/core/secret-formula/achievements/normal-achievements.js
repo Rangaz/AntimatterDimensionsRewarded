@@ -10,6 +10,9 @@ TODO:
   ->Make it work similarly to STUDIES 
   ->Add documentation <DONE FOR NOW>
   ->Expand the Currency list with Total/Achievements Enhanced
+
+-Fix the fast forward button not updated when first created
+-Change "One for every Dimension" to "One for every Achievement"
 */
 
 export const normalAchievements = [

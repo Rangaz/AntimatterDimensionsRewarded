@@ -321,6 +321,7 @@ createKeyword("Restart", /restart/i);
 createKeyword("Start", /start/i);
 createKeyword("Stop", /stop/i);
 createKeyword("Studies", /studies/i);
+createKeyword("Enhance", /enhance/i);
 createKeyword("Unlock", /unlock/i);
 createKeyword("Until", /until/i);
 createKeyword("Use", /use/i);

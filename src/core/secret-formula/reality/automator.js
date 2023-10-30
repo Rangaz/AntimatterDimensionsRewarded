@@ -623,7 +623,7 @@ export const automator = {
     },
     {
       id: 20,
-      isUnlocked: () => Perk.achievementEnhancement.isBought,
+      isUnlocked: () => Achievements.isEnhancementUnlocked,
       keyword: "ENHANCE RESPEC",
       category: 1,
       syntax: `<b>enhance respec</b>`,
@@ -667,9 +667,9 @@ export const automator = {
     {
       id: 22,
       isUnlocked: () => VUnlocks.enhancementPresets.canBeApplied,
-      keyword: "ENHANCE",
+      keyword: "ENHANCE ACHIEVEMENTS",
       category: 1,
-      syntax: `<b>enhance <u>enhancements_list</u></b>`,
+      syntax: `<b>enhance</b> <b>achievements <u>enhancements_list</u></b>`,
       description: "Enhance Achievements specified from a list of Achievements.",
       sections: [
         {
@@ -688,9 +688,9 @@ export const automator = {
         }
       ],
       examples: [
-        "enhance 11,21,31",
-        "enhance row1, 22-28, 32, 41-44",
-        "enhance glyphFarm",
+        "enhance achievements 11,21,31",
+        "enhance achievements row1, 22-28, 32, 41-44",
+        "enhance achievements glyphFarm",
       ]
     },
   ],

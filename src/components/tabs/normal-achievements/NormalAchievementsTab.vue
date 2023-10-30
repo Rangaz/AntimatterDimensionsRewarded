@@ -113,7 +113,7 @@ export default {
       this.enhancementPoints = Achievements.enhancementPoints;
       this.totalEnhancementPoints = Achievements.totalEnhancementPoints;
       this.respecEnhancements = player.reality.disEnhance;
-      this.isEnhancementUnlocked = Perk.achievementEnhancement.isBought && !this.isDoomed;
+      this.isEnhancementUnlocked = Achievements.isEnhancementUnlocked && !this.isDoomed;
       this.maxEnhancedRow = Achievements.maxEnhancedRow * this.isEnhancementUnlocked;
       this.showAutoAchieve = PlayerProgress.realityUnlocked() && !Perk.achievementGroup5.isBought;
       this.isAutoAchieveActive = player.reality.autoAchieve;

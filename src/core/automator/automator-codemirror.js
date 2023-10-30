@@ -61,6 +61,7 @@ CodeMirror.defineSimpleMode("automato", {
   start: [
     commentRule,
     { regex: /studies\s+/ui, token: "keyword", next: "studiesArgs" },
+    { regex: /enhance\s+/ui, token: "keyword", next: "enhancementArgs" },
     { regex: /blob\s\s/ui, token: "blob" },
     {
       // eslint-disable-next-line max-len
@@ -119,6 +120,11 @@ CodeMirror.defineSimpleMode("automato", {
     commentRule,
     { sol: true, next: "start" },
     { regex: /(\/(?!\/)|[^\s#/])+/ui, token: "qualifier", next: "commandDone" },
+  ],
+  enhancementArgs: [ // Complete this later
+    commentRule,
+    { sol: true, next: "start" },
+    { regex: /respec/ui, token: "variable-2", next: "commandDone" },
   ],
   prestige: [
     commentRule,
