@@ -77,6 +77,10 @@ export const automatorBlocks = [
     targets: ["singleTextInput"],
     canWait: true
   }, {
+    cmd: "ENHANCE RESPEC",
+    alias: "RESPEC ENHANCEMENTS",
+    
+  }, {
     cmd: "INFINITY",
     canWait: true
   }, {

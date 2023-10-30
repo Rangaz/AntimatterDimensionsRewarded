@@ -34,7 +34,7 @@ export class Sacrifice {
       base = "x";
     } else if (f("InfinityChallenge2isCompleted", InfinityChallenge(2).isCompleted)) {
       factor = 1 / 120;
-      places = Perk.achievementEnhancement.isBought ? 4 : 3;
+      places = Achievements.isEnhancementUnlocked ? 4 : 3;
       base = "AD1";
     }
 

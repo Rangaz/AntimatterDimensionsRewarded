@@ -97,7 +97,7 @@ class AchievementState extends GameMechanicState {
       !this.isEnhanced &&
       this.row <= Achievements.maxEnhancedRow && // Maximum row allowed
       Achievements.enhancementPoints > 0 &&
-      Perk.achievementEnhancement.isBought &&
+      Achievements.isEnhancementUnlocked &&
       !Pelle.isDisabled("enhancedAchievements");
   }
 
@@ -248,6 +248,10 @@ export const Achievements = {
 
   get period() {
     return GameCache.achievementPeriod.value;
+  },
+
+  get isEnhancementUnlocked() {
+    return Perk.achievementEnhancement.isBought;
   },
 
   get totalEnhancementPoints() {

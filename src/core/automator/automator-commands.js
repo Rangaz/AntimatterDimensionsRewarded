@@ -783,6 +783,23 @@ export const AutomatorCommands = [
     blockify: () => automatorBlocksMap["STUDIES RESPEC"]
   },
   {
+    id: "enhanceRespec",
+    rule: $ => () => {
+      $.CONSUME(T.Enhance);
+      $.CONSUME(T.Respec);
+    },
+    validate: ctx => {
+      ctx.startLine = ctx.Enhance[0].startLine;
+      return true;
+    },
+    compile: ctx => () => {
+      player.reality.disEnhance = true;
+      AutomatorData.logCommandEvent(`Turned enhancement respec ON`, ctx.startLine);
+      return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+    },
+    blockify: () => automatorBlocksMap["ENHANCE RESPEC"]
+  },
+  {
     id: "unlockDilation",
     rule: $ => () => {
       $.CONSUME(T.Unlock);

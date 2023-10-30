@@ -424,7 +424,7 @@ to all Antimatter Dimensions. Each fully completed row also gives another ${form
 effect from all Achievements together is shown above all the Achievement images.
 <br>
 <br>
-${Perk.achievementEnhancement.isBought ? `
+${Achievements.isEnhancementUnlocked ? `
 Achievement Enhancement is unlocked after you buy the perk ACHEH. It allows you to greatly strengthen an Achievement
 Reward of your choice, often overwriting its previous reward.
 <br>
