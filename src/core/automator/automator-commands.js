@@ -783,6 +783,87 @@ export const AutomatorCommands = [
     blockify: () => automatorBlocksMap["STUDIES RESPEC"]
   },
   {
+    id: "enhanceLoad",
+    rule: $ => () => {
+      $.CONSUME(T.Enhance);
+      $.CONSUME(T.Load);
+      $.OR([
+        { ALT: () => $.CONSUME1(T.Id) },
+        { ALT: () => $.CONSUME1(T.Name) },
+      ]);
+    },
+    validate: (ctx, V) => {
+      ctx.startLine = ctx.Enhance[0].startLine;
+
+      if (ctx.Id) {
+        const split = idSplitter.exec(ctx.Id[0].image);
+
+        if (!split || ctx.Id[0].isInsertedInRecovery) {
+          V.addError(ctx, "Missing preset id",
+            "Provide the id of a saved enhancement preset slot from the Achievements page");
+          return false;
+        }
+
+        const id = parseInt(split[1], 10);
+        if (id < 1 || id > 6) {
+          V.addError(ctx.Id[0], `Could not find a preset with an id of ${id}`,
+            "Type in a valid id (1 - 6) for your enhancement preset");
+          return false;
+        }
+        ctx.$presetIndex = id;
+        return true;
+      }
+
+      if (ctx.Name) {
+        const split = presetSplitter.exec(ctx.Name[0].image);
+
+        if (!split || ctx.Name[0].isInsertedInRecovery) {
+          V.addError(ctx, "Missing preset name",
+            "Provide the name of a saved enhancement preset from the Achievements page");
+          return false;
+        }
+
+        // If it's a name, we check to make sure it exists:
+        const presetIndex = player.reality.enhancedPresets.findIndex(e => e.name === split[1]) + 1;
+        if (presetIndex === 0) {
+          V.addError(ctx.Name[0], `Could not find preset named ${split[1]} (Note: Names are case-sensitive)`,
+            "Check to make sure you typed in the correct name for your enhancement preset");
+          return false;
+        }
+        ctx.$presetIndex = presetIndex;
+        return true;
+      }
+      return false;
+    },
+    compile: ctx => {
+      const presetIndex = ctx.$presetIndex;
+      return () => {
+        const imported = Achievements.parseInput(player.reality.enhancedPresets[presetIndex - 1].enhancements)
+        const beforeCount = player.reality.enhancedAchievements.size;
+        Achievements.enhanceFromPreset(imported);
+        const afterCount = player.reality.enhancedAchievements.size;
+        // Check if there are still any unenhanced achievements from the preset after attempting to commit it all
+        const missingEnhancementCount = imported.split(",")
+          .filter(s => !player.reality.enhancedAchievements.has(Number.parseInt(s))).length;
+
+        const presetRepresentation = ctx.Name ? ctx.Name[0].image : ctx.Id[0].image;
+
+        if (missingEnhancementCount === 0) {
+          AutomatorData.logCommandEvent(`Fully loaded enhancement preset ${presetRepresentation}`, ctx.startLine);
+        } else if (afterCount > beforeCount) {
+          AutomatorData.logCommandEvent(`Partially loaded enhancement preset ${presetRepresentation}
+            (missing ${quantifyInt("enhancement", missingEnhancementCount)})`, ctx.startLine);
+        }
+        return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+      };
+    },
+    blockify: ctx => ({
+      singleSelectionInput: ctx.Name ? "NAME" : "ID",
+      singleTextInput: ctx.Name ? player.reality.enhancedPresets[ctx.$presetIndex - 1].name : ctx.$presetIndex,
+      ...automatorBlocksMap["ENHANCE LOAD"]
+    })
+  },
+  {
     id: "enhanceRespec",
     rule: $ => () => {
       $.CONSUME(T.Enhance);

@@ -81,6 +81,13 @@ export const automatorBlocks = [
     alias: "RESPEC ENHANCEMENTS",
     
   }, {
+    cmd: "ENHANCE LOAD",
+    alias: "LOAD ENHANCEMENT PRESET",
+    allowedPatterns: ["AB"],
+    A: ["ID", "NAME"],
+    B: ["*"],
+    targets: ["singleSelectionInput", "singleTextInput"],
+  }, {
     cmd: "INFINITY",
     canWait: true
   }, {

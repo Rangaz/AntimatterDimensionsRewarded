@@ -124,7 +124,25 @@ CodeMirror.defineSimpleMode("automato", {
   enhancementArgs: [ // Complete this later
     commentRule,
     { sol: true, next: "start" },
+    { regex: /load(\s+|$)/ui, token: "variable-2", next: "enhancementLoad" },
     { regex: /respec/ui, token: "variable-2", next: "commandDone" },
+  ],
+  enhancementLoad: [
+    commentRule,
+    { sol: true, next: "start" },
+    { regex: /id(\s+|$)/ui, token: "variable-2", next: "enhancementLoadId" },
+    { regex: /name(\s+|$)/ui, token: "variable-2", next: "enhancementLoadPreset" },
+    { regex: /\S+/ui, token: "error" },
+  ],
+  enhancementLoadId: [
+    commentRule,
+    { sol: true, next: "start" },
+    { regex: /\d/ui, token: "qualifier", next: "commandDone" },
+  ],
+  enhancementLoadPreset: [
+    commentRule,
+    { sol: true, next: "start" },
+    { regex: /(\/(?!\/)|[^\s#/])+/ui, token: "qualifier", next: "commandDone" },
   ],
   prestige: [
     commentRule,
