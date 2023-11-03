@@ -193,7 +193,7 @@ CodeMirror.defineSimpleMode("automato", {
     { regex: /ec(1[0-2]|[1-9])[\t ]+completions(\s|$)/ui, token: "variable-2" },
     { regex: /(am|ip|ep|all)(\s|$)/ui, token: "variable-2" },
     {
-      regex: /(rm|rg|dt|tp|tt|space theorems|(banked )?infinities|eternities|realities|rep(licanti)?)(\s|$)/ui,
+      regex: /(rm|rg|dt|tp|tt|(total )?enhancements( available)?|space theorems|(banked )?infinities|eternities|realities|rep(licanti)?)(\s|$)/ui,
       token: "variable-2",
     },
     { regex: / sec(onds ?) ?| min(utes ?) ?| hours ?/ui, token: "variable-2" },
