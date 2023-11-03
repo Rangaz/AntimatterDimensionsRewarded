@@ -516,7 +516,9 @@ export const automator = {
           : "";
         const stText = V.spaceTheorems > 0
           ? `<b>space theorems</b> - Current unspent Space Theorem amount<br>
-            <b>total space theorems</b> - TOTAL Space Theorems, including ones spent on current Studies<br>`
+            <b>total space theorems</b> - TOTAL Space Theorems, including ones spent on current Studies<br>
+            <b>enhancements available</b> - Current Achievement amount that you can still Enhance<br>
+            <b>total enhancements</b> - TOTAL Achievements you can Enhance at once<br>`
           : "";
         return `This is a list of "currencies" or numbers that you can use within the Automator.<br>
           Note that when used, most currencies will need to be in scientific notation.<br>

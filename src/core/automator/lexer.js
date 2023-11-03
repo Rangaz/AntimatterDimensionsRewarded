@@ -202,6 +202,18 @@ createInCategory(AutomatorCurrency, "TotalST", /total[ \t]+space[ \t]+theorems/i
   $unlocked: () => V.spaceTheorems > 0,
 });
 
+createInCategory(AutomatorCurrency, "EnhancementsAvailable", /enhancements( available)?/i, {
+  $autocomplete: "enhancements available",
+  $getter: () => Achievements.enhancementPoints,
+  $unlocked: () => V.spaceTheorems > 0,
+});
+createInCategory(AutomatorCurrency, "TotalEnhancements", /total enhancements/i, {
+  $autocomplete: "total enhancements",
+  $getter: () => Achievements.totalEnhancementPoints,
+  $unlocked: () => V.spaceTheorems > 0,
+});
+
+
 for (let i = 1; i <= 12; ++i) {
   const id = i;
   createInCategory(AutomatorCurrency, `EC${i}`, new RegExp(`ec${i} completions`, "i"), {

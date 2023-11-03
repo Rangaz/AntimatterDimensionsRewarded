@@ -307,7 +307,7 @@ export default {
           You gain {{ formatInt(1) }} Space Theorem for each completion,
           allowing you to purchase Time Studies which are normally locked.
           <br>
-          Space Theorems can also be used as a Currency in the Automator.
+          Space Theorems and available Enhancements can also be used as a Currency in the Automator.
           <br>
           Every 2nd V-Achievement also allows you to Enhance {{ formatInt(1) }} more Achievement.
         </span>
