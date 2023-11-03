@@ -183,8 +183,17 @@ export const catchupResources = [
       is determined by how high some of your resources reached in that Reality.`
   },
   {
-    name: "Automator",
+    name: "Enhanced Achievements",
     id: 24,
+    openH2pEntry: "Achievements",
+    requiredStage: PROGRESS_STAGE.EARLY_REALITY,
+    description: `Enhanced Achievements are unlocked through the ACHEH perk, and massively power up an early achievement 
+      reward of your choice. More can be active at the same time based on post-Reality Achievements completed, and they
+      can only be changed between Realities.`
+  },
+  {
+    name: "Automator",
+    id: 25,
     openH2pEntry: "Automator Overview",
     requiredStage: PROGRESS_STAGE.EARLY_REALITY,
     description: `The Automator is a built-in feature that uses a scripting language that allows you to eventually
@@ -192,14 +201,14 @@ export const catchupResources = [
   },
   {
     name: "Black Hole",
-    id: 25,
+    id: 26,
     requiredStage: PROGRESS_STAGE.EARLY_REALITY,
     description: `The Black Hole runs the entire game faster in a periodic cycle. This affects everything in the game up
       to this point and will give similar results to leaving the game open for an equivalent amount of time.`
   },
   {
     name: "Teresa",
-    id: 26,
+    id: 27,
     requiredStage: PROGRESS_STAGE.TERESA,
     description: `Teresa is the first Celestial, who has a more difficult Reality which gives a massive boost to Glyph
       Sacrifice depending upon completion. They unlock upgrades which focus on testing and automating Realities more
@@ -207,7 +216,7 @@ export const catchupResources = [
   },
   {
     name: "Effarig",
-    id: 27,
+    id: 28,
     requiredStage: PROGRESS_STAGE.EFFARIG,
     description: `Effarig is the second Celestial, whose Reality limits your Glyphs and has scaling nerfs but gives
       rewards for each new reset layer reached. They unlock upgrades which focus on automatically selecting and
@@ -215,7 +224,7 @@ export const catchupResources = [
   },
   {
     name: "The Nameless Ones",
-    id: 28,
+    id: 29,
     openH2pEntry: "Nameless Ones",
     requiredStage: PROGRESS_STAGE.ENSLAVED,
     description: `The Nameless Ones are the third Celestial, whose Reality is extremely punishing with a long list of
@@ -224,7 +233,7 @@ export const catchupResources = [
   },
   {
     name: "Stored Time",
-    id: 29,
+    id: 30,
     openH2pEntry: "Nameless Ones",
     requiredStage: PROGRESS_STAGE.ENSLAVED,
     description: `Your Black Hole has the ability to store time in two ways. Charging it allows you to hold on to
@@ -234,22 +243,22 @@ export const catchupResources = [
   },
   {
     name: "Tesseracts",
-    id: 30,
+    id: 31,
     requiredStage: PROGRESS_STAGE.ENSLAVED,
     description: `Infinity Dimensions cannot be purchased indefinitely and all but the 8th have a hard limit for how
       many times they can be purchased. Each Tesseract permanently increases this limit by a large amount.`
   },
   {
     name: "V",
-    id: 31,
+    id: 32,
     requiredStage: PROGRESS_STAGE.V,
     description: `V is the fourth Celestial, with a modified Reality which is similar to Teresa's Reality but only gives
       rewards by reaching certain milestones of resources within. They give a new resource called Space Theorems, which
-      allow you to purchase additional Time Studies without path restrictions.`
+      allow you to purchase additional Time Studies without path restrictions, and more Enhanced Achievements.`
   },
   {
     name: "Ra",
-    id: 32,
+    id: 33,
     requiredStage: PROGRESS_STAGE.RA,
     description: `Ra is the fifth Celestial, with a modified Reality which produces a resource called Memory Chunks
       based on your resource totals within. They focus highly on taking older upgrades and themes from the previous
@@ -257,7 +266,7 @@ export const catchupResources = [
   },
   {
     name: "Memories",
-    id: 33,
+    id: 34,
     openH2pEntry: "Ra",
     requiredStage: PROGRESS_STAGE.RA,
     description: `Ra has the previous four Celestials under their control, producing Memories over time based on Memory
@@ -266,7 +275,7 @@ export const catchupResources = [
   },
   {
     name: "Charged Infinity Upgrades",
-    id: 34,
+    id: 35,
     openH2pEntry: "Ra",
     requiredStage: PROGRESS_STAGE.RA,
     description: `Teresa's Memories allow you to charge your Infinity Upgrades, maintaining a similar effect but
@@ -274,7 +283,7 @@ export const catchupResources = [
   },
   {
     name: "Glyph Alchemy",
-    id: 35,
+    id: 36,
     requiredStage: PROGRESS_STAGE.RA,
     description: `Effarig's Memories unlock Glyph Alchemy, which gives many minor boosts using a modified version of
       Glyph Sacrifice. The resources gained from giving up Glyphs in this way must be combined together in reactions
@@ -282,7 +291,7 @@ export const catchupResources = [
   },
   {
     name: "Amplified Black Hole",
-    id: 36,
+    id: 37,
     openH2pEntry: "Ra",
     requiredStage: PROGRESS_STAGE.RA,
     description: `Nameless's Memories amplify charging so that the amount of game time stored is larger than the actual
@@ -290,7 +299,7 @@ export const catchupResources = [
   },
   {
     name: "Harder V",
-    id: 37,
+    id: 38,
     openH2pEntry: "Ra",
     requiredStage: PROGRESS_STAGE.RA,
     description: `V's Memories unlocks a modified version of V's original Reality with even harder goals and a new set
@@ -298,7 +307,7 @@ export const catchupResources = [
   },
   {
     name: "Imaginary Machines",
-    id: 38,
+    id: 39,
     requiredStage: PROGRESS_STAGE.IMAGINARY_MACHINES,
     description: () => `Imaginary Machines are a new resource unlocked when reaching ${format(DC.E1000)} Reality
       Machines. They are produced passively up to a cap determined by how many Reality Machines you would have gotten
@@ -306,7 +315,7 @@ export const catchupResources = [
   },
   {
     name: "Lai'tela",
-    id: 39,
+    id: 40,
     requiredStage: PROGRESS_STAGE.LAITELA,
     description: `Lai'tela is the sixth Celestial, whose Reality has a modified completion condition and gives a
       scaling reward based on how quickly you can reach it. They unlock new features largely related to a resource
@@ -314,14 +323,14 @@ export const catchupResources = [
   },
   {
     name: "Continuum",
-    id: 40,
+    id: 41,
     requiredStage: PROGRESS_STAGE.LAITELA,
     description: `Continuum is a modified type of production which allows your Antimatter Dimensions to produce as if
       they could purchase fractional amounts of upgrades, without actually purchasing them.`
   },
   {
     name: "Dark Matter Dimensions",
-    id: 41,
+    id: 42,
     openH2pEntry: "Lai'tela",
     requiredStage: PROGRESS_STAGE.LAITELA,
     description: `Dark Matter Dimensions are cascading production which operate on a tick-based system instead of
@@ -329,7 +338,7 @@ export const catchupResources = [
   },
   {
     name: "Dimension Reset Mechanics",
-    id: 42,
+    id: 43,
     openH2pEntry: "Lai'tela",
     requiredStage: PROGRESS_STAGE.LAITELA,
     description: `Dark Matter Dimensions can be reset in two ways. Annihilation resets all your Dimensions in exchange
@@ -338,21 +347,21 @@ export const catchupResources = [
   },
   {
     name: "Singularities",
-    id: 43,
+    id: 44,
     requiredStage: PROGRESS_STAGE.LAITELA,
     description: `Dark Energy can be used to produce Singularities, which give boosts based on their total amount.
       When producing Singularities, any extra Dark Energy above the condensing threshold is wasted.`
   },
   {
     name: "Pelle",
-    id: 44,
+    id: 45,
     requiredStage: PROGRESS_STAGE.PELLE,
     description: `Pelle is the seventh and final Celestial, who permanently Dooms your game, throwing you into a very
       difficult modified Reality which you cannot escape.`
   },
   {
     name: "Armageddon",
-    id: 45,
+    id: 46,
     openH2pEntry: "Pelle",
     requiredStage: PROGRESS_STAGE.PELLE,
     description: `Armageddon is a Pelle-specific reset which you can perform at any time. This resets your progress to
@@ -360,7 +369,7 @@ export const catchupResources = [
   },
   {
     name: "Pelle Strikes and Rifts",
-    id: 46,
+    id: 47,
     openH2pEntry: "Pelle Strikes",
     requiredStage: PROGRESS_STAGE.PELLE,
     description: `Upon reaching certain progress milestones within Pelle, a Strike may occur which permanently applies
