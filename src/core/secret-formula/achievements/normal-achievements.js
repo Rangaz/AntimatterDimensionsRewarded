@@ -6,17 +6,13 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Add an ENHANCE command to the automator <DONE FOR NOW>
-  ->Make it work similarly to STUDIES <DONE>
-    |>Make ENHANCE ACHIEVEMENTS work with inline row notation <PROVEN DIFFICULT>
-  ->Add documentation <DONE>
--Expand the Currency list with Total/Achievements Enhanced <DONE>
--Allow for full export to include Enhancement presets <FOR LATER>
-
--Make a catchup entry for Enhanced Achievements <DONE>
--Fix the fast forward button not updated when first created <DONE>
--Change "One for every Dimension" to "One for every Achievement" <DONE>
--Changelog
+-Hard V
+  ->Add omens/curses for Achievements
+  ->Balance Hard V
+-Add Enhancements for rows 10-13 <IN PROGRESS>
+-Add Rewards for row 17
+-Balance Imaginary upgrades' unlocks
+-Balance Lai'tela
 */
 
 export const normalAchievements = [
@@ -1408,9 +1404,6 @@ export const normalAchievements = [
     }
   },
 
-  // ----------------------------------------------------------------
-  // Enhanced rewards later than this point won't be developed until later.
-
   {
     // Implemented! Likely the messiest code, but it's just multiplication.
     id: 101,
@@ -1437,7 +1430,17 @@ export const normalAchievements = [
     get reward() {
       return `Improve offline generation milestones to give ${formatPercents(0.9)} of their respective resource.`
     },
-    effect: 0.9
+    effect: 0.9,
+    enhanced: {
+      get reward() {
+        return `Improve offline generation milestones to give ${formatPercents(1)} of their respective resource, they
+          are always active, and multiply EP, Infinities, and Eternities generation by ${formatInt(100000)}.`
+      },
+      effects: {
+        offlineMultiplier: 1,
+        multiplier: 100000
+      }
+    }
   },
   {
     // Improved!
@@ -1845,6 +1848,9 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Removes the downsides from Time Study 131 and 133 in the Active and Idle Time Study paths."
   },
+
+  // ----------------------------------------------------------------------
+  // Enhanced rewards later than this point won't be developed until later.
 
   {
     id: 141,

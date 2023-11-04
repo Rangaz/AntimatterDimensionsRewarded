@@ -1,4 +1,5 @@
 import { MultiplierTabIcons } from "./icons";
+import { DC } from "../../constants";
 
 // See index.js for documentation
 export const eternities = {
@@ -10,9 +11,12 @@ export const eternities = {
     overlay: ["Δ", "<i class='fa-solid fa-arrows-rotate' />"],
   },
   achievement: {
-    name: "Achievement 113",
-    multValue: () => Achievement(113).effectOrDefault(1),
-    isActive: () => Achievement(113).canBeApplied,
+    name: "Achievements",
+    multValue: () => DC.D1.timesEffectsOf(
+      Achievement(102).enhancedEffect.effects.multiplier,
+      Achievement(113)
+    ),
+    isActive: () => Achievement(113).canBeApplied || Achievement(102).isEnhanced,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   amplifierEter: {
