@@ -14,7 +14,7 @@ TODO:
 -Allow for full export to include Enhancement presets <FOR LATER>
 
 -Make a catchup entry for Enhanced Achievements <DONE>
--Fix the fast forward button not updated when first created
+-Fix the fast forward button not updated when first created <DONE>
 -Change "One for every Dimension" to "One for every Achievement"
 -Changelog
 */

@@ -29,6 +29,11 @@ export default {
   beforeCreate() {
     this.recentTickers = [];
   },
+  created() {
+    // Putting this here makes the fast forward icon start with the correct icon
+    this.fastForward = player.news.isFastForward;
+    this.$recompute("isFastForward");
+  },
   mounted() {
     document.addEventListener("visibilitychange", () => this.restart.bind(this));
     this.restart();
@@ -169,7 +174,6 @@ export default {
       } else {
         line.style.transform = `translateX(-${randVar + 100}%)`;
       }
-      console.log(line.style["transition-property"]);
       this.clearTimeouts();
       this.scrollTimeout = setTimeout(this.prepareNextMessage.bind(this), scrollDuration * 1000);
     },
