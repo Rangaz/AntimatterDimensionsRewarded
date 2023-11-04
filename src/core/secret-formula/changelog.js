@@ -9,6 +9,30 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 11, 3],
+    name: "I don't want to Enhance",
+    info: `
+    <b>The Automator now supports Enhancing Achievements!</li>
+    <br>
+    <ul>
+    <li>Added ENHANCE RESPEC command.</li>
+    <li>Added ENHANCE LOAD command.</li>
+    <li>Added ENHANCE ACHIEVEMENTS command.</li>
+    <li>Added 'enhancements available' and 'total enhancements' as Automator currencies.</li>
+    </ul>
+    <br>
+    <br>
+    <b>Other changes: </b>
+    <ul>
+    <li>Changed Achievement 76. It's now called "One for Each Achievement", and unlocks after 144 hours 
+    (6 days) instead of 8 days.</li>
+    <li>Added a catchup entry for Achievement Enhancement and updated V's.</li>
+    <li>Fixed the Fast Forward button not showing the correct icon when first created.</li>
+    </ul>
+    <br>
+    `
+  },
+  {
     date: [2023, 10, 20],
     name: "I can see!",
     info: `
@@ -122,7 +146,7 @@ export const changelog = [
     <li>(13/10) Achievement 153's effect now only works in non-celestial Realities.</li>
     <li>(12/10) Cel-2's Reality is rebalanced:
     <ul>
-    <li>Tickspeed is dilated way more (Starting value: ^0.7 ➜ ^0.36).</li>
+    <li>Tickspeed is dilated way more (Starting value: ^0.7 ➜ ^0.36).</li> |
     <li>Gamespeed and Dimensions are slightly more dilated (Starting value: ^0.25 ➜ ^0.24).</li>
     <li>This makes Effarig's first 2 layers no longer trivial by Achievement Enhancement, but it should
     be slightly faster still with the correct Glyph and Enhancements setup.</li>
