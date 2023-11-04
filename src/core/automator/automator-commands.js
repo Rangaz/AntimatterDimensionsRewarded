@@ -794,6 +794,16 @@ export const AutomatorCommands = [
     },
     validate: (ctx, V) => {
       ctx.startLine = ctx.Enhance[0].startLine;
+      if (!Achievements.isEnhancementUnlocked) {
+        V.addError(ctx.Enhance[0], "You do not have Enhancements unlocked.", 
+          "Buy the ACHEH perk to unlock.");
+        return false;
+      }
+      if (!VUnlocks.enhancementPresets.canBeApplied) {
+        V.addError(ctx.Enhance[0], "You do not have Enhancement automation unlocked.", 
+          "Unlock it from V first."); 
+        return false;
+      }
       if (ctx.Identifier) {
         if (!V.isValidVarFormat(ctx.Identifier[0], AUTOMATOR_VAR_TYPES.ENHANCEMENTS)) {
           V.addError(ctx, `Constant ${ctx.Identifier[0].image} is not a valid Enhancement constant`,
@@ -809,6 +819,11 @@ export const AutomatorCommands = [
       return true;
     },
     compile: ctx => {
+      if (!Achievements.isEnhancementUnlocked || !VUnlocks.enhancementPresets.canBeApplied) {
+        AutomatorData.logCommandEvent(`Attempted to automatically Enhance Achievements, but failed 
+          (not unlocked yet)`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+      }
       const enhancements = ctx.$enhancements;
       return () => {
         let preEnhancedAchievements = 0;
@@ -865,7 +880,16 @@ export const AutomatorCommands = [
     },
     validate: (ctx, V) => {
       ctx.startLine = ctx.Enhance[0].startLine;
-
+      if (!Achievements.isEnhancementUnlocked) {
+        V.addError(ctx.Enhance[0], "You do not have Enhancements unlocked.", 
+          "Buy the ACHEH perk to unlock.");
+        return false;
+      }
+      if (!VUnlocks.enhancementPresets.canBeApplied) {
+        V.addError(ctx.Enhance[0], "You do not have Enhancement automation unlocked.", 
+          "Unlock it from V first.");
+        return false;
+      }
       if (ctx.Id) {
         const split = idSplitter.exec(ctx.Id[0].image);
 
@@ -907,6 +931,11 @@ export const AutomatorCommands = [
       return false;
     },
     compile: ctx => {
+      if (!Achievements.isEnhancementUnlocked || !VUnlocks.enhancementPresets.canBeApplied) {
+        AutomatorData.logCommandEvent(`Attempted to automatically Enhance Achievements, but failed 
+          (not unlocked yet)`, ctx.startLine);
+        return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+      }
       const presetIndex = ctx.$presetIndex;
       return () => {
         const imported = Achievements.parseInput(player.reality.enhancedPresets[presetIndex - 1].enhancements)
@@ -940,11 +969,21 @@ export const AutomatorCommands = [
       $.CONSUME(T.Enhance);
       $.CONSUME(T.Respec);
     },
-    validate: ctx => {
+    validate: (ctx, V) => {
       ctx.startLine = ctx.Enhance[0].startLine;
+      if (!Achievements.isEnhancementUnlocked) {
+        V.addError(ctx.Enhance[0], "You do not have Enhancements unlocked.", 
+          "Buy the ACHEH perk first.");
+        return false;
+      }
       return true;
     },
     compile: ctx => () => {
+      if (!Achievements.isEnhancementUnlocked) {
+        AutomatorData.logCommandEvent(`Attempted to respec Enhancements, but failed 
+          (not unlocked yet)`, ctx.startLine);
+        return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+      }
       player.reality.disEnhance = true;
       AutomatorData.logCommandEvent(`Turned enhancement respec ON`, ctx.startLine);
       return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;

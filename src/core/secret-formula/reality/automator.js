@@ -681,17 +681,15 @@ export const automator = {
               header: "<i>enhancements_list</i>",
               description: `
                 The exported Enhancements format is supported here, which is simply a list of Achievement IDs
-                separated by commas. This command also supports a more flexible formatting, additionally allowing
-                ranges of Achievements (for example, <u>22-28</u>), and rows (for example, <u>row 1</u>).
-                A variable name may be used in place of the entire Enhancements list as well (see the definition panel),
-                although in that case the shorthand ranges and rows are not allowed.`
+                separated by commas. This command also allows ranges of Achievements (for example, <u>22-28</u>).
+                A variable name may be used in place of the entire Enhancements list as well (see the definition panel).`
             },
           ]
         }
       ],
       examples: [
         "enhance achievements 11,21,31",
-        "enhance achievements row1, 22-28, 32, 41-44",
+        "enhance achievements 22-28, 32, 41-44",
         "enhance achievements glyphFarm",
       ]
     },
