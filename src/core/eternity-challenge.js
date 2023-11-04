@@ -248,7 +248,6 @@ export class EternityChallengeState extends GameMechanicState {
     // I'm not sure if I should put 'false' as the 'auto' condition.
     Currency.timeShards.reset();
     resetTimeDimensions();
-    console.log("Am I exiting?");
 
     eternity(true);
   }
