@@ -783,6 +783,214 @@ export const AutomatorCommands = [
     blockify: () => automatorBlocksMap["STUDIES RESPEC"]
   },
   {
+    id: "enhanceAchievements",
+    rule: $ => () => {
+      $.CONSUME(T.Enhance);
+      $.CONSUME(T.Achievements);
+      $.OR([
+        { ALT: () => $.SUBRULE($.enhancementList) },
+        { ALT: () => $.CONSUME1(T.Identifier) },
+      ]);
+    },
+    validate: (ctx, V) => {
+      ctx.startLine = ctx.Enhance[0].startLine;
+      if (!Achievements.isEnhancementUnlocked) {
+        V.addError(ctx.Enhance[0], "You do not have Enhancements unlocked.", 
+          "Buy the ACHEH perk to unlock.");
+        return false;
+      }
+      if (!VUnlocks.enhancementPresets.canBeApplied) {
+        V.addError(ctx.Enhance[0], "You do not have Enhancement automation unlocked.", 
+          "Unlock it from V first."); 
+        return false;
+      }
+      if (ctx.Identifier) {
+        if (!V.isValidVarFormat(ctx.Identifier[0], AUTOMATOR_VAR_TYPES.ENHANCEMENTS)) {
+          V.addError(ctx, `Constant ${ctx.Identifier[0].image} is not a valid Enhancement constant`,
+            `Ensure that ${ctx.Identifier[0].image} is a properly-formatted Enhancement string`);
+          return false;
+        }
+        const varInfo = V.lookupVar(ctx.Identifier[0], AUTOMATOR_VAR_TYPES.ENHANCEMENTS);
+        ctx.$enhancements = varInfo.value;
+        ctx.$enhancements.image = ctx.Identifier[0].image;
+      } else if (ctx.enhancementList) {
+        ctx.$enhancements = V.visit(ctx.enhancementList);
+      }
+      return true;
+    },
+    compile: ctx => {
+      if (!Achievements.isEnhancementUnlocked || !VUnlocks.enhancementPresets.canBeApplied) {
+        AutomatorData.logCommandEvent(`Attempted to automatically Enhance Achievements, but failed 
+          (not unlocked yet)`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+      }
+      const enhancements = ctx.$enhancements;
+      return () => {
+        let preEnhancedAchievements = 0;
+        let enhancedAchievements = 0;
+        let errors = 0;
+        for (const achievementNumber of enhancements.normal) {
+          if (Achievement(achievementNumber) == undefined) {
+            errors++;
+            continue; // I'll figure this out later
+          }
+          if (Achievement(achievementNumber).isEnhanced) {
+            preEnhancedAchievements++;
+            continue;
+          }
+          if (!Achievement(achievementNumber).canEnhance) {
+            errors++;
+            continue;
+          }
+          Achievement(achievementNumber).enhance(true);
+          enhancedAchievements++;
+        }
+
+        if (errors > 0) {
+          AutomatorData.logCommandEvent(`Enhanced ${enhancedAchievements} Achievements, but couldn't Enhance
+        ${errors} Achievements`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+        }
+        if (preEnhancedAchievements + enhancedAchievements == 0) {
+          AutomatorData.logCommandEvent(`No Achievements were selected`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+        }
+        if (enhancedAchievements == 0) {
+          AutomatorData.logCommandEvent(`Specified Achievements were already Enhanced`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+        }
+        AutomatorData.logCommandEvent(`Enhanced all specified Achievements`, ctx.startLine);
+        return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+      };
+    },
+    blockify: ctx => ({
+      singleTextInput: ctx.$enhancements.image,
+      ...automatorBlocksMap["ENHANCE ACHIEVEMENTS"]
+    })
+  },
+  {
+    id: "enhanceLoad",
+    rule: $ => () => {
+      $.CONSUME(T.Enhance);
+      $.CONSUME(T.Load);
+      $.OR([
+        { ALT: () => $.CONSUME1(T.Id) },
+        { ALT: () => $.CONSUME1(T.Name) },
+      ]);
+    },
+    validate: (ctx, V) => {
+      ctx.startLine = ctx.Enhance[0].startLine;
+      if (!Achievements.isEnhancementUnlocked) {
+        V.addError(ctx.Enhance[0], "You do not have Enhancements unlocked.", 
+          "Buy the ACHEH perk to unlock.");
+        return false;
+      }
+      if (!VUnlocks.enhancementPresets.canBeApplied) {
+        V.addError(ctx.Enhance[0], "You do not have Enhancement automation unlocked.", 
+          "Unlock it from V first.");
+        return false;
+      }
+      if (ctx.Id) {
+        const split = idSplitter.exec(ctx.Id[0].image);
+
+        if (!split || ctx.Id[0].isInsertedInRecovery) {
+          V.addError(ctx, "Missing preset id",
+            "Provide the id of a saved enhancement preset slot from the Achievements page");
+          return false;
+        }
+
+        const id = parseInt(split[1], 10);
+        if (id < 1 || id > 6) {
+          V.addError(ctx.Id[0], `Could not find a preset with an id of ${id}`,
+            "Type in a valid id (1 - 6) for your enhancement preset");
+          return false;
+        }
+        ctx.$presetIndex = id;
+        return true;
+      }
+
+      if (ctx.Name) {
+        const split = presetSplitter.exec(ctx.Name[0].image);
+
+        if (!split || ctx.Name[0].isInsertedInRecovery) {
+          V.addError(ctx, "Missing preset name",
+            "Provide the name of a saved enhancement preset from the Achievements page");
+          return false;
+        }
+
+        // If it's a name, we check to make sure it exists:
+        const presetIndex = player.reality.enhancedPresets.findIndex(e => e.name === split[1]) + 1;
+        if (presetIndex === 0) {
+          V.addError(ctx.Name[0], `Could not find preset named ${split[1]} (Note: Names are case-sensitive)`,
+            "Check to make sure you typed in the correct name for your enhancement preset");
+          return false;
+        }
+        ctx.$presetIndex = presetIndex;
+        return true;
+      }
+      return false;
+    },
+    compile: ctx => {
+      if (!Achievements.isEnhancementUnlocked || !VUnlocks.enhancementPresets.canBeApplied) {
+        AutomatorData.logCommandEvent(`Attempted to automatically Enhance Achievements, but failed 
+          (not unlocked yet)`, ctx.startLine);
+        return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+      }
+      const presetIndex = ctx.$presetIndex;
+      return () => {
+        const imported = Achievements.parseInput(player.reality.enhancedPresets[presetIndex - 1].enhancements)
+        const beforeCount = player.reality.enhancedAchievements.size;
+        Achievements.enhanceFromPreset(imported);
+        const afterCount = player.reality.enhancedAchievements.size;
+        // Check if there are still any unenhanced achievements from the preset after attempting to commit it all
+        const missingEnhancementCount = imported.split(",")
+          .filter(s => !player.reality.enhancedAchievements.has(Number.parseInt(s))).length;
+
+        const presetRepresentation = ctx.Name ? ctx.Name[0].image : ctx.Id[0].image;
+
+        if (missingEnhancementCount === 0) {
+          AutomatorData.logCommandEvent(`Fully loaded enhancement preset ${presetRepresentation}`, ctx.startLine);
+        } else if (afterCount > beforeCount) {
+          AutomatorData.logCommandEvent(`Partially loaded enhancement preset ${presetRepresentation}
+            (missing ${quantifyInt("enhancement", missingEnhancementCount)})`, ctx.startLine);
+        }
+        return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+      };
+    },
+    blockify: ctx => ({
+      singleSelectionInput: ctx.Name ? "NAME" : "ID",
+      singleTextInput: ctx.Name ? player.reality.enhancedPresets[ctx.$presetIndex - 1].name : ctx.$presetIndex,
+      ...automatorBlocksMap["ENHANCE LOAD"]
+    })
+  },
+  {
+    id: "enhanceRespec",
+    rule: $ => () => {
+      $.CONSUME(T.Enhance);
+      $.CONSUME(T.Respec);
+    },
+    validate: (ctx, V) => {
+      ctx.startLine = ctx.Enhance[0].startLine;
+      if (!Achievements.isEnhancementUnlocked) {
+        V.addError(ctx.Enhance[0], "You do not have Enhancements unlocked.", 
+          "Buy the ACHEH perk first.");
+        return false;
+      }
+      return true;
+    },
+    compile: ctx => () => {
+      if (!Achievements.isEnhancementUnlocked) {
+        AutomatorData.logCommandEvent(`Attempted to respec Enhancements, but failed 
+          (not unlocked yet)`, ctx.startLine);
+        return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+      }
+      player.reality.disEnhance = true;
+      AutomatorData.logCommandEvent(`Turned enhancement respec ON`, ctx.startLine);
+      return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+    },
+    blockify: () => automatorBlocksMap["ENHANCE RESPEC"]
+  },
+  {
     id: "unlockDilation",
     rule: $ => () => {
       $.CONSUME(T.Unlock);

@@ -63,7 +63,7 @@ export default {
       let coloredString = `#,${this.parsedInput},#`;
       if (coloredString.length > 300) coloredString = `${coloredString.slice(0, 297)}...`;
 
-      for (const id of Achievements.readPreset(this.parsedInput)[1]) {
+      for (const id of Achievements.readPreset(this.parsedInput, false)[1]) {
         coloredString = coloredString.replaceAll(`,${id},`,
               `,<span style="color: var(--color-bad);">${id}</span>,`);
       }
@@ -135,7 +135,7 @@ export default {
       return this.inputIsValidTree || this.inputIsSecret;
     },
     inputIsValidTree() {
-      return Achievements.readPreset(this.parsedInput)[1].length == 0;
+      return Achievements.readPreset(this.parsedInput, false)[1].length == 0;
     },
     inputIsSecret() {
       // The button to open the modal and the actual modal itself display two different strings;
@@ -189,7 +189,7 @@ export default {
     },
     fixInput() {
       // Remove invalid ids from the preset text
-      if (!this.hasInput || Achievements.readPreset(this.parsedInput)[1].length == 0) return;
+      if (!this.hasInput || Achievements.readPreset(this.parsedInput, false)[1].length == 0) return;
 
       let fixedString = `,${this.truncatedInput},`;
       // First fix invalid "rows a-b"s
@@ -248,7 +248,7 @@ export default {
         }
       }
 
-      for (const id of Achievements.readPreset(Achievements.parseInput(fixedString))[1]) {
+      for (const id of Achievements.readPreset(fixedString)[1]) {
         fixedString = fixedString.replaceAll(`,${id},`, `,`);
       }
 

@@ -33,7 +33,8 @@ const AUTOMATOR_BLOCKS_COMPARISON_OPERATORS = ["<", ">", ">=", "<="];
 const AUTOMATOR_BLOCKS_COMPARISON_CURRENCIES = [
   "AM", "IP", "EP", "RM", "INFINITIES", "BANKED INFINITIES", "ETERNITIES", "REALITIES",
   "PENDING IP", "PENDING EP", "PENDING TP", "PENDING RM", "PENDING GLYPH LEVEL",
-  "DT", "TP", "RG", "REP", "TT", "TOTAL TT", "TOTAL COMPLETIONS", "PENDING COMPLETIONS",
+  "DT", "TP", "RG", "REP", "TT", "TOTAL TT", "ENHANCEMENTS AVAILABLE", "TOTAL ENHANCEMENTS", 
+  "TOTAL COMPLETIONS", "PENDING COMPLETIONS",
   "EC1 COMPLETIONS", "EC2 COMPLETIONS", "EC3 COMPLETIONS", "EC4 COMPLETIONS",
   "EC5 COMPLETIONS", "EC6 COMPLETIONS", "EC7 COMPLETIONS", "EC8 COMPLETIONS",
   "EC9 COMPLETIONS", "EC10 COMPLETIONS", "EC11 COMPLETIONS", "EC12 COMPLETIONS",
@@ -76,6 +77,22 @@ export const automatorBlocks = [
     A: ["*"],
     targets: ["singleTextInput"],
     canWait: true
+  }, {
+    cmd: "ENHANCE RESPEC",
+    alias: "RESPEC ENHANCEMENTS",
+  }, {
+    cmd: "ENHANCE LOAD",
+    alias: "LOAD ENHANCEMENT PRESET",
+    allowedPatterns: ["AB"],
+    A: ["ID", "NAME"],
+    B: ["*"],
+    targets: ["singleSelectionInput", "singleTextInput"],
+  }, {
+    cmd: "ENHANCE ACHIEVEMENTS",
+    alias: "ENHANCE ACHIEVEMENTS",
+    allowedPatterns: ["A"],
+    A: ["*"],
+    targets: ["singleTextInput"],
   }, {
     cmd: "INFINITY",
     canWait: true

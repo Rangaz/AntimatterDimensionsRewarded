@@ -61,6 +61,7 @@ CodeMirror.defineSimpleMode("automato", {
   start: [
     commentRule,
     { regex: /studies\s+/ui, token: "keyword", next: "studiesArgs" },
+    { regex: /enhance\s+/ui, token: "keyword", next: "enhancementArgs" },
     { regex: /blob\s\s/ui, token: "blob" },
     {
       // eslint-disable-next-line max-len
@@ -120,6 +121,36 @@ CodeMirror.defineSimpleMode("automato", {
     { sol: true, next: "start" },
     { regex: /(\/(?!\/)|[^\s#/])+/ui, token: "qualifier", next: "commandDone" },
   ],
+  enhancementArgs: [ 
+    commentRule,
+    { sol: true, next: "start" },
+    { regex: /load(\s+|$)/ui, token: "variable-2", next: "enhancementLoad" },
+    { regex: /respec/ui, token: "variable-2", next: "commandDone" },
+    { regex: /achievements/ui, token: "variable-2", next: "enhancementList" },
+  ],
+  enhancementList: [ // Rows won't be implemented
+    commentRule,
+    { sol: true, next: "start" },
+    { regex: /([1-9][0-9]+)(?=[\s,!|-]|$)/ui, token: "number" },
+    { regex: /[a-zA-Z_][a-zA-Z_0-9]*/u, token: "variable", next: "commandDone" },
+  ],
+  enhancementLoad: [
+    commentRule,
+    { sol: true, next: "start" },
+    { regex: /id(\s+|$)/ui, token: "variable-2", next: "enhancementLoadId" },
+    { regex: /name(\s+|$)/ui, token: "variable-2", next: "enhancementLoadPreset" },
+    { regex: /\S+/ui, token: "error" },
+  ],
+  enhancementLoadId: [
+    commentRule,
+    { sol: true, next: "start" },
+    { regex: /\d/ui, token: "qualifier", next: "commandDone" },
+  ],
+  enhancementLoadPreset: [
+    commentRule,
+    { sol: true, next: "start" },
+    { regex: /(\/(?!\/)|[^\s#/])+/ui, token: "qualifier", next: "commandDone" },
+  ],
   prestige: [
     commentRule,
     { sol: true, next: "start" },
@@ -162,7 +193,7 @@ CodeMirror.defineSimpleMode("automato", {
     { regex: /ec(1[0-2]|[1-9])[\t ]+completions(\s|$)/ui, token: "variable-2" },
     { regex: /(am|ip|ep|all)(\s|$)/ui, token: "variable-2" },
     {
-      regex: /(rm|rg|dt|tp|tt|space theorems|(banked )?infinities|eternities|realities|rep(licanti)?)(\s|$)/ui,
+      regex: /(rm|rg|dt|tp|tt|(total )?enhancements( available)?|space theorems|(banked )?infinities|eternities|realities|rep(licanti)?)(\s|$)/ui,
       token: "variable-2",
     },
     { regex: / sec(onds ?) ?| min(utes ?) ?| hours ?/ui, token: "variable-2" },

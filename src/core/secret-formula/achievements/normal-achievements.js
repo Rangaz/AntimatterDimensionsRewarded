@@ -6,23 +6,17 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Make better edit Enhancement presets <DONE FOR NOW>
-  ->Display a list of Achievements that will be Enhanced if loading the preset <DONE>
-  ->Show if there are invalid Achievement ids <DONE>
-  ->Show a Fix button if there are invalid ids <DONE>
-  ->Show if not all Achievements can be Enhanced <DONE>
-  ->Add a preview <DONE FOR NOW>
--Make preset text hopefully shorter <DONE>
-  ->Make 'Row x' be parsed as the entire row x <DONE>
-  ->Make 'aa-bb' be parsed as the Achievements aa, bb, and every other one between aa and bb <DONE>
--Disallow Achievement 47 from being Enhanced if you don't have Teresa unlocked <DONE>
--Make Enhancing Achievements 57 & 88 try to Enhance their required Achievements <DONE>
-  ->Make presets warn if some of them are missing <DONE>
--Allow only hiding completed & unenhancable Achievement rows <DONE>
--Make the 'show fast forward button' in Options not appear if you don't have r22 <DONE>
--Rework r38 <DONE>
-  ->Remove old r38 logic <DONE>
--Add asaned's mobile friendly Glyph option as an option <DONE>
+-Add an ENHANCE command to the automator <DONE FOR NOW>
+  ->Make it work similarly to STUDIES <DONE>
+    |>Make ENHANCE ACHIEVEMENTS work with inline row notation <PROVEN DIFFICULT>
+  ->Add documentation <DONE>
+-Expand the Currency list with Total/Achievements Enhanced <DONE>
+-Allow for full export to include Enhancement presets <FOR LATER>
+
+-Make a catchup entry for Enhanced Achievements <DONE>
+-Fix the fast forward button not updated when first created <DONE>
+-Change "One for every Dimension" to "One for every Achievement" <DONE>
+-Changelog
 */
 
 export const normalAchievements = [
@@ -1062,10 +1056,11 @@ export const normalAchievements = [
   },
   {
     // Enhanced!
+    // First Achievement that I ACTUALLY change??? WOW!
     id: 76,
-    name: "One for each dimension",
-    get description() { return `Play for ${formatInt(8)} days.`; },
-    checkRequirement: () => Time.totalTimePlayed.totalDays >= 8,
+    name: "One for each achievement",
+    get description() { return `Play for ${formatInt(144)} hours (${formatInt(6)} days).`; },
+    checkRequirement: () => Time.totalTimePlayed.totalHours >= 144,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Extremely small multiplier to Antimatter Dimensions based on time played.",
     effect: () => Math.max(Math.pow(Time.totalTimePlayed.totalDays / 2, 0.05), 1),

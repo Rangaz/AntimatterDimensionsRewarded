@@ -17,11 +17,11 @@ export const AUTOMATOR_MODE = Object.freeze({
   SINGLE_STEP: 3,
 });
 
-
 export const AUTOMATOR_VAR_TYPES = {
   NUMBER: { id: 0, name: "number" },
   STUDIES: { id: 1, name: "studies" },
   DURATION: { id: 2, name: "duration" },
+  ENHANCEMENTS: {id: 3, name: "enhancements"},
   UNKNOWN: { id: -1, name: "unknown" },
 };
 
@@ -173,7 +173,8 @@ export const AutomatorData = {
   MAX_ALLOWED_SCRIPT_NAME_LENGTH: 15,
   MAX_ALLOWED_SCRIPT_COUNT: 20,
   MAX_ALLOWED_CONSTANT_NAME_LENGTH: 20,
-  // Note that a study string with ALL studies in unshortened form without duplicated studies is ~230 characters
+  // Note that a study string with ALL studies in unshortened form without duplicated studies is ~230 characters,
+  // and the worst case scenario of an enhancement string with 66 ids in unshortened form is ~220 characters
   MAX_ALLOWED_CONSTANT_VALUE_LENGTH: 250,
   MAX_ALLOWED_CONSTANT_COUNT: 30,
   MIN_CHARS_BETWEEN_UNDOS: 10,

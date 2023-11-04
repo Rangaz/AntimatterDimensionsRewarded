@@ -54,9 +54,9 @@ export default {
 
 <template>
   <div class="l-panel-padding">
-    This panel allows you to define case-sensitive constant values which can be used in place of numbers or Time Study
-    import strings. These definitions are shared across all of your scripts and are limited to a maximum of
-    {{ maxConstantCount }} defined constants. Additionally, constant names and values are limited to lengths of
+    This panel allows you to define case-sensitive constant values which can be used in place of numbers or 
+    Time Study/Enhancement import strings. These definitions are shared across all of your scripts and are limited to a 
+    maximum of {{ maxConstantCount }} defined constants. Additionally, constant names and values are limited to lengths of
     {{ maxNameLength }} and {{ maxValueLength }} characters respectively. Changes made to constants will not apply
     until any currently running scripts are restarted.
     <br>
