@@ -27,6 +27,7 @@ export const general = {
         if (ach === 2094) return Achievement(94).enhancedEffect.effects.replicantiSpeed.effectOrDefault(1);
 
         if (ach === 47 || ach === 72 || ach === 93) return 1; // Power effect
+        if (ach === 102) return Achievement(102).enhancedEffect.effects.multiplier.effectOrDefault(1);
 
         // The base tickspeed from achievements' effect is actually divisors, so 
         // we want to show the reciprocal instead

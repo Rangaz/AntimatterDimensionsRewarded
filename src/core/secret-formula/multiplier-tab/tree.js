@@ -114,7 +114,7 @@ multiplierTabTree.DT_total[0].unshift("TP_total");
 
 // Additional data specification for dynamically-generated props
 const dimTypes = ["AD", "ID", "TD"];
-const singleRes = ["IP", "EP", "DT", "tickspeed", "infinities", "replicanti"];
+const singleRes = ["IP", "EP", "DT", "tickspeed", "infinities", "eternities", "replicanti"];
 const targetedEffects = {
   achievement: { 
     // Enhanced Achievements will be placed here as (10000 + actual number)
@@ -127,10 +127,11 @@ const targetedEffects = {
     ID: [10035, 48, 10048, 10067, 10074, 10076, 10091, 1094, 11094, 107, 124],
     TD: [10035, 48, 10048, 10051, 10067, 10074, 10076, 10092, 105, 112, 123, 128],
     IP: [62, 10062, 77, 10077, 85, 10085, 93, 10093, 116, 125, 141],
-    EP: [10085, 153],
+    EP: [10085, 10102, 153],
     DT: [132, 137],
     tickspeed: [36, 10036, 45, 10045, 66, 10066, 135],
-    infinities: [33, 10033, 87, 10087, 164],
+    infinities: [33, 10033, 87, 10087, 10102, 164],
+    eternities: [10102, 113],
     replicanti: [2094, 12094, 10095, 106, 108, 134]
   },
   timeStudy: {

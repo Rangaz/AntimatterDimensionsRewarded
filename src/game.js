@@ -10,6 +10,7 @@ import { Cloud } from "./core/storage";
 import { supportedBrowsers } from "./supported-browsers";
 
 import Payments from "./core/payments";
+import { Achievement } from "./core/globals";
 
 if (GlobalErrorHandler.handled) {
   throw new Error("Initialization failed");
@@ -125,6 +126,7 @@ function totalEPMult() {
       .timesEffectsOf(
         EternityUpgrade.epMult,
         Achievement(85).enhancedEffect,
+        Achievement(102).enhancedEffect.effects.multipier,
         Achievement(153),
         TimeStudy(61),
         TimeStudy(122),
@@ -203,13 +205,14 @@ export function resetInfinityRuns() {
 // Player gains 50% of infinities they would get based on their best infinities/hour crunch if they have the
 // milestone and turned on infinity autobuyer with 1 minute or less per crunch.
 // This amount increases to 90% with r102, but, since you get it anyway when you get this milestone,
-// I'll pretend it was always 90%.
+// so I'll pretend it was always 90%.
 // r145 will cap it too, its effect is already in bestInfinitiesPerMs
 export function getInfinitiedMilestoneReward(ms, considerMilestoneReached) {
   const infinitiesToGain = Decimal.floor(player.records.thisEternity.bestInfinitiesPerMs.
-    times(ms).dividedBy(1/.9));
-  return Autobuyer.bigCrunch.autoInfinitiesAvailable(considerMilestoneReached)
-    ? infinitiesToGain
+    times(ms));
+  const multiplier = Achievement(102).isEnhanced ? 1 : 0.9;
+  return Autobuyer.bigCrunch.autoInfinitiesAvailable(considerMilestoneReached) || Achievement(102).isEnhanced
+    ? infinitiesToGain.times(multiplier)
     : DC.D0;
 }
 
@@ -239,27 +242,28 @@ export function resetEternityRuns() {
 
 // Player gains 50% of the eternities they would get if they continuously repeated their fastest eternity, if they
 // have the auto-eternity milestone and turned on eternity autobuyer with 0 EP.
-// This amount increases to 90% with r102.
+// This amount increases to 90% with r102, and 100% with Er102.
 // And r145 will always cap it.
 export function getEternitiedMilestoneReward(ms, considerMilestoneReached) {
+  const multiplier = Achievement(102).isEnhanced ? 1 / 33 : Achievement(102).effectOrDefault(0.5) / 33;
   const eternitiesToGain = Achievement(145).canBeApplied ? 
-    Decimal.floor(gainedEternities().times(Achievement(102).effectOrDefault(0.5) / 33).times(ms)) :
+    Decimal.floor(gainedEternities().times(multiplier).times(ms)) :
     Decimal.floor(player.records.thisReality.bestEternitiesPerMs.times(ms).dividedBy(
     1 / Achievement(102).effectOrDefault(0.5)));
-  return Autobuyer.eternity.autoEternitiesAvailable(considerMilestoneReached)
+  return Autobuyer.eternity.autoEternitiesAvailable(considerMilestoneReached) || Achievement(102).isEnhanced
     ? eternitiesToGain
     : DC.D0;
 }
 
 function isOfflineEPGainEnabled() {
-  return player.options.offlineProgress && !Autobuyer.bigCrunch.autoInfinitiesAvailable() &&
-    !Autobuyer.eternity.autoEternitiesAvailable();
+  return player.options.offlineProgress && ((!Autobuyer.bigCrunch.autoInfinitiesAvailable() &&
+    !Autobuyer.eternity.autoEternitiesAvailable()) || Achievement(102).isEnhanced);
 }
 
 export function getOfflineEPGain(ms) {
   if (!EternityMilestone.autoEP.isReached || !isOfflineEPGainEnabled()) return DC.D0;
   return player.records.bestEternity.bestEPminReality.times(TimeSpan.fromMilliseconds(ms).totalMinutes * 
-  Effects.max(0.25, Achievement(102))); // r102 bumps the amount up to 90%.
+  Effects.max(0.25, Achievement(102), Achievement(102).enhancedEffect.effects.offlineMultiplier)); // r102 bumps the amount up to 90%.
 }
 
 // Note: realities and ampFactor must be distinct because there are a few things farther up which only multiply
@@ -293,6 +297,7 @@ export function gainedInfinities() {
     Achievement(33),
     Achievement(33).enhancedEffect,
     Achievement(87).enhancedEffect,
+    Achievement(102).enhancedEffect.effects.multiplier,
     Achievement(164),
     Ra.unlocks.continuousTTBoost.effects.infinity
   );
@@ -700,6 +705,7 @@ function passivePrestigeGen() {
   let eternitiedGain = 0;
   if (RealityUpgrade(14).isBought) {
     eternitiedGain = DC.D1.timesEffectsOf(
+      Achievement(102).enhancedEffect.effects.multiplier,
       Achievement(113),
       RealityUpgrade(3),
       RealityUpgrade(14)
