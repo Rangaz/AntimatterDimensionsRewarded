@@ -15,7 +15,7 @@ TODO:
 
 -Make a catchup entry for Enhanced Achievements <DONE>
 -Fix the fast forward button not updated when first created <DONE>
--Change "One for every Dimension" to "One for every Achievement"
+-Change "One for every Dimension" to "One for every Achievement" <DONE>
 -Changelog
 */
 
@@ -1056,10 +1056,11 @@ export const normalAchievements = [
   },
   {
     // Enhanced!
+    // First Achievement that I ACTUALLY change??? WOW!
     id: 76,
-    name: "One for each dimension",
-    get description() { return `Play for ${formatInt(8)} days.`; },
-    checkRequirement: () => Time.totalTimePlayed.totalDays >= 8,
+    name: "One for each achievement",
+    get description() { return `Play for ${formatInt(144)} hours (${formatInt(6)} days).`; },
+    checkRequirement: () => Time.totalTimePlayed.totalHours >= 144,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Extremely small multiplier to Antimatter Dimensions based on time played.",
     effect: () => Math.max(Math.pow(Time.totalTimePlayed.totalDays / 2, 0.05), 1),
