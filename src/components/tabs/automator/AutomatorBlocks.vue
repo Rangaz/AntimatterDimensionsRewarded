@@ -79,7 +79,6 @@ export const automatorBlocks = [
   }, {
     cmd: "ENHANCE RESPEC",
     alias: "RESPEC ENHANCEMENTS",
-    
   }, {
     cmd: "ENHANCE LOAD",
     alias: "LOAD ENHANCEMENT PRESET",
@@ -87,6 +86,12 @@ export const automatorBlocks = [
     A: ["ID", "NAME"],
     B: ["*"],
     targets: ["singleSelectionInput", "singleTextInput"],
+  }, {
+    cmd: "ENHANCE ACHIEVEMENTS",
+    alias: "ENHANCE ACHIEVEMENTS",
+    allowedPatterns: ["A"],
+    A: ["*"],
+    targets: ["singleTextInput"],
   }, {
     cmd: "INFINITY",
     canWait: true

@@ -112,6 +112,24 @@ class AutomatorParser extends Parser {
       $.CONSUME1(T.NumberLiteral, { LABEL: "lastStudy" });
     });
 
+    $.RULE("enhancementList", () => {
+      $.AT_LEAST_ONE(() => $.SUBRULE($.enhancementListEntry));
+    }, { resyncEnabled: false });
+
+    $.RULE("enhancementListEntry", () => {
+      $.OR([
+        { ALT: () => $.SUBRULE($.enhancementRange) },
+        { ALT: () => $.CONSUME(T.NumberLiteral) },
+      ]);
+      $.OPTION(() => $.CONSUME(T.Comma));
+    });
+
+    $.RULE("enhancementRange", () => {
+      $.CONSUME(T.NumberLiteral, { LABEL: "firstAchievement" });
+      $.CONSUME(T.Dash);
+      $.CONSUME1(T.NumberLiteral, { LABEL: "lastAchievement" });
+    });
+
     $.RULE("xHighest", () => {
       $.CONSUME(T.NumberLiteral);
       $.CONSUME(T.XHighest);

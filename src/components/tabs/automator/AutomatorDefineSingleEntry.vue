@@ -59,7 +59,10 @@ export default {
       // Note: Does not do validation for studies existing
       const isStudyString = TimeStudyTree.isValidImportString(this.valueString);
 
-      if (!isNumber && !isStudyString) return "Constant value must either be a number or Time Study string";
+      const isEnhancementString = Achievements.readPreset(this.valueString)[1].length == 0;
+
+      if (!isNumber && !isStudyString && !isEnhancementString) return "Constant value must be a number, " + 
+        "Time Study string, or Enhancement string";
       return null;
     },
     errorTooltip() {

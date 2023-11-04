@@ -7,9 +7,11 @@ import { PlayerProgress } from "../../player-progress";
 /*
 TODO:
 -Add an ENHANCE command to the automator
-  ->Make it work similarly to STUDIES 
-  ->Add documentation <DONE FOR NOW>
-  ->Expand the Currency list with Total/Achievements Enhanced
+  ->Make it work similarly to STUDIES <IN PROGRESS>
+    |>Make ENHANCE ACHIEVEMENTS work with inline row notation <PROVEN DIFFICULT>
+  ->Add documentation <DONE FOR NOW> <REVISIT LATER>
+-Expand the Currency list with Total/Achievements Enhanced
+-Allow for full export to include Enhancement presets
 
 -Fix the fast forward button not updated when first created
 -Change "One for every Dimension" to "One for every Achievement"

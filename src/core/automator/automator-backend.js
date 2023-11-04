@@ -17,12 +17,11 @@ export const AUTOMATOR_MODE = Object.freeze({
   SINGLE_STEP: 3,
 });
 
-
 export const AUTOMATOR_VAR_TYPES = {
   NUMBER: { id: 0, name: "number" },
   STUDIES: { id: 1, name: "studies" },
-  ENHANCEMENTS: {id: 2, name: "enhancements"},
-  DURATION: { id: 3, name: "duration" },
+  DURATION: { id: 2, name: "duration" },
+  ENHANCEMENTS: {id: 3, name: "enhancements"},
   UNKNOWN: { id: -1, name: "unknown" },
 };
 

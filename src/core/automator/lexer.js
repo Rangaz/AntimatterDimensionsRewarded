@@ -316,6 +316,7 @@ createKeyword("Pause", /pause/i);
 createKeyword("Name", /name([ \t]+(\/(?!\/)|[^\n#/])*)?/i);
 createKeyword("Id", /id\b([ \t]+\d)?/i);
 createKeyword("Purchase", /purchase/i);
+createKeyword("Achievements", /achievements/i);
 createKeyword("Respec", /respec/i);
 createKeyword("Restart", /restart/i);
 createKeyword("Start", /start/i);
