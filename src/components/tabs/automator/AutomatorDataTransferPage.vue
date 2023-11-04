@@ -40,6 +40,10 @@ export default {
     script data is imported.
     <br>
     <br>
+    Note: Exporting Enhancement presets this way is not yet supported, and will eventually be added.
+    Ask Rangaz (the developer of this mod) if you really want it sooner.
+    <br>
+    <br>
     Note: Any mentions of constant names or full study-buying commands within comments will also be counted as being
     "used" within a script. This is intentional, as the comment is assumed to be indicative of what the script itself
     is attempting to do with presets or constants.

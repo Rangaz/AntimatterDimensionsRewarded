@@ -9,13 +9,14 @@ TODO:
 -Add an ENHANCE command to the automator <DONE FOR NOW>
   ->Make it work similarly to STUDIES <DONE>
     |>Make ENHANCE ACHIEVEMENTS work with inline row notation <PROVEN DIFFICULT>
-  ->Add documentation <DONE FOR NOW> <REVISIT LATER>
+  ->Add documentation <DONE>
 -Expand the Currency list with Total/Achievements Enhanced <DONE>
--Allow for full export to include Enhancement presets
+-Allow for full export to include Enhancement presets <FOR LATER>
 
 -Make a catchup entry for Enhanced Achievements <DONE>
 -Fix the fast forward button not updated when first created
 -Change "One for every Dimension" to "One for every Achievement"
+-Changelog
 */
 
 export const normalAchievements = [
