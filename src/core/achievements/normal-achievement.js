@@ -270,8 +270,7 @@ export const Achievements = {
   },
 
   /** 
-   * Method used to interpret "row X", and eventually "aa-bb", into the achievement ids that correspond.
-   * This should go before readPreset() 
+   * Method used to interpret "row X" and "aa-bb" into the achievement ids that correspond.
    * @param {String} input 
    * @returns {String}
   */
@@ -359,12 +358,16 @@ export const Achievements = {
    * Method used to read a preset
    * Presets will have the form "11, 12, 13, 21, 23, 27, 32, 87",
    * Achievement ids separated in commas, similar to how Time Study presets work.
+   * The parseInput argument will also call parseInput() on the string if it hasn't been done before, true
+   * by default.
    * This function will also return errors to inform the player.
-   * @param {String} text 
+   * @param {String} input 
+   * @param {boolean} [parseInput=true]
    * @returns {Array}
    */
-  readPreset(text) {
-    const enhancementArray = text.split(",");
+  readPreset(input, parseInput = true) {
+    if (parseInput) input = this.parseInput(input);
+    const enhancementArray = input.split(",");
     let achievementsToEnhance = [];
     let invalidIds = [];
     for (const i of enhancementArray) {

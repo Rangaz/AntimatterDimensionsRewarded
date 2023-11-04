@@ -1,6 +1,7 @@
 import { lexer, tokenMap as T } from "./lexer";
 import { AutomatorCommands } from "./automator-commands";
 import { parser } from "./parser";
+import { AUTOMATOR_VAR_TYPES } from "./automator-backend";
 
 const BaseVisitor = parser.getBaseCstVisitorConstructorWithDefaults();
 
@@ -188,6 +189,16 @@ class Validator extends BaseVisitor {
     return tsNumber;
   }
 
+  checkAchievementNumber(token) {
+    const achievementNumber = parseFloat(token.image);
+    if (Achievement(achievementNumber) == undefined) {
+      this.addError(token, `Invalid Achievement identifier ${achievementNumber}`,
+        `Make sure you copied or typed in your achievement IDs correctly`);
+      return 0;
+    }
+    return achievementNumber;
+  }
+
   lookupVar(identifier, type) {
     const varName = identifier.image;
     const varInfo = {};
@@ -212,6 +223,9 @@ class Validator extends BaseVisitor {
           startEC: tree.startEC,
         };
         break;
+      case AUTOMATOR_VAR_TYPES.ENHANCEMENTS:
+        varInfo.value = {normal: Achievements.parseInput(value).split(",")};
+        break;
       case AUTOMATOR_VAR_TYPES.DURATION:
         varInfo.value = parseInt(1000 * value, 10);
         break;
@@ -234,6 +248,8 @@ class Validator extends BaseVisitor {
         // characters and constructs something based on the start of the input string. Notably, this makes
         // things like new Decimal("11,21,31") return 11 instead of something indicating an error.
         return value.match(/^-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?$/u);
+      case AUTOMATOR_VAR_TYPES.ENHANCEMENTS:
+        return Achievements.readPreset(value)[1].length == 0;
       case AUTOMATOR_VAR_TYPES.STUDIES:
         return TimeStudyTree.isValidImportString(value);
       case AUTOMATOR_VAR_TYPES.DURATION:
@@ -292,7 +308,7 @@ class Validator extends BaseVisitor {
       if (TimeStudy(id)) studiesOut.push(id);
     }
   }
-
+  
   studyListEntry(ctx, studiesOut) {
     if (ctx.studyRange) {
       this.visit(ctx.studyRange, studiesOut);
@@ -313,7 +329,7 @@ class Validator extends BaseVisitor {
       studiesOut.push(...pathStudies);
     }
   }
-
+  
   studyList(ctx) {
     if (ctx.$cached !== undefined) return ctx.$cached;
     const studiesOut = [];
@@ -328,19 +344,64 @@ class Validator extends BaseVisitor {
     if (ctx.ECNumber) {
       if (ctx.ECNumber.isInsertedInRecovery) {
         this.addError(ctx.Pipe[0], "Missing Eternity Challenge number",
-          "Specify which Eternity Challenge is being referred to");
+        "Specify which Eternity Challenge is being referred to");
       }
       const ecNumber = parseFloat(ctx.ECNumber[0].image);
       if (!Number.isInteger(ecNumber) || ecNumber < 0 || ecNumber > 12) {
         this.addError(ctx.ECNumber, `Invalid Eternity Challenge ID ${ecNumber}`,
-          `Eternity Challenge ${ecNumber} does not exist, use an integer between ${format(1)} and ${format(12)}`);
+        `Eternity Challenge ${ecNumber} does not exist, use an integer between ${format(1)} and ${format(12)}`);
       }
       ctx.$cached.ec = ecNumber;
     }
     if (ctx.Exclamation) ctx.$cached.startEC = true;
     return ctx.$cached;
   }
+  
+  enhancementRange(ctx, achievementsOut) {
+    if (!ctx.firstAchievement || ctx.firstAchievement[0].isInsertedInRecovery ||
+      !ctx.lastAchievement || ctx.lastAchievement[0].isInsertedInRecovery) {
+      this.addError(ctx, "Missing Achievement number in range",
+        "Provide starting and ending IDs for Achievement number ranges");
+      return;
+    }
+    const first = this.checkAchievementNumber(ctx.firstAchievement[0]);
+    const last = this.checkAchievementNumber(ctx.lastAchievement[0]);
+    if (!first || !last || !achievementsOut) return;
+    for (let id = first; id <= last; ++id) {
+      if (Achievement(id)) achievementsOut.push(id);
+    }
+  }
 
+  enhancementListEntry(ctx, achievementsOut) {
+    if (ctx.enhancementRange) {
+      this.visit(ctx.enhancementRange, achievementsOut);
+      return;
+    }
+    if (ctx.NumberLiteral) {
+      if (ctx.NumberLiteral[0].isInsertedInRecovery) {
+        this.addError(ctx, "Missing Achievement number", "Provide an Achievement ID to purchase");
+        return;
+      }
+      const id = this.checkAchievementNumber(ctx.NumberLiteral[0]);
+      if (id) achievementsOut.push(id);
+      return;
+    }
+  }
+
+  // I don't know if $cached is needed
+  enhancementList(ctx) {
+    if (ctx.$cached !== undefined) return ctx.$cached;
+    const achievementsOut = [];
+    for (const sle of ctx.enhancementListEntry) this.visit(sle, achievementsOut);
+    const positionRange = Validator.getPositionRange(ctx);
+    ctx.$cached = {
+      normal: achievementsOut,
+      image: this.rawText.substr(positionRange.startOffset, positionRange.endOffset - positionRange.startOffset + 1),
+    };
+
+    return ctx.$cached;
+  }
+  
   compareValue(ctx) {
     if (ctx.NumberLiteral) {
       ctx.$value = new Decimal(ctx.NumberLiteral[0].image);

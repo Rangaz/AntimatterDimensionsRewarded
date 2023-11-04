@@ -121,11 +121,18 @@ CodeMirror.defineSimpleMode("automato", {
     { sol: true, next: "start" },
     { regex: /(\/(?!\/)|[^\s#/])+/ui, token: "qualifier", next: "commandDone" },
   ],
-  enhancementArgs: [ // Complete this later
+  enhancementArgs: [ 
     commentRule,
     { sol: true, next: "start" },
     { regex: /load(\s+|$)/ui, token: "variable-2", next: "enhancementLoad" },
     { regex: /respec/ui, token: "variable-2", next: "commandDone" },
+    { regex: /achievements/ui, token: "variable-2", next: "enhancementList" },
+  ],
+  enhancementList: [ // Rows won't be implemented
+    commentRule,
+    { sol: true, next: "start" },
+    { regex: /([1-9][0-9]+)(?=[\s,!|-]|$)/ui, token: "number" },
+    { regex: /[a-zA-Z_][a-zA-Z_0-9]*/u, token: "variable", next: "commandDone" },
   ],
   enhancementLoad: [
     commentRule,

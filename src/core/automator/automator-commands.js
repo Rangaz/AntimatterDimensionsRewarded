@@ -783,6 +783,77 @@ export const AutomatorCommands = [
     blockify: () => automatorBlocksMap["STUDIES RESPEC"]
   },
   {
+    id: "enhanceAchievements",
+    rule: $ => () => {
+      $.CONSUME(T.Enhance);
+      $.CONSUME(T.Achievements);
+      $.OR([
+        { ALT: () => $.SUBRULE($.enhancementList) },
+        { ALT: () => $.CONSUME1(T.Identifier) },
+      ]);
+    },
+    validate: (ctx, V) => {
+      ctx.startLine = ctx.Enhance[0].startLine;
+      if (ctx.Identifier) {
+        if (!V.isValidVarFormat(ctx.Identifier[0], AUTOMATOR_VAR_TYPES.ENHANCEMENTS)) {
+          V.addError(ctx, `Constant ${ctx.Identifier[0].image} is not a valid Enhancement constant`,
+            `Ensure that ${ctx.Identifier[0].image} is a properly-formatted Enhancement string`);
+          return false;
+        }
+        const varInfo = V.lookupVar(ctx.Identifier[0], AUTOMATOR_VAR_TYPES.ENHANCEMENTS);
+        ctx.$enhancements = varInfo.value;
+        ctx.$enhancements.image = ctx.Identifier[0].image;
+      } else if (ctx.enhancementList) {
+        ctx.$enhancements = V.visit(ctx.enhancementList);
+      }
+      return true;
+    },
+    compile: ctx => {
+      const enhancements = ctx.$enhancements;
+      return () => {
+        let preEnhancedAchievements = 0;
+        let enhancedAchievements = 0;
+        let errors = 0;
+        for (const achievementNumber of enhancements.normal) {
+          if (Achievement(achievementNumber) == undefined) {
+            errors++;
+            continue; // I'll figure this out later
+          }
+          if (Achievement(achievementNumber).isEnhanced) {
+            preEnhancedAchievements++;
+            continue;
+          }
+          if (!Achievement(achievementNumber).canEnhance) {
+            errors++;
+            continue;
+          }
+          Achievement(achievementNumber).enhance(true);
+          enhancedAchievements++;
+        }
+
+        if (errors > 0) {
+          AutomatorData.logCommandEvent(`Enhanced ${enhancedAchievements} Achievements, but couldn't Enhance
+        ${errors} Achievements`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+        }
+        if (preEnhancedAchievements + enhancedAchievements == 0) {
+          AutomatorData.logCommandEvent(`No Achievements were selected`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+        }
+        if (enhancedAchievements == 0) {
+          AutomatorData.logCommandEvent(`Specified Achievements were already Enhanced`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+        }
+        AutomatorData.logCommandEvent(`Enhanced all specified Achievements`, ctx.startLine);
+        return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+      };
+    },
+    blockify: ctx => ({
+      singleTextInput: ctx.$enhancements.image,
+      ...automatorBlocksMap["ENHANCE ACHIEVEMENTS"]
+    })
+  },
+  {
     id: "enhanceLoad",
     rule: $ => () => {
       $.CONSUME(T.Enhance);
