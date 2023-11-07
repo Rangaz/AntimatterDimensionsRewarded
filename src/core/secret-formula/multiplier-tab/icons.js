@@ -133,6 +133,11 @@ export const MultiplierTabIcons = {
     color: "var(--color-v--base)",
     textColor: "black",
   },
+  CURSED_ROW: {
+    symbol: `<i class="fas fa-skull" />`,
+    color: "var(--color-bad)",
+    textColor: "black",
+  },
   BREAK_INFINITY: {
     symbol: `<b>∝</b>`,
     color: "var(--color-infinity)",

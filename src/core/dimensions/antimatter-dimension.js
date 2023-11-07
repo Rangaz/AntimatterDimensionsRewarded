@@ -156,6 +156,7 @@ function applyNDMultipliers(mult, tier) {
       Achievement(46),
       Achievement(46).enhancedEffect,
       Achievement(101),
+      CursedRow(4),
       TimeStudy(214),
     );
   }
@@ -420,6 +421,9 @@ class AntimatterDimensionState extends DimensionState {
     this._baseCostMultiplier = BASE_COST_MULTIPLIERS[tier];
     const ENHANCED_COST_MULTIPLIERS = [null, 2, 2.4, 3, 3.6, 5.5, 8, 12, 32];
     this._enhancedCostMultipliers = ENHANCED_COST_MULTIPLIERS[tier];
+    const CURSED_COST_MULTPLIERS = [null, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, 
+      Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE];
+    this._cursedCostMultipliers = CURSED_COST_MULTPLIERS[tier];
     const C6_BASE_COSTS = [null, 1, 10, 10, 50, 250, 2e3, 2e4, 4e5];
     this._c6BaseCost = C6_BASE_COSTS[tier];
     const C6_BASE_COST_MULTIPLIERS = [null, 1e3, 5e3, 1e4, 1.2e4, 1.8e4, 2.6e4, 3.2e4, 4.2e4];
@@ -431,6 +435,15 @@ class AntimatterDimensionState extends DimensionState {
    */
   get costScale() {
     const row1Achievement = Achievement(10 + this.tier);
+    const isCursed = CursedRow(1).canBeApplied;
+    // Cursing row 1 already implies that all row 1 Achievements are disabled.
+    if (isCursed) {
+      return new ExponentialCostScaling({
+      baseCost: this._firstPurchaseCost,
+      baseIncrease: this._cursedCostMultipliers,
+      costScale: Player.dimensionMultDecrease,
+      scalingCostThreshold: Number.MAX_VALUE
+    })};
     // Having the enhanced achievement makes its effect also conveniently work for C6.
     if (row1Achievement.isEnhanced) {
       return new ExponentialCostScaling({

@@ -7,7 +7,9 @@ import { PlayerProgress } from "../../player-progress";
 /*
 TODO:
 -Hard V
-  ->Add omens/curses for Achievements
+  ->Add curses for Achievement rows <IN PROGRESS>
+    |>Multiplier tab functionality <DONE>
+    |>Add visuals to indicate when a row is about to be cursed, and when it's cursed
   ->Balance Hard V
 -Add Enhancements for rows 10-13 <IN PROGRESS>
 -Add Rewards for row 17

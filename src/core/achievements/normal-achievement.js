@@ -102,7 +102,7 @@ class AchievementState extends GameMechanicState {
   }
 
   // The fromPreset argument is so that we can avoid notifications about Achievements being auto-Enhanced
-  // if we're using a preset. This is useful if, fo example, 57 is written before 32.
+  // if we're using a preset. This is useful if, for example, 57 is written before 32.
   enhance(fromPreset = false) {
     if (!this.canEnhance) return;
     // Enhancing Achievement 57 requires Enhancing Achievement 32, so do that if neccesary.
@@ -201,6 +201,42 @@ class AchievementState extends GameMechanicState {
  * @returns {AchievementState}
  */
 export const Achievement = AchievementState.createAccessor(GameDatabase.achievements.normal);
+
+
+class CursedRowState extends GameMechanicState {
+  constructor(config) {
+    super(config);
+    this._row = this.id;
+    this._bitmask = 1 << (this.row - 1);
+    this._inverseBitmask = ~this._bitmask;
+    //this.registerEvents(config.checkEvent, args => this.tryUnlock(args));
+  }
+  get row() {
+    return this._row;
+  }
+
+  get isPreReality() {
+    return this.row < 14;
+  }
+
+  get isPrePelle() {
+    return this.row < 18;
+  }
+
+  get isCursed() {
+    return true; // Change later
+  }
+
+  get isEffectActive() {
+    return this.isCursed;
+  }
+}
+
+/**
+ * @param {number} id
+ * @returns {CursedRowState}
+ */
+export const CursedRow = CursedRowState.createAccessor(GameDatabase.achievements.cursed);
 
 export const Achievements = {
   /**

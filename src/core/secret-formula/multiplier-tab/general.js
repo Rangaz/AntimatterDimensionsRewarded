@@ -8,8 +8,16 @@ export const general = {
   achievement: { // Enhanced effects are 10000 + actual achievement number
     // If an Achievement has more than 1 effect they may be labelled as
     // 1000/2000 + number. Those are special cases.
+    // -row for Cursed Rows, 
     name: (ach, dim) => { 
-      let name = ach > 10000 ? "Enhanced Achievement " : "Achievement ";
+      let name
+      if (ach < 0) {
+        name = "Cursed Row ".concat(-ach);
+        return dim?.length === 2
+          ? name.concat(" (", dim, ")")
+          : name
+      }
+      name = ach > 10000 ? "Enhanced Achievement " : "Achievement ";
       // We only want the first 3 digits of ach. We essentially substract ach
       // by almost itself, cancelling out everything but the 3 digits.
       ach -= Math.floor(ach / 1000) * 1000;
@@ -18,6 +26,16 @@ export const general = {
       ? name.concat(" (", dim, ")")
       : name},
     multValue: (ach, dim) => {
+      // If it's a cursed row...
+      // While most cursed rows will be placed in their own category, I'll cheat and
+      // include cursed row 3 here to not complicate the Tickspeed section
+      if (ach < 0) {
+        ach *= -1;
+        // Cursed row 3 is a Tickspeed divisor.
+        if (ach === 3) return CursedRow(ach).canBeApplied ? 
+            DC.D1.divide(CursedRow(ach).effectOrDefault(1)) : 1
+      }
+
       // If it's an enhanced effect...
       if (ach > 10000) {
         ach -= 10000;
@@ -96,14 +114,16 @@ export const general = {
         case 10047: return Achievement(47).enhancedEffect.effectOrDefault(1);
         case 72: return Achievement(72).effectOrDefault(1);
         case 10072: return Achievement(72).enhancedEffect.effectOrDefault(1);
-        case 10093: return Achievement(93).enhancedEffect.effectOrDefault(1);}} ,
-    isActive: ach => ach > 10000 ? Achievement(ach - Math.floor(ach / 1000) * 1000).enhancedEffect.canBeApplied : 
-      Achievement(ach - Math.floor(ach / 1000) * 1000).canBeApplied,
+        case 10093: return Achievement(93).enhancedEffect.effectOrDefault(1);
+      }
+    },
+    isActive: ach => ach < 0 ? CursedRow(-ach).canBeApplied : (ach > 10000 ? Achievement(ach - Math.floor(ach / 1000) * 1000).enhancedEffect.canBeApplied : 
+      Achievement(ach - Math.floor(ach / 1000) * 1000).canBeApplied),
     icon: ach => {
-      const base = MultiplierTabIcons.ACHIEVEMENT;
+      const base = ach < 0 ? MultiplierTabIcons.CURSED_ROW : MultiplierTabIcons.ACHIEVEMENT;
       return {
         color: base.color,
-        symbol: `${base.symbol}${ach - Math.floor(ach / 1000) * 1000}`,
+        symbol: `${base.symbol}${ach < 0 ? -ach : ach - Math.floor(ach / 1000) * 1000}`,
       };
     },
   },
@@ -195,6 +215,40 @@ export const general = {
       return {
         color: base.color,
         symbol: `${base.symbol}${ec}`,
+      };
+    },
+  },
+  cursedRow: {
+    name: (row, dim) => { 
+      const name = "Cursed Row ".concat(row);
+      return dim?.length === 2
+        ? name.concat(" (", dim, ")")
+        : name
+    },
+    multValue: (row, dim) => {
+      // Cursed row 3 is a Tickspeed divisor.
+      if (row === 3) return CursedRow(row).canBeApplied ? 
+          DC.D1.divide(CursedRow(row).effectOrDefault(1)) : 1
+
+      if (!dim) return CursedRow(row).canBeApplied ? CursedRow(row).effectOrDefault(1) : 1;
+
+      if (dim?.length === 2) {
+        let totalEffect = DC.D1;
+        for (let tier = 1; tier <= MultiplierTabHelper.activeDimCount(dim); tier++) {
+          let singleEffect;
+          singleEffect = (MultiplierTabHelper.cursedRowDimCheck(row, `${dim}${tier}`) &&
+              CursedRow(row).canBeApplied) ? CursedRow(row).effectOrDefault(1) : 1;
+          totalEffect = totalEffect.times(singleEffect);
+        }
+        return totalEffect;
+      }
+    },
+    isActive: row => CursedRow(row).canBeApplied,
+    icon: row => {
+      const base = MultiplierTabIcons.CURSED_ROW;
+      return {
+        color: base.color,
+        symbol: `${base.symbol}${row}`,
       };
     },
   },

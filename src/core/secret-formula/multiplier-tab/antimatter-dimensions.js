@@ -512,6 +512,26 @@ export const AD = {
     isActive: () => getAdjustedGlyphEffect("curseddimensions") !== 1,
     icon: MultiplierTabIcons.SPECIFIC_GLYPH("cursed"),
   },
+  cursedRow: {
+    name: "Cursed Rows",
+    multValue: dim => {
+      const allMult = DC.D1;
+      const dimMults = Array.repeat(DC.D1, 9);
+      for (let tier = 1; tier <= 8; tier++) {
+        if (tier === 8) {
+          dimMults[tier] = dimMults[tier].timesEffectOf(CursedRow(4));
+        }
+      }
+      if (dim) return allMult.times(dimMults[dim]);
+      let totalMult = DC.D1;
+      for (let tier = 1; tier <= MultiplierTabHelper.activeDimCount("AD"); tier++) {
+        totalMult = totalMult.times(dimMults[tier]).times(allMult);
+      }
+      return totalMult;
+    },
+    isActive: () => CursedRow(4).canBeApplied,
+    icon: MultiplierTabIcons.CURSED_ROW,
+  },
   nerfPelle: {
     name: "Doomed Reality",
     multValue: 0.1,
