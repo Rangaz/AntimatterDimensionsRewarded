@@ -69,7 +69,7 @@ export class Galaxy {
 
   static get costMult() {
     return (NormalChallenge(10).isRunning ? 90 : 60) - Effects.sum(
-      Achievement(27).enhancedEffect.effects.perGalaxyReduction, TimeStudy(42));
+      Achievement(27).enhancedEffect.effects.perGalaxyReduction, TimeStudy(42), CursedRow(2));
   }
 
   static get baseCost() {

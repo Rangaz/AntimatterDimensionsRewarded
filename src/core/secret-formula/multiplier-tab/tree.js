@@ -7,7 +7,7 @@ const dynamicGenProps = ["TP", "DT", "tickspeed", "infinities", "eternities", "g
 const propList = {
   AD: ["purchase", "dimboost", "sacrifice", "achievementMult", "achievement", "infinityUpgrade",
     "breakInfinityUpgrade", "infinityPower", "infinityChallenge", "timeStudy", "eternityChallenge", "glyph", "v",
-    "alchemy", "pelle", "iap", "effectNC", "nerfIC", "nerfV", "nerfCursed", "nerfPelle"],
+    "alchemy", "pelle", "iap", "effectNC", "nerfIC", "nerfV", "nerfCursed", "cursedRow", "nerfPelle"],
   ID: ["purchase", "achievementMult", "achievement", "replicanti", "infinityChallenge", "timeStudy", "eternityUpgrade",
     "eternityChallenge", "glyph", "alchemy", "imaginaryUpgrade", "pelle", "iap", "nerfV", "nerfCursed", "nerfPelle"],
   TD: ["purchase", "achievementMult", "achievement", "timeStudy", "eternityUpgrade", "eternityChallenge",
@@ -43,7 +43,7 @@ function getProps(resource, tier) {
   return newProps;
 }
 
-// Everything is multiplierTabTree is associated with values in multiplierTabValues. The only explicitly
+// Everything in multiplierTabTree is associated with values in multiplierTabValues. The only explicitly
 // initialized props here are the "root" props which are viewable on the tab with full breakdowns. After the initial
 // specification, all children props are dynamically added based on the arrays in the helper functions above
 export const multiplierTabTree = {
@@ -120,6 +120,7 @@ const targetedEffects = {
     // Enhanced Achievements will be placed here as (10000 + actual number)
     // to distinguish them from the regular achievements, and 
     // 1000/2000 + actual number for when they have more than 1 effect to keep track of
+    // -row only when neccesary (-3) (cursed rows)
     checkFn: MultiplierTabHelper.achievementDimCheck,
     AD: [23, 10023, 24, 10024, 28, 10028, 31, 10031, 34, 10034, 35, 10035, 38, 10038, 42, 10042, 43, 10043, 
       44, 10044, 46, 10046, 47, 10047, 48, 10048, 56, 10056, 64, 10064, 65, 10065, 67, 10067, 68, 10068, 
@@ -129,7 +130,7 @@ const targetedEffects = {
     IP: [62, 10062, 77, 10077, 85, 10085, 93, 10093, 116, 125, 141],
     EP: [10085, 10102, 153],
     DT: [132, 137],
-    tickspeed: [36, 10036, 45, 10045, 66, 10066, 135],
+    tickspeed: [-3, 36, 10036, 45, 10045, 66, 10066, 135],
     infinities: [33, 10033, 87, 10087, 10102, 164],
     eternities: [10102, 113],
     replicanti: [2094, 12094, 10095, 106, 108, 134]
@@ -153,6 +154,10 @@ const targetedEffects = {
     ID: [2, 4, 9],
     TD: [1, 10],
   },
+  cursedRow: {
+    checkFn: MultiplierTabHelper.cursedRowDimCheck,
+    AD: [4],
+  }
 };
 
 // Highest actively-producing dimensions need a special case

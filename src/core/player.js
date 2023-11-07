@@ -364,7 +364,7 @@ window.player = {
     previousRuns: {}
   },
   IPMultPurchases: 0,
-  version: 32,
+  version: 33,
   infinityPower: DC.D1,
   postC4Tier: 0,
   eternityPoints: DC.D0,
@@ -670,6 +670,8 @@ window.player = {
       run: false,
       charged: new Set(),
       disCharge: false,
+      rowsCursed: 0,
+      rowsToBeCursed: 0,
       peakGamespeed: 1,
       petWithRemembrance: ""
     },

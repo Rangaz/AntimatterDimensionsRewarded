@@ -26,7 +26,7 @@ export const tickspeed = {
     icon: MultiplierTabIcons.TICKSPEED,
   },
   achievement: {
-    name: "Base Tickspeed from Achievements",
+    name: "Base Tickspeed",
     displayOverride: () => {
       const val = DC.D1.dividedByEffectsOf(
         Achievement(36),
@@ -35,12 +35,13 @@ export const tickspeed = {
         Achievement(45).enhancedEffect,
         Achievement(66),
         Achievement(66).enhancedEffect,
-        Achievement(135)
+        Achievement(135),
+        CursedRow(3)
       );
-      return `${format(val, 2, 2)}/sec`;
+      return val.lt(1) ? `(${formatInt(1)}/${format(val.recip(), 2, 2)})/sec` : `${format(val, 2, 2)}/sec`;
     },
     multValue: () => new Decimal.pow10(100 * MultiplierTabHelper.decomposeTickspeed().base),
-    isActive: () => [36, 45, 66, 135].some(a => Achievement(a).canBeApplied),
+    isActive: () => [36, 45, 66, 135].some(a => Achievement(a).canBeApplied) || CursedRow(3).canBeApplied,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   upgrades: {
