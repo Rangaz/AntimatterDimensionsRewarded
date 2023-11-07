@@ -10,7 +10,6 @@ import { Cloud } from "./core/storage";
 import { supportedBrowsers } from "./supported-browsers";
 
 import Payments from "./core/payments";
-import { Achievement } from "./core/globals";
 
 if (GlobalErrorHandler.handled) {
   throw new Error("Initialization failed");

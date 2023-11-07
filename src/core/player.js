@@ -670,8 +670,8 @@ window.player = {
       run: false,
       charged: new Set(),
       disCharge: false,
-      rowsCursed: 0,
-      rowsToBeCursed: 0,
+      cursedRowBits: 0,
+      toBeCursedBits: 0,
       peakGamespeed: 1,
       petWithRemembrance: ""
     },

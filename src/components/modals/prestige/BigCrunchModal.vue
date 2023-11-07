@@ -1,6 +1,5 @@
 <script>
 import ResetModal from "@/components/modals/prestige/ResetModal";
-import { Achievement } from "../../../core/globals";
 
 export default {
   name: "BigCrunchModal",

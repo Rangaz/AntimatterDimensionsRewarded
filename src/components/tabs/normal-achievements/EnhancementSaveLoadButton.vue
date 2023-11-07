@@ -1,5 +1,4 @@
 <script>
-import { Achievements } from "../../../core/globals";
 import HoverMenu from "./HoverMenu";
 
 // Yes, I literally copy-pasted "TimeStudySaveLoadButton.vue" to make my own 

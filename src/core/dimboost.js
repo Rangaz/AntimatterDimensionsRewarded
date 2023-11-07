@@ -1,5 +1,4 @@
 import { DC } from "./constants";
-import { Achievement } from "./globals";
 
 class DimBoostRequirement {
   constructor(tier, amount) {
@@ -40,8 +39,11 @@ export class DimBoost {
   }
 
   static multiplierToNDTier(tier) {
+    // Having cursed row 5 will make it useless against AD 8
+    if (CursedRow(5).isCursed && tier == 8) return DC.D1; 
     // r51 will make all Dimension Boosts affect all Antimatter dimensions
-    const normalBoostMult = DimBoost.power.pow(this.purchasedBoosts + 1 - tier * !Achievement(51).isUnlocked).clampMin(1);
+    const normalBoostMult = DimBoost.power.pow(this.purchasedBoosts + 1 - tier * 
+      (!Achievement(51).isUnlocked || Achievement(51).isCursed)).clampMin(1);
     const imaginaryBoostMult = DimBoost.power.times(ImaginaryUpgrade(24).effectOrDefault(1))
       .pow(this.imaginaryBoosts).clampMin(1);
     return normalBoostMult.times(imaginaryBoostMult);

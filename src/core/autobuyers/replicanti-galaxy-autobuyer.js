@@ -13,12 +13,12 @@ export class ReplicantiGalaxyAutobuyerState extends AutobuyerState {
     return EternityMilestone.autobuyerReplicantiGalaxy.isReached;
   }
 
-  get isEnabled() {
+  get isEnabled() { // This will be spared from Cursed Row 13
     return Achievement(138).isUnlocked || !TimeStudy(131).isBought;
   }
 
-  get hasUnlimitedBulk() {
-    return Achievement(126).isUnlocked;
+  get hasUnlimitedBulk() { // This won't get spared
+    return Achievement(126).isUnlocked && !Achievement(126).isCursed;
   }
 
   tick() {

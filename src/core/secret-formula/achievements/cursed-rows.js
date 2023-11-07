@@ -25,5 +25,17 @@ export const cursedRows = [
     	amount.times(AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(AntimatterDimension(6).amount.times(
     	AntimatterDimension(7).amount)))))).plus(1).pow(-0.0002), 1),
 			formatEffect: value => `${formatX(value, 2, 2)}`
-	}
+	},
+	{
+		id: 5,
+		description: "Dimension Boosts only affect ADs 1-7.",
+	},
+	{
+		id: 6,
+		description: "Dimension Autobuyer bulk is unlimited, but 1st AD gets an exponentially decreasing nerf " +
+		"that resets on Dimension Boosts, Antimatter Galaxies, and Infinities",
+		effect: () => DC.D1_00038.pow(Math.pow(Time.timeSinceLastReset.totalSeconds, 0.02))
+			.times(DC.E1E7.recip()).clampMax(DC.D1),
+		formatEffect: value => `${formatX(value, 2, 2)}`
+	},
 ]

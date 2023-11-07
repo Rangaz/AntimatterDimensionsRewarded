@@ -4,7 +4,7 @@ import PrimaryToggleButton from "@/components/PrimaryToggleButton";
 import PrimaryButton from "@/components/PrimaryButton";
 import EnhancementSaveLoadButton from "./EnhancementSaveLoadButton";
 import SwapAchievementImagesButton from "./SwapAchievementImagesButton";
-import { Pelle } from "../../../core/globals";
+import { Achievement, Pelle } from "../../../core/globals";
 
 export default {
   name: "NormalAchievementsTab",
@@ -120,7 +120,7 @@ export default {
       this.hideRows = player.options.hideAchievementRows;
       this.showEnhancementPresets = VUnlocks.enhancementPresets.canBeApplied;
       this.achMultBreak = BreakInfinityUpgrade.achievementMult.canBeApplied;
-      this.achMultToIDS = Achievement(75).isUnlocked;
+      this.achMultToIDS = Achievement(75).canBeApplied || Achievement(75).isEnhanced;
       this.achMultToTDS = EternityUpgrade.tdMultAchs.isBought;
       this.achMultToTP = RealityUpgrade(8).isBought;
       this.achMultToBH = VUnlocks.achievementBH.canBeApplied;
