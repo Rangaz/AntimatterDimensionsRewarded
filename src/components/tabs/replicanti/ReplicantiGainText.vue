@@ -1,5 +1,4 @@
 <script>
-import { Achievement, getReplicantiInterval } from '../../../core/globals';
 import { Time } from '../../../core/time';
 import { getGameSpeedupForDisplay } from '../../../game';
 

@@ -1723,10 +1723,10 @@ export const normalAchievements = [
     checkRequirement: () => Replicanti.galaxies.total >= 180 * player.galaxies && player.galaxies > 0,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() {
-      return Achievement(108).isUnlocked ? `Replicanti Galaxies divide your Replicanti by ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)}
-      instead of resetting them to ${formatInt(9)}.` : 
-      `Replicanti Galaxies divide your Replicanti by ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)}
-      instead of resetting them to ${formatInt(1)}.`;
+      return Achievement(108).isUnlocked && !Achievement(108).isCursed ? `Replicanti Galaxies divide your Replicanti 
+        by ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)} instead of resetting them to ${formatInt(9)}.` : 
+        `Replicanti Galaxies divide your Replicanti by ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)}
+        instead of resetting them to ${formatInt(1)}.`;
     },
   },
   {

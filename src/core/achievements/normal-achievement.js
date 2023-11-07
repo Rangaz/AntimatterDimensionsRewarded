@@ -13,7 +13,6 @@ class EnhancedAchievementState extends GameMechanicState {
   }
 }
 
-
 class AchievementState extends GameMechanicState {
   constructor(config) {
     super(config);
@@ -55,9 +54,15 @@ class AchievementState extends GameMechanicState {
     return Pelle.isDisabled("achievements") && Pelle.disabledAchievements.includes(this.id);
   }
 
+  // I want cursed to be different than disabled for now
+  get isCursed() {
+    if (CursedRow(this.row) == undefined) return false;
+    return CursedRow(this.row).isCursed;
+  }
+
   get isEffectActive() {
     // This means that enhanced achievements lose their regular effect
-    return this.isUnlocked && !this.isDisabled && !this.isEnhanced;
+    return this.isUnlocked && !this.isDisabled && !this.isEnhanced && !this.isCursed;
   }
 
   get hasEnhancedEffect() {
@@ -73,22 +78,25 @@ class AchievementState extends GameMechanicState {
   }
 
   get canEnhance() {
-    if (!Perk.achievementEnhancement.isBought) return false;
+    if (!Achievements.isEnhancementUnlocked) return false;
+    // Being cursed will supress all special cases
+    if (this.isCursed) return false;
 
     // Handle special cases first
     // Er22 is free and should always be available
     if (this.id === 22 && !this.isEnhanced) return true;
     // Er47 doesn't work if Teresa isn't unlocked, so avoid Enhancing it
-    if (this.id == 47 && !Teresa.isUnlocked) return false;
+    if (this.id === 47 && !Teresa.isUnlocked) return false;
 
     // Er57 requires Er32 first, so if there aren't enough Enhancement points to Enhance
-    // both this and r32, don't allow enhancing
-    if (this.id === 57 && !Achievement(32).isEnhanced && Achievements.enhancementPoints < 2) {
+    // both this and r32, or if r32 is cursed, don't allow enhancing
+    if (this.id === 57 && (Achievement(32).isCursed || 
+      (!Achievement(32).isEnhanced && Achievements.enhancementPoints < 2))) {
       return false;
     }
     // Similar with Er88, that requires Er57 & Er32
-    if (this.id === 88 && Achievements.enhancementPoints <= (
-      !Achievement(32).isEnhanced + !Achievement(57).isEnhanced)) {
+    if (this.id === 88 && (Achievement(32).isCursed || Achievement(57).isCursed || 
+      Achievements.enhancementPoints <= (!Achievement(32).isEnhanced + !Achievement(57).isEnhanced))) {
       return false;
     }
 
@@ -97,7 +105,6 @@ class AchievementState extends GameMechanicState {
       !this.isEnhanced &&
       this.row <= Achievements.maxEnhancedRow && // Maximum row allowed
       Achievements.enhancementPoints > 0 &&
-      Achievements.isEnhancementUnlocked &&
       !Pelle.isDisabled("enhancedAchievements");
   }
 
@@ -131,11 +138,21 @@ class AchievementState extends GameMechanicState {
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENT_ENHANCED);
   }
 
-  // Should only be called when respeccing
   disEnhance() {
     player.reality.enhancedAchievements.delete(this.id);
   }
 
+  curse() {
+    if (this.isEnhanced) this.disEnhance();
+    // These Achievements require the previous ones to be Enhanced. DisEnhance if one of tem gets cursed
+    if (this.id === 32) {
+        Achievement(57).disEnhance();
+        Achievement(88).disEnhance();
+    }
+    if (this.id === 57) {
+      Achievement(88).disEnhance();
+    }
+  }
 
   tryUnlock(args) {
     if (this.isUnlocked) return;
@@ -196,13 +213,6 @@ class AchievementState extends GameMechanicState {
   }
 }
 
-/**
- * @param {number} id
- * @returns {AchievementState}
- */
-export const Achievement = AchievementState.createAccessor(GameDatabase.achievements.normal);
-
-
 class CursedRowState extends GameMechanicState {
   constructor(config) {
     super(config);
@@ -218,31 +228,55 @@ class CursedRowState extends GameMechanicState {
   get isPreReality() {
     return this.row < 14;
   }
-
+  
   get isPrePelle() {
     return this.row < 18;
   }
-
+  
   get isCursed() {
-    return true; // Change later
+    return (player.celestials.ra.cursedRowBits & this._bitmask) !== 0;
   }
-
+  
+  get toBeCursed() {
+    return (player.celestials.ra.toBeCursedBits & this._bitmask) !== 0;
+  }
+  
   get isEffectActive() {
     return this.isCursed;
+  }
+
+  uncurse() {
+    player.celestials.ra.cursedRowBits &= this._inverseBitmask;
+  }
+  
+  curse() {
+    player.celestials.ra.cursedRowBits |= this._bitmask;
+    for (let i = 1; i <= 8; i++) Achievement(10 * this.row + i).curse();
   }
 }
 
 /**
  * @param {number} id
  * @returns {CursedRowState}
- */
+*/
 export const CursedRow = CursedRowState.createAccessor(GameDatabase.achievements.cursed);
+
+/**
+ * @param {number} id
+ * @returns {AchievementState}
+ */
+export const Achievement = AchievementState.createAccessor(GameDatabase.achievements.normal);
 
 export const Achievements = {
   /**
    * @type {AchievementState[]}
    */
   all: Achievement.index.compact(),
+
+  /**
+   * @type {CursedRowState[]}
+   */
+  allCursedRows: CursedRow.index.compact(),
 
   /**
    * @type {AchievementState[]}
@@ -474,6 +508,11 @@ export const Achievements = {
     }
     player.reality.disEnhance = false;
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENTS_DISENHANCED);
+  },
+
+  uncurseAll() {
+    const cursedRows = Achievements.allCursedRows.filter(row => CursedRow(row).isCursed);
+    for (const row of cursedRows) CursedRow(row).uncurse();
   },
 
   autoAchieveUpdate(diff) {

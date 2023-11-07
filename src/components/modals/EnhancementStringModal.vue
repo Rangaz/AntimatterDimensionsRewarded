@@ -7,7 +7,6 @@ import PrimaryButton from "@/components/PrimaryButton";
 import EnhancementStringPreview from "./enhancement-modal-preview/EnhancementStringPreview.vue";
 
 import { autoReality } from "../../core/reality";
-import { Achievements } from "../../core/globals";
 
 let savedImportString = "";
 

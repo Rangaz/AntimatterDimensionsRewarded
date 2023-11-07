@@ -1,5 +1,4 @@
 import { DC } from "../constants";
-import { Achievement, Enslaved, InfinityChallenge, NormalChallenge } from "../globals";
 
 import { DimensionState } from "./dimension";
 

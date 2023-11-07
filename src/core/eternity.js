@@ -189,7 +189,7 @@ export function initializeChallengeCompletions(isReality) {
   if (!isReality && EternityMilestone.keepAutobuyers.isReached || Pelle.isDoomed) {
     NormalChallenges.completeAll();
   }
-  if (Achievement(133).isUnlocked && !Pelle.isDoomed) InfinityChallenges.completeAll();
+  if (Achievement(133).isUnlocked && !Achievement(133).isCursed && !Pelle.isDoomed) InfinityChallenges.completeAll();
   player.challenge.normal.current = 0;
   player.challenge.infinity.current = 0;
 }
@@ -325,7 +325,7 @@ class EPMultiplierState extends GameMechanicState {
 
   purchase() {
     if (!this.isAffordable) return false;
-    if (!Achievement(127).isUnlocked) Currency.eternityPoints.subtract(this.cost);
+    if (!Achievement(127).isUnlocked || Achievement(127).isCursed) Currency.eternityPoints.subtract(this.cost);
     ++this.boughtAmount;
     return true;
   }
@@ -338,11 +338,11 @@ class EPMultiplierState extends GameMechanicState {
     }
     const bulk = bulkBuyBinarySearch(Currency.eternityPoints.value, {
       costFunction: this.costAfterCount,
-      cumulative: !Achievement(127).isUnlocked,
+      cumulative: !Achievement(127).isUnlocked || Achievement(127).isCursed,
       firstCost: this.cost,
     }, this.boughtAmount);
     if (!bulk) return false;
-    if (!Achievement(127).isUnlocked) Currency.eternityPoints.subtract(bulk.purchasePrice);
+    if (!Achievement(127).isUnlocked || Achievement(127).isCursed) Currency.eternityPoints.subtract(bulk.purchasePrice);
     this.boughtAmount += bulk.quantity;
     return true;
   }

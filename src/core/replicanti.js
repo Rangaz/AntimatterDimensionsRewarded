@@ -580,7 +580,7 @@ export const Replicanti = {
     },
     get gain() {
       if (!this.canBuyMore) return 0;
-      if (Achievement(126).isUnlocked) {
+      if (Achievement(126).isUnlocked && !Achievement(126).isCursed) {
         const maxGain = Replicanti.galaxies.max - player.replicanti.galaxies;
         const logReplicanti = Replicanti.amount.log10();
         return Math.min(maxGain, Math.floor(logReplicanti / LOG10_MAX_VALUE));
