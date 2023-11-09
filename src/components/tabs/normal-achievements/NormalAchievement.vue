@@ -3,7 +3,6 @@ import wordShift from "@/core/word-shift";
 
 import EffectDisplay from "@/components/EffectDisplay";
 import HintText from "@/components/HintText";
-import { GameUI, Pelle } from "../../../core/globals";
 
 export default {
   name: "NormalAchievement",
@@ -29,6 +28,8 @@ export default {
       hasEnhancementEffect: false,
       canBeEnhanced: false,
       isEnhanced: false,
+      isCursed: false,
+      toBeCursed: false,
       isMouseOver: false,
       isCancer: false,
       showUnlockState: false,
@@ -86,7 +87,8 @@ export default {
         "o-achievement": true,
         "o-achievement--disabled": this.isDisabled,
         "o-achievement--locked": !this.isUnlocked && !this.isDisabled && !this.isObscured,
-        "o-achievement--unlocked": this.isUnlocked,
+        "o-achievement--unlocked": this.isUnlocked && !this.isCursed,
+        "o-achievement--cursed": this.isCursed,
         "o-achievement--enhanced": this.isEnhanced,
         "o-achievement--waiting": !this.isUnlocked && this.isPreRealityAchievement && !this.isDisabled,
         "o-achievement--blink": !this.isUnlocked && this.id === 78 && !this.isDisabled,
@@ -96,6 +98,8 @@ export default {
       };
     },
     indicatorIconClass() {
+      if (this.isCursed) return "fas fa-skull";
+      if (this.toBeCursed) return "fas fa-arrow-down";
       if (this.isUnlocked) return "fas fa-check";
       if (this.isPreRealityAchievement && !this.isDisabled) return "far fa-clock";
       return "fas fa-times";
@@ -103,6 +107,7 @@ export default {
     indicatorClassObject() {
       return {
         "o-achievement__indicator": true,
+        "o-achievement__indicator--cursed": this.isCursed || this.toBeCursed,
         "o-achievement__indicator--disabled": this.isDisabled,
         "o-achievement__indicator--locked": !this.isUnlocked && !this.isPreRealityAchievement && !this.isDisabled,
         "o-achievement__indicator--waiting": !this.isUnlocked && this.isPreRealityAchievement && !this.isDisabled,
@@ -149,6 +154,10 @@ export default {
     update() {
       this.isDisabled = Pelle.disabledAchievements.includes(this.id) && Pelle.isDoomed;
       this.isUnlocked = this.achievement.isUnlocked && !this.isDisabled;
+      this.isCursed = this.achievement.isCursed;
+      if (CursedRow(this.achievement.row) != undefined) {
+        this.toBeCursed = CursedRow(this.achievement.row).toBeCursed;
+      }
       this.maxEnhancedRow = Achievements.isEnhancementUnlocked ? Achievements.maxEnhancedRow : 0;
       this.hasEnhancementEffect = this.achievement.hasEnhancedEffect;
       this.isEnhanced = this.achievement.isEnhanced && !Pelle.isDoomed;
@@ -355,6 +364,11 @@ export default {
   background-color: #aacc75;
 }
 
+.o-achievement--cursed {
+  box-shadow: 0px 0px 10px #d5d5d5;
+  background-color: #222222;
+}
+
 .t-dark-metro .o-achievement--waiting {
   background-color: #b9b946;
   border-color: #7d7d36;
@@ -436,6 +450,11 @@ export default {
   right: 42.5%;
 }.l-column-eight::after {
   right: 5rem;
+}
+
+.o-achievement__indicator--cursed {
+  background: #e2e2e2;
+  border-color: #222222;
 }
 
 .o-achievement__enhancement {
