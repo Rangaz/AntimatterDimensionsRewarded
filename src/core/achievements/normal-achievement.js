@@ -252,6 +252,16 @@ class CursedRowState extends GameMechanicState {
   curse() {
     player.celestials.ra.cursedRowBits |= this._bitmask;
     for (let i = 1; i <= 8; i++) Achievement(10 * this.row + i).curse();
+    // Cursing r81, and possibly Er11, changes post-infinity scaling
+    if (this.row === 1 || this.row === 8) GameCache.dimensionMultDecrease.invalidate();
+  }
+
+  uncurseNextReality() {
+    player.celestials.ra.toBeCursedBits &= this._inverseBitmask;
+  }
+
+  curseNextReality() {
+    player.celestials.ra.toBeCursedBits |= this._bitmask;
   }
 }
 

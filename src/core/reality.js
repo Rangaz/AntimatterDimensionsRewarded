@@ -600,6 +600,16 @@ export function finishProcessReality(realityProps) {
       disChargeAll();
     }
     if (player.reality.disEnhance) Achievements.disEnhanceAll();
+    // Apply cursed rows
+    for (let i = 1; i <= 18; i++) {
+      if (CursedRow(i).toBeCursed && !CursedRow(i).isCursed) {
+        CursedRow(i).curse();
+        continue;
+      }
+      if (!CursedRow(i).toBeCursed && CursedRow(i).isCursed) {
+        CursedRow(i).uncurse();
+      }
+    }
   }
   if (player.options.automatorEvents.clearOnReality) AutomatorData.clearEventLog();
   if (Player.automatorUnlocked && AutomatorBackend.state.forceRestart) {
