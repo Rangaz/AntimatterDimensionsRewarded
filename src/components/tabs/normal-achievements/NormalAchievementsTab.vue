@@ -4,7 +4,6 @@ import PrimaryToggleButton from "@/components/PrimaryToggleButton";
 import PrimaryButton from "@/components/PrimaryButton";
 import EnhancementSaveLoadButton from "./EnhancementSaveLoadButton";
 import SwapAchievementImagesButton from "./SwapAchievementImagesButton";
-import { Achievement, Pelle } from "../../../core/globals";
 
 export default {
   name: "NormalAchievementsTab",
@@ -26,6 +25,8 @@ export default {
       totalEnhancementPoints: 0,
       enhancementPoints: 0,
       enhancedAchievements: 0,
+      isCurseUnlocked: false,
+      curseMode: false,
       missingAchievements: 0,
       showAutoAchieve: false,
       isAutoAchieveActive: false,
@@ -46,6 +47,7 @@ export default {
   computed: {
     isDoomed: () => Pelle.isDoomed,
     rows: () => Achievements.allRows,
+    cursedRows: () => Achievements.allCursedRows,
     renderedRows() {
       return this.rows.filter((_, i) => this.renderedRowIndices.includes(i));
     },
@@ -83,6 +85,13 @@ export default {
         "o-primary-btn--enhanced-respec-active": this.respecEnhancements 
       };
     },
+    curseModeClassObject() {
+      return {
+        "o-primary-btn--subtab-option": true,
+        "o-primary-btn--curse-mode-inactive": !this.curseMode,
+        "o-primary-btn--curse-mode-active": this.curseMode,
+      }
+    }
   },
   watch: {
     isAutoAchieveActive(newValue) {
@@ -90,6 +99,9 @@ export default {
     },
     respecEnhancements(newValue) {
       player.reality.disEnhance = newValue;
+    },
+    curseMode(newValue) {
+      this.curseMode = newValue;
     }
   },
   created() {
@@ -114,6 +126,7 @@ export default {
       this.totalEnhancementPoints = Achievements.totalEnhancementPoints;
       this.respecEnhancements = player.reality.disEnhance;
       this.isEnhancementUnlocked = Achievements.isEnhancementUnlocked && !this.isDoomed;
+      this.isCurseUnlocked = V.isFlipped;
       this.maxEnhancedRow = Achievements.maxEnhancedRow * this.isEnhancementUnlocked;
       this.showAutoAchieve = PlayerProgress.realityUnlocked() && !Perk.achievementGroup5.isBought;
       this.isAutoAchieveActive = player.reality.autoAchieve;
@@ -208,9 +221,15 @@ export default {
         :class="respecClassObject" 
         @click="respecEnhancements = !respecEnhancements"
       >Respec Enhanced Achievements on next Reality</PrimaryButton>
+
+      <PrimaryButton
+        v-if="isCurseUnlocked"
+        :class="curseModeClassObject" 
+        @click="curseMode = !curseMode"
+      >Curse Achievements...</PrimaryButton>
     </div>
     <div class="c-enhancement-load-button-area"
-      v-if="showEnhancementPresets && isEnhancementUnlocked"
+      v-if="showEnhancementPresets && isEnhancementUnlocked && !curseMode"
     >
       <span 
         class="c-enhancement-save-load-text">{{ saveLoadText }}</span>
@@ -218,9 +237,12 @@ export default {
         v-for="saveslot in 6"
         :key="saveslot"
         :saveslot="saveslot"
-            />
+      />
     </div>
-    <div class="c-achievements-tab__header c-achievements-tab__header--multipliers">
+    <div 
+      v-if="!curseMode"
+      class="c-achievements-tab__header c-achievements-tab__header--multipliers"
+    >
       <span v-if="isDoomed">
         All Achievement multipliers have been disabled<SwapAchievementImagesButton />
       </span>
@@ -230,7 +252,7 @@ export default {
       </span>
     </div>
     <div 
-      v-if="isEnhancementUnlocked"
+      v-if="isEnhancementUnlocked && !curseMode"
       class="c-achievements-tab__header"
       style="font-size:small"
     >
@@ -238,10 +260,20 @@ export default {
       You have enhanced {{ formatInt(totalEnhancementPoints - enhancementPoints) }}/{{ formatInt(totalEnhancementPoints) }} Achievements.
     </div>
     <div 
+      v-if="curseMode"
+      class="c-achievements-tab__header"
+      style="font-size:small;"
+    >
+      Curses work per row, disables its Achievements, and applies a nerf. <br>
+      You can only curse rows you have unlocked Enhancements for. <br>
+      Curses are applied at the beginning of the next Reality. <br>
+      A cursed row counts as -1 Achievements Enhanced.
+    </div>
+    <div 
       v-if="isDoomed"
       class="c-achievements-tab__header"
     >
-      You cannot enhance Achievements while Doomed.
+      You cannot enhance or curse Achievements while Doomed.
     </div>
     <div
       v-if="showAutoAchieve"
@@ -267,8 +299,10 @@ export default {
         v-for="(row, i) in renderedRows"
         :key="i"
         :row="row"
+        :cursed-row="cursedRows[i]"
         :is-obscured="isObscured(i)"
         :can-be-enhanced="i + 1 <= maxEnhancedRow"
+        :curse-mode="curseMode"
       />
     </div>
   </div>
@@ -283,6 +317,16 @@ export default {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
+}
+.o-primary-btn--curse-mode-inactive {
+  border-color: #e2e2e2;
+}
+.o-primary-btn--curse-mode-active {
+  color: #222222;
+  text-shadow: 0px 0px 4px #222222;
+  background-color: #e2e2e2;
+  box-shadow: 0px 0px 4px #e2e2e2;
+  border-color: #000000;
 }
 .o-primary-btn--enhanced-respec-active {
   color: #ffffff;

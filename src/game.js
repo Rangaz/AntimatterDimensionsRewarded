@@ -543,7 +543,6 @@ export function gameLoop(passDiff, options = {}) {
     player.records.realTimeDoomed += realDiff;
     player.records.realTimePlayed += realDiff;
     player.records.totalTimePlayed += diff;
-    // There's now a 3 second grace window in r23's effect.
     player.records.timeSinceLastSacrifice += diff; // For r23
     player.records.timeWithExcessAMProd += diff; // For r44
     player.records.timeSinceLastReset += diff; // For r68

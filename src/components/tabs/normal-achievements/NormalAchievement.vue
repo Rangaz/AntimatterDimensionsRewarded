@@ -18,6 +18,10 @@ export default {
     isObscured: {
       type: Boolean,
       required: false
+    },
+    curseMode: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -98,7 +102,8 @@ export default {
       };
     },
     indicatorIconClass() {
-      if (this.isCursed) return "fas fa-skull";
+      if (this.isCursed && this.toBeCursed) return "fas fa-skull";
+      if (this.isCursed && !this.toBeCursed) return "fas fa-arrow-up";
       if (this.toBeCursed) return "fas fa-arrow-down";
       if (this.isUnlocked) return "fas fa-check";
       if (this.isPreRealityAchievement && !this.isDisabled) return "far fa-clock";
@@ -107,7 +112,7 @@ export default {
     indicatorClassObject() {
       return {
         "o-achievement__indicator": true,
-        "o-achievement__indicator--cursed": this.isCursed || this.toBeCursed,
+        "o-achievement__indicator--cursed": this.toBeCursed,
         "o-achievement__indicator--disabled": this.isDisabled,
         "o-achievement__indicator--locked": !this.isUnlocked && !this.isPreRealityAchievement && !this.isDisabled,
         "o-achievement__indicator--waiting": !this.isUnlocked && this.isPreRealityAchievement && !this.isDisabled,
@@ -187,6 +192,10 @@ export default {
     onMouseLeave() {
       this.mouseOverInterval = setTimeout(() => this.isMouseOver = false, 300);
     },
+    onClick() {
+      if (this.curseMode) return;
+      this.achievement.enhance();
+    },
     // We don't want to expose the original text for Pelle achievements, so we generate a random string with the same
     // length of the original text in order to make something that fits reasonably within their respective places
     makeGarbledTemplate(input) {
@@ -228,7 +237,7 @@ export default {
     :style="styleObject"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
-    @click="achievement.enhance()"
+    @click="onClick"
   >
     <HintText
       :key="garbleKey"
@@ -237,9 +246,11 @@ export default {
     >
       {{ processedId }}
     </HintText>
-    <div :class="tooltipStyle"
-    :style="tooltipPosition"
-    ref="tooltip">
+    <div 
+      v-if="!curseMode"
+      :class="tooltipStyle"
+      :style="tooltipPosition"
+      ref="tooltip">
       <template v-if="isMouseOver">
         <div class="o-achievement__tooltip__name">
           {{ processedName }} ({{ processedId }})
@@ -254,7 +265,7 @@ export default {
           >
             <span
               v-if="!isObscured"
-              :class="{ 'o-pelle-disabled': isDisabled }"
+              :class="{ 'o-pelle-disabled': isDisabled, 'o-cursed': isCursed }"
             >
               Reward: {{ config.reward }}
               <EffectDisplay
@@ -272,7 +283,7 @@ export default {
           >
             <span
               v-if="!isObscured"
-              :class="{ 'o-pelle-disabled': isDisabled }"
+              :class="{ 'o-pelle-disabled': isDisabled, 'o-cursed': isCursed }"
             >
               Enhanced: {{ config.enhanced.reward }}
               <EffectDisplay
@@ -314,6 +325,10 @@ export default {
 </template>
 
 <style scoped>
+.o-cursed {
+  text-decoration: line-through;
+  text-shadow: 0px 0px 2px #222222, 0px 0px 4px #e2e2e2;
+}
 .o-achievement-time {
   font-weight: bold;
   color: var(--color-accent);

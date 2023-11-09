@@ -14,6 +14,7 @@ TODO:
     |>Allow to curse rows in-game <NEXT>
     |>Allow to remove cursed rows upon Reality
   ->Balance Hard V
+-Allow individual Enhancements to be respec
 -Add Enhancements for rows 10-13 <IN PROGRESS>
 -Add Rewards for row 17
 -Balance Imaginary upgrades' unlocks
