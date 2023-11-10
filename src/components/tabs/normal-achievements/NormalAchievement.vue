@@ -31,6 +31,7 @@ export default {
       maxEnhancedRow: 0, // Will be 0 if Enhancement is not unlocked
       hasEnhancementEffect: false,
       canBeEnhanced: false,
+      toBeUnenhanced: false,
       isEnhanced: false,
       isCursed: false,
       toBeCursed: false,
@@ -118,15 +119,19 @@ export default {
         "o-achievement__indicator--waiting": !this.isUnlocked && this.isPreRealityAchievement && !this.isDisabled,
       };
     },
-    rewardClassObject() {
+    enhancementClassObject() {
       return {
         "o-achievement__enhancement": true,
-        "o-achievement__enhancement--enhanced": this.isEnhanced,
+        "o-achievement__enhancement--enhanced": this.isEnhanced && !this.toBeUnenhanced,
         "o-achievement__enhancement--disabled": this.isDisabled,
         "o-achievement__enhancement--locked": !this.isUnlocked && !this.isPreRealityAchievement && !this.isDisabled,
-        // This last one shouldn't appear
-        "o-achievement__enhancement--waiting": !this.isUnlocked && this.isPreRealityAchievement && !this.isDisabled,
+        "o-achievement__enhancement--to-be-unenhanced": this.toBeUnenhanced,
       };
+    },
+    enhancementIconClass() {
+      if (this.toBeUnenhanced) return "fas fa-arrow-down";
+      if (this.canBeEnhanced) return "fas fa-arrow-up";
+      if (this.isEnhanced) return "fas fa-trophy";
     },
     isPreRealityAchievement() {
       return this.realityUnlocked && this.achievement.row <= 13;
@@ -167,6 +172,7 @@ export default {
       this.hasEnhancementEffect = this.achievement.hasEnhancedEffect;
       this.isEnhanced = this.achievement.isEnhanced && !Pelle.isDoomed;
       this.canBeEnhanced = this.achievement.canEnhance && !Pelle.isDoomed;
+      this.toBeUnenhanced = this.achievement.toBeUnenhanced;
       this.isCancer = Theme.current().name === "S4" || player.secretUnlocks.cancerAchievements;
       this.showUnlockState = player.options.showHintText.achievementUnlockStates;
       this.realityUnlocked = PlayerProgress.realityUnlocked();
@@ -194,6 +200,23 @@ export default {
     },
     onClick() {
       if (this.curseMode) return;
+      // Free Enhancements should be easy to disEnhance
+      if (this.isEnhanced && this.id == 22) {
+        this.achievement.disEnhance();
+        return;
+      }
+      if (this.isEnhanced && !this.toBeUnenhanced) {
+        player.reality.toBeEnhancedAchievements.delete(this.id);
+        return;
+      }
+      if (this.toBeUnenhanced && player.reality.disEnhance) {
+        player.reality.disEnhance = false;
+        player.reality.toBeEnhancedAchievements = new Set([this.id]);
+        return;
+      }
+      if (this.toBeUnenhanced) {
+        player.reality.toBeEnhancedAchievements.add(this.id);
+      }
       this.achievement.enhance();
     },
     // We don't want to expose the original text for Pelle achievements, so we generate a random string with the same
@@ -310,16 +333,10 @@ export default {
     </div>
     <!--Now the Enhanced icon-->
     <div
-      v-if="canBeEnhanced"
-      :class="rewardClassObject"
+      v-if="isEnhanced || canBeEnhanced"
+      :class="enhancementClassObject"
     >
-      <i class="fas fa-arrow-up" />
-    </div>
-    <div
-      v-if="isEnhanced"
-      :class="rewardClassObject"
-    >
-      <i class="fas fa-trophy" />
+      <i :class="enhancementIconClass" />
     </div>
   </div>
 </template>
@@ -492,9 +509,9 @@ export default {
   border-color: var(--color-bad);
 }
 
-.o-achievement__enhancement--waiting {
-  background: #d1d161;
-  border-color: #acac39;
+.o-achievement__enhancement--to-be-unenhanced {
+  background: #5ac467;
+  border-color: #127a20;
 }
 
 .o-achievement__enhancement--disabled {

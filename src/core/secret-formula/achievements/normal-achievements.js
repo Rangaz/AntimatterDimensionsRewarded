@@ -1,7 +1,4 @@
 import { DC } from "../../constants";
-//import { Enslaved } from "../../globals";
-//import { DimBoost } from "../../dimboost";
-//import { AntimatterDimension } from "../../globals";
 import { PlayerProgress } from "../../player-progress";
 
 /*
@@ -11,12 +8,12 @@ TODO:
     |>Multiplier tab functionality <DONE>
     |>Add visuals to indicate when a row is about to be cursed, and when it's cursed <DONE>
     |>Make it disable Achievements <DONE>
-    |>Allow to curse rows in-game <NEXT>
-    |>Allow to remove cursed rows upon Reality
-  ->Balance Hard V
--Allow individual Enhancements to be respec
+    |>Allow to curse rows in-game <DONE>
+    |>Allow to remove cursed rows upon Reality <DONE>
+-Allow individual Enhancements to be respec <DONE>
 -Add Enhancements for rows 10-13 <IN PROGRESS>
 -Add Rewards for row 17
+-Balance Hard V
 -Balance Imaginary upgrades' unlocks
 -Balance Lai'tela
 */
