@@ -77,6 +77,11 @@ class AchievementState extends GameMechanicState {
     return player.reality.enhancedAchievements.has(this.id);
   }
 
+  get toBeUnenhanced() {
+    return this.isEnhanced && (!player.reality.toBeEnhancedAchievements.has(this.id) ||
+      player.reality.disEnhance);
+  }
+
   get canEnhance() {
     if (!Achievements.isEnhancementUnlocked) return false;
     // Being cursed will supress all special cases
@@ -135,11 +140,14 @@ class AchievementState extends GameMechanicState {
       player.eternityPoints = player.eternityPoints.plus(DC.E40.powEffectOf(Achievement(55).enhancedEffect));
     }
     player.reality.enhancedAchievements.add(this.id);
+    // It is assumed that when you Enhance an Achievement you want to keep it
+    player.reality.toBeEnhancedAchievements.add(this.id);
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENT_ENHANCED);
   }
 
   disEnhance() {
     player.reality.enhancedAchievements.delete(this.id);
+    player.reality.toBeEnhancedAchievements.delete(this.id);
   }
 
   curse() {
@@ -512,12 +520,12 @@ export const Achievements = {
   },
 
   disEnhanceAll() {
-    const enhancedAchievements = Achievements.preReality;
+    const enhancedAchievements = Achievements.preReality.filter(ach => ach.isEnhanced);
     for (const achievement of enhancedAchievements) {
       achievement.disEnhance();
     }
     player.reality.disEnhance = false;
-    EventHub.dispatch(GAME_EVENT.ACHIEVEMENTS_DISENHANCED);
+    
   },
 
   uncurseAll() {

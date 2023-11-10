@@ -524,6 +524,7 @@ window.player = {
     gainedAutoAchievements: true,
     disEnhance: false,
     enhancedAchievements: new Set(),
+    toBeEnhancedAchievements: new Set(),
     enhancedPresets: new Array(6).fill({
       name: "",
       enhancements: "",

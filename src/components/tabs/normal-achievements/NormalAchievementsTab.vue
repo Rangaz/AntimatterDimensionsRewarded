@@ -98,6 +98,13 @@ export default {
       player.reality.autoAchieve = newValue;
     },
     respecEnhancements(newValue) {
+      // We want to give toBeEnhancedAchievements all enhanced achievements only when neccesary.
+      if (!newValue && 
+        player.reality.toBeEnhancedAchievements.size != player.reality.enhancedAchievements.size) {
+          for (const id of player.reality.enhancedAchievements.values()) {
+            player.reality.toBeEnhancedAchievements.add(id);
+        }
+      }
       player.reality.disEnhance = newValue;
     },
     curseMode(newValue) {

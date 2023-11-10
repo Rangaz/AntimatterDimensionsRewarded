@@ -600,6 +600,11 @@ export function finishProcessReality(realityProps) {
       disChargeAll();
     }
     if (player.reality.disEnhance) Achievements.disEnhanceAll();
+    else {
+      for (const ach of player.reality.enhancedAchievements) {
+        if (Achievement(ach).toBeUnenhanced) Achievement(ach).disEnhance();
+      }
+    }
     // Apply cursed rows
     for (let i = 1; i <= 18; i++) {
       if (CursedRow(i).toBeCursed && !CursedRow(i).isCursed) {
