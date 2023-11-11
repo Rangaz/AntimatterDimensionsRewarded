@@ -75,6 +75,13 @@ export default {
     },
     onCursedClick() {
       if (!this.curseMode) return;
+      if (!this.cursedRow.toBeCursed && player.reality.respecAchievements) {
+        player.celestials.ra.toBeCursedBits = 0;
+        this.cursedRow.curseNextReality();
+        player.reality.toBeEnhancedAchievements = new Set();
+        player.reality.respecAchievements = false;
+        return;
+      }
       this.cursedRow.toBeCursed ? this.cursedRow.uncurseNextReality() :
       this.cursedRow.curseNextReality();
     }

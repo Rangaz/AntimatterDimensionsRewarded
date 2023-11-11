@@ -3,13 +3,13 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Hard V
-  ->Add curses for Achievement rows <IN PROGRESS>
-    |>Multiplier tab functionality <DONE>
-    |>Add visuals to indicate when a row is about to be cursed, and when it's cursed <DONE>
-    |>Make it disable Achievements <DONE>
-    |>Allow to curse rows in-game <DONE>
-    |>Allow to remove cursed rows upon Reality <DONE>
+-Add curses for Achievement rows <IN PROGRESS>
+  |>Multiplier tab functionality <DONE>
+  |>Add visuals to indicate when a row is about to be cursed, and when it's cursed <DONE>
+  |>Make it disable Achievements <DONE>
+  |>Allow to curse rows in-game <DONE>
+  |>Allow to remove cursed rows upon Reality <DONE>
+  |>Improve visuals <NEXT>
 -Allow individual Enhancements to be respec <DONE>
 -Add Enhancements for rows 10-13 <IN PROGRESS>
 -Add Rewards for row 17

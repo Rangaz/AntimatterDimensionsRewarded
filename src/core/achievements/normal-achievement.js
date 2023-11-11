@@ -79,7 +79,7 @@ class AchievementState extends GameMechanicState {
 
   get toBeUnenhanced() {
     return this.isEnhanced && (!player.reality.toBeEnhancedAchievements.has(this.id) ||
-      player.reality.disEnhance);
+      player.reality.respecAchievements);
   }
 
   get canEnhance() {
@@ -246,7 +246,7 @@ class CursedRowState extends GameMechanicState {
   }
   
   get toBeCursed() {
-    return (player.celestials.ra.toBeCursedBits & this._bitmask) !== 0;
+    return (player.celestials.ra.toBeCursedBits & this._bitmask) !== 0 && !player.reality.respecAchievements;
   }
   
   get isEffectActive() {
@@ -524,13 +524,14 @@ export const Achievements = {
     for (const achievement of enhancedAchievements) {
       achievement.disEnhance();
     }
-    player.reality.disEnhance = false;
+    player.reality.respecAchievements = false;
     
   },
 
   uncurseAll() {
     const cursedRows = Achievements.allCursedRows.filter(row => CursedRow(row).isCursed);
     for (const row of cursedRows) CursedRow(row).uncurse();
+    player.reality.respecAchievements = false;
   },
 
   autoAchieveUpdate(diff) {

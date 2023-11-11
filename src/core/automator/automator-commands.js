@@ -984,7 +984,7 @@ export const AutomatorCommands = [
           (not unlocked yet)`, ctx.startLine);
         return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
       }
-      player.reality.disEnhance = true;
+      player.reality.respecAchievements = true;
       AutomatorData.logCommandEvent(`Turned enhancement respec ON`, ctx.startLine);
       return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
     },

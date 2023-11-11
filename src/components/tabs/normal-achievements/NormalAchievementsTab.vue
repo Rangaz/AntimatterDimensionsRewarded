@@ -31,7 +31,7 @@ export default {
       showAutoAchieve: false,
       isAutoAchieveActive: false,
       isEnhancementUnlocked: false,
-      respecEnhancements: false,
+      respecAll: false,
       showEnhancementPresets: false,
       hideRows: 0,
       enhancedAchMultToDims: false,
@@ -82,7 +82,7 @@ export default {
     respecClassObject() {
       return {
         "o-primary-btn--subtab-option": true,
-        "o-primary-btn--enhanced-respec-active": this.respecEnhancements 
+        "o-primary-btn--enhanced-respec-active": this.respecAll 
       };
     },
     curseModeClassObject() {
@@ -97,15 +97,22 @@ export default {
     isAutoAchieveActive(newValue) {
       player.reality.autoAchieve = newValue;
     },
-    respecEnhancements(newValue) {
+    respecAll(newValue) {
+      if (newValue) {
+        player.reality.toBeEnhancedAchievements = new Set();
+        player.celestials.ra.toBeCursedBits = 0;
+      }
       // We want to give toBeEnhancedAchievements all enhanced achievements only when neccesary.
-      if (!newValue && 
-        player.reality.toBeEnhancedAchievements.size != player.reality.enhancedAchievements.size) {
+      // If there's only 1 element it likely means that an achievement was clicked while
+      // respecAll was active. 0 elements means that a cursed row was clicked instead.
+      if (!newValue && (!Number.isInteger(Math.log2(player.celestials.ra.toBeCursedBits)) &&
+        player.reality.toBeEnhancedAchievements.size != 1)) {
+          player.celestials.ra.toBeCursedBits = player.celestials.ra.cursedRowBits;
           for (const id of player.reality.enhancedAchievements.values()) {
             player.reality.toBeEnhancedAchievements.add(id);
-        }
+          }
       }
-      player.reality.disEnhance = newValue;
+      player.reality.respecAchievements = newValue;
     },
     curseMode(newValue) {
       this.curseMode = newValue;
@@ -131,7 +138,7 @@ export default {
       this.missingAchievements = Achievements.preReality.countWhere(a => !a.isUnlocked);
       this.enhancementPoints = Achievements.enhancementPoints;
       this.totalEnhancementPoints = Achievements.totalEnhancementPoints;
-      this.respecEnhancements = player.reality.disEnhance;
+      this.respecAll = player.reality.respecAchievements;
       this.isEnhancementUnlocked = Achievements.isEnhancementUnlocked && !this.isDoomed;
       this.isCurseUnlocked = V.isFlipped;
       this.maxEnhancedRow = Achievements.maxEnhancedRow * this.isEnhancementUnlocked;
@@ -226,8 +233,10 @@ export default {
       <PrimaryButton
         v-if="isEnhancementUnlocked"
         :class="respecClassObject" 
-        @click="respecEnhancements = !respecEnhancements"
-      >Respec Enhanced Achievements on next Reality</PrimaryButton>
+        @click="respecAll = !respecAll"
+      >
+        Respec all Enhancements <span v-if="isCurseUnlocked">and curses </span>on next Reality
+      </PrimaryButton>
 
       <PrimaryButton
         v-if="isCurseUnlocked"

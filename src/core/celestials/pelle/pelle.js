@@ -92,6 +92,7 @@ export const Pelle = {
     player.IPMultPurchases = 0;
     Autobuyer.bigCrunch.mode = AUTO_CRUNCH_MODE.AMOUNT;
     Achievements.disEnhanceAll();
+    Achievements.uncurseAll();
     disChargeAll();
     clearCelestialRuns();
 
@@ -161,6 +162,7 @@ export const Pelle = {
     }
     finishProcessReality({ reset: true, armageddon: true });
     Achievements.disEnhanceAll();
+    Achievements.uncurseAll();
     disChargeAll();
     player.celestials.enslaved.isStoringReal = false;
     player.celestials.enslaved.autoStoreReal = false;
