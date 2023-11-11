@@ -173,7 +173,7 @@ export default {
         this.deletePreset();
       } else if (this.isImporting) {
         if (this.respecAndLoad && this.canReality) {
-          player.reality.disEnhance = true;
+          player.reality.respecAchievements = true;
           autoReality();
           Achievements.enhanceFromPreset(this.parsedInput)
           return;

@@ -599,7 +599,7 @@ export function finishProcessReality(realityProps) {
     if (player.celestials.ra.disCharge) {
       disChargeAll();
     }
-    if (player.reality.disEnhance) Achievements.disEnhanceAll();
+    if (player.reality.respecAchievements) Achievements.disEnhanceAll();
     else {
       for (const ach of player.reality.enhancedAchievements) {
         if (Achievement(ach).toBeUnenhanced) Achievement(ach).disEnhance();

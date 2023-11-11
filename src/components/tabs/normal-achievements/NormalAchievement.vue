@@ -209,13 +209,15 @@ export default {
         player.reality.toBeEnhancedAchievements.delete(this.id);
         return;
       }
-      if (this.toBeUnenhanced && player.reality.disEnhance) {
-        player.reality.disEnhance = false;
+      if (this.toBeUnenhanced && player.reality.respecAchievements) {
+        player.reality.respecAchievements = false;
+        player.celestials.ra.toBeCursedBits = 0;
         player.reality.toBeEnhancedAchievements = new Set([this.id]);
         return;
       }
       if (this.toBeUnenhanced) {
         player.reality.toBeEnhancedAchievements.add(this.id);
+        return;
       }
       this.achievement.enhance();
     },

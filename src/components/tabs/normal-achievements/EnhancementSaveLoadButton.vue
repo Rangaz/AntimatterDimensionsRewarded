@@ -71,7 +71,7 @@ export default {
     // This function assumes you can auto-reality, which should be true at the time you unlock presets.
     respecAndLoad() {
       if (this.canReality) {
-        player.reality.disEnhance = true;
+        player.reality.respecAchievements = true;
         
         autoReality();
         Achievements.enhanceFromPreset(this.preset.enhancements);

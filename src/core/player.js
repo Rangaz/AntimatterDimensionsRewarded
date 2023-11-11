@@ -522,7 +522,7 @@ window.player = {
     partEternitied: DC.D0,
     autoAchieve: true,
     gainedAutoAchievements: true,
-    disEnhance: false,
+    respecAchievements: false,
     enhancedAchievements: new Set(),
     toBeEnhancedAchievements: new Set(),
     enhancedPresets: new Array(6).fill({
