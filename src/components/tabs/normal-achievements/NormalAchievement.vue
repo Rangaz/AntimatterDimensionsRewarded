@@ -63,7 +63,7 @@ export default {
     },
     styleObject() {
       return {
-        "background-position": `-${(this.achievement.column - 1) * 104}px -${(this.achievement.row - 1) * 104}px`
+        "background-position": `-${(this.achievement.column - 1) * 104}px -${(this.achievement.row - 1) * 104}px, 0px`
       };
     },
     tooltipStyle() {
@@ -95,6 +95,7 @@ export default {
         "o-achievement--unlocked": this.isUnlocked && !this.isCursed,
         "o-achievement--cursed": this.isCursed,
         "o-achievement--enhanced": this.isEnhanced,
+        "o-achievement--to-be-unenhanced": this.toBeUnenhanced,
         "o-achievement--waiting": !this.isUnlocked && this.isPreRealityAchievement && !this.isDisabled,
         "o-achievement--blink": !this.isUnlocked && this.id === 78 && !this.isDisabled,
         "o-achievement--normal": !this.isCancer && !this.isObscured,
@@ -172,7 +173,7 @@ export default {
       this.hasEnhancementEffect = this.achievement.hasEnhancedEffect;
       this.isEnhanced = this.achievement.isEnhanced && !Pelle.isDoomed;
       this.canBeEnhanced = this.achievement.canEnhance && !Pelle.isDoomed;
-      this.toBeUnenhanced = this.achievement.toBeUnenhanced;
+      this.toBeUnenhanced = this.achievement.toBeUnenhanced || (this.toBeCursed && this.isEnhanced);
       this.isCancer = Theme.current().name === "S4" || player.secretUnlocks.cancerAchievements;
       this.showUnlockState = player.options.showHintText.achievementUnlockStates;
       this.realityUnlocked = PlayerProgress.realityUnlocked();
@@ -396,6 +397,18 @@ export default {
 .o-achievement--enhanced {
   box-shadow: 0px 0px 20px #acac39;
   background-color: #aacc75;
+  border-color: #888841;
+}
+.o-achievement--to-be-unenhanced {
+  background-image: url("../../../../public/images/normal achievements.png"),
+    repeating-linear-gradient(
+      45deg,
+      #Aacc75,
+      #Aacc75 26px,
+      #70c66a 26px,
+      #70c66a 52px
+    );
+  border-style: dashed;
 }
 
 .o-achievement--cursed {

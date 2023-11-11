@@ -35,6 +35,7 @@ export default {
       isCompleted: false,
       isFullyEnhanced: false,
       isCursed: false,
+      toBeCursed: false,
       isHidden: false,
       isMouseOver: false,
     };
@@ -52,6 +53,8 @@ export default {
         "c-achievement-grid__row--completed": this.isCompleted && !this.isCursed,
         "c-achievement-grid__row--enhanced": this.isFullyEnhanced,
         "c-achievement-grid__row--cursed": this.isCursed,
+        "c-achievement-grid__row--to-be-cursed": !this.isCursed && this.toBeCursed,
+        "c-achievement-grid__row--to-be-uncursed": this.isCursed && !this.toBeCursed,
       };
     }
   },
@@ -60,6 +63,7 @@ export default {
       this.isCompleted = this.row.every(a => a.isUnlocked);
       this.isFullyEnhanced = this.row.every(a => a.isEnhanced);
       this.isCursed = this.cursedRow.isCursed;
+      this.toBeCursed = this.cursedRow.toBeCursed;
       switch (player.options.hideAchievementRows) {
         case 0: {this.isHidden = false; break;}
         case 1: {this.isHidden = this.isCompleted && !this.canBeEnhanced; break;}
@@ -224,6 +228,22 @@ export default {
 
 .s-base--metro .c-achievement-grid__row--cursed {
   background-color: #2d2d2d;
+}
+
+.c-achievement-grid__row--to-be-cursed {
+  border-color: #e7e7e7;
+  border-radius: var(--var-border-radius, 10px);
+  border-style: double;
+}
+.c-achievement-grid__row--to-be-uncursed {
+  background: repeating-linear-gradient(
+      45deg,
+      #114615,
+      #114615 2rem,
+      #222222 2rem,
+      #222222 4rem
+    );
+  border-radius: var(--var-border-radius, 10px);
 }
 /*
 
