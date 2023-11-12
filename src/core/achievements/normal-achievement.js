@@ -83,9 +83,11 @@ class AchievementState extends GameMechanicState {
   }
 
   get canEnhance() {
-    if (!Achievements.isEnhancementUnlocked) return false;
-    // Being cursed will supress all special cases
-    if (this.isCursed) return false;
+    if (!Achievements.isEnhancementUnlocked || Pelle.isDisabled("enhancedAchievements") ||
+      this.row > Achievements.maxEnhancedRow || !this.isUnlocked || 
+      !this.hasEnhancedEffect || this.isEnhanced || this.isCursed) {
+        return false;
+    }
 
     // Handle special cases first
     // Er22 is free and should always be available
@@ -105,12 +107,7 @@ class AchievementState extends GameMechanicState {
       return false;
     }
 
-    return this.isUnlocked &&
-      this.hasEnhancedEffect &&
-      !this.isEnhanced &&
-      this.row <= Achievements.maxEnhancedRow && // Maximum row allowed
-      Achievements.enhancementPoints > 0 &&
-      !Pelle.isDisabled("enhancedAchievements");
+    return Achievements.enhancementPoints > 0;
   }
 
   // The fromPreset argument is so that we can avoid notifications about Achievements being auto-Enhanced
@@ -344,7 +341,7 @@ export const Achievements = {
 
   get totalEnhancementPoints() {
     return Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality) + 
-      Math.floor(V.spaceTheorems / 2);
+      Math.floor(V.spaceTheorems / 7);
   },
   
   // Er22 should be free, and we'll sneakily give +1 here so that it's practically free

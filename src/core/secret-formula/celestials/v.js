@@ -259,11 +259,12 @@ export const v = {
     maxEnhancedRow: {
       id: 8,
       reward() {
-        return `For every ${formatInt(7)} V-Achievements unlock a new row to Enhance.`;
+        return `Every 7th V-Achievement gain +${formatInt(1)} Enhancement
+          and a new row to Enhance.`;
       },
       description: () => `Have ${formatInt(7)} V-Achievements`,
       effect: () => 4 + Math.floor(V.spaceTheorems / 7),
-      format: x => `Up to row ${formatInt(x)}`,
+      format: x => `+${formatInt(x - 4)}, up to row ${formatInt(x)}`,
       requirement: () => V.spaceTheorems >= 7
     }
   }
