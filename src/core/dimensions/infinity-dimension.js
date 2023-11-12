@@ -15,6 +15,7 @@ export function infinityDimensionCommonMultiplier() {
       Achievement(76).enhancedEffect,
       Achievement(91).enhancedEffect,
       Achievement(107),
+      Achievement(107).enhancedEffect,
       TimeStudy(82),
       TimeStudy(92),
       TimeStudy(162),
@@ -157,7 +158,8 @@ class InfinityDimensionState extends DimensionState {
         tier === 1 ? Achievement(94).enhancedEffect.effects.infinityPowerGain : null,
         tier === 1 ? Achievement(124) : null,
         tier === 4 ? TimeStudy(72) : null,
-        tier === 1 ? EternityChallenge(2).reward : null
+        tier === 1 ? EternityChallenge(2).reward : null,
+        tier === 8 ? Achievement(101).enhancedEffect : null,
       );
     mult = mult.times(Decimal.pow(this.powerMultiplier, Math.floor(this.baseAmount / 10)));
 

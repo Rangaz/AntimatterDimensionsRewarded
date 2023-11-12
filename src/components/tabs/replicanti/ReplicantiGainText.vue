@@ -24,10 +24,12 @@ export default {
         (Math.log(player.replicanti.chance + 1)), getReplicantiInterval(false)).dividedBy(Math.LN10);
 
       const replicantiAmount = Replicanti.amount;
-      const minReplicanti = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
+      const minReplicanti = Effects.max(1, Achievement(108).effects.minReplicanti, 
+        Achievement(108).enhancedEffect.effects.minReplicanti).toDecimal();
       const isAbove308 = Replicanti.isUncapped && replicantiAmount.log10() > LOG10_MAX_VALUE;
 
       // The Achievements that give conditional Replicanti speed.
+      // I'm not going to bother with Enhanced Achievement 106 until someone complains
       const r94Timer = Achievement(94).canBeApplied && !Achievement(145).canBeApplied ? 
         Math.clampMin((260 - Time.thisInfinity.totalSeconds) / getGameSpeedupForDisplay(), 0) : 0;
       const fastR106Galaxies = Achievement(106).canBeApplied ? 10 : 0;

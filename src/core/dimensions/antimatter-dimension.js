@@ -155,6 +155,7 @@ function applyNDMultipliers(mult, tier) {
       Achievement(46),
       Achievement(46).enhancedEffect,
       Achievement(101),
+      Achievement(101).enhancedEffect,
       CursedRow(4),
       TimeStudy(214),
     );

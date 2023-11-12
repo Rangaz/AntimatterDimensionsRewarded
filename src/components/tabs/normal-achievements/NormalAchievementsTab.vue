@@ -283,7 +283,7 @@ export default {
       Curses work per row, disables its Achievements, and applies a nerf. <br>
       You can only curse rows you have unlocked Enhancements for. <br>
       Curses are applied at the beginning of the next Reality. <br>
-      A cursed row counts as -1 Achievements Enhanced.
+      A cursed row counts as -2 Achievements Enhanced.
     </div>
     <div 
       v-if="isDoomed"

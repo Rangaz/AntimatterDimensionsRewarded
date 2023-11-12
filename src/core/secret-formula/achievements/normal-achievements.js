@@ -1412,7 +1412,7 @@ export const normalAchievements = [
   },
 
   {
-    // Implemented! Likely the messiest code, but it's just multiplication.
+    // Implemented! Likely the messiest code, but it's just multiplication. & Enhanced!
     id: 101,
     name: "8 nobody got time for that",
     description: "Eternity without buying Antimatter Dimensions 1-7.",
@@ -1425,10 +1425,20 @@ export const normalAchievements = [
     Decimal.pow(AntimatterDimension(1).bought * AntimatterDimension(2).bought * AntimatterDimension(3).bought * 
       AntimatterDimension(4).bought * AntimatterDimension(5).bought * AntimatterDimension(6).bought * 
       AntimatterDimension(7).bought, AntimatterDimension(8).bought / 2000).plus(1),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "8th ADs and IDs are stronger based on purchased ADs.",
+      effect: () => Laitela.continuumActive ? Decimal.pow(AntimatterDimension(1).continuumAmount * AntimatterDimension(2).continuumAmount *
+        AntimatterDimension(3).continuumAmount * AntimatterDimension(4).continuumAmount * AntimatterDimension(5).continuumAmount * 
+        AntimatterDimension(6).continuumAmount * AntimatterDimension(7).continuumAmount, AntimatterDimension(8).continuumAmount / 2000).plus(1) : 
+        Decimal.pow(AntimatterDimension(1).bought * AntimatterDimension(2).bought * AntimatterDimension(3).bought * 
+        AntimatterDimension(4).bought * AntimatterDimension(5).bought * AntimatterDimension(6).bought * 
+        AntimatterDimension(7).bought, AntimatterDimension(8).bought / 1000).plus(1),
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
-    // Implemented (in theory)!
+    // Implemented (in theory) & Enhanced (in theory)!
     id: 102,
     name: "This mile took an eternity",
     description: "Get all Eternity milestones.",
@@ -1450,7 +1460,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Improved!
+    // Improved & Enhanced!
     id: 103,
     name: "Tätä saavutusta ei ole olemassa II",
     get description() { return `Reach ${formatPostBreak(DC.D9_99999E999, 5, 0)} Infinity Points.`; },
@@ -1462,7 +1472,16 @@ export const normalAchievements = [
       `Make the Infinity Point formula better. log(x)/${formatInt(308)} ➜ log(x)/${formatFloat(307.8, 1)}`;
     },
     effect: 0.2,
+    enhanced: {
+      get reward() {
+        return TimeStudy(111).canBeApplied ? 
+        `Make the Infinity Point formula much better. log(x)/${formatInt(285)} ➜ log(x)/${formatInt(280)}` : 
+        `Make the Infinity Point formula much better. log(x)/${formatInt(308)} ➜ log(x)/${formatInt(303)}`;
+      },
+      effect: 5,
+    }
   },
+  // Buffed & Enhanced!
   {
     id: 104,
     name: "That wasn't an eternity",
@@ -1470,9 +1489,15 @@ export const normalAchievements = [
     checkRequirement: () => Time.thisEternity.totalSeconds <= 30,
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
     get reward() { return `Start Eternities with ${format(5e40)} Infinity Points.`; },
-    effect: 5e40
+    effect: 5e40,
+    enhanced: {
+      get reward() { return `When unlocking Dilation, start with ${Achievement(55).isEnhanced ? 
+        `${format(1e150)} Tachyon Particles (improved by Enhanced Achievement 55).` : `${formatInt(1000)} Tachyon Particles.`}`},
+      effect: () => DC.E3.powEffectOf(Achievement(55).enhancedEffect),
+    }
   },
   {
+    // Enhanced!
     id: 105,
     name: "Infinite Time",
     get description() { return `Have ${formatInt(308)} Tickspeed upgrades from Time Dimensions.`; },
@@ -1480,10 +1505,15 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Time Dimensions gain a multiplier based on tickspeed.",
     effect: () => Tickspeed.perSecond.pow(0.000005),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "Time Dimensions gain a bigger multiplier based on tickspeed.",
+      effect: () => Tickspeed.perSecond.pow(0.000008),
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
-    // Implemented!
+    // Implemented & Enhanced!
     id: 106,
     name: "The swarm",
     get description() { return `Get ${formatInt(10)} Replicanti Galaxies in ${formatInt(15)} seconds.`; },
@@ -1493,6 +1523,12 @@ export const normalAchievements = [
       Replicanti Galaxies ${Replicanti.galaxies.bought >= 10 ? `(inactive)` : `(active)`}.`},
     effect: 2,
     effectCondition: () => Replicanti.galaxies.bought < 10,
+    enhanced: {
+      get reward() {return `Replicanti speed ${formatX(5000)} if you have bought less than ${formatInt(5000)} 
+      Replicanti Galaxies ${Replicanti.galaxies.bought >= 5000 ? `(inactive)` : `(active)`}.`},
+      effect: 5000,
+      effectCondition: () => Replicanti.galaxies.bought < 5000,
+    }
   },
   {
     // Implemented!
@@ -1509,6 +1545,17 @@ export const normalAchievements = [
       return TimeStudy(31).canBeApplied
         ? `${formatX(value.pow(1 / TimeStudy(31).effectValue), 2, 1)} (After TS31: ${mult})`
         : mult;
+    },
+    enhanced: {
+      reward: "Greatly boost Infinity Dimensions the more Infinities you have.",
+      effect: () => Decimal.pow(Currency.infinitiesTotal.value.clampMin(1), 25).powEffectOf(TimeStudy(31)),
+      formatEffect: value => {
+        // Since TS31 is already accounted for in the effect prop, we need to "undo" it to display the base value here
+        const mult = formatX(value, 2, 2);
+        return TimeStudy(31).canBeApplied
+          ? `${formatX(value.pow(1 / TimeStudy(31).effectValue), 2, 1)} (After TS31: ${mult})`
+          : mult;
+    }
     }
   },
   {
@@ -1529,7 +1576,17 @@ export const normalAchievements = [
       replicantiSpeed: 2
     },
     // This check is just in case
-    effectCondition: () => player.replicanti.unl
+    effectCondition: () => player.replicanti.unl,
+    enhanced: {
+      get reward() {
+        return `You'll always have at least ${format(Number.MAX_VALUE, 1, 1)} Replicanti. Gain ${formatX(999)} 
+          Replicanti speed.`;
+      },
+      effects: {
+        minReplicanti: Number.MAX_VALUE,
+        replicantiSpeed: 999
+      },
+    }
   },
 
   {
@@ -1727,7 +1784,8 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() {
       return Achievement(108).isUnlocked && !Achievement(108).isCursed ? `Replicanti Galaxies divide your Replicanti 
-        by ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)} instead of resetting them to ${formatInt(9)}.` : 
+        by ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)} instead of resetting them to ${
+          Achievement(108).isEnhanced ? format(Decimal.NUMBER_MAX_VALUE, 1, 0) : formatInt(9)}.` : 
         `Replicanti Galaxies divide your Replicanti by ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)}
         instead of resetting them to ${formatInt(1)}.`;
     },
