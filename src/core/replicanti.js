@@ -39,7 +39,8 @@ export function replicantiGalaxy(auto) {
   }
   if (!Replicanti.galaxies.canBuyMore) return;
   const galaxyGain = Replicanti.galaxies.gain;
-  const minReplicanti = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
+  const minReplicanti = Effects.max(1, Achievement(108).effects.minReplicanti, 
+    Achievement(108).enhancedEffect.effects.minReplicanti).toDecimal();
   if (galaxyGain < 1) return;
   player.replicanti.timer = 0;
   Replicanti.amount = Achievement(126).isUnlocked && !Pelle.isDoomed
@@ -143,6 +144,8 @@ export function totalReplicantiSpeedMult(overCap) {
     Achievement(94).enhancedEffect.effects.replicantiSpeed,
     Achievement(95).enhancedEffect,
     Achievement(106),
+    Achievement(106).enhancedEffect,
+    Achievement(108).enhancedEffect.effects.replicantiSpeed,
     TimeStudy(62),
     TimeStudy(213),
     RealityUpgrade(2),
@@ -155,6 +158,7 @@ export function totalReplicantiSpeedMult(overCap) {
     || Achievement(145).canBeApplied)) {
     totalMult = totalMult.timesEffectOf(Achievement(108).effects.replicantiSpeed);
   }
+
   if (TimeStudy(132).isBought && Perk.studyPassive.isBought) {
     totalMult = totalMult.times(3);
   }
@@ -517,10 +521,11 @@ export const Replicanti = {
   },
   reset(force = false) {
     const unlocked = force ? false : EternityMilestone.unlockReplicanti.isReached;
-    const minReplicanti = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
+    const minReplicanti = Effects.max(1, Achievement(108).effects.minReplicanti, 
+      Achievement(108).enhancedEffect.effects.minReplicanti).toDecimal();
     player.replicanti = {
       unl: unlocked,
-      // I want it to start at 9 replicanti if you have r108.
+      // I want it to start at more replicanti if you have E/r108.
       amount: unlocked ? minReplicanti : DC.D0,
       timer: 0,
       chance: 0.01,
@@ -539,7 +544,8 @@ export const Replicanti = {
       if (!freeUnlock) Currency.infinityPoints.subtract(cost);
       player.replicanti.unl = true;
       player.replicanti.timer = 0;
-      Replicanti.amount = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
+      Replicanti.amount = Effects.max(1, Achievement(108).effects.minReplicanti, 
+        Achievement(108).enhancedEffect.effects.minReplicanti).toDecimal();
     }
   },
   get amount() {

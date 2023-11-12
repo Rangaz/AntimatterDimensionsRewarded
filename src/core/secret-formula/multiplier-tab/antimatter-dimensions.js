@@ -172,6 +172,7 @@ export const AD = {
             Achievement(46),
             Achievement(46).enhancedEffect,
             Achievement(101),
+            Achievement(101).enhancedEffect
           );
         }
         dimMults[tier] = dimMults[tier].timesEffectsOf(

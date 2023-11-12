@@ -339,6 +339,11 @@ export const Achievements = {
     return Perk.achievementEnhancement.isBought;
   },
 
+  get effectiveCurses() {
+    const activeCurses = Achievements.allCursedRows.countWhere(a => a.isCursed);
+    return activeCurses;
+  },
+
   get totalEnhancementPoints() {
     return Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality) + 
       Math.floor(V.spaceTheorems / 7);
@@ -347,7 +352,7 @@ export const Achievements = {
   // Er22 should be free, and we'll sneakily give +1 here so that it's practically free
   get enhancementPoints() {
     return this.totalEnhancementPoints - player.reality.enhancedAchievements.size +
-      Achievement(22).isEnhanced;
+      Achievement(22).isEnhanced + 2 * this.effectiveCurses;
   },
 
   get maxEnhancedRow() {

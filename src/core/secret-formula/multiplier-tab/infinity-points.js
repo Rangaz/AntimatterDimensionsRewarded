@@ -23,7 +23,7 @@ export const IP = {
     isBase: true,
     fakeValue: DC.D5,
     multValue: () => {
-      const div = 308 - Effects.sum(Achievement(103), TimeStudy(111));
+      const div = 308 - Effects.sum(Achievement(103), Achievement(103).enhancedEffect, TimeStudy(111));
       return Decimal.pow10(player.records.thisInfinity.maxAM.log10() / div - 0.75);
     },
     isActive: () => player.break,
