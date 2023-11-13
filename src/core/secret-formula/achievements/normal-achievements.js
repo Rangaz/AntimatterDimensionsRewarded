@@ -853,13 +853,13 @@ export const normalAchievements = [
     reward: "Antimatter Dimensions 1-4 are stronger the less Dimension Boosts " +
       "and Antimatter Galaxies you have bought.",
     effect: () => Math.pow(1.75 - Math.clampMax(player.galaxies, 50) / 100, 
-      5 - Math.clampMax(DimBoost.purchasedBoosts, 200) / 50),
+      5 - Math.clampMax(DimBoost.realBoosts, 200) / 50),
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "Antimatter Dimensions 1-4 are way stronger the less Dimension Boosts " +
         "and Antimatter Galaxies you have bought.",
       effect: () => Decimal.pow(DC.E300000.pow(1 - Math.clampMax(player.galaxies, 100000) / 100000), 
-        1 - DimBoost.purchasedBoosts / 30000000).clampMin(100),
+        1 - DimBoost.realBoosts / 30000000).clampMin(100),
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
@@ -1428,7 +1428,7 @@ export const normalAchievements = [
       reward: "8th ADs and IDs are stronger based on purchased ADs.",
       effect: () => Laitela.continuumActive ? Decimal.pow(AntimatterDimension(1).continuumAmount * AntimatterDimension(2).continuumAmount *
         AntimatterDimension(3).continuumAmount * AntimatterDimension(4).continuumAmount * AntimatterDimension(5).continuumAmount * 
-        AntimatterDimension(6).continuumAmount * AntimatterDimension(7).continuumAmount, AntimatterDimension(8).continuumAmount / 2000).plus(1) : 
+        AntimatterDimension(6).continuumAmount * AntimatterDimension(7).continuumAmount, AntimatterDimension(8).continuumAmount / 1000).plus(1) : 
         Decimal.pow(AntimatterDimension(1).bought * AntimatterDimension(2).bought * AntimatterDimension(3).bought * 
         AntimatterDimension(4).bought * AntimatterDimension(5).bought * AntimatterDimension(6).bought * 
         AntimatterDimension(7).bought, AntimatterDimension(8).bought / 1000).plus(1),
@@ -2182,9 +2182,6 @@ export const normalAchievements = [
     get reward() { return `Get ${formatPercents(0.15)} more memories.`; },
     effect: 1.15
   },
-      
-  // ----------------------------------------------------------------------
-  // Anything at this point forward won't start developing until later
 
   {
     id: 171,
@@ -2236,6 +2233,9 @@ export const normalAchievements = [
     id: 176,
     name: "Mom counted to 3",
     description: "Annihilate your Dark Matter Dimensions.",
+    reward: "Continuum now affects Dimension Boosts, with extra purchases having a reduced effect.",
+    effect: () => Math.pow(Laitela.matterExtraPurchaseFactor, 0.1),
+    formatEffect: value => `+${formatPercents(value - 1, 2, 2)}`
   },
   {
     id: 177,
@@ -2253,6 +2253,10 @@ export const normalAchievements = [
     get reward() { return `All Galaxies are ${formatPercents(0.01)} stronger.`; },
     effect: 1.01
   },
+        
+  // ----------------------------------------------------------------------
+  // Anything at this point forward won't start developing until later
+
   {
     id: 181,
     displayId: 666,
