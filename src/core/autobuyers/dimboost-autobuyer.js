@@ -18,6 +18,10 @@ export class DimBoostAutobuyerState extends UpgradeableAutobuyerState {
     return NormalChallenge(10).isCompleted;
   }
 
+  get disabledByContinuum() {
+    return Laitela.continuumActive && Achievement(176).isUnlocked;
+  }
+
   get baseInterval() {
     return Player.defaultStart.auto.dimBoost.interval;
   }

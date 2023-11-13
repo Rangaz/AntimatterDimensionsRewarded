@@ -42,7 +42,7 @@ export class DimBoost {
     // Having cursed row 5 will make it useless against AD 8
     if (CursedRow(5).isCursed && tier == 8) return DC.D1; 
     // r51 will make all Dimension Boosts affect all Antimatter dimensions
-    const normalBoostMult = DimBoost.power.pow(this.purchasedBoosts + 1 - tier * 
+    const normalBoostMult = DimBoost.power.pow(this.realBoosts + 1 - tier * 
       (!Achievement(51).isUnlocked || Achievement(51).isCursed)).clampMin(1);
     const imaginaryBoostMult = DimBoost.power.times(ImaginaryUpgrade(24).effectOrDefault(1))
       .pow(this.imaginaryBoosts).clampMin(1);
@@ -82,6 +82,7 @@ export class DimBoost {
 
   static get canBeBought() {
     if (DimBoost.purchasedBoosts >= this.maxBoosts) return false;
+    if (Laitela.continuumActive && Achievement(176).isUnlocked) return false;
     if (player.records.thisInfinity.maxAM.gt(Player.infinityGoal) &&
        (!player.break || Player.isInAntimatterChallenge)) return false;
     return true;
@@ -119,11 +120,11 @@ export class DimBoost {
 
     amount -= Effects.sum(InfinityUpgrade.resetBoost, Achievement(25));
     if (InfinityChallenge(5).isCompleted) amount -= 1;
-    //if (Achievement(25).canBeApplied) amount -= 5;
 
     amount *= InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1);
 
-    amount = Math.round(amount);
+    // A minor hack to make continuum work for Dim Boosts
+    if (!Laitela.continuumActive || !Achievement(176).isUnlocked) amount = Math.round(amount);
 
     return new DimBoostRequirement(tier, amount);
   }
@@ -164,6 +165,40 @@ export class DimBoost {
     return Math.floor(player.dimensionBoosts);
   }
 
+  static get continuumBoosts() {
+    if (!Laitela.continuumActive || !Achievement(176).isUnlocked) return 0;
+    // This is a modification of maxBuyDimboosts()
+    // If we still don't have all available dimensions, this is disabled
+    if (DimBoost.canUnlockNewDimension) return 0;
+    
+    const req1 = DimBoost.bulkRequirement(1);
+    const req2 = DimBoost.bulkRequirement(2);
+
+    // Linearly extrapolate dimboost costs. req1 = a * 1 + b, req2 = a * 2 + b
+    // so a = req2 - req1, b = req1 - a = 2 req1 - req2, num = (dims - b) / a
+    const increase = req2.amount - req1.amount;
+    const dim = AntimatterDimension(req1.tier);
+    let maxBoosts = Math.min(Number.MAX_VALUE,
+      1 + (dim.continuumValue * 10 - req1.amount) / increase);
+    if (!EternityChallenge(5).isRunning) {
+      return (this.purchasedBoosts + maxBoosts) * Achievement(176).effectOrDefault(1);
+    }
+    // But in case of EC5 it's not, so do binary search for appropriate boost amount
+    let minBoosts = 2;
+    while (maxBoosts !== minBoosts + 1) {
+      const middle = Math.floor((maxBoosts + minBoosts) / 2);
+      if (DimBoost.bulkRequirement(middle).isSatisfied) minBoosts = middle;
+      else maxBoosts = middle;
+    }
+    return (this.purchasedBoosts + minBoosts + 1 - (dim.continuumValue * 10 - 
+      DimBoost.bulkRequirement(minBoosts).amount) / (DimBoost.bulkRequirement(minBoosts + 1).amount - 
+      DimBoost.bulkRequirement(minBoosts + 1).amount)) * Achievement(176).effectOrDefault(1);
+  }
+
+  static get realBoosts() {
+    return Math.max(this.purchasedBoosts, this.continuumBoosts);
+  }
+
   static get imaginaryBoosts() {
     // Enhanced Achievement 25 gives free imaginary boosts
     return Ra.isRunning ? 0 : (ImaginaryUpgrade(12).effectOrDefault(0) + Achievement(25).enhancedEffect.effectOrDefault(0))
@@ -171,7 +206,7 @@ export class DimBoost {
   }
 
   static get totalBoosts() {
-    return Math.floor(this.purchasedBoosts + this.imaginaryBoosts);
+    return Math.floor(this.realBoosts + this.imaginaryBoosts);
   }
 
   static get startingDimensionBoosts() {
@@ -226,6 +261,7 @@ export function skipResetsIfPossible(enteringAntimatterChallenge) {
 export function manualRequestDimensionBoost(bulk) {
   if (Currency.antimatter.gt(Player.infinityLimit) || !DimBoost.requirement.isSatisfied) return;
   if (!DimBoost.canBeBought) return;
+  if (Laitela.continuumActive && Achievement(176).isUnlocked) return;
   if (GameEnd.creditsEverClosed) return;
   if (player.options.confirmations.dimensionBoost) {
     Modal.dimensionBoost.show({ bulk });
@@ -237,12 +273,14 @@ export function manualRequestDimensionBoost(bulk) {
 export function requestDimensionBoost(bulk) {
   if (Currency.antimatter.gt(Player.infinityLimit) || !DimBoost.requirement.isSatisfied) return;
   if (!DimBoost.canBeBought) return;
+  if (Laitela.continuumActive && Achievement(176).isUnlocked) return;
   Tutorial.turnOffEffect(TUTORIAL_STATE.DIMBOOST);
   if (BreakInfinityUpgrade.autobuyMaxDimboosts.isBought && bulk) maxBuyDimBoosts();
   else softReset(1);
 }
 
 function maxBuyDimBoosts() {
+  if (Laitela.continuumActive && Achievement(176).isUnlocked) return;
   // Boosts that unlock new dims are bought one at a time, unlocking the next dimension
   if (DimBoost.canUnlockNewDimension) {
     if (DimBoost.requirement.isSatisfied) softReset(1);
