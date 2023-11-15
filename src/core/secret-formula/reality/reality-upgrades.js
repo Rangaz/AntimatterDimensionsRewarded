@@ -93,7 +93,7 @@ export const realityUpgrades = [
     canLock: true,
     lockEvent: "gain another Antimatter Galaxy",
     description: "Infinity gain is boosted from Antimatter Galaxy count",
-    effect: () => 1 + player.galaxies / 30,
+    effect: () => 1 + Galaxy.effectiveGalaxies / 30,
     formatEffect: value => formatX(value, 2, 2)
   },
   {

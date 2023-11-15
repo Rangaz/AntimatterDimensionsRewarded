@@ -8,11 +8,11 @@ export const galaxies = {
   antimatter: {
     name: "Antimatter Galaxies",
     displayOverride: () => {
-      const num = player.galaxies + GalaxyGenerator.galaxies;
+      const num = Galaxy.effectiveGalaxies + GalaxyGenerator.galaxies;
       const mult = MultiplierTabHelper.globalGalaxyMult();
       return `${formatInt(num)}, ${formatX(mult, 2, 2)} strength`;
     },
-    multValue: () => Decimal.pow10(player.galaxies + GalaxyGenerator.galaxies),
+    multValue: () => Decimal.pow10(Galaxy.effectiveGalaxies + GalaxyGenerator.galaxies),
     isActive: true,
     icon: MultiplierTabIcons.ANTIMATTER,
   },

@@ -187,6 +187,7 @@ class RaPetState extends GameMechanicState {
   levelUp() {
     if (this.memories < this.requiredMemories) return;
 
+    if (this.name == "Teresa") GameCache.increasePerDimBoost.invalidate();
     this.memories -= this.requiredMemories;
     this.level++;
     Ra.checkForUnlocks();

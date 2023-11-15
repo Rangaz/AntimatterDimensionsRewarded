@@ -18,6 +18,7 @@ export default {
         tier: 1,
         amount: 0
       },
+      isThisContinuum: false,
       canBeBought: false,
       distantStart: 0,
       remoteStart: 0,
@@ -55,6 +56,9 @@ export default {
       }
       return sum;
     },
+    continuumText() {
+      return `Continuum: ${formatFloat(this.galaxies.normal, 3, 3)}`;
+    },
     typeName() {
       switch (this.type) {
         case GALAXY_TYPE.NORMAL: return "Antimatter Galaxies";
@@ -86,6 +90,7 @@ export default {
       return {
         "o-primary-btn--galaxy l-dim-row__prestige-button": true,
         "tutorial--glow": this.canBeBought && this.hasTutorial,
+        "o-non-clickable o-continuum": this.isThisContinuum,
         "o-pelle-disabled-pointer": this.creditsClosed,
       };
     }
@@ -93,7 +98,8 @@ export default {
   methods: {
     update() {
       this.type = Galaxy.type;
-      this.galaxies.normal = player.galaxies + GalaxyGenerator.galaxies;
+      this.isThisContinuum = Laitela.continuumActive && Achievement(177).isUnlocked;
+      this.galaxies.normal = Galaxy.effectiveGalaxies + GalaxyGenerator.galaxies;
       this.galaxies.replicanti = Replicanti.galaxies.total;
       this.galaxies.dilation = player.dilation.totalTachyonGalaxies;
       const requirement = Galaxy.requirement;
@@ -123,8 +129,8 @@ export default {
     <div
       class="l-dim-row__prestige-text c-dim-row__label c-dim-row__label--amount l-text-wrapper"
     >
-      {{ typeName }} ({{ sumText }}):
-      requires {{ formatInt(requirement.amount) }} {{ dimName }} Dimensions
+      {{ typeName }} ({{ sumText }})<span v-if="!isThisContinuum">:
+      requires {{ formatInt(requirement.amount) }} {{ dimName }} Dimensions</span>
       <div class="l-scaling-text-wrapper">
         {{ hasIncreasedScaling ? costScalingText : "" }}
       </div>
@@ -135,7 +141,8 @@ export default {
       @click.exact="buyGalaxy(true)"
       @click.shift.exact="buyGalaxy(false)"
     >
-      {{ buttonText }}
+      <span v-if="!isThisContinuum">{{ buttonText }}</span>
+      <span v-else>{{ continuumText }}</span>
       <div
         v-if="hasTutorial"
         class="fas fa-circle-exclamation l-notification-icon"
@@ -158,5 +165,22 @@ export default {
   height: 5.5rem;
   position: relative;
   font-size: 0.9rem;
+}
+
+.o-non-clickable {
+  cursor: auto;
+}
+
+.o-continuum {
+  border-color: var(--color-laitela--accent);
+  color: var(--color-laitela--accent);
+  background: var(--color-laitela--base);
+  font-size: 1.2rem;
+}
+
+.o-continuum:hover {
+  border-color: var(--color-laitela--accent);
+  color: var(--color-laitela--base);
+  background: var(--color-laitela--accent);
 }
 </style>

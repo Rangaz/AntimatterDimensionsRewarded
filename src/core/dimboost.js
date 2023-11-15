@@ -171,32 +171,30 @@ export class DimBoost {
     // If we still don't have all available dimensions, this is disabled
     if (DimBoost.canUnlockNewDimension) return 0;
     
-    const req1 = DimBoost.bulkRequirement(1);
-    const req2 = DimBoost.bulkRequirement(2);
+    // Inverting bulkRequirement to improve performance, assuming EC5 is not active
 
-    // Linearly extrapolate dimboost costs. req1 = a * 1 + b, req2 = a * 2 + b
-    // so a = req2 - req1, b = req1 - a = 2 req1 - req2, num = (dims - b) / a
-    const increase = req2.amount - req1.amount;
-    const dim = AntimatterDimension(req1.tier);
-    let maxBoosts = Math.min(Number.MAX_VALUE,
-      1 + (dim.continuumValue * 10 - req1.amount) / increase);
+    const increase = GameCache.increasePerDimBoost.value;
+    const dim = AntimatterDimension(this.maxDimensionsUnlockable).continuumValue * 10;
+    let maxBoosts = Math.min(Number.MAX_VALUE, 1 + (dim - 20) / increase);
     if (!EternityChallenge(5).isRunning) {
-      return (this.purchasedBoosts + maxBoosts) * Achievement(176).effectOrDefault(1);
+      player.dimensionBoosts = Math.floor(maxBoosts);
+      return maxBoosts * Achievement(176).effectOrDefault(1);
     }
     // But in case of EC5 it's not, so do binary search for appropriate boost amount
+    // ECs shouldn't matter once Continuum is unlocked, so I won't worry about this part.
     let minBoosts = 2;
     while (maxBoosts !== minBoosts + 1) {
       const middle = Math.floor((maxBoosts + minBoosts) / 2);
       if (DimBoost.bulkRequirement(middle).isSatisfied) minBoosts = middle;
       else maxBoosts = middle;
     }
-    return (this.purchasedBoosts + minBoosts + 1 - (dim.continuumValue * 10 - 
+    return (this.purchasedBoosts + minBoosts + 1 - (dim - 
       DimBoost.bulkRequirement(minBoosts).amount) / (DimBoost.bulkRequirement(minBoosts + 1).amount - 
-      DimBoost.bulkRequirement(minBoosts + 1).amount)) * Achievement(176).effectOrDefault(1);
+      DimBoost.bulkRequirement(minBoosts).amount)) * Achievement(176).effectOrDefault(1);
   }
 
   static get realBoosts() {
-    return Math.max(this.purchasedBoosts, this.continuumBoosts);
+    return Math.clampMax(Math.max(this.purchasedBoosts, this.continuumBoosts), this.maxBoosts);
   }
 
   static get imaginaryBoosts() {
@@ -275,6 +273,7 @@ export function requestDimensionBoost(bulk) {
   if (!DimBoost.canBeBought) return;
   if (Laitela.continuumActive && Achievement(176).isUnlocked) return;
   Tutorial.turnOffEffect(TUTORIAL_STATE.DIMBOOST);
+  GameCache.distantGalaxyStart.invalidate();
   if (BreakInfinityUpgrade.autobuyMaxDimboosts.isBought && bulk) maxBuyDimBoosts();
   else softReset(1);
 }
