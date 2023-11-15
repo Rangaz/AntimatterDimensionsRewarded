@@ -56,7 +56,7 @@ export const ecTimeStudies = [
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
     secondary: {
       resource: "Antimatter Galaxies",
-      current: () => player.galaxies,
+      current: () => Galaxy.effectiveGalaxies,
       required: completions => 160 + Math.min(completions, 4) * 14,
       formatValue: formatInt
     }

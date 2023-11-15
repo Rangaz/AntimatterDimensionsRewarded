@@ -72,10 +72,12 @@ export class InfinityUpgradeState extends SetPurchasableMechanicState {
   }
 
   charge() {
+    if (this.id == "resetBoost") GameCache.increasePerDimBoost.invalidate();
     player.celestials.ra.charged.add(this.id);
   }
 
   disCharge() {
+    if (this.id == "resetBoost") GameCache.increasePerDimBoost.invalidate();
     player.celestials.ra.charged.delete(this.id);
   }
 }

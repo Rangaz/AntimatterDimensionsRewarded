@@ -59,6 +59,7 @@ export const GlyphSacrificeHandler = {
       Modal.glyphSacrifice.show({ idx: glyph.idx, gain: toGain });
       return;
     }
+    if (glyph.type == "power") GameCache.distantGalaxyStart.invalidate();
     player.reality.glyphs.sac[glyph.type] += toGain;
     GameCache.logTotalGlyphSacrifice.invalidate();
     Glyphs.removeFromInventory(glyph);

@@ -10,9 +10,11 @@ TODO:
   |>Allow to curse rows in-game <DONE>
   |>Allow to remove cursed rows upon Reality <DONE>
   |>Improve visuals <DONE FOR NOW>
+  |>Implement 13 curses
 -Allow individual Enhancements to be respec <DONE>
 -Add Enhancements for rows 10-13 <IN PROGRESS>
--Add Rewards for row 17
+-Add Rewards for row 17 <IN PROGRESS>
+  |>Make player.records.bestGalaxies for Achievement Effects (to secretly improve performance) <DONE>
 -Balance Hard V
 -Balance Imaginary upgrades' unlocks
 -Balance Lai'tela
@@ -677,10 +679,9 @@ export const normalAchievements = [
       player.auto.antimatterDims.isActive,
     enhanced: {
       get reward() {
-        return `Gain free 8th ADs, that don't affect costs, equal to your Antimatter Galaxy amount +${
-          formatInt(1)}.`;
+        return `Gain free 8th ADs, that don't affect costs, equal to your best Galaxy total.`;
       },
-      effect: () => player.galaxies + 1,
+      effect: () => player.records.bestTotalGalaxies,
       formatEffect: value => Enslaved.isRunning ? `Shattered by Nameless` : `+${formatInt(value)}`
     }
   },
@@ -899,14 +900,13 @@ export const normalAchievements = [
     get description() { return `Get more than ${format(DC.E58)} ticks per second.`; },
     checkRequirement: () => Tickspeed.current.exponent <= -55,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `Tickspeed is just over ${formatPercents(0.05)} faster per Antimatter Galaxy.`; },
-    effect: () => DC.D0_95.pow(player.galaxies),
+    get reward() { return `Multiply Tickspeed by just over ${formatX(1.05, 2, 2)}, raised by
+      your best Antimatter Galaxy amount ever.`; },
+    effect: () => DC.D0_95.pow(player.records.bestAntimatterGalaxies),
     formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
     enhanced: {
-      get reward() { return `Tickspeed is ${formatX(16)} as fast for every Antimatter, Replicanti, 
-      and Tachyon Galaxy.`; },
-      effect: () => DC.D16.pow(player.galaxies + Replicanti.galaxies.total + 
-        player.dilation.totalTachyonGalaxies).recip(),
+      get reward() { return `Multiply Tickspeed by ${formatX(100)}, raised by your best Galaxy amount ever.`; },
+      effect: () => DC.E2.pow(player.records.bestTotalGalaxies).recip(),
       formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
     }
   },
@@ -1140,18 +1140,18 @@ export const normalAchievements = [
     }
   },
   {
-    // Modified & Enhanced! Now it's pre-release r26!
+    // Modified & Enhanced! Now it's better than pre-release r26!
     id: 83,
     name: "YOU CAN GET 50 GALAXIES?!?!",
     get description() { return `Get ${formatInt(50)} Antimatter Galaxies.`; },
     checkRequirement: () => player.galaxies >= 50,
     checkEvent: GAME_EVENT.GALAXY_RESET_AFTER,
     get reward() { return `Every ${formatInt(10)} Antimatter Galaxies bought gives a free Tickspeed Upgrade.`; },
-    effect: () => Math.floor(player.galaxies / 10),
+    effect: () => Math.floor(Galaxy.effectiveGalaxies / 10),
     formatEffect: value => `+${formatInt(value, 2, 2)}`,
     enhanced: {
-      get reward() { return `Every Antimatter Galaxy bought gives a free Tickspeed Upgrade.`; },
-      effect: () => player.galaxies,
+      get reward() { return `Gain free Tickspeed Upgrades equal to your best Antimatter Galaxy amount.`; },
+      effect: () => player.records.bestAntimatterGalaxies,
       formatEffect: value => `+${formatInt(value, 2, 2)}`,
     }
   },
@@ -1832,8 +1832,8 @@ export const normalAchievements = [
     },
     checkRequirement: () => player.galaxies >= 569 && player.requirementChecks.eternity.noRG,
     checkEvent: GAME_EVENT.GALAXY_RESET_AFTER,
-    reward: "Gain a multiplier to Tachyon Particle and Dilated Time gain based on Antimatter Galaxies.",
-    effect: () => 1.22 * Math.max(Math.pow(player.galaxies, 0.045), 1),
+    reward: "Gain a multiplier to Tachyon Particle and Dilated Time gain based on best Antimatter Galaxies.",
+    effect: () => 1.22 * Math.max(Math.pow(player.records.bestAntimatterGalaxies, 0.045), 1),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -2232,6 +2232,7 @@ export const normalAchievements = [
     effect: 10,
   },
   {
+    // Implemented!
     id: 176,
     name: "Mom counted to 3",
     description: "Annihilate your Dark Matter Dimensions.",
@@ -2245,12 +2246,15 @@ export const normalAchievements = [
     description: "Complete all Singularity Milestones at least once.",
     checkRequirement: () => SingularityMilestones.all.every(x => x.completions > 0),
     checkEvent: GAME_EVENT.SINGULARITY_RESET_AFTER,
+    reward: "Continuum now affects Antimatter Galaxies, with extra purchases having a greatly reduced effect.",
+    effect: () => Math.pow(Laitela.matterExtraPurchaseFactor, 0.05),
+    formatEffect: value => `+${formatPercents(value - 1, 2, 2)}`
   },
   {
     id: 178,
     name: "Destroyer of Worlds",
     get description() { return `Get ${formatInt(100000)} Antimatter Galaxies.`; },
-    checkRequirement: () => player.galaxies >= 100000,
+    checkRequirement: () => player.records.bestAntimatterGalaxies >= 100000,
     checkEvent: GAME_EVENT.GALAXY_RESET_AFTER,
     get reward() { return `All Galaxies are ${formatPercents(0.01)} stronger.`; },
     effect: 1.01

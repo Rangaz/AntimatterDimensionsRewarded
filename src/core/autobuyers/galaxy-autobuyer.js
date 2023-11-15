@@ -18,6 +18,10 @@ export class GalaxyAutobuyerState extends UpgradeableAutobuyerState {
     return NormalChallenge(11).isCompleted;
   }
 
+  get disabledByContinuum() {
+    return Laitela.continuumActive && Achievement(177).isUnlocked;
+  }
+
   get baseInterval() {
     return Player.defaultStart.auto.galaxy.interval;
   }

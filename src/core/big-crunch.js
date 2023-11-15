@@ -169,6 +169,7 @@ export function secondSoftReset(enteringAntimatterChallenge, enteringC10OrIC1) {
     player.records.timeWithExcessIPowerProd = 0;
   }
 
+  if (enteringC10OrIC1) GameCache.increasePerDimBoost.invalidate();
   player.records.thisInfinity.maxAM = DC.D0;
   Currency.antimatter.reset();
   softReset(0, true, true, enteringAntimatterChallenge, enteringC10OrIC1);

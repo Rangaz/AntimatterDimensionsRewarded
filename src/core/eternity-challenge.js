@@ -173,6 +173,9 @@ export class EternityChallengeState extends GameMechanicState {
     if ((this.id === 4 || this.id === 12) && auto) {
       this.tryFail(true);
     }
+    if (this.id === 5) {
+      GameCache.distantGalaxyStart.invalidate();
+    }
     if (this.id === 6) {
       GameCache.dimensionMultDecrease.invalidate();
     }

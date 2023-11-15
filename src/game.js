@@ -503,6 +503,7 @@ export function gameLoop(passDiff, options = {}) {
   GameCache.infinityDimensionCommonMultiplier.invalidate();
   GameCache.timeDimensionCommonMultiplier.invalidate();
   GameCache.totalIPMult.invalidate();
+  if (Achievement(176).isUnlocked && Laitela.continuumActive) GameCache.distantGalaxyStart.invalidate();
 
   const blackHoleDiff = realDiff;
   const fixedSpeedActive = EternityChallenge(12).isRunning;
@@ -603,20 +604,26 @@ export function gameLoop(passDiff, options = {}) {
     player.records.timeWithExcessIPowerProd = 0;
   }
 
+  
   updatePrestigeRates();
   tryCompleteInfinityChallenges();
-
+  
   EternityChallenges.autoComplete.tick();
-
+  
   replicantiLoop(diff);
-
+  
   if (PlayerProgress.dilationUnlocked()) {
     Currency.dilatedTime.add(getDilationGainPerSecond().times(diff / 1000));
   }
-
+  
   updateTachyonGalaxies();
   Currency.timeTheorems.add(getTTPerSecond().times(diff / 1000));
   InfinityDimensions.tryAutoUnlock();
+  
+  player.records.bestAntimatterGalaxies = Math.max(player.records.bestAntimatterGalaxies, 
+    Galaxy.effectiveGalaxies);
+  player.records.bestTotalGalaxies = Math.max(player.records.bestTotalGalaxies, 
+    Galaxy.effectiveGalaxies + player.replicanti.galaxies + player.dilation.totalTachyonGalaxies);
 
   BlackHoles.updatePhases(blackHoleDiff);
 

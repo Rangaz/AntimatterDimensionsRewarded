@@ -70,6 +70,20 @@ export const GameCache = {
     Achievement(81).enhancedEffect
   )),
 
+  // These two properties are particularly hot due to my continuum DimBoosts and Galaxies.
+  increasePerDimBoost: new Lazy(() => ((NormalChallenge(10).isRunning ? 20 : 15) - Effects.sum(
+    TimeStudy(211),
+    TimeStudy(222)
+    )) * InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1)
+  ),
+
+  distantGalaxyStart: new Lazy(() => 100 + TimeStudy(302).effectOrDefault(0) + Effects.sum(
+    TimeStudy(223),
+    TimeStudy(224),
+    EternityChallenge(5).reward,
+    GlyphSacrifice.power
+  )),
+
   timeStudies: new Lazy(() => NormalTimeStudyState.studies
     .map(s => player.timestudy.studies.includes(s.id))),
 

@@ -80,7 +80,25 @@ export class Galaxy {
     return NormalChallenge(10).isRunning ? 6 : 8;
   }
 
+  static get continuumGalaxies() {
+    if (!Achievement(177).isUnlocked || !Laitela.continuumActive) return 0;
+    const dimAmount = AntimatterDimension(this.requiredTier).totalAmount.toNumber();
+    // Only call buyableGalaxy if neccesary
+    if (dimAmount > this.requirement.amount) {
+      player.galaxies = Galaxy.buyableGalaxies(dimAmount);
+    }
+
+    const req1 = this.requirementAt(player.galaxies - 1).amount;
+    const req2 = this.requirementAt(player.galaxies).amount;
+    return (player.galaxies + (dimAmount - req1) / (req2 - req1)) * Achievement(177).effectOrDefault(1);
+  }
+
+  static get effectiveGalaxies() {
+    return Math.max(player.galaxies, Galaxy.continuumGalaxies);
+  }
+
   static get canBeBought() {
+    if (Laitela.continuumActive && Achievement(177).isUnlocked) return false;
     if (EternityChallenge(6).isRunning && !Enslaved.isRunning) return false;
     if (NormalChallenge(8).isRunning || InfinityChallenge(7).isRunning) return false;
     if (player.records.thisInfinity.maxAM.gt(Player.infinityGoal) &&
@@ -98,12 +116,7 @@ export class Galaxy {
   }
 
   static get costScalingStart() {
-    return 100 + TimeStudy(302).effectOrDefault(0) + Effects.sum(
-      TimeStudy(223),
-      TimeStudy(224),
-      EternityChallenge(5).reward,
-      GlyphSacrifice.power
-    );
+    return GameCache.distantGalaxyStart.value
   }
 
   static get type() {
@@ -149,8 +162,9 @@ export function manualRequestGalaxyReset(bulk) {
 }
 
 // All galaxy reset requests, both automatic and manual, eventually go through this function; therefore it suffices
-// to restrict galaxy count for RUPG7's requirement here and nowhere else
+// to restrict galaxy count for RUPG7's requirement, and to check if there's continuum, here and nowhere else
 export function requestGalaxyReset(bulk, limit = Number.MAX_VALUE) {
+  if (Laitela.continuumActive && Achievement(177).isUnlocked) return false;
   const restrictedLimit = RealityUpgrade(7).isLockingMechanics ? 1 : limit;
   if (EternityMilestone.autobuyMaxGalaxies.isReached && bulk) return maxBuyGalaxies(restrictedLimit);
   if (player.galaxies >= restrictedLimit || !Galaxy.canBeBought || !Galaxy.requirement.isSatisfied) return false;

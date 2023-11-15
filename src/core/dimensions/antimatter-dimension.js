@@ -640,9 +640,15 @@ class AntimatterDimensionState extends DimensionState {
   }
 
   get isAvailableForPurchase() {
-    if (!EternityMilestone.unlockAllND.isReached && this.tier > DimBoost.totalBoosts + 4) return false;
+    if (EternityMilestone.unlockAllND.isReached) return this.tier < 7 || !NormalChallenge(10).isRunning;
+    if (this.tier > DimBoost.purchasedBoosts + 4) return false;
+    // With totalAmount here this would generate a long chain of commands that goes like
+    // (tier - 1).totalAmount -> continuumAmount -> continuumValue -> isAvailableForPurchase
+    // for all 8 tiers if we start from AD 8. This only happens if Continuum is enabled,
+    // so if we check and return for the Eternity Milestone first this shouldn't happen.
+    //const hasPrevTier = this.tier === 1 || AntimatterDimension(this.tier - 1).totalAmount.gt(0);
     const hasPrevTier = this.tier === 1 || AntimatterDimension(this.tier - 1).totalAmount.gt(0);
-    if (!EternityMilestone.unlockAllND.isReached && !hasPrevTier) return false;
+    if (!hasPrevTier) return false;
     return this.tier < 7 || !NormalChallenge(10).isRunning;
   }
 
