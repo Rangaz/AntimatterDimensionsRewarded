@@ -1607,7 +1607,7 @@ export const normalAchievements = [
     reward: "Your antimatter doesn't reset on Dimension Boosts or Antimatter Galaxies."
   },
   {
-    // Implemented!
+    // Implemented & Enhanced!
     id: 112,
     name: "Never again",
     get description() { return `Get the sum of Infinity Challenge times below ${formatInt(750)}ms.`; },
@@ -1624,7 +1624,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Modified!
+    // Modified & Enhanced!
     id: 113,
     name: "Eternities are the new infinity",
     get description() { return `Eternity in under ${formatInt(250)}ms.`; },
@@ -1642,6 +1642,11 @@ export const normalAchievements = [
         return mult + ` (Next at ${formatInt(nextAt)} ms)`;
       }
       return mult;
+    },
+    enhanced: {
+      reward: "Gain more Eternities based on the length of your current Eternity",
+      effect: () => Math.pow(Time.thisEternity.totalSeconds, 0.05),
+      formatEffect: value => `${formatX(value, 2, 2)}`
     }
   },
   {
