@@ -15,6 +15,7 @@ TODO:
 -Add Enhancements for rows 10-13 <IN PROGRESS>
 -Add Rewards for row 17 <IN PROGRESS>
   |>Make player.records.bestGalaxies for Achievement Effects (to secretly improve performance) <DONE>
+-Balance existing rewards
 -Balance Hard V
 -Balance Imaginary upgrades' unlocks
 -Balance Lai'tela
@@ -1616,7 +1617,13 @@ export const normalAchievements = [
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER],
     reward: "IC1 and IC6 rewards affect Time Dimensions at a greatly reduced rate.",
     effect: () => Decimal.pow(InfinityChallenge(1).reward.effectValue.timesEffectOf(InfinityChallenge(6).reward), 0.004),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "IC1, IC3 and IC6 rewards affect Time Dimensions at a greatly reduced rate.",
+      effect: () => Decimal.pow(InfinityChallenge(1).reward.effectValue.timesEffectOf(InfinityChallenge(6).reward), 0.006).
+        times(InfinityChallenge(3).reward.effectValue.pow(0.0006)),
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
     // Modified!

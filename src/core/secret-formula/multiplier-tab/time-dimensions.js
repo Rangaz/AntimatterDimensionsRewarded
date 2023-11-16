@@ -117,12 +117,13 @@ export const TD = {
         Achievement(105), 
         Achievement(105).enhancedEffect,
         Achievement(112), 
+        Achievement(112).enhancedEffect,
         Achievement(123), 
         Achievement(128)
       );
       return Decimal.pow(baseMult, dim ? 1 : MultiplierTabHelper.activeDimCount("TD"));
     },
-    isActive: () =>  [48, 105, 112, 123, 128].some(a => Achievement(a).canBeApplied),
+    isActive: () =>  [48, 105, 112, 123, 128].some(a => Achievement(a).canBeApplied || Achievement(a).isEnhanced),
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   timeStudy: {
