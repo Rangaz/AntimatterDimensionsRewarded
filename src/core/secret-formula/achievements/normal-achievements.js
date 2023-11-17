@@ -1493,9 +1493,9 @@ export const normalAchievements = [
     effect: 5e40,
     enhanced: {
       get reward() { return `When unlocking Dilation, start with ${Achievement(55).isEnhanced ? 
-        `${format(1e150)} Tachyon Particles (improved by Enhanced Achievement 55).` : 
-        `${formatInt(1000)} Tachyon Particles.`}`},
-      effect: () => DC.E3.powEffectOf(Achievement(55).enhancedEffect),
+        `${format(1e100)} Tachyon Particles (improved by Enhanced Achievement 55).` : 
+        `${formatInt(100)} Tachyon Particles.`}`},
+      effect: () => DC.E2.powEffectOf(Achievement(55).enhancedEffect),
     }
   },
   {
@@ -1660,7 +1660,7 @@ export const normalAchievements = [
     }
   },
   {
-    // I find this one funny, so it'll stay
+    // I find this one funny, so it'll stay. Enhanced!
     id: 114,
     name: "You're a mistake",
     description: "Fail an Eternity Challenge.",
@@ -1760,7 +1760,7 @@ export const normalAchievements = [
   },
   
   {
-    // Implemented!
+    // Implemented & Enhanced!
     id: 121,
     name: "Can you get infinite IP?",
     get description() { return `Reach ${formatPostBreak("1e30008")} Infinity Points.`; },
@@ -1769,7 +1769,13 @@ export const normalAchievements = [
     get reward() {
       return `Improve the IP multiplier upgrade: ${formatX(2)} ➜ ${formatX(2.01, 2, 2)}.`;
     },
-    effect: 2.01
+    effect: 2.01,
+    enhanced: {
+      get reward() {
+        return `Greatly improve the IP multiplier upgrade: ${formatX(2)} ➜ ${formatX(3)}.`;
+      },
+      effect: 3,
+    }
   },
   {
     // Implemented! It'll appear in multiplier tab as part of 'purchases' instead of in 'achievements'.
