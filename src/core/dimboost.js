@@ -30,6 +30,7 @@ export class DimBoost {
         TimeStudy(83),
         TimeStudy(231),
         Achievement(117),
+        Achievement(117).enhancedEffect,
         Achievement(142),
         GlyphEffect.dimBoostPower,
         PelleRifts.recursion.milestones[0]
