@@ -90,8 +90,9 @@ class AchievementState extends GameMechanicState {
     }
 
     // Handle special cases first
-    // Er22 is free and should always be available
+    // Er22 and Er114 are free and should always be available
     if (this.id === 22 && !this.isEnhanced) return true;
+    if (this.id === 114 && !this.isEnhanced) return true;
     // Er47 doesn't work if Teresa isn't unlocked, so avoid Enhancing it
     if (this.id === 47 && !Teresa.isUnlocked) return false;
 
@@ -349,10 +350,10 @@ export const Achievements = {
       Math.floor(V.spaceTheorems / 7);
   },
   
-  // Er22 should be free, and we'll sneakily give +1 here so that it's practically free
+  // Er22 & Er114 should be free, and we'll sneakily give +1 there so that it's practically free
   get enhancementPoints() {
     return this.totalEnhancementPoints - player.reality.enhancedAchievements.size +
-      Achievement(22).isEnhanced + 2 * this.effectiveCurses;
+      Achievement(22).isEnhanced + Achievement(114).isEnhanced + 2 * this.effectiveCurses;
   },
 
   get maxEnhancedRow() {
