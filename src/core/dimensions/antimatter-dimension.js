@@ -7,7 +7,7 @@ import { DimensionState } from "./dimension";
 export function antimatterDimensionCommonMultiplier() {
   let multiplier = DC.D1;
 
-  // The Achievement multiplier for Dimensions, since Er75 raises them by 80, must be decimalized
+  // The Achievement multiplier for Dimensions, since Er75 raises them by 100, must be decimalized
   // and calculated if neccesary.
   const achievementMultiplier = Achievement(75).isEnhanced ? Decimal.pow(Achievements.power, 
     Achievement(75).enhancedEffect.effects.powEffect.effectOrDefault(1)) : Achievements.power

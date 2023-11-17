@@ -181,6 +181,7 @@ export const Tickspeed = {
       Achievement(45).enhancedEffect,
       Achievement(66),
       Achievement(66).enhancedEffect,
+      Achievement(118).enhancedEffect,
       Achievement(135),
       CursedRow(3)
     )

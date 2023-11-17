@@ -1739,6 +1739,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 118,
     name: "IT'S OVER 9000",
     get description() { return `Get a total Dimensional Sacrifice multiplier of ${formatPostBreak(DC.E9000)}.`; },
@@ -1746,6 +1747,12 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.SACRIFICE_RESET_AFTER,
     reward: `Dimensional Sacrifice doesn't reset your Antimatter Dimensions
       and the Autobuyer activates every tick if turned on.`,
+    enhanced: {
+      reward: `Dimensional Sacrifice doesn't reset your Antimatter Dimensions
+        and the Autobuyer activates every tick if turned on. It now affects Tickspeed at a reduced rate.`,
+      effect: () => Sacrifice.totalBoost.pow(-0.06),
+      formatEffect: value => `${formatX(value.recip(), 3, 3)}`
+    }
   },
   
   {
