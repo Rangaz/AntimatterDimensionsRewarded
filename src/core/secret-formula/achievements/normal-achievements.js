@@ -1667,7 +1667,11 @@ export const normalAchievements = [
     checkRequirement: () => true,
     checkEvent: GAME_EVENT.CHALLENGE_FAILED,
     reward: "A fading sense of accomplishment.",
-    effect: () => "Sense of accomplishment (fading)"
+    effect: () => "Sense of accomplishment (fading)",
+    enhanced: {
+      reward: "An overwelming unfading sense of accomplishment. This can be Enhanced for free.",
+      effect: () => "Overwelming sense of accomplishment",
+    }
   },
   {
     // Implemented!
