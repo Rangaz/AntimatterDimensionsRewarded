@@ -126,6 +126,7 @@ function totalEPMult() {
         EternityUpgrade.epMult,
         Achievement(85).enhancedEffect,
         Achievement(102).enhancedEffect.effects.multipier,
+        Achievement(116).enhancedEffect,
         Achievement(153),
         TimeStudy(61),
         TimeStudy(122),

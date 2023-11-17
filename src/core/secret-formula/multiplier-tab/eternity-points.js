@@ -57,9 +57,11 @@ export const EP = {
     multValue: () => DC.D1.timesEffectsOf(
       Achievement(85).enhancedEffect,
       Achievement(102).enhancedEffect.effects.multiplier,
-      Achievement(153)
+      Achievement(116).enhancedEffect,
+      Achievement(153),
     ),
-    isActive: () => PlayerProgress.eternityUnlocked() && (Achievement(153).canBeApplied || Achievement(85).isEnhanced)
+    isActive: () => PlayerProgress.eternityUnlocked() && (Achievement(153).canBeApplied || 
+      Achievement(85).isEnhanced || Achievement(102).isEnhanced || Achievement(116).isEnhanced)
       && !Pelle.isDoomed,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
