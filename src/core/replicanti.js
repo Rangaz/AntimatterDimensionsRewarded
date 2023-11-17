@@ -43,9 +43,11 @@ export function replicantiGalaxy(auto) {
     Achievement(108).enhancedEffect.effects.minReplicanti).toDecimal();
   if (galaxyGain < 1) return;
   player.replicanti.timer = 0;
-  Replicanti.amount = Achievement(126).isUnlocked && !Pelle.isDoomed
-    ? Decimal.pow10(Replicanti.amount.log10() - LOG10_MAX_VALUE * galaxyGain).clampMin(minReplicanti)
-    : minReplicanti;
+  if (!Achievement(126).isEnhanced) {
+    Replicanti.amount = Achievement(126).isUnlocked && !Pelle.isDoomed
+      ? Decimal.pow10(Replicanti.amount.log10() - LOG10_MAX_VALUE * galaxyGain).clampMin(minReplicanti)
+      : minReplicanti;
+  }
   addReplicantiGalaxies(galaxyGain);
 }
 
@@ -588,6 +590,7 @@ export const Replicanti = {
       if (!this.canBuyMore) return 0;
       if (Achievement(126).isUnlocked && !Achievement(126).isCursed) {
         const maxGain = Replicanti.galaxies.max - player.replicanti.galaxies;
+        if (Achievement(126).isEnhanced) return maxGain;
         const logReplicanti = Replicanti.amount.log10();
         return Math.min(maxGain, Math.floor(logReplicanti / LOG10_MAX_VALUE));
       }
