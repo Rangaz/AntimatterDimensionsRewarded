@@ -1592,6 +1592,7 @@ export const normalAchievements = [
   },
 
   {
+    // Enhanced!
     id: 111,
     name: "Yo dawg, I heard you liked infinities...",
     get description() {
@@ -1704,6 +1705,18 @@ export const normalAchievements = [
       return TimeStudy(31).canBeApplied
         ? `${formatX(value.pow(1 / TimeStudy(31).effectValue), 2, 1)} (After TS31: ${mult})`
         : mult;
+    },
+    enhanced: {
+      reward: "Infinities multiply your Infinity points and Eternity Points.",
+      effect: () => Decimal.pow(Currency.infinitiesTotal.value.clampMin(1), TimeStudy(31).effectOrDefault(1)),
+      cap: () => Effarig.eternityCap,
+      formatEffect: value => {
+        // Since TS31 is already accounted for in the effect prop, we need to "undo" it to display the base value here
+        const mult = formatX(value, 2, 2);
+        return TimeStudy(31).canBeApplied
+          ? `${formatX(value.pow(1 / TimeStudy(31).effectValue), 2, 1)} (After TS31: ${mult})`
+          : mult;
+      }
     }
   },
   {
