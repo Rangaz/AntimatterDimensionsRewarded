@@ -1689,6 +1689,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 116,
     name: "Do I really need to infinity",
     get description() { return `Eternity with only ${formatInt(1)} Infinity.`; },
@@ -1718,6 +1719,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 117,
     name: "Costco sells Dimboosts now!",
     get description() { return `Bulk buy ${formatInt(750)} Dimension Boosts at once.`; },
@@ -1726,7 +1728,13 @@ export const normalAchievements = [
     get reward() {
       return `The multiplier from Dimension Boosts to Antimatter Dimensions is ${formatPercents(0.01)} higher.`;
     },
-    effect: 1.01
+    effect: 1.01,
+    enhanced: {
+      get reward() {
+        return `The multiplier from Dimension Boosts to Antimatter Dimensions is ${formatX(1e10)} higher.`;
+      },
+      effect: 1e10,
+    }
   },
   {
     id: 118,
