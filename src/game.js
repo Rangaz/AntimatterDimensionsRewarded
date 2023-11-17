@@ -713,6 +713,7 @@ function passivePrestigeGen() {
       Achievement(102).enhancedEffect.effects.multiplier,
       Achievement(113),
       Achievement(113).enhancedEffect,
+      Achievement(115).enhancedEffect.effects.eternityMultiplier,
       RealityUpgrade(3),
       RealityUpgrade(14)
     );

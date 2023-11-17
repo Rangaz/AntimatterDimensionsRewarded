@@ -15,9 +15,11 @@ export const eternities = {
     multValue: () => DC.D1.timesEffectsOf(
       Achievement(102).enhancedEffect.effects.multiplier,
       Achievement(113),
-      Achievement(113).enhancedEffect
+      Achievement(113).enhancedEffect,
+      Achievement(115).enhancedEffect.effects.eternityMultiplier,
     ),
-    isActive: () => Achievement(113).canBeApplied || Achievement(102).isEnhanced || Achievement(113).isEnhanced,
+    isActive: () => Achievement(113).canBeApplied || Achievement(102).isEnhanced || Achievement(113).isEnhanced
+      || Achievement(115).isEnhanced,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   amplifierEter: {
