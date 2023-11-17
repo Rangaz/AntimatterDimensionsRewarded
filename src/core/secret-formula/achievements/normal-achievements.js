@@ -1788,7 +1788,16 @@ export const normalAchievements = [
     effect: () => DC.D1_5.pow((Laitela.continuumActive ? AntimatterDimension(1).continuumAmount : AntimatterDimension(1).bought)
        / 10).pow(getAdjustedGlyphEffect("effarigforgotten")).powEffectOf(InfinityUpgrade.buy10Mult.chargedEffect).
        pow(ImaginaryUpgrade(14).effectOrDefault(1)),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      get reward() {
+        return `Multiply the Buy 10 Dimensions multiplier for 1st Antimatter Dimensions by ${formatX(100)}`;
+      },
+      effect: () => DC.E2.pow((Laitela.continuumActive ? AntimatterDimension(1).continuumAmount : AntimatterDimension(1).bought)
+         / 10).pow(getAdjustedGlyphEffect("effarigforgotten")).powEffectOf(InfinityUpgrade.buy10Mult.chargedEffect).
+         pow(ImaginaryUpgrade(14).effectOrDefault(1)),
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
     // Implemented!
