@@ -69,8 +69,11 @@ export function eternity(force, auto, specialConditions = {}) {
     // eslint-disable-next-line no-param-reassign
     force = true;
   }
+
   // If we're exiting an EC it's important that r136 still resets TDs and Time shards
   const exitingEC = player.challenge.eternity.current != 0;
+  const canApplyEr115 = Achievement(115).isEnhanced && !specialConditions.switchingDilation && !specialConditions.enteringEC
+    && !exitingEC;
 
   // We define this variable so we can use it in checking whether to give
   // the secret achievement for respec without studies.
@@ -100,7 +103,7 @@ export function eternity(force, auto, specialConditions = {}) {
   }
 
   initializeChallengeCompletions();
-  initializeResourcesAfterEternity();
+  initializeResourcesAfterEternity(canApplyEr115);
 
   if (!Achievement(136).canBeApplied || specialConditions.switchingDilation || specialConditions.enteringEC) {
     Currency.timeShards.reset();
@@ -117,7 +120,12 @@ export function eternity(force, auto, specialConditions = {}) {
   }
   resetInfinityRuns();
   InfinityDimensions.fullReset();
+  // Er115 will keep some Replicanti Galaxies
+  const keptReplicantiGalaxies = Math.clampMax(player.replicanti.galaxies, 
+    Achievement(115).enhancedEffect.effects.galaxiesKept.effectOrDefault(0));
   Replicanti.reset();
+    if (canApplyEr115) player.replicanti.galaxies = keptReplicantiGalaxies;
+
   resetChallengeStuff();
   AntimatterDimensions.reset();
 
@@ -194,7 +202,7 @@ export function initializeChallengeCompletions(isReality) {
   player.challenge.infinity.current = 0;
 }
 
-export function initializeResourcesAfterEternity() {
+export function initializeResourcesAfterEternity(canApplyEr115) {
   player.sacrificed = DC.D0;
   Currency.infinities.reset();
   player.records.bestInfinity.time = 999999999999;
@@ -205,8 +213,15 @@ export function initializeResourcesAfterEternity() {
   player.records.thisInfinity.time = 0;
   player.records.thisInfinity.lastBuyTime = 0;
   player.records.thisInfinity.realTime = 0;
-  player.dimensionBoosts = (EternityMilestone.keepInfinityUpgrades.isReached) ? 4 : 0;
-  player.galaxies = (EternityMilestone.keepInfinityUpgrades.isReached) ? 1 : 0;
+  if (canApplyEr115) {
+    player.dimensionBoosts = Math.clamp(
+      player.dimensionBoosts, 4, Achievement(115).enhancedEffect.effects.dimBoostsKept.effectOrDefault(4));
+    player.galaxies = Math.clamp(
+      player.galaxies, 1, Achievement(115).enhancedEffect.effects.galaxiesKept.effectOrDefault(1));
+  } else {
+    player.dimensionBoosts = (EternityMilestone.keepInfinityUpgrades.isReached) ? 4 : 0;
+    player.galaxies = (EternityMilestone.keepInfinityUpgrades.isReached) ? 1 : 0;
+  }
   player.partInfinityPoint = 0;
   player.partInfinitied = 0;
   player.IPMultPurchases = 0;
@@ -254,7 +269,7 @@ export function gainedEternities() {
     ? new Decimal(1)
     : new Decimal(getAdjustedGlyphEffect("timeetermult"))
       .timesEffectsOf(RealityUpgrade(3), Achievement(102).enhancedEffect.effects.multiplier, 
-        Achievement(113), Achievement(113).enhancedEffect)
+        Achievement(113), Achievement(113).enhancedEffect, Achievement(115).enhancedEffect.effects.eternityMultiplier,)
       .pow(AlchemyResource.eternity.effectValue);
 }
 

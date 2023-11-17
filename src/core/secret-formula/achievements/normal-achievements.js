@@ -1525,10 +1525,10 @@ export const normalAchievements = [
     effect: 2,
     effectCondition: () => Replicanti.galaxies.bought < 10,
     enhanced: {
-      get reward() {return `Replicanti speed ${formatX(5000)} if you have bought less than ${formatInt(5000)} 
-      Replicanti Galaxies ${Replicanti.galaxies.bought >= 5000 ? `(inactive)` : `(active)`}.`},
-      effect: 5000,
-      effectCondition: () => Replicanti.galaxies.bought < 5000,
+      get reward() {return `Replicanti speed ${formatX(5000000)} if you haven't bought more than ${formatInt(5000)} 
+      Replicanti Galaxies ${Replicanti.galaxies.bought > 5000 ? `(inactive)` : `(active)`}.`},
+      effect: 5000000,
+      effectCondition: () => Replicanti.galaxies.bought <= 5000,
     }
   },
   {
@@ -1671,6 +1671,16 @@ export const normalAchievements = [
       return `Infinities no longer reset Infinity power nor ID amounts, and, if their autobuyers are on,
        keep up to ${formatInt(200)} Dimension Boosts and ${formatInt(50)} Antimatter Galaxies between them.`
     },
+    enhanced: {
+      get reward() { return `Infinities no longer reset anything. Keep up to ${formatInt(1000000)} 
+        Dimension Boosts and ${formatInt(5000)} Antimatter & Replicanti Galaxies between Eternities, except on Challenges or Dilation,
+        and gain ${formatInt(77777)} times more Eternities.`},
+        effects: {
+          dimBoostsKept: 1000000,
+          galaxiesKept: 5000,
+          eternityMultiplier: 77777
+        }
+    }
   },
   {
     id: 116,
