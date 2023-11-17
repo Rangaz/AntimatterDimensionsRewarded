@@ -35,7 +35,7 @@ export default {
     buttonText() {
       if (this.lockText !== null) return this.lockText;
       const reset = [];
-      if (!Achievement(111).canBeApplied) reset.push("Dimensions");
+      if (!Achievement(111).canBeApplied && !Achievement(111).isEnhanced) reset.push("Dimensions");
       if (!Achievement(143).isUnlocked) reset.push("Dimension Boosts");
       return reset.length === 0
         ? `Increase the power of Tickspeed upgrades`

@@ -1493,7 +1493,8 @@ export const normalAchievements = [
     effect: 5e40,
     enhanced: {
       get reward() { return `When unlocking Dilation, start with ${Achievement(55).isEnhanced ? 
-        `${format(1e150)} Tachyon Particles (improved by Enhanced Achievement 55).` : `${formatInt(1000)} Tachyon Particles.`}`},
+        `${format(1e150)} Tachyon Particles (improved by Enhanced Achievement 55).` : 
+        `${formatInt(1000)} Tachyon Particles.`}`},
       effect: () => DC.E3.powEffectOf(Achievement(55).enhancedEffect),
     }
   },
@@ -1606,7 +1607,13 @@ export const normalAchievements = [
       return true;
     },
     checkEvent: GAME_EVENT.BIG_CRUNCH_AFTER,
-    reward: "Your antimatter doesn't reset on Dimension Boosts or Antimatter Galaxies."
+    reward: "Your antimatter doesn't reset on Dimension Boosts or Antimatter Galaxies.",
+    enhanced: {
+      reward: "Your antimatter doesn't reset on Dimension Boosts or Antimatter Galaxies, and gain free " + 
+        "Dimension Boosts equal to your best ever Antimatter Galaxy amount.",
+      effect: () => player.records.bestAntimatterGalaxies,
+      formatEffect: value => `+${formatInt(value, 2, 2)}`
+    }
   },
   {
     // Implemented & Enhanced!
