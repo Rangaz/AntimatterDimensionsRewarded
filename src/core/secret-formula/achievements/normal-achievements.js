@@ -1813,7 +1813,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
-    // Implemented!
+    // Implemented & Enhanced!
     id: 124,
     name: "Long lasting relationship",
     get description() {
@@ -1868,6 +1868,9 @@ export const normalAchievements = [
         `Replicanti Galaxies divide your Replicanti by ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)}
         instead of resetting them to ${formatInt(1)}.`;
     },
+    enhanced: {
+      reward: "Replicanti Galaxies no longer divide or reset Replicanti. This Achievement can be Enhanced for free."
+    }
   },
   {
     // Implemented! And modified!
