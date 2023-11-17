@@ -141,6 +141,7 @@ function applyNDMultipliers(mult, tier) {
         Achievement(68).enhancedEffect,
         Achievement(71),
         Achievement(122),
+        Achievement(122).enhancedEffect,
         TimeStudy(234)
       );
   }
