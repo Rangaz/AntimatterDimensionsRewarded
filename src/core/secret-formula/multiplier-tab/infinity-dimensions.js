@@ -148,6 +148,7 @@ export const ID = {
             Achievement(94).effects.infinityPowerGain,
             Achievement(94).enhancedEffect.effects.infinityPowerGain,
             Achievement(124),
+            Achievement(124).enhancedEffect,
           );
         }
         if (tier === 8) {

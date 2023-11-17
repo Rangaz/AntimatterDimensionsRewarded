@@ -157,6 +157,7 @@ class InfinityDimensionState extends DimensionState {
         tier === 1 ? Achievement(94).effects.infinityPowerGain : null,
         tier === 1 ? Achievement(94).enhancedEffect.effects.infinityPowerGain : null,
         tier === 1 ? Achievement(124) : null,
+        tier === 1 ? Achievement(124).enhancedEffect : null,
         tier === 4 ? TimeStudy(72) : null,
         tier === 1 ? EternityChallenge(2).reward : null,
         tier === 8 ? Achievement(101).enhancedEffect : null,

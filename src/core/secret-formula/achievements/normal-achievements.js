@@ -1429,10 +1429,10 @@ export const normalAchievements = [
       reward: "8th ADs and IDs are stronger based on purchased ADs.",
       effect: () => Laitela.continuumActive ? Decimal.pow(AntimatterDimension(1).continuumAmount * AntimatterDimension(2).continuumAmount *
         AntimatterDimension(3).continuumAmount * AntimatterDimension(4).continuumAmount * AntimatterDimension(5).continuumAmount * 
-        AntimatterDimension(6).continuumAmount * AntimatterDimension(7).continuumAmount, AntimatterDimension(8).continuumAmount / 1000).plus(1) : 
+        AntimatterDimension(6).continuumAmount * AntimatterDimension(7).continuumAmount, AntimatterDimension(8).continuumAmount / 800).plus(1) : 
         Decimal.pow(AntimatterDimension(1).bought * AntimatterDimension(2).bought * AntimatterDimension(3).bought * 
         AntimatterDimension(4).bought * AntimatterDimension(5).bought * AntimatterDimension(6).bought * 
-        AntimatterDimension(7).bought, AntimatterDimension(8).bought / 1000).plus(1),
+        AntimatterDimension(7).bought, AntimatterDimension(8).bought / 800).plus(1),
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
@@ -1652,7 +1652,7 @@ export const normalAchievements = [
       return mult;
     },
     enhanced: {
-      reward: "Gain more Eternities based on the length of your current Eternity",
+      reward: "Gain more Eternities based on the length of your current Eternity.",
       effect: () => Math.pow(Time.thisEternity.totalSeconds, 0.05),
       formatEffect: value => `${formatX(value, 2, 2)}`
     }
@@ -1776,7 +1776,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented! It'll appear in multiplier tab as part of 'purchases' instead of in 'achievements'.
+    // Implemented & Enhanced! It'll appear in multiplier tab as part of 'purchases' instead of in 'achievements'.
     id: 122,
     name: "You're already dead.",
     description: "Eternity without buying Antimatter Dimensions 2-8.",
@@ -1830,7 +1830,12 @@ export const normalAchievements = [
       Math.pow(2, 180) * Math.pow(excessTimeProduction - 59, 0.5) : 
       Math.pow(8, excessTimeProduction)
     },
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "1st Infinity Dimensions are significantly stronger the longer your Reality lasts.",
+      effect: () => Decimal.pow(Time.thisReality.totalSeconds, 6000),
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
     id: 125,
