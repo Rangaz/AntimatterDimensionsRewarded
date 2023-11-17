@@ -65,6 +65,7 @@ export const IP = {
       Achievement(85).enhancedEffect,
       Achievement(93),
       Achievement(116),
+      Achievement(116).enhancedEffect,
       Achievement(125),
       Achievement(141).effects.ipGain,
     ),
