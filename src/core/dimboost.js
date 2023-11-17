@@ -198,9 +198,9 @@ export class DimBoost {
   }
 
   static get imaginaryBoosts() {
-    // Enhanced Achievement 25 gives free imaginary boosts
-    return Ra.isRunning ? 0 : (ImaginaryUpgrade(12).effectOrDefault(0) + Achievement(25).enhancedEffect.effectOrDefault(0))
-      * ImaginaryUpgrade(23).effectOrDefault(1);
+    // Enhanced Achievements 25 & 111 give free imaginary boosts
+    return Ra.isRunning ? 0 : (ImaginaryUpgrade(12).effectOrDefault(0) + Achievement(25).enhancedEffect.effectOrDefault(0) +
+      Achievement(111).enhancedEffect.effectOrDefault(0)) * ImaginaryUpgrade(23).effectOrDefault(1);
   }
 
   static get totalBoosts() {
