@@ -1937,7 +1937,7 @@ export const normalAchievements = [
     enhanced: {
       get reward() {
         return `After Eternity you permanently keep ${formatPercents(0.95)} of your Infinities as Banked Infinities,
-          and, as long as this is Enhanced, they persist between Realities`;
+          and, as long as this is Enhanced, they persist between Realities.`;
       },
       effect: () => Currency.infinities.value.times(0.95).floor(),
     }
@@ -1987,7 +1987,12 @@ export const normalAchievements = [
     },
     effect: 2,
     // Why was this not done?
-    effectCondition: () => Replicanti.amount.lte(replicantiCap())
+    effectCondition: () => Replicanti.amount.lte(replicantiCap()),
+    enhanced: {
+      reward: "Gain Replicanti faster based on your Replicanti cap without TS192.",
+      effect: () => replicantiCap().log10() ** 2,
+      formatEffect: value => `${formatX(value, 2, 2)}`
+    }
   },
   {
     // Implemented!

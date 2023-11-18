@@ -133,7 +133,7 @@ const targetedEffects = {
     tickspeed: [-3, 36, 10036, 45, 10045, 66, 10066, 10118, 135],
     infinities: [33, 10033, 87, 10087, 10102, 164],
     eternities: [10102, 113, 10113, 10115],
-    replicanti: [2094, 12094, 10095, 106, 10106, 108, 10108, 134]
+    replicanti: [2094, 12094, 10095, 106, 10106, 108, 10108, 134, 10134]
   },
   timeStudy: {
     checkFn: MultiplierTabHelper.timeStudyDimCheck,
