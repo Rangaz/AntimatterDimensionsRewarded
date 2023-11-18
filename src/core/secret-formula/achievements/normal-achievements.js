@@ -2046,7 +2046,15 @@ export const normalAchievements = [
       player.dilation.active &&
       Currency.infinityPoints.exponent >= 26000,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    reward: "Removes the downsides from Time Study 131 and 133 in the Active and Idle Time Study paths."
+    reward: "Removes the downsides from Time Study 131 and 133 in the Active and Idle Time Study paths.",
+    enhanced: {
+      get reward() {
+        return `Remove the downsides and strengthen the effects of Time Studies 131 and 133. This counts as
+          ${formatInt(3)} Achievements Enhanced.`;
+      },
+      // This will directly multiply the values of the Time Studies.
+      effect: 1.2
+    }
   },
 
   // ----------------------------------------------------------------------

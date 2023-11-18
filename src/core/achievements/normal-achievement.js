@@ -107,6 +107,9 @@ class AchievementState extends GameMechanicState {
       return false;
     }
 
+    // Er138 requires 3 Enhancement points
+    if (this.id === 138 && Achievements.enhancementPoints < 3) return false;
+
     return Achievements.enhancementPoints > 0;
   }
 
@@ -349,11 +352,11 @@ export const Achievements = {
       Math.floor(V.spaceTheorems / 7);
   },
   
-  // Er22 & Er114 should be free, and we'll sneakily give +1 there so that it's practically free
+  // Free Enhancements add 1 to compensate for the bigger size of enhancedAchievements
   get enhancementPoints() {
     return this.totalEnhancementPoints - player.reality.enhancedAchievements.size +
-      Achievement(22).isEnhanced + Achievement(114).isEnhanced + Achievement(126).isEnhanced + 
-      2 * this.effectiveCurses;
+      Achievement(22).isEnhanced + Achievement(114).isEnhanced + Achievement(126).isEnhanced 
+      - 2 * Achievement(138).isEnhanced + 2 * this.effectiveCurses;
   },
 
   get maxEnhancedRow() {
