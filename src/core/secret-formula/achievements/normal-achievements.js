@@ -1995,7 +1995,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented!
+    // Implemented & Enhanced!
     id: 135,
     name: "Faster than a potato^286078",
     get description() { return `Get more than ${formatPostBreak("1e8296262")} ticks per second.`; },
@@ -2006,6 +2006,12 @@ export const normalAchievements = [
     },
     effect: () => DC.D2.pow(player.dilation.totalTachyonGalaxies).recip(),
     formatEffect: value => `${formatX(value.recip(), 1, 1)}`,
+    enhanced: {
+      reward: "Increase the softcap to Tickspeed Upgrades from Time Dimensions by your current Tachyon " +
+        "Galaxy amount.",
+      effect: () => player.dilation.totalTachyonGalaxies,
+      formatEffect: value => `+${formatInt(value)}`,
+    }
   },
   {
     // Implemented!
