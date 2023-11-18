@@ -222,6 +222,7 @@ export const FreeTickspeed = {
     if (Enslaved.has(ENSLAVED_UNLOCKS.FREE_TICKSPEED_SOFTCAP)) {
       softcap += 100000;
     }
+    softcap += Achievement(135).enhancedEffect.effectOrDefault(0);
     return softcap;
   },
 
