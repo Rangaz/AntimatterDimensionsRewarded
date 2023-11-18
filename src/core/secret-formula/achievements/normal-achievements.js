@@ -1911,7 +1911,13 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Time Dimensions are multiplied by the number of Time Studies you have.",
     effect: () => Math.max(player.timestudy.studies.length, 1),
-    formatEffect: value => `${formatX(value)}`
+    formatEffect: value => `${formatX(value)}`,
+    enhanced: {
+      get reward() { return `Time Dimensions are multiplied by ${formatPostBreak("1e1000")} for every 
+        Time Study you have.` },
+      effect: () => DC.E1000.pow(player.timestudy.studies.length),
+      formatEffect: value => `${formatX(value)}`,
+    }
   },
 
   {
