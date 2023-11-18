@@ -160,14 +160,8 @@ function bigCrunchCheckUnlocks() {
 }
 
 export function secondSoftReset(enteringAntimatterChallenge, enteringC10OrIC1) {
-  
-  player.records.timeSinceLastReset = 0;
-  player.records.thisInfinity.time = 0;
-  player.records.thisInfinity.lastBuyTime = 0;
-  player.records.thisInfinity.realTime = 0;
-  player.records.thisInfinity.maxAM = DC.D0;
   Player.resetRequirements("infinity");
-  // Er115 makes Infinities no longer reset anything, except for relevant timers
+  // Er115 makes Infinities no longer reset anything
   if (Achievement(115).isEnhanced && !enteringAntimatterChallenge && !enteringC10OrIC1) {
     return;
   }
@@ -185,6 +179,11 @@ export function secondSoftReset(enteringAntimatterChallenge, enteringC10OrIC1) {
   }
   
   if (enteringC10OrIC1) GameCache.increasePerDimBoost.invalidate();
+  player.records.timeSinceLastReset = 0;
+  player.records.thisInfinity.time = 0;
+  player.records.thisInfinity.lastBuyTime = 0;
+  player.records.thisInfinity.realTime = 0;
+  player.records.thisInfinity.maxAM = DC.D0;
   player.records.timeWithExcessAMProd = 0;
   Currency.antimatter.reset();
   softReset(0, true, true, enteringAntimatterChallenge, enteringC10OrIC1);
