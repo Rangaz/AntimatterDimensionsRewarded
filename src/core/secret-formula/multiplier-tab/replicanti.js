@@ -23,11 +23,12 @@ export const replicanti = {
         Achievement(106),
         Achievement(106).enhancedEffect,
         Achievement(108).enhancedEffect.effects.replicantiSpeed,
+        Achievement(134).enhancedEffect,
       );
       if (Time.thisEternity.totalSeconds < 9 || Achievement(145).canBeApplied) {
         totalMult = totalMult.timesEffectOf(Achievement(108).effects.replicantiSpeed);
       }
-      if (Replicanti.amount.lte(replicantiCap())) totalMult  = totalMult.timesEffectOf(Achievement(134));
+      if (Replicanti.amount.lte(replicantiCap())) totalMult = totalMult.timesEffectOf(Achievement(134));
       return totalMult;
     },
     isActive: () => [94, 106, 108, 134].some(a => Achievement(a).canBeApplied || Achievement(a).isEnhanced),

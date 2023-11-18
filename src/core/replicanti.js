@@ -148,6 +148,7 @@ export function totalReplicantiSpeedMult(overCap) {
     Achievement(106),
     Achievement(106).enhancedEffect,
     Achievement(108).enhancedEffect.effects.replicantiSpeed,
+    Achievement(134).enhancedEffect,
     TimeStudy(62),
     TimeStudy(213),
     RealityUpgrade(2),
