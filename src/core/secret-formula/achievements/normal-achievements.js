@@ -1943,7 +1943,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Buffed!
+    // Buffed & Enhanced!
     id: 132,
     name: "Unique snowflakes",
     get description() {
@@ -1954,7 +1954,13 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GALAXY_RESET_AFTER,
     reward: "Gain a multiplier to Tachyon Particle and Dilated Time gain based on best Antimatter Galaxies.",
     effect: () => 1.22 * Math.max(Math.pow(player.records.bestAntimatterGalaxies, 0.045), 1),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "Gain a bigger multiplier to Tachyon Particle and Dilated Time gain based on " +
+        "best Antimatter Galaxies.",
+      effect: () => 1.22 * player.records.bestAntimatterGalaxies,
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
     id: 133,

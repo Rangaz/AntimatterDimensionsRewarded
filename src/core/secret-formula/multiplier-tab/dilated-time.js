@@ -21,8 +21,9 @@ export const DT = {
   },
   achievement: {
     name: "Achievements",
-    multValue: () => Achievement(132).effectOrDefault(1) * Achievement(137).effectOrDefault(1),
-    isActive: () => (Achievement(132).canBeApplied || Achievement(137).canBeApplied) &&
+    multValue: () => Achievement(132).effectOrDefault(1) * Achievement(137).effectOrDefault(1) *
+      Achievement(132).enhancedEffect.effectOrDefault(1),
+    isActive: () => (Achievement(132).canBeApplied || Achievement(132).isEnhanced || Achievement(137).canBeApplied) &&
       getDilationGainPerSecond().neq(0),
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
