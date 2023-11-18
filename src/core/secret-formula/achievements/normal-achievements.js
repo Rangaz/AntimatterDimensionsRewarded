@@ -1855,7 +1855,16 @@ export const normalAchievements = [
       return DC.D2.pow(Math.log(thisInfinity) * Math.min(Math.pow(thisInfinity, 0.11), 500));
     },
     cap: () => Effarig.eternityCap,
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      reward: "Big Infinity Point multiplier based on time spent this Infinity.",
+      effect() {
+        const thisInfinity = Time.thisInfinity.totalSeconds * 10 + 1;
+        return DC.D3.pow(Math.log2(thisInfinity) * Math.min(Math.pow(thisInfinity, 0.11), 10000));
+      },
+      cap: () => Effarig.eternityCap,
+      formatEffect: value => `${formatX(value, 2, 2)}`,
+    }
   },
   {
     id: 126,
