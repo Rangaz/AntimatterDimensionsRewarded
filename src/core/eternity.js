@@ -342,6 +342,7 @@ class EPMultiplierState extends GameMechanicState {
   purchase() {
     if (!this.isAffordable) return false;
     if (!Achievement(127).isUnlocked || Achievement(127).isCursed) Currency.eternityPoints.subtract(this.cost);
+    if (Achievement(127).isEnhanced) Currency.eternityPoints.add(this.cost.times(3));
     ++this.boughtAmount;
     return true;
   }
@@ -359,6 +360,7 @@ class EPMultiplierState extends GameMechanicState {
     }, this.boughtAmount);
     if (!bulk) return false;
     if (!Achievement(127).isUnlocked || Achievement(127).isCursed) Currency.eternityPoints.subtract(bulk.purchasePrice);
+    if (Achievement(127).isEnhanced) Currency.eternityPoints.add(bulk.purchasePrice.times(3));
     this.boughtAmount += bulk.quantity;
     return true;
   }

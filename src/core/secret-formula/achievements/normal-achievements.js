@@ -1800,7 +1800,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented!
+    // Implemented & Enhanced!
     id: 123,
     name: "5 more eternities until the update",
     get description() { return `Complete ${formatInt(50)} unique Eternity Challenge tiers.`; },
@@ -1845,6 +1845,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 125,
     name: "Like feasting on a behind",
     get description() {
@@ -1872,6 +1873,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 126,
     name: "Popular music",
     get description() { return `Have ${formatInt(180)} times more Replicanti Galaxies than Antimatter Galaxies.`; },
@@ -1889,13 +1891,17 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented! And modified!
+    // Implemented! And modified! And Enhanced!
     id: 127,
     name: "But I wanted another prestige layer...",
     get description() { return `Reach ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)} Eternity Points.`; },
     checkRequirement: () => Currency.eternityPoints.gte(Decimal.NUMBER_MAX_VALUE),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() {return `Time Dimensions and the ${formatX(5)} EP upgrade no longer spend EP.`}
+    get reward() { return `Time Dimensions and the ${formatX(5)} EP upgrade no longer spend EP.` },
+    enhanced: {
+      get reward() { return `Time Dimensions and the ${formatX(5)} EP upgrade give ${formatX(3)} their 
+        EP cost instead of spending them.` },
+    }
   },
   {
     id: 128,
