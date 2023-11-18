@@ -1672,7 +1672,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented!
+    // Implemented & Enhanced!
     id: 115,
     name: "I wish I had gotten 7 eternities",
     description: "Start an Infinity Challenge inside an Eternity Challenge.",
@@ -1685,11 +1685,11 @@ export const normalAchievements = [
       get reward() { return `Infinities no longer reset anything. Keep up to ${formatInt(1000000)} 
         Dimension Boosts and ${formatInt(5000)} Antimatter & Replicanti Galaxies between Eternities, except on Challenges or Dilation,
         and gain ${formatInt(77777)} times more Eternities.`},
-        effects: {
-          dimBoostsKept: 1000000,
-          galaxiesKept: 5000,
-          eternityMultiplier: 77777
-        }
+      effects: {
+        dimBoostsKept: 1000000,
+        galaxiesKept: 5000,
+        eternityMultiplier: 77777
+      }
     }
   },
   {
