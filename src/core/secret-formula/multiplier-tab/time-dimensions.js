@@ -119,7 +119,8 @@ export const TD = {
         Achievement(112), 
         Achievement(112).enhancedEffect,
         Achievement(123), 
-        Achievement(128)
+        Achievement(128),
+        Achievement(128).enhancedEffect,
       );
       return Decimal.pow(baseMult, dim ? 1 : MultiplierTabHelper.activeDimCount("TD"));
     },
