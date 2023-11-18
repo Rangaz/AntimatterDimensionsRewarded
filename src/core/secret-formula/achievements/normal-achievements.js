@@ -1810,7 +1810,14 @@ export const normalAchievements = [
       return `Time Dimensions are ${formatPercents(0.12)} stronger for every unique Eternity Challenge tier completed.`;
     },
     effect: () => Math.pow(1.12, EternityChallenges.completions),
-    formatEffect: value => `${formatX(value, 2, 2)}`
+    formatEffect: value => `${formatX(value, 2, 2)}`,
+    enhanced: {
+      get reward() {
+        return `Time Dimensions are raised by +${formatPow(0.0005, 4, 4)} for every unique Eternity Challenge tier completed.`;
+      },
+      effect: () => 1 + 0.0005 * EternityChallenges.completions,
+      formatEffect: value => `${formatPow(value, 2, 2)}`,
+    }
   },
   {
     // Implemented & Enhanced!
