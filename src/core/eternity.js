@@ -45,6 +45,7 @@ function giveEternityRewards(auto) {
 
   Currency.infinitiesBanked.value = Currency.infinitiesBanked.value.plusEffectsOf(
     Achievement(131),
+    Achievement(131).enhancedEffect,
     TimeStudy(191)
   );
 

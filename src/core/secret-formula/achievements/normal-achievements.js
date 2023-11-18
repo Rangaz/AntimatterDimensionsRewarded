@@ -1904,6 +1904,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 128,
     name: "What do I have to do to get rid of you",
     get description() { return `Reach ${formatPostBreak("1e22000")} Infinity Points without any Time Studies.`; },
@@ -1921,7 +1922,7 @@ export const normalAchievements = [
   },
 
   {
-    // Buffed!
+    // Buffed & Enhanced!
     id: 131,
     name: "No ethical consumption",
     get description() { return `Get ${format(DC.D2E9)} Banked Infinities.`; },
@@ -1930,7 +1931,14 @@ export const normalAchievements = [
     get reward() {
       return `After Eternity you permanently keep ${formatPercents(0.15)} of your Infinities as Banked Infinities.`;
     },
-    effect: () => Currency.infinities.value.times(0.15).floor()
+    effect: () => Currency.infinities.value.times(0.15).floor(),
+    enhanced: {
+      get reward() {
+        return `After Eternity you permanently keep ${formatPercents(0.95)} of your Infinities as Banked Infinities,
+          and, as long as this is Enhanced, they persist between Realities`;
+      },
+      effect: () => Currency.infinities.value.times(0.95).floor(),
+    }
   },
   {
     // Buffed!

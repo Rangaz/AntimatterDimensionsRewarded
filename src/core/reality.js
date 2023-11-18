@@ -636,8 +636,16 @@ export function finishProcessReality(realityProps) {
   // add a flag to indicate that this is a reality reset.
   initializeChallengeCompletions(true);
 
+  
+  if (Achievement(131).isEnhanced) {
+    Currency.infinitiesBanked.value = Currency.infinitiesBanked.value.plusEffectsOf(
+      Achievement(131),
+      Achievement(131).enhancedEffect,
+      TimeStudy(191)
+      );
+    }
+  else Currency.infinitiesBanked.reset();
   Currency.infinities.reset();
-  Currency.infinitiesBanked.reset();
   player.records.bestInfinity.time = 999999999999;
   player.records.bestInfinity.realTime = 999999999999;
   player.records.timeSinceLastReset = 0;
