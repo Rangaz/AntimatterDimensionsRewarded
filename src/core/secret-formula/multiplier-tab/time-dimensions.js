@@ -123,6 +123,7 @@ export const TD = {
       );
       return Decimal.pow(baseMult, dim ? 1 : MultiplierTabHelper.activeDimCount("TD"));
     },
+    powValue: () => Achievement(123).enhancedEffect.effectOrDefault(1),
     isActive: () =>  [48, 105, 112, 123, 128].some(a => Achievement(a).canBeApplied || Achievement(a).isEnhanced),
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },

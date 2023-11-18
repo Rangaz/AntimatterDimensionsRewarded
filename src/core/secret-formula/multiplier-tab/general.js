@@ -44,7 +44,7 @@ export const general = {
         if (ach === 1094) return Achievement(94).enhancedEffect.effects.infinityPowerGain.effectOrDefault(1);
         if (ach === 2094) return Achievement(94).enhancedEffect.effects.replicantiSpeed.effectOrDefault(1);
 
-        if (ach === 47 || ach === 72 || ach === 93) return 1; // Power effect
+        if (ach === 47 || ach === 72 || ach === 93 || ach === 123) return 1; // Power effect
         if (ach === 102) return Achievement(102).enhancedEffect.effects.multiplier.effectOrDefault(1);
         if (ach === 108) return Achievement(108).enhancedEffect.effects.replicantiSpeed.effectOrDefault(1);
         if (ach === 115) return Achievement(115).enhancedEffect.effects.eternityMultiplier.effectOrDefault(1);
@@ -109,7 +109,7 @@ export const general = {
         ? Achievement(ach).effectOrDefault(1) : 1;
     },
     // 183 is the only time a power effect is in an Achievement, so we special-case it here and return a x1 multiplier.
-    // ...or that would be the case if it wasn't for my achievements (r72, Er47 & Er93).
+    // ...or that would be the case if it wasn't for my achievements (r72, Er47, Er93 & Er123).
     powValue: ach => {
       switch (ach) {
         case 183: return Achievement(183).effectOrDefault(1); 
@@ -117,6 +117,7 @@ export const general = {
         case 72: return Achievement(72).effectOrDefault(1);
         case 10072: return Achievement(72).enhancedEffect.effectOrDefault(1);
         case 10093: return Achievement(93).enhancedEffect.effectOrDefault(1);
+        case 10123: return Achievement(123).enhancedEffect.effectOrDefault(1);
       }
     },
     isActive: ach => ach < 0 ? CursedRow(-ach).canBeApplied : (ach > 10000 ? Achievement(ach - Math.floor(ach / 1000) * 1000).enhancedEffect.canBeApplied : 
