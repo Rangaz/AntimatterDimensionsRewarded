@@ -22,6 +22,7 @@ export function buySingleTimeDimension(tier, auto = false) {
   }
 
   if (!Achievement(127).canBeApplied) Currency.eternityPoints.subtract(dim.cost);
+  if (Achievement(127).isEnhanced) Currency.eternityPoints.add(dim.cost.times(3));
   dim.amount = dim.amount.plus(1);
   dim.bought += 1;
   dim.cost = dim.nextCost(dim.bought);
@@ -73,7 +74,8 @@ export function buyMaxTimeDimension(tier, portionToSpend = 1, isMaxAll = false) 
     firstCost: dim.cost,
   }, dim.bought);
   if (!bulk) return false;
-  if (!Achievement(127).canBeApplied) Currency.eternityPoints.subtract(bulk.purchasePrice);
+  if (!Achievement(127).isUnlocked || Achievement(127).isCursed) Currency.eternityPoints.subtract(bulk.purchasePrice);
+  if (Achievement(127).isEnhanced) Currency.eternityPoints.add(bulk.purchasePrice.times(3));
   dim.amount = dim.amount.plus(bulk.quantity);
   dim.bought += bulk.quantity;
   dim.cost = dim.nextCost(dim.bought);
