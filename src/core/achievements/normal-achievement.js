@@ -107,6 +107,10 @@ class AchievementState extends GameMechanicState {
       return false;
     }
 
+    if (this.id === 133 && (!V.isFullyCompleted || Ra.pets.v.level < 25)) {
+      return false;
+    }
+
     // Similar with Er136 requiring Er115, but Er136 itself is free
     if (this.id === 136 && (Achievement(115).isCursed || 
     (!Achievement(115).isEnhanced && Achievements.enhancementPoints < 1))) {
