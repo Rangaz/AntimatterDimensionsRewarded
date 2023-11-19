@@ -1754,7 +1754,7 @@ export const normalAchievements = [
     enhanced: {
       reward: `Dimensional Sacrifice doesn't reset your Antimatter Dimensions
         and the Autobuyer activates every tick if turned on. It now affects Tickspeed at a reduced rate.`,
-      effect: () => Sacrifice.totalBoost.pow(-0.06),
+      effect: () => Sacrifice.totalBoost.pow(-0.05),
       formatEffect: value => `${formatX(value.recip(), 3, 3)}`
     }
   },
@@ -1963,6 +1963,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 133,
     name: "I never liked this infinity stuff anyway",
     get description() {
@@ -1977,7 +1978,7 @@ export const normalAchievements = [
     reward: "You start Eternities with all Infinity Challenges unlocked and completed.",
     enhanced: {
       reward: "You start Eternities with all Infinity Challenges unlocked and completed, and all Realities with " +
-        "a fully purchased Time Study tree. This requires fully completing Hard V and V level 25.",
+        "a fully purchased Time Study tree. This requires fully completing Hard V and full V memories.",
     }
   },
   {
@@ -2360,11 +2361,12 @@ export const normalAchievements = [
     name: "Hitchhiker's Guide to Reality",
     get description() {
       return `Reality for ${format(Decimal.NUMBER_MAX_VALUE, 1)} Reality Machines without having
-      any Charged Infinity Upgrades, having any equipped Glyphs, or buying any Triad Studies.`;
+      any Charged Infinity Upgrades or Enhanced Achievements, having any equipped Glyphs, 
+      or buying any Triad Studies.`;
     },
     checkRequirement: () => MachineHandler.gainedRealityMachines.gte(Decimal.NUMBER_MAX_VALUE) &&
-      player.celestials.ra.charged.size === 0 && Glyphs.activeWithoutCompanion.length === 0 &&
-      player.requirementChecks.reality.noTriads,
+      player.celestials.ra.charged.size === 0 && player.reality.enhancedAchievements.size === 0 && 
+      Glyphs.activeWithoutCompanion.length === 0 && player.requirementChecks.reality.noTriads,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
   },
   {
@@ -2372,7 +2374,10 @@ export const normalAchievements = [
     name: "Cet accomplissement n'existe pas III",
     get description() { return `Reach ${formatPostBreak(DC.D9_99999E999, 5, 0)} Reality Machines.`; },
     checkRequirement: () => player.reality.realityMachines.gte(DC.D9_99999E999),
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() { return `Make the Eternity Point formula better. 
+      log(x)/${formatInt(308)} ➜ log(x)/${formatInt(300)}`; },
+    effect: 8
   },
   {
     id: 174,
@@ -2402,6 +2407,7 @@ export const normalAchievements = [
     formatEffect: value => `+${formatPercents(value - 1, 2, 2)}`
   },
   {
+    // Implemented!
     id: 177,
     name: "This mile took a celestial",
     description: "Complete all Singularity Milestones at least once.",
