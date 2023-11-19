@@ -91,7 +91,7 @@ class AchievementState extends GameMechanicState {
 
     // Handle special cases first
     // Free Enhancements should always be available
-    if (!this.isEnhanced && [22, 114, 126].includes(this.id)) return true;
+    if ([22, 114, 126].includes(this.id)) return true;
     // Er47 doesn't work if Teresa isn't unlocked, so avoid Enhancing it
     if (this.id === 47 && !Teresa.isUnlocked) return false;
 
@@ -106,6 +106,13 @@ class AchievementState extends GameMechanicState {
       Achievements.enhancementPoints <= (!Achievement(32).isEnhanced + !Achievement(57).isEnhanced))) {
       return false;
     }
+
+    // Similar with Er136 requiring Er115, but Er136 itself is free
+    if (this.id === 136 && (Achievement(115).isCursed || 
+    (!Achievement(115).isEnhanced && Achievements.enhancementPoints < 1))) {
+      return false;
+    }
+    if (!this.isEnhanced && this.id === 136) return true;
 
     // Er138 requires 3 Enhancement points
     if (this.id === 138 && Achievements.enhancementPoints < 3) return false;
@@ -129,6 +136,10 @@ class AchievementState extends GameMechanicState {
       Achievement(57).enhance();
       if (!fromPreset) GameUI.notify.success("Achievements 32 and 57 have been automatically Enhanced");
     }
+    if (this.id === 136 && !Achievement(115).isEnhanced) {
+      Achievement(115).enhance();
+      if (!fromPreset) GameUI.notify.success("Achievement 115 has been automatically Enhanced");
+    }
 
     // Enhancing Achievement 81 affects post-infinity scaling, and so does Er11.
     // However, since Er11 activates this effect only if the entire first row is Enhanced, 
@@ -139,6 +150,15 @@ class AchievementState extends GameMechanicState {
     if (this.id === 96) {
       player.eternityPoints = player.eternityPoints.plus(DC.E40.powEffectOf(Achievement(55).enhancedEffect));
     }
+    // Er136 makes Time Studies respecs instantaneous, so respec nmediately if it'd happen next eternity
+    if (this.id === 136 && player.respec) {
+      if (player.timestudy.studies.length === 0) {
+        SecretAchievement(34).unlock();
+      }
+      respecTimeStudies(true);
+      player.respec = false;
+      if (!fromPreset) GameUI.notify.eternity("Your Time Studies have been respec");
+    }
     player.reality.enhancedAchievements.add(this.id);
     // It is assumed that when you Enhance an Achievement you want to keep it
     player.reality.toBeEnhancedAchievements.add(this.id);
@@ -148,18 +168,21 @@ class AchievementState extends GameMechanicState {
   disEnhance() {
     player.reality.enhancedAchievements.delete(this.id);
     player.reality.toBeEnhancedAchievements.delete(this.id);
-  }
-
-  curse() {
-    if (this.isEnhanced) this.disEnhance();
-    // These Achievements require the previous ones to be Enhanced. DisEnhance if one of tem gets cursed
+    // Some Achievements are a requirement for other Enhancements.
     if (this.id === 32) {
-        Achievement(57).disEnhance();
-        Achievement(88).disEnhance();
+      Achievement(57).disEnhance();
+      Achievement(88).disEnhance();
     }
     if (this.id === 57) {
       Achievement(88).disEnhance();
     }
+    if (this.id === 115) {
+      Achievement(136).disEnhance();
+    }
+  }
+
+  curse() {
+    if (this.isEnhanced) this.disEnhance();
   }
 
   tryUnlock(args) {
@@ -356,7 +379,7 @@ export const Achievements = {
   get enhancementPoints() {
     return this.totalEnhancementPoints - player.reality.enhancedAchievements.size +
       Achievement(22).isEnhanced + Achievement(114).isEnhanced + Achievement(126).isEnhanced 
-      - 2 * Achievement(138).isEnhanced + 2 * this.effectiveCurses;
+      + Achievement(136).isEnhanced - 2 * Achievement(138).isEnhanced + 2 * this.effectiveCurses;
   },
 
   get maxEnhancedRow() {
