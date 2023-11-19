@@ -21,9 +21,14 @@ export const DT = {
   },
   achievement: {
     name: "Achievements",
-    multValue: () => Achievement(132).effectOrDefault(1) * Achievement(137).effectOrDefault(1) *
-      Achievement(132).enhancedEffect.effectOrDefault(1),
-    isActive: () => (Achievement(132).canBeApplied || Achievement(132).isEnhanced || Achievement(137).canBeApplied) &&
+    multValue: () => DC.D1.timesEffectsOf(
+      Achievement(132),
+      Achievement(132).enhancedEffect,
+      Achievement(137),
+      Achievement(137).enhancedEffect,
+    ),
+    isActive: () => (Achievement(132).canBeApplied || Achievement(132).isEnhanced || 
+      Achievement(137).canBeApplied || Achievement(137).isEnhanced) &&
       getDilationGainPerSecond().neq(0),
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
