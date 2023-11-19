@@ -1972,9 +1972,14 @@ export const normalAchievements = [
       player.IPMultPurchases === 0 &&
       Currency.infinityPoints.exponent >= 200000,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    reward: "You start Eternities with all Infinity Challenges unlocked and completed."
+    reward: "You start Eternities with all Infinity Challenges unlocked and completed.",
+    enhanced: {
+      reward: "You start Eternities with all Infinity Challenges unlocked and completed, and all Realities with " +
+        "a fully purchased Time Study tree. This requires fully completing Hard V and V level 25.",
+    }
   },
   {
+    // Enhanced!
     id: 134,
     name: "When will it be enough?",
     get description() { return `Reach ${formatPostBreak(DC.E18000)} Replicanti.`; },
@@ -2046,6 +2051,7 @@ export const normalAchievements = [
     }
   },
   {
+    // Enhanced!
     id: 138,
     name: "This is what I have to do to get rid of you.",
     get description() {
