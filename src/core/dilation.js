@@ -133,6 +133,7 @@ export function getDilationGainPerSecond() {
       Achievement(132),
       Achievement(132).enhancedEffect,
       Achievement(137),
+      Achievement(137).enhancedEffect,
       RealityUpgrade(1),
       AlchemyResource.dilation,
       Ra.unlocks.continuousTTBoost.effects.dilatedTime,
