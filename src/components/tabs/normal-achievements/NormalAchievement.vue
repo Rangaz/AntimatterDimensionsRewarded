@@ -202,7 +202,7 @@ export default {
     onClick() {
       if (this.curseMode) return;
       // Free Enhancements should be easy to disEnhance
-      if (this.isEnhanced && (this.id == 22 || this.id == 114 || this.id == 126)) {
+      if (this.isEnhanced && (this.id == 22 || this.id == 114 || this.id == 126 || this.id == 136)) {
         this.achievement.disEnhance();
         return;
       }

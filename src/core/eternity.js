@@ -72,8 +72,10 @@ export function eternity(force, auto, specialConditions = {}) {
   }
 
   // If we're exiting an EC it's important that r136 still resets TDs and Time shards
-  const exitingEC = player.challenge.eternity.current != 0;
+  const exitingEC = specialConditions.exitingEC || player.challenge.eternity.current != 0
   const canApplyEr115 = Achievement(115).isEnhanced && !specialConditions.switchingDilation && !specialConditions.enteringEC
+    && !exitingEC;
+  const canApplyEr136 = Achievement(136).isEnhanced && !specialConditions.switchingDilation && !specialConditions.enteringEC
     && !exitingEC;
 
   // We define this variable so we can use it in checking whether to give
@@ -102,6 +104,19 @@ export function eternity(force, auto, specialConditions = {}) {
   if (force) {
     player.challenge.eternity.current = 0;
   }
+
+  if (canApplyEr136) {
+    if (!specialConditions.enteringEC && player.respec) {
+      if (noStudies) {
+        SecretAchievement(34).unlock();
+      }
+      respecTimeStudies(auto);
+      player.respec = false;
+    }
+    EventHub.dispatch(GAME_EVENT.ETERNITY_RESET_AFTER);
+    return;
+  }
+
 
   initializeChallengeCompletions();
   initializeResourcesAfterEternity(canApplyEr115);

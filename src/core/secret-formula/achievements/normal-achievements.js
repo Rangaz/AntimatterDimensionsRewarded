@@ -2014,15 +2014,21 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented!
+    // Implemented & Enhanced!
     id: 136,
     name: "I told you already, time is relative",
     description: "Dilate time.",
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     reward: "Eternities no longer reset Time shards nor TD amounts, unless entering or exiting Eternity Challenges," +
-      " or Dilating."
+      " or Dilating.",
+    enhanced: {
+      reward: "Eternities no longer reset anything, unless entering or exiting challenges or Dilating, and " +
+        "respeccing Studies can be done at any time. This can be Enhanced for free, but " + 
+        "requires Enhanced Achievement 115."
+    }
   },
   {
+    // Enhanced!
     id: 137,
     name: "Now you're thinking with dilation!",
     get description() {

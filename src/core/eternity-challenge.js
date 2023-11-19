@@ -252,7 +252,7 @@ export class EternityChallengeState extends GameMechanicState {
     Currency.timeShards.reset();
     resetTimeDimensions();
 
-    eternity(true);
+    eternity(true, false, { exitingEC: true });
   }
 
   fail(auto = false) {
