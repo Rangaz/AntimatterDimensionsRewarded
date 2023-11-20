@@ -10,7 +10,7 @@ TODO:
   |>Allow to curse rows in-game <DONE>
   |>Allow to remove cursed rows upon Reality <DONE>
   |>Improve visuals <DONE FOR NOW>
-  |>Implement 13 curses <NEXT>
+  |>Implement 13 curses <IN PROGRESS>
 -Allow individual Enhancements to be respec <DONE>
 -Add Enhancements for rows 10-13 <DONE>
 -Add Rewards for row 17 <DONE>

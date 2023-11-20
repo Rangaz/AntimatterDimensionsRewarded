@@ -78,7 +78,7 @@ export default {
       this.mouseOverInterval = setTimeout(() => this.isMouseOver = false, 300);
     },
     onCursedClick() {
-      if (!this.curseMode || !this.config.cursed) return;
+      if (!this.curseMode || !this.config.curse) return;
       if (!this.cursedRow.toBeCursed && player.reality.respecAchievements) {
         player.celestials.ra.toBeCursedBits = 0;
         this.cursedRow.curseNextReality();

@@ -81,6 +81,7 @@ export const GameCache = {
     TimeStudy(223),
     TimeStudy(224),
     EternityChallenge(5).reward,
+    CursedRow(2).effects.distantGalaxyStart,
     GlyphSacrifice.power
   )),
 
