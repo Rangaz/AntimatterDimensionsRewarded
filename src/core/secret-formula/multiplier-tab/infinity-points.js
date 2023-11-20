@@ -131,4 +131,10 @@ export const IP = {
     isActive: () => V.isRunning,
     icon: MultiplierTabIcons.GENERIC_V,
   },
+  cursedRow: {
+    name: "Cursed Rows",
+    multValue: () => CursedRow(7).effectOrDefault(1),
+    isActive: () => CursedRow(7).canBeApplied,
+    icon: MultiplierTabIcons.CURSED_ROW,
+  }
 };

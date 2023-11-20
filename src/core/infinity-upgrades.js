@@ -106,6 +106,7 @@ export function totalIPMult() {
       Achievement(125),
       Achievement(125).enhancedEffect,
       Achievement(141).effects.ipGain,
+      CursedRow(7),
       InfinityUpgrade.ipMult,
       DilationUpgrade.ipMultDT,
       GlyphEffect.ipMult

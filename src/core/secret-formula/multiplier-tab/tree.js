@@ -13,7 +13,7 @@ const propList = {
   TD: ["purchase", "achievementMult", "achievement", "timeStudy", "eternityUpgrade", "eternityChallenge",
     "dilationUpgrade", "realityUpgrade", "glyph", "alchemy", "imaginaryUpgrade", "pelle", "iap", "nerfV", "nerfCursed"],
   IP: ["base", "infinityUpgrade", "achievement", "timeStudy", "dilationUpgrade", "glyph", "alchemy", "pelle", "iap",
-    "nerfTeresa", "nerfV"],
+    "nerfTeresa", "nerfV", "cursedRow"],
   EP: ["base", "eternityUpgrade", "achievement", "timeStudy", "glyph", "realityUpgrade", "pelle", "iap", "nerfTeresa", "nerfV"],
 };
 
@@ -157,6 +157,7 @@ const targetedEffects = {
   cursedRow: {
     checkFn: MultiplierTabHelper.cursedRowDimCheck,
     AD: [4],
+    IP: [7],
   }
 };
 
