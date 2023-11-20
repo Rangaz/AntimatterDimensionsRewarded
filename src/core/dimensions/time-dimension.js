@@ -247,6 +247,7 @@ class TimeDimensionState extends DimensionState {
     mult = mult.powEffectOf(AlchemyResource.time);
     mult = mult.pow(Ra.momentumValue);
     mult = mult.pow(Achievement(123).enhancedEffect.effectOrDefault(1));
+    mult = mult.pow(CursedRow(12).effectOrDefault(1));
     mult = mult.pow(ImaginaryUpgrade(11).effectOrDefault(1));
     mult = mult.powEffectOf(PelleRifts.paradox);
 

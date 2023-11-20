@@ -11,7 +11,7 @@ const propList = {
   ID: ["purchase", "achievementMult", "achievement", "replicanti", "infinityChallenge", "timeStudy", "eternityUpgrade",
     "eternityChallenge", "glyph", "alchemy", "imaginaryUpgrade", "pelle", "iap", "nerfV", "nerfCursed", "nerfPelle"],
   TD: ["purchase", "achievementMult", "achievement", "timeStudy", "eternityUpgrade", "eternityChallenge",
-    "dilationUpgrade", "realityUpgrade", "glyph", "alchemy", "imaginaryUpgrade", "pelle", "iap", "nerfV", "nerfCursed"],
+    "dilationUpgrade", "realityUpgrade", "glyph", "alchemy", "cursedRow12", "imaginaryUpgrade", "pelle", "iap", "nerfV", "nerfCursed"],
   IP: ["base", "infinityUpgrade", "achievement", "timeStudy", "dilationUpgrade", "glyph", "alchemy", "pelle", "iap",
     "nerfTeresa", "nerfV", "cursedRow"],
   EP: ["base", "eternityUpgrade", "achievement", "timeStudy", "glyph", "realityUpgrade", "pelle", "iap", "nerfTeresa", "nerfV"],
@@ -184,7 +184,7 @@ for (const res of dimTypes) {
 // entries or have 8 identical entries, so we explicitly remove those lists for a cleaner appearance on the UI
 const removedRegexes = ["AD_sacrifice", "AD_breakInfinityUpgrade", "AD_nerfIC", "AD_infinityUpgrade", "AD_v",
   "ID_replicanti", "ID_infinityChallenge", "ID_eternityUpgrades",
-  "TD_achievement", "TD_eternityUpgrade", "TD_dilationUpgrade", "TD_realityUpgrade",
+  "TD_achievement", "TD_eternityUpgrade", "TD_dilationUpgrade", "TD_realityUpgrade", "TD_cursedRow12",
   ".._achievementMult", ".._glyph", ".._alchemy", ".._imaginaryUpgrade", ".._iap",
   ".._nerfV", ".._nerfCursed", ".._nerfPelle", ".._pelle"
 ];
