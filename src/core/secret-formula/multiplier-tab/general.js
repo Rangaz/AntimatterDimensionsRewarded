@@ -90,6 +90,7 @@ export const general = {
       if (ach === 36 || ach === 45 || ach === 66 || ach === 135) {
         return DC.D1.divide(Achievement(ach).effectOrDefault(1));
       }
+      if (ach === 172) return Achievement(172).effects.infinityMultiplier.effectOrDefault(1);
       if (!dim) return Achievement(ach).canBeApplied ? Achievement(ach).effectOrDefault(1) : 1;
 
       if (dim?.length === 2) {

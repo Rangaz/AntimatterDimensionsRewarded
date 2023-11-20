@@ -376,7 +376,7 @@ export const Achievements = {
 
   get totalEnhancementPoints() {
     return Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality) + 
-      Math.floor(V.spaceTheorems / 7);
+      Math.floor(V.spaceTheorems / 7) + Achievement(172).effects.bonusEnhancements.effectOrDefault(0);
   },
   
   // Free Enhancements add 1 to compensate for the bigger size of enhancedAchievements

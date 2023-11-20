@@ -369,7 +369,7 @@ export function staticGlyphWeights() {
     .concat(Array.range(1, 4).map(x => Array.range(1, 5).every(y => RealityUpgrade(5 * x + y).isBought)))
     .filter(x => x)
     .length;
-  const achievements = Effects.sum(Achievement(148), Achievement(166));
+  const achievements = Effects.sum(Achievement(148), Achievement(166), Achievement(172).effects.bonusGlyphLevels);
   return {
     perkShop,
     instability,
