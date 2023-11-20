@@ -9,13 +9,17 @@ export const cursedRows = [
   },
 	{
 		id: 2,
-		get curse() { return `Antimatter Galaxies require ${formatInt(10)} more Dimensions per Galaxy.` },
-		effect: -10
+		get curse() { return `Antimatter Galaxies require ${formatInt(10)} more Dimensions per Galaxy, and
+			Distant cost scaling starts ${formatInt(1000)} Galaxies earlier` },
+		effects: {
+			perGalaxyIncrease: -10,
+			distantGalaxyStart: -1000
+		}	
 	},
 	{
 		id: 3,
-		get curse() { return `Divide starting tick speed by ${formatPostBreak(DC.E1000)}.` },
-		effect: DC.E1000
+		get curse() { return `Divide starting tick speed by ${formatPostBreak(DC.E10000)}.` },
+		effect: DC.E10000
 	},
 	{
 		id: 4,
@@ -23,7 +27,7 @@ export const cursedRows = [
 			"AD amounts.",
 		effect: () => Decimal.min(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(AntimatterDimension(3).
     	amount.times(AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(AntimatterDimension(6).amount.times(
-    	AntimatterDimension(7).amount)))))).plus(1).pow(-0.0002), 1),
+    	AntimatterDimension(7).amount)))))).plus(1).pow(-0.0003), 1),
 			formatEffect: value => `/${format(value.recip(), 2, 2)}`
 	},
 	{
@@ -41,13 +45,7 @@ export const cursedRows = [
 	{
 		// Finish this later
 		id: 7,
-		curse: `A
-		A
-		A
-		A
-		A
-		A
-		A`
+		curse: ``
 	},
 	{
 		id: 8
