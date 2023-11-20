@@ -37,19 +37,21 @@ export const cursedRows = [
 	{
 		id: 6,
 		curse: "Dimension Autobuyer bulk is unlimited, but 1st AD gets an exponentially decreasing nerf " +
-		"that resets on Dimension Boosts, Antimatter Galaxies, and Infinities",
+		"that resets on Dimension Boosts, Antimatter Galaxies, and Infinities.",
 		effect: () => DC.D1_00038.pow(Math.pow(Time.timeSinceLastReset.totalSeconds, 0.02))
 			.times(DC.E1E7.recip()).clampMax(DC.D1),
 		formatEffect: value => `${formatX(value, 2, 2)}`
 	},
 	{
 		id: 7,
-		curse: `Infinity Power divides IP gain at a reduced rate`,
+		curse: "Infinity Power divides IP gain at a reduced rate.",
 		effect: () => Decimal.pow(Currency.infinityPower.value.add(1), -0.001).clampMax(1),
     formatEffect: value => `${formatInt(1)}/${format(value.recip(), 2, 2)}`,
 	},
 	{
-		id: 8
+		id: 8,
+		get curse() { return `All Galaxies are ${formatPercents(0.05)} weaker.` },
+		effect: 0.95,
 	},
 	{
 		id: 9
