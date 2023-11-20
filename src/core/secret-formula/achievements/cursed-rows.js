@@ -65,7 +65,10 @@ export const cursedRows = [
 		effectCondition: () => Replicanti.galaxies.bought > 0
 	},
 	{
-		id: 11
+		id: 11,
+		get curse() { return `The multiplier from Dimension Boosts to Antimatter Dimesions is /${formatInt(1000)}
+			lower.` },
+		effect: 0.001
 	},
 	{
 		id: 12
