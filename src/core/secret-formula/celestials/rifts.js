@@ -146,7 +146,7 @@ export const pelleRifts = {
     key: "recursion",
     name: ["Recursion", "Dispersion", "Destruction"],
     drainResource: "EP",
-    baseEffect: x => `EP formula: log(x)/${formatInt(308)} ➜ log(x)/${formatFloat(308 - x.toNumber(), 2)}`,
+    baseEffect: x => `EP formula: log(x)/${formatInt(300)} ➜ log(x)/${formatFloat(300 - x.toNumber(), 2)}`,
     additionalEffects: () => [PelleRifts.recursion.milestones[0], PelleRifts.recursion.milestones[1]],
     strike: () => PelleStrikes.ECs,
     percentage: totalFill => totalFill.plus(1).log10() ** 0.4 / 4000 ** 0.4,

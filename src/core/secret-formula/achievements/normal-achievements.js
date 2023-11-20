@@ -10,10 +10,10 @@ TODO:
   |>Allow to curse rows in-game <DONE>
   |>Allow to remove cursed rows upon Reality <DONE>
   |>Improve visuals <DONE FOR NOW>
-  |>Implement 13 curses
+  |>Implement 13 curses <NEXT>
 -Allow individual Enhancements to be respec <DONE>
--Add Enhancements for rows 10-13 <IN PROGRESS>
--Add Rewards for row 17 <IN PROGRESS>
+-Add Enhancements for rows 10-13 <DONE>
+-Add Rewards for row 17 <DONE>
   |>Make player.records.bestGalaxies for Achievement Effects (to secretly improve performance) <DONE>
 -Balance existing rewards
 -Balance Hard V
@@ -1752,7 +1752,7 @@ export const normalAchievements = [
     enhanced: {
       reward: `Dimensional Sacrifice doesn't reset your Antimatter Dimensions
         and the Autobuyer activates every tick if turned on. It now affects Tickspeed at a reduced rate.`,
-      effect: () => Sacrifice.totalBoost.pow(-0.05),
+      effect: () => Sacrifice.totalBoost.pow(-0.04),
       formatEffect: value => `${formatX(value.recip(), 3, 3)}`
     }
   },
@@ -2355,6 +2355,7 @@ export const normalAchievements = [
     effect: 2,
   },
   {
+    // Last Achievement! To be implemented
     id: 172,
     name: "Hitchhiker's Guide to Reality",
     get description() {
@@ -2366,8 +2367,19 @@ export const normalAchievements = [
       player.celestials.ra.charged.size === 0 && player.reality.enhancedAchievements.size === 0 && 
       Glyphs.activeWithoutCompanion.length === 0 && player.requirementChecks.reality.noTriads,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
+    get reward() {
+      return `${formatX(10000)} Infinities, +${formatInt(1)} Enhancement, +${formatInt(100)} to Glyph level
+        and ${formatX(1000)} Time Theorems.`
+    },
+    effects: {
+      infinityMultiplier: 10000,
+      bonusEnhancements: 1,
+      bonusGlyphLevels: 100,
+      timeTheoremMultiplier: 1000
+    },
   },
   {
+    // Implemented!
     id: 173,
     name: "Cet accomplissement n'existe pas III",
     get description() { return `Reach ${formatPostBreak(DC.D9_99999E999, 5, 0)} Reality Machines.`; },
@@ -2378,11 +2390,15 @@ export const normalAchievements = [
     effect: 8
   },
   {
+    // Implemented!
     id: 174,
     name: "Don't you already have two of these?",
     description: "Get a Singularity.",
     checkRequirement: () => true,
-    checkEvent: GAME_EVENT.SINGULARITY_RESET_BEFORE
+    checkEvent: GAME_EVENT.SINGULARITY_RESET_BEFORE,
+    reward: "Singularities boost Black Hole power.",
+    effect: () => Math.pow(Currency.singularities.value + 1, 0.08),
+    formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
     id: 175,

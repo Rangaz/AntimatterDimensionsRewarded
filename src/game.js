@@ -300,6 +300,7 @@ export function gainedInfinities() {
     Achievement(87).enhancedEffect,
     Achievement(102).enhancedEffect.effects.multiplier,
     Achievement(164),
+    Achievement(172).effects.infinityMultiplier,
     Ra.unlocks.continuousTTBoost.effects.infinity
   );
   infGain = infGain.times(getAdjustedGlyphEffect("infinityinfmult"));
@@ -355,6 +356,7 @@ export function getGameSpeedupFactor(effectsToConsider, blackHolesActiveOverride
         if (!isActive) break;
         factor *= Math.pow(blackHole.power, BlackHoles.unpauseAccelerationFactor);
         factor *= VUnlocks.achievementBH.effectOrDefault(1);
+        factor *= Achievement(174).effectOrDefault(1);
       }
     }
   }
@@ -901,6 +903,7 @@ export function getTTPerSecond() {
     Achievement(137),
     Achievement(137).enhancedEffect,
     Achievement(156),
+    Achievement(172).effects.timeTheoemMultiplier,
   );
   if (GlyphAlteration.isAdded("dilation")) ttMult *= getSecondaryGlyphEffect("dilationTTgen");
 

@@ -22,7 +22,8 @@ export const infinities = {
       Achievement(87),
       Achievement(87).enhancedEffect,
       Achievement(102).enhancedEffect.effects.multiplier,
-      Achievement(164)
+      Achievement(164),
+      Achievement(172).effects.infinityMultiplier,
     ),
     isActive: () => Achievement(33).isUnlocked,
     icon: MultiplierTabIcons.ACHIEVEMENT,
