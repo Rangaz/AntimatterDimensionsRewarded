@@ -233,6 +233,8 @@ export const general = {
       // Cursed row 3 is a Tickspeed divisor.
       if (row === 3) return CursedRow(row).canBeApplied ? 
           DC.D1.divide(CursedRow(row).effectOrDefault(1)) : 1
+      // Cursed Row 12 is a power effect
+      if (row === 12) return 1;
 
       if (!dim) return CursedRow(row).canBeApplied ? CursedRow(row).effectOrDefault(1) : 1;
 
@@ -247,6 +249,7 @@ export const general = {
         return totalEffect;
       }
     },
+    powValue: row => row == 12 ? CursedRow(row).effectOrDefault(1) : 1,
     isActive: row => CursedRow(row).canBeApplied,
     icon: row => {
       const base = MultiplierTabIcons.CURSED_ROW;

@@ -71,7 +71,10 @@ export const cursedRows = [
 		effect: 0.001
 	},
 	{
-		id: 12
+		id: 12,
+		get curse() { return `Time Dimensions are raised by ${formatPow(-0.001, 3, 3)} for every Time Study purchased.`},
+		effect: () => 1 - 0.001 * player.timestudy.studies.length,
+		formatEffect: value => `${formatPow(value, 3, 3)}`
 	},
 	{
 		id: 13

@@ -248,6 +248,12 @@ export const TD = {
     isActive: () => Ra.unlocks.unlockGlyphAlchemy.canBeApplied,
     icon: MultiplierTabIcons.ALCHEMY,
   },
+  cursedRow12: {
+    name: "Cursed Row 12",
+    powValue: () => CursedRow(12).effectOrDefault(1),
+    isActive: () => CursedRow(12).canBeApplied,
+    icon: MultiplierTabIcons.CURSED_ROW
+  },
   imaginaryUpgrade: {
     name: "Imaginary Upgrade - Suspicion of Interference",
     powValue: () => ImaginaryUpgrade(11).effectOrDefault(1),
