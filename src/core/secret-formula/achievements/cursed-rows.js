@@ -43,9 +43,10 @@ export const cursedRows = [
 		formatEffect: value => `${formatX(value, 2, 2)}`
 	},
 	{
-		// Finish this later
 		id: 7,
-		curse: ``
+		curse: `Infinity Power divides IP gain at a reduced rate`,
+		effect: () => Decimal.pow(Currency.infinityPower.value.add(1), -0.001).clampMax(1),
+    formatEffect: value => `${formatInt(1)}/${format(value.recip(), 2, 2)}`,
 	},
 	{
 		id: 8
