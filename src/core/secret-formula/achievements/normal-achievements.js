@@ -1751,7 +1751,8 @@ export const normalAchievements = [
       and the Autobuyer activates every tick if turned on.`,
     enhanced: {
       reward: `Dimensional Sacrifice doesn't reset your Antimatter Dimensions
-        and the Autobuyer activates every tick if turned on. It now affects Tickspeed at a reduced rate.`,
+        and the Autobuyer activates every tick if turned on. It now affects Tickspeed at a reduced rate.
+        This counts as 2 Achievements Enhanced.`,
       effect: () => Sacrifice.totalBoost.pow(-0.04),
       formatEffect: value => `${formatX(value.recip(), 3, 3)}`
     }

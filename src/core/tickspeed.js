@@ -32,6 +32,7 @@ export function getTickSpeedMultiplier() {
     Achievement(86),
     Achievement(86).enhancedEffect,
     Achievement(178),
+    CursedRow(8),
     InfinityChallenge(5).reward,
     PelleUpgrade.galaxyPower,
     PelleRifts.decay.milestones[1]

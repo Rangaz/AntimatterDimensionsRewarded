@@ -107,6 +107,8 @@ class AchievementState extends GameMechanicState {
       return false;
     }
 
+    if (this.id === 118 && Achievements.enhancementPoints < 2) return false;
+
     if (this.id === 133 && (!V.isFullyCompleted || Ra.pets.v.level < 25)) {
       return false;
     }
@@ -385,7 +387,8 @@ export const Achievements = {
   get enhancementPoints() {
     return this.totalEnhancementPoints - player.reality.enhancedAchievements.size +
       Achievement(22).isEnhanced + Achievement(114).isEnhanced + Achievement(126).isEnhanced 
-      + Achievement(136).isEnhanced - 2 * Achievement(138).isEnhanced + 2 * this.effectiveCurses;
+      + Achievement(136).isEnhanced - Achievement(118).isEnhanced - 2 * Achievement(138).isEnhanced 
+      + 2 * this.effectiveCurses;
   },
 
   get maxEnhancedRow() {
