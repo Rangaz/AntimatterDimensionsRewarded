@@ -85,6 +85,12 @@ export const replicanti = {
     isActive: () => Ra.unlocks.continuousTTBoost.isUnlocked,
     icon: MultiplierTabIcons.GENERIC_RA,
   },
+  cursedRow: {
+    name: "Cursed Rows",
+    multValue: () => CursedRow(10).effectOrDefault(1),
+    isActive: () => CursedRow(10).isCursed,
+    icon: MultiplierTabIcons.CURSED_ROW,
+  },
   pelle: {
     name: "Pelle Strike - Decay Rift",
     multValue: () => PelleRifts.decay.effectValue,

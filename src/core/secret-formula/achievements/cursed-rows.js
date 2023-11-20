@@ -54,10 +54,15 @@ export const cursedRows = [
 		effect: 0.95,
 	},
 	{
-		id: 9
+		id: 9,
+		get curse() { return `Raise Infinity Dimension and Replicanti Upgrade cost by ${formatPow(1.1, 1, 1)}.` },
+		effect: 1.1
 	},
 	{
-		id: 10
+		id: 10,
+		get curse() { return `Replicanti speed /${format(1e8)} if you have purchased a Replicanti Galaxy.`},
+		effect: 1e-8,
+		effectCondition: () => Replicanti.galaxies.bought > 0
 	},
 	{
 		id: 11

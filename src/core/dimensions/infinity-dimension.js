@@ -212,6 +212,7 @@ class InfinityDimensionState extends DimensionState {
     let costMult = this._costMultiplier;
     EternityChallenge(12).reward.applyEffect(v => costMult = Math.pow(costMult, v));
     Achievement(98).enhancedEffect.applyEffect(v => costMult = Math.pow(costMult, v));
+    CursedRow(9).applyEffect(v => costMult = Math.pow(costMult, v));
     return costMult;
   }
 
