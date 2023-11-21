@@ -17,9 +17,9 @@ export const eternities = {
       Achievement(113),
       Achievement(113).enhancedEffect,
       Achievement(115).enhancedEffect.effects.eternityMultiplier,
-    ),
-    isActive: () => Achievement(113).canBeApplied || Achievement(102).isEnhanced || Achievement(113).isEnhanced
-      || Achievement(115).isEnhanced,
+    ).times(Achievement(37).isEnhanced ? 5 : 1),
+    isActive: () => Achievement(37).isEnhanced || Achievement(113).canBeApplied || 
+      Achievement(102).isEnhanced || Achievement(113).isEnhanced || Achievement(115).isEnhanced,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   amplifierEter: {

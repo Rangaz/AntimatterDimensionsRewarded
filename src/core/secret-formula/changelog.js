@@ -17,8 +17,14 @@ export const changelog = [
     <br>
     Balance Changes:
     <ul>
+    <li>All row 1 Enhancements, except 18, set their initial AM cost multiplier to x2.</li>
     <li>Achievement 23 and its Enhanced version scale slightly better.</li>
+    <li>Enhanced Achievements 25 & 26 give +1 of their respective resource for every 1000 purchases.</li>
     <li>Achievement 28's multiplier is ~25% bigger, and its Enhanced version ~^1.04 bigger.</li>
+    <li>Achievement 31 and its Enhanced version scale slightly better.</li>
+    <li>Enhanced Achievement 33 gives ~x5.3 more Infinities.</li>
+    <li>Enhanced Achievement 34's formula is changed. Different Dimensions have different weights.</li>
+    <li>Enhanced Achievement 37 now also gives x5 Eternities.</li>
     <li>Achievements that rely on Antimatter Galaxies or total Galaxies (Er53, 66, 83, 132) are now based on
     best amount this Reality.</li>
     <li>Enhanced Achievement 53's bonus 8th antimatter dims now also use Replicanti and Tachyon Galaxies.</li>

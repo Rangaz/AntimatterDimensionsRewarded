@@ -420,7 +420,7 @@ class AntimatterDimensionState extends DimensionState {
     this._enhancedBaseCosts = ENHANCED_BASE_COSTS[tier];
     const BASE_COST_MULTIPLIERS = [null, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e12, 1e15];
     this._baseCostMultiplier = BASE_COST_MULTIPLIERS[tier];
-    const ENHANCED_COST_MULTIPLIERS = [null, 2, 2.4, 3, 3.6, 5.5, 8, 12, 32];
+    const ENHANCED_COST_MULTIPLIERS = [null, 2, 2, 2, 2, 2, 2, 2, 32];
     this._enhancedCostMultipliers = ENHANCED_COST_MULTIPLIERS[tier];
     // These are the Cursed Row 1 values
     const CURSED_BASE_COSTS = [null, 1e130, DC.E1000, DC.E10000, DC.E100000, DC.E500000, 

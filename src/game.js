@@ -721,7 +721,9 @@ function passivePrestigeGen() {
       RealityUpgrade(3),
       RealityUpgrade(14)
     );
+    // Since Er34's effect is the starting resources and I want to display that, this will ber a hardcoded effect.
     eternitiedGain = Decimal.times(eternitiedGain, getAdjustedGlyphEffect("timeetermult"));
+    if (Achievement(37).isEnhanced) eternitiedGain = eternitiedGain.times(5);
     eternitiedGain = new Decimal(Time.deltaTime).times(
       Decimal.pow(eternitiedGain, AlchemyResource.eternity.effectValue));
     player.reality.partEternitied = player.reality.partEternitied.plus(eternitiedGain);
