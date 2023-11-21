@@ -28,9 +28,15 @@ class InfinityChallengeState extends GameMechanicState {
     return this.config.unlockAM;
   }
 
+  // Used instead of unlockAM() when row 13 is cursed
+  get cursedUnlockAM() {
+    return this.config.cursedUnlockAM;
+  }
+
   get isUnlocked() {
-    return player.records.thisEternity.maxAM.gte(this.unlockAM) || ((
-      Achievement(133).isUnlocked && !Achievement(133).isCursed) && !Pelle.isDoomed) ||
+    return ((player.records.thisEternity.maxAM.gte(this.unlockAM) && !CursedRow(13).isCursed) ||
+      player.records.thisEternity.maxAM.gte(this.cursedUnlockAM)) || (
+      Achievement(133).isUnlocked && !Achievement(133).isCursed && !Pelle.isDoomed) ||
       (PelleUpgrade.keepInfinityChallenges.canBeApplied && Pelle.cel.records.totalAntimatter.gte(this.unlockAM));
   }
 
@@ -138,7 +144,7 @@ export const InfinityChallenges = {
     return InfinityChallenges.all.find(x => !x.isUnlocked);
   },
   get nextICUnlockAM() {
-    return this.nextIC?.unlockAM;
+    return CursedRow(13).isCursed ? this.nextIC?.cursedUnlockAM : this.nextIC?.unlockAM;
   },
   /**
    * Displays a notification if the antimatter gained will surpass the next unlockAM requirement.

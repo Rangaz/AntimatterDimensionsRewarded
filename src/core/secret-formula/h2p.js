@@ -638,6 +638,9 @@ amount of antimatter before you can attempt them.
 <br>
 <b>Infinity Challenge unlock thresholds:</b> ${GameDatabase.challenges.infinity
     .map(ic => formatPostBreak(ic.unlockAM)).join(", ")}
+<br>
+${Achievements.maxEnhancedRow >= 13 ? `<b>With Cursed row 13 these amounts are higher:</b> ${GameDatabase.challenges.infinity
+  .map(ic => formatPostBreak(ic.cursedUnlockAM)).join(", ")}` : ``}
 `,
       isUnlocked: () => Autobuyer.bigCrunch.hasMaxedInterval || PlayerProgress.eternityUnlocked(),
       tags: ["rewards", "break", "ic", "midgame"],

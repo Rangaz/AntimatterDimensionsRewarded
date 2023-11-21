@@ -77,7 +77,11 @@ export const cursedRows = [
 		formatEffect: value => `${formatPow(value, 3, 3)}`
 	},
 	{
-		id: 13
+		id: 13,
+		curse: "Remove the downsides of Time Studies 131 and 133, but Infinity Challenges have a much higher unlock requirement, " +
+			"and you only generate Time Theorems and Dilated Time while Dilated.",
+		effect: 0,
+		effectCondition: () => !player.dilation.active
 	},
 	// I don't plan to include cursed rows 14-18, but having them defined avoids 'undefined' issues
 	// when I attempt to call CursedRow(x) that doesn't exist. If there's no 'curse' they should be innaccesible
