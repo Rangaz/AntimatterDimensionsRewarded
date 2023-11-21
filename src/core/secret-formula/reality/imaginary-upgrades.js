@@ -204,7 +204,7 @@ export const imaginaryUpgrades = [
     formatCost: x => format(x, 1),
     requirement: () => `Have ${formatInt(80000)} total Galaxies`,
     hasFailed: () => false,
-    checkRequirement: () => player.records.bestTotalGalaxies >= 80000,
+    checkRequirement: () => player.records.thisReality.bestTotalGalaxies >= 80000,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: "Unlock the 4th Dark Matter Dimension",
   },

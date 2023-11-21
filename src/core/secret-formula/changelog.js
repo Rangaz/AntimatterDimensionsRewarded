@@ -9,6 +9,26 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 11, 22], // Tentative date
+    name: "Why are you cursing yourself?",
+    info: `
+    <b>Work on this later!</b>
+    <br>
+    <br>
+    Balance Changes:
+    <ul>
+    <li>Achievement 23 and its Enhanced version scale slightly better.</li>
+    <li>Achievement 28's multiplier is ~25% bigger, and its Enhanced version ~^1.04 bigger.</li>
+    <li>Achievements that rely on Antimatter Galaxies or total Galaxies (Er53, 66, 83, 132) are now based on
+    best amount this Reality.</li>
+    <li>Enhanced Achievement 53's bonus 8th antimatter dims now also use Replicanti and Tachyon Galaxies.</li>
+    <li>Enhanced Achievement 66 has a bigger multiplier (x16 -> x100).</li>
+    <li>Enhanced Achievement 78 is changed: It now makes you stat with 100 Time Theorems (goes up to 1e100 with
+    Enhanced Achievement 55).</li>
+    <li>
+    `
+  },
+  {
     date: [2023, 11, 3],
     name: "I don't want to Enhance",
     info: `
