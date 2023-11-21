@@ -3,8 +3,8 @@ import { DC } from "../../constants";
 export const cursedRows = [
   {
 		id: 1,
-		get curse() { return `All Antimatter Dimensions' initial cost scaling is increased to 
-			${format(Decimal.NUMBER_MAX_VALUE, 1, 0)}.` },
+		get curse() { return `All Antimatter Dimensions have much higher initial costs, and their initial cost 
+			scaling is increased to ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)}.` },
 		effect: Decimal.NUMBER_MAX_VALUE
   },
 	{
