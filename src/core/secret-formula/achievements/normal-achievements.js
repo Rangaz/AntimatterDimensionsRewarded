@@ -813,7 +813,7 @@ export const normalAchievements = [
     enhanced: {
       get reward() {
         return `Dimension Autobuyer bulks are unlimited, and the Dilation Autobuyers bulk buy 
-          ${formatX(2)} as much.`;
+          ${formatX(2)} as much. This can be Enhanced for free.`;
       },
       effect: 2
     }

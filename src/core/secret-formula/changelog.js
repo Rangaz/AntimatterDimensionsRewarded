@@ -25,9 +25,11 @@ export const changelog = [
     <li>Enhanced Achievement 33 gives ~x5.3 more Infinities.</li>
     <li>Enhanced Achievement 34's formula is changed. Different Dimensions have different weights.</li>
     <li>Enhanced Achievement 37 now also gives x5 Eternities.</li>
+    <li>Enhanced Achievement 42 scales slightly better.</li>
     <li>Achievements that rely on Antimatter Galaxies or total Galaxies (Er53, 66, 83, 132) are now based on
     best amount this Reality.</li>
     <li>Enhanced Achievement 53's bonus 8th antimatter dims now also use Replicanti and Tachyon Galaxies.</li>
+    <li>Enhanced Achievement 61 is free.</li>
     <li>Enhanced Achievement 66 has a bigger multiplier (x16 -> x100).</li>
     <li>Enhanced Achievement 78 is changed: It now makes you stat with 100 Time Theorems (goes up to 1e100 with
     Enhanced Achievement 55).</li>
