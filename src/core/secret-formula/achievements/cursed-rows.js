@@ -40,7 +40,7 @@ export const cursedRows = [
 		"that resets on Dimension Boosts, Antimatter Galaxies, and Infinities.",
 		effect: () => DC.D1_00038.pow(Math.pow(Time.timeSinceLastReset.totalSeconds, 0.02))
 			.times(DC.E1E7.recip()).clampMax(DC.D1),
-		formatEffect: value => `${formatX(value, 2, 2)}`
+		formatEffect: value => `${formatInt(1)}/${format(value.recip(), 2, 2)}`
 	},
 	{
 		id: 7,

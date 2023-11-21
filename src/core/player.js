@@ -277,8 +277,6 @@ window.player = {
     fullGameCompletions: 0,
     previousRunRealTime: 0,
     totalAntimatter: DC.E1,
-    bestAntimatterGalaxies: 0, // For various Achievement effects
-    bestTotalGalaxies: 0,
     timeSinceLastSacrifice: 0, // For r23
     timeSinceLastReset: 0, // For r68
     timeWithExcessAMProd: 0, // For r44
@@ -327,6 +325,8 @@ window.player = {
       bestEternitiesPerMs: DC.D0,
       maxReplicanti: DC.D0,
       maxDT: DC.D0,
+      bestAntimatterGalaxies: 0, // For various Achievement effects
+      bestTotalGalaxies: 0,
       bestRSmin: 0,
       bestRSminVal: 0,
     },

@@ -1,5 +1,4 @@
 <script>
-import { Achievements } from "../../../core/globals";
 import NormalAchievement from "./NormalAchievement";
 import EffectDisplay from "@/components/EffectDisplay";
 
