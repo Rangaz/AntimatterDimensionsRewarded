@@ -44,6 +44,8 @@ export const general = {
         if (ach === 1094) return Achievement(94).enhancedEffect.effects.infinityPowerGain.effectOrDefault(1);
         if (ach === 2094) return Achievement(94).enhancedEffect.effects.replicantiSpeed.effectOrDefault(1);
 
+        // Er37 is a special case since its Eternity mult is not its effect.
+        if (ach === 37) return 5;
         if (ach === 47 || ach === 72 || ach === 93 || ach === 123) return 1; // Power effect
         if (ach === 102) return Achievement(102).enhancedEffect.effects.multiplier.effectOrDefault(1);
         if (ach === 108) return Achievement(108).enhancedEffect.effects.replicantiSpeed.effectOrDefault(1);

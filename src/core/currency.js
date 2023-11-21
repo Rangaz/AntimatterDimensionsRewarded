@@ -362,7 +362,7 @@ Currency.timeTheorems = new class extends DecimalCurrency {
   get max() { return player.timestudy.maxTheorem; }
 
   get startingValue() {
-    return Achievement(78).enhancedEffect.effectOrDefault(0);
+    return Achievement(78).enhancedEffect.effectOrDefault(DC.D0);
   }
 
   add(amount) {

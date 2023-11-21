@@ -38,7 +38,7 @@ export const cursedRows = [
 		id: 6,
 		curse: "Dimension Autobuyer bulk is unlimited, but 1st AD gets an exponentially decreasing nerf " +
 		"that resets on Dimension Boosts, Antimatter Galaxies, and Infinities.",
-		effect: () => DC.D1_00038.pow(Math.pow(Time.timeSinceLastReset.totalSeconds, 0.02))
+		effect: () => DC.D1_00038.pow(Math.pow(Time.timeSinceLastReset.totalSeconds, 0.07))
 			.times(DC.E1E7.recip()).clampMax(DC.D1),
 		formatEffect: value => `${formatInt(1)}/${format(value.recip(), 2, 2)}`
 	},

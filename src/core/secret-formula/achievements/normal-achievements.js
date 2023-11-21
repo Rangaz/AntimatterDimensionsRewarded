@@ -51,7 +51,7 @@ export const normalAchievements = [
     get reward() { return `2nd Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
     enhanced: {
       get reward() { return `2nd Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(2.4, 1, 1)}.`}
+        their initial cost scaling is ${formatX(2)}.`}
     }
   },
   {
@@ -62,7 +62,7 @@ export const normalAchievements = [
     get reward() { return `3rd Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
     enhanced: {
       get reward() { return `3rd Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(3)}.`}
+        their initial cost scaling is ${formatX(2)}.`}
     }
   },
   {
@@ -73,7 +73,7 @@ export const normalAchievements = [
     get reward() { return `4th Antimatter Dimensions are ${formatInt(100)} times cheaper.`; },
     enhanced: {
       get reward() { return `4th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(3.6, 1, 1)}.`}
+        their initial cost scaling is ${formatX(2)}.`}
     }
   },
   {
@@ -84,7 +84,7 @@ export const normalAchievements = [
     get reward() { return `5th Antimatter Dimensions are ${formatInt(100)} times cheaper.`; },
     enhanced: {
       get reward() { return `5th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(5.5, 1, 1)}.`}
+        their initial cost scaling is ${formatX(2, 1, 1)}.`}
     }
   },
   {
@@ -99,7 +99,7 @@ export const normalAchievements = [
     get reward() { return `6th Antimatter Dimensions are ${formatInt(1000)} times cheaper.`; },
     enhanced: {
       get reward() { return `6th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(8)}.`}
+        their initial cost scaling is ${formatX(2)}.`}
     }
   },
   {
@@ -110,7 +110,7 @@ export const normalAchievements = [
     get reward() { return `7th Antimatter Dimensions are ${formatInt(1000)} times cheaper.`; },
     enhanced: {
       get reward() { return `7th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(12)}.`}
+        their initial cost scaling is ${formatX(2)}.`}
     }
   },
   {
@@ -210,8 +210,10 @@ export const normalAchievements = [
     get reward() { return `Dimension Boosts require ${formatInt(5)} fewer Dimensions.`; },
     effect: 5,
     enhanced: {
-      get reward() { return `Start with ${formatInt(100)} free Dimension Boosts.`; },
-      effect: 100,
+      get reward() { return `Gain ${formatInt(100)} free Dimension Boosts, +${formatInt(1)} for 
+        every ${formatInt(1000)} purchased Dimension Boosts.`; },
+      effect: () => 100 + Math.floor(DimBoost.realBoosts / 1000),
+      formatEffect: value => `+${formatInt(value)}`
     }
   },
   {
@@ -224,8 +226,10 @@ export const normalAchievements = [
     reward: "Start with a free Tickspeed Upgrade.",
     effect: 1,
     enhanced: {
-      get reward() { return `Start with ${formatInt(100)} free Tickspeed Upgrades.`},
-      effect: 100,
+      get reward() { return `Gain ${formatInt(100)} free Tickspeed Upgrades, +${formatInt(1)} for 
+        every ${formatInt(1000)} purchased Tickspeed Upgrades.`},
+      effect: () => 100 + Math.floor(Tickspeed.totalUpgrades / 1000),
+      formatEffect: value => `+${formatInt(value)}`
     }
   },
   {
@@ -272,13 +276,13 @@ export const normalAchievements = [
     checkRequirement: () => AntimatterDimensions.all.some(x => x.multiplier.exponent >= 31),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "1st Antimatter Dimensions are stronger based on achievement rows completed.",
-    effect: () => Math.pow(0.9 + Achievements.allRows.countWhere(row => row.every(ach => ach.isUnlocked)) * 0.2,
+    effect: () => Math.pow(1 + Achievements.allRows.countWhere(row => row.every(ach => ach.isUnlocked)) * 0.2,
     Achievements.allRows.countWhere(row => row.every(ach => ach.isUnlocked))),
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "1st Antimatter Dimensions are way stronger based on achievements completed.",
       effect: () => Decimal.pow(Achievements.effectiveCount, 
-        Decimal.pow(Achievements.effectiveCount, Achievements.effectiveCount / 15 - 5.64)),
+        Decimal.pow(Achievements.effectiveCount, Achievements.effectiveCount / 14.9 - 5.65)),
       formatEffect: value => `${formatX(value, 2, 2)}`
     }
   },
@@ -322,7 +326,7 @@ export const normalAchievements = [
     effectCondition: () => Time.thisInfinity.totalSeconds > 60,
     enhanced: {
       reward: "Gain more Infinities based on the length of your current Infinity.",
-      effect: () => Math.clampMin(Math.pow(Math.log10(Time.thisInfinity.totalSeconds + 1), 2), 1),
+      effect: () => Math.clampMin(Math.pow(Math.log(Time.thisInfinity.totalSeconds + 1), 2), 1),
       formatEffect: value => `${formatX(value, 2, 2)}`
     }
   },
@@ -333,7 +337,7 @@ export const normalAchievements = [
     description: "Infinity without having any 8th Antimatter Dimensions.",
     checkRequirement: () => AntimatterDimension(8).totalAmount.eq(0),
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    reward: "Antimatter Dimensions 1-7 are stronger the less Dimensions you are using.",
+    reward: "Antimatter Dimensions 1-7 are stronger the less Antimatter Dimensions you are using.",
     effect() {
       for (let i = 8; i > 0; i--) {
         if (AntimatterDimension(i).isProducing) {return 1.8 - i * 0.09;}
@@ -343,15 +347,18 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "Antimatter Dimensions 1-7 are way stronger the less Dimensions you are using. " +
-        "This takes into account IDs and TDs.",
+        "This takes into account ALL Dimensions.",
       effect() {
-        var dimensionsUsed = 0;
+        let dimensionPower = 0;
         for (let i = 8; i > 0; i--) {
-          if (AntimatterDimension(i).isProducing) dimensionsUsed++;
-          if (InfinityDimension(i).isProducing) dimensionsUsed++;
-          if (TimeDimension(i).isProducing) dimensionsUsed++;
+          if (AntimatterDimension(i).isProducing) dimensionPower += 4;
+          if (InfinityDimension(i).isProducing) dimensionPower += 3;
+          if (TimeDimension(i).isProducing) dimensionPower += 2;
         }
-        return DC.E400.pow(24 - dimensionsUsed).clampMin(10);
+        for (let i = 4; i > 0; i--) {
+          if (DarkMatterDimension(i).isUnlocked) dimensionPower += 1;
+        }
+        return DC.E150.pow(76 - dimensionPower).clampMin(10);
       },
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
@@ -409,7 +416,8 @@ export const normalAchievements = [
     get reward() { return `Start with ${formatInt(50000)} antimatter.`; },
     effect: 50000,
     enhanced: {
-      get reward() { return `Multiply starting Antimatter and Infinity Points by your Eternity amount.`;},
+      get reward() { return `Multiply starting Antimatter and Infinity Points by your Eternity amount,
+        and gain ${formatX(5)} more Eterrnities.`;},
       effect: () => Decimal.clampMin(player.eternities, 1).powEffectOf(Achievement(55).enhancedEffect),
       formatEffect: value => `${formatX(value, 2, 2)}`
     }
@@ -475,7 +483,7 @@ export const normalAchievements = [
     enhanced: {
       get reward() { return `1st Antimatter Dimensions are way stronger based on your current
         Antimatter amount, but only if your production is larger.`},
-      effect: () => Decimal.pow(DC.D1_0000109, Math.pow(Currency.antimatter.exponent, 1.026)).clampMin(1).times(100),
+      effect: () => Decimal.pow(DC.D1_0000109, Math.pow(Currency.antimatter.exponent, 1.027)).clampMin(1).times(1000),
       effectCondition: () => Time.timeWithExcessAMProd.totalMilliseconds >= 200,
       formatEffect: value => Time.timeWithExcessAMProd.totalMilliseconds >= 200 ? `${formatX(value, 2, 2)}` :
       `Inactive (would be ${formatX(value, 2, 2)})`,

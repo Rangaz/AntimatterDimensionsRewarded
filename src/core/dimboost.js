@@ -150,6 +150,10 @@ export class DimBoost {
     if (boosts >= DimBoost.maxDimensionsUnlockable - 1 || Achievement(51).canBeApplied) {
       dimensionRange = `to all Dimensions`;
     }
+    // Cursed Row 5 should update it too
+    if (boosts >= DimBoost.maxDimensionsUnlockable - 1 && CursedRow(5).isCursed) {
+      dimensionRange = `to Dimensions 1-7`;
+    }
 
     let boostEffects;
     if (NormalChallenge(8).isRunning) boostEffects = newUnlock;
