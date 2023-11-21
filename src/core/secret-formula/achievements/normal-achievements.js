@@ -1977,7 +1977,7 @@ export const normalAchievements = [
     reward: "You start Eternities with all Infinity Challenges unlocked and completed.",
     enhanced: {
       reward: "You start Eternities with all Infinity Challenges unlocked and completed, and all Realities with " +
-        "a fully purchased Time Study tree. This requires fully completing Hard V and full V memories.",
+        "a fully purchased Time Study tree. This requires fully completing Hard V and 4 Triad Studies unlocked.",
     }
   },
   {

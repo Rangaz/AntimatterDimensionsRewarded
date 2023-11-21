@@ -14,6 +14,7 @@ export const infinityChallenges = [
       formatEffect: value => formatX(value, 1, 1)
     },
     unlockAM: DC.E2000,
+    cursedUnlockAM: DC.E1000000 // When row 13 is cursed
   },
   {
     id: 2,
@@ -27,6 +28,7 @@ export const infinityChallenges = [
         ${Sacrifice.getSacrificeDescription({ "InfinityChallenge2isCompleted": true })}`,
     },
     unlockAM: DC.E11000,
+    cursedUnlockAM: DC.E1E7
   },
   {
     id: 3,
@@ -47,6 +49,7 @@ export const infinityChallenges = [
       formatEffect: value => formatX(value, 2, 2),
     },
     unlockAM: DC.E12000,
+    cursedUnlockAM: DC.E2E7
   },
   {
     id: 4,
@@ -61,6 +64,7 @@ export const infinityChallenges = [
       effect: 1.05
     },
     unlockAM: DC.E14000,
+    cursedUnlockAM: DC.E6E7
   },
   {
     id: 5,
@@ -76,6 +80,7 @@ export const infinityChallenges = [
       effect: 1.1
     },
     unlockAM: DC.E18000,
+    cursedUnlockAM: DC.E1E8
   },
   {
     id: 6,
@@ -92,6 +97,7 @@ export const infinityChallenges = [
       formatEffect: value => formatX(value, 2, 2)
     },
     unlockAM: DC.E22500,
+    cursedUnlockAM: DC.E3E8,
   },
   {
     id: 7,
@@ -116,6 +122,7 @@ export const infinityChallenges = [
       effect: 4
     },
     unlockAM: DC.E23000,
+    cursedUnlockAM: DC.E3E8,
   },
   {
     id: 8,
@@ -133,5 +140,6 @@ export const infinityChallenges = [
       formatEffect: value => formatX(value, 2, 2)
     },
     unlockAM: DC.E28000,
+    cursedUnlockAM: DC.E1E9,
   },
 ];

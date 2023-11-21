@@ -904,6 +904,7 @@ export function getTTPerSecond() {
     Achievement(137).enhancedEffect,
     Achievement(156),
     Achievement(172).effects.timeTheoemMultiplier,
+    CursedRow(13),
   );
   if (GlyphAlteration.isAdded("dilation")) ttMult *= getSecondaryGlyphEffect("dilationTTgen");
 
