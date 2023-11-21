@@ -1,4 +1,5 @@
 <script>
+import { Achievements } from "../../../core/globals";
 import NormalAchievement from "./NormalAchievement";
 import EffectDisplay from "@/components/EffectDisplay";
 
@@ -78,7 +79,7 @@ export default {
       this.mouseOverInterval = setTimeout(() => this.isMouseOver = false, 300);
     },
     onCursedClick() {
-      if (!this.curseMode || !this.config.curse) return;
+      if (!this.curseMode || !this.config.curse || !this.canBeEnhanced) return;
       if (!this.cursedRow.toBeCursed && player.reality.respecAchievements) {
         player.celestials.ra.toBeCursedBits = 0;
         this.cursedRow.curseNextReality();
@@ -102,7 +103,7 @@ export default {
     @click="onCursedClick"
   >
     <div class="o-achievement__tooltip__curse"
-      v-if="config.curse && curseMode"
+      v-if="config.curse && curseMode && canBeEnhanced"
       ref="tooltip">
       <template v-if="isMouseOver">
         <div class="o-achievement__tooltip__name">

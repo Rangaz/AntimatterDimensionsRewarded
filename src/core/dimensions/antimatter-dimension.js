@@ -422,6 +422,10 @@ class AntimatterDimensionState extends DimensionState {
     this._baseCostMultiplier = BASE_COST_MULTIPLIERS[tier];
     const ENHANCED_COST_MULTIPLIERS = [null, 2, 2.4, 3, 3.6, 5.5, 8, 12, 32];
     this._enhancedCostMultipliers = ENHANCED_COST_MULTIPLIERS[tier];
+    // These are the Cursed Row 1 values
+    const CURSED_BASE_COSTS = [null, 1e130, DC.E1000, DC.E10000, DC.E100000, DC.E500000, 
+      DC.E1E6, DC.E3E6, DC.E6E6];
+    this._cursedBaseCosts = CURSED_BASE_COSTS[tier];
     const CURSED_COST_MULTPLIERS = [null, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, 
       Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE];
     this._cursedCostMultipliers = CURSED_COST_MULTPLIERS[tier];
@@ -440,7 +444,7 @@ class AntimatterDimensionState extends DimensionState {
     // Cursing row 1 already implies that all row 1 Achievements are disabled.
     if (isCursed) {
       return new ExponentialCostScaling({
-      baseCost: this._firstPurchaseCost,
+      baseCost: this._cursedBaseCosts,
       baseIncrease: this._cursedCostMultipliers,
       costScale: Player.dimensionMultDecrease,
       scalingCostThreshold: Number.MAX_VALUE
