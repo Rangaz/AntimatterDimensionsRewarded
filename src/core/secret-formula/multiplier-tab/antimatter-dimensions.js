@@ -520,6 +520,9 @@ export const AD = {
       const allMult = DC.D1;
       const dimMults = Array.repeat(DC.D1, 9);
       for (let tier = 1; tier <= 8; tier++) {
+        if (tier === 1) {
+          dimMults[tier] = dimMults[tier].timesEffectOf(CursedRow(6));
+        }
         if (tier === 8) {
           dimMults[tier] = dimMults[tier].timesEffectOf(CursedRow(4));
         }

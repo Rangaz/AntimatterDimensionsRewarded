@@ -9,17 +9,17 @@ export const cursedRows = [
   },
 	{
 		id: 2,
-		get curse() { return `Antimatter Galaxies require ${formatInt(10)} more Dimensions per Galaxy, and
-			Distant cost scaling starts ${formatInt(1000)} Galaxies earlier` },
+		get curse() { return `Antimatter Galaxies require ${formatInt(20)} more Dimensions per Galaxy, and
+			Distant cost scaling starts ${formatInt(1000)} Galaxies earlier.` },
 		effects: {
-			perGalaxyIncrease: -10,
+			perGalaxyIncrease: -20,
 			distantGalaxyStart: -1000
 		}	
 	},
 	{
 		id: 3,
-		get curse() { return `Divide starting tick speed by ${formatPostBreak(DC.E10000)}.` },
-		effect: DC.E10000
+		get curse() { return `Divide starting tick speed by ${formatPostBreak(DC.E500000)}.` },
+		effect: DC.E500000
 	},
 	{
 		id: 4,
@@ -27,36 +27,36 @@ export const cursedRows = [
 			"AD amounts.",
 		effect: () => Decimal.min(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(AntimatterDimension(3).
     	amount.times(AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(AntimatterDimension(6).amount.times(
-    	AntimatterDimension(7).amount)))))).plus(1).pow(-0.0003), 1),
+    	AntimatterDimension(7).amount)))))).plus(1).pow(-0.0005), 1),
 			formatEffect: value => `/${format(value.recip(), 2, 2)}`
 	},
 	{
 		id: 5,
-		curse: "Dimension Boosts only affect ADs 1-7.",
+		curse: "Dimension Boosts only affect ADs 1-4.",
 	},
 	{
 		id: 6,
 		curse: "Dimension Autobuyer bulk is unlimited, but 1st AD gets an exponentially decreasing nerf " +
 		"that resets on Dimension Boosts, Antimatter Galaxies, and Infinities.",
-		effect: () => DC.D1_00038.pow(Math.pow(Time.timeSinceLastReset.totalSeconds, 0.07))
-			.times(DC.E1E7.recip()).clampMax(DC.D1),
+		effect: () => DC.D1_00038.pow(Math.pow(Time.timeSinceLastReset.totalSeconds, 0.075))
+			.times(DC.E2E7.recip()).clampMax(DC.D1),
 		formatEffect: value => `${formatInt(1)}/${format(value.recip(), 2, 2)}`
 	},
 	{
 		id: 7,
 		curse: "Infinity Power divides IP gain at a reduced rate.",
-		effect: () => Decimal.pow(Currency.infinityPower.value.add(1), -0.001).clampMax(1),
+		effect: () => Decimal.pow(Currency.infinityPower.value.add(1), -0.005).clampMax(1),
     formatEffect: value => `${formatInt(1)}/${format(value.recip(), 2, 2)}`,
 	},
 	{
 		id: 8,
-		get curse() { return `All Galaxies are ${formatPercents(0.05)} weaker.` },
-		effect: 0.95,
+		get curse() { return `All Galaxies are ${formatPercents(0.1)} weaker.` },
+		effect: 0.9,
 	},
 	{
 		id: 9,
-		get curse() { return `Raise Infinity Dimension and Replicanti Upgrade cost by ${formatPow(1.1, 1, 1)}.` },
-		effect: 1.1
+		get curse() { return `Raise Infinity Dimension and Replicanti Upgrade cost by ${formatPow(1.2, 1, 1)}.` },
+		effect: 1.2
 	},
 	{
 		id: 10,

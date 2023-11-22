@@ -41,8 +41,8 @@ export class DimBoost {
   }
 
   static multiplierToNDTier(tier) {
-    // Having cursed row 5 will make it useless against AD 8
-    if (CursedRow(5).isCursed && tier == 8) return DC.D1; 
+    // Having cursed row 5 will make it useless against ADs 5-8
+    if (CursedRow(5).isCursed && tier > 4) return DC.D1; 
     // r51 will make all Dimension Boosts affect all Antimatter dimensions
     const normalBoostMult = DimBoost.power.pow(this.realBoosts + 1 - tier * 
       (!Achievement(51).isUnlocked || Achievement(51).isCursed)).clampMin(1);
@@ -151,8 +151,8 @@ export class DimBoost {
       dimensionRange = `to all Dimensions`;
     }
     // Cursed Row 5 should update it too
-    if (boosts >= DimBoost.maxDimensionsUnlockable - 1 && CursedRow(5).isCursed) {
-      dimensionRange = `to Dimensions 1-7`;
+    if (CursedRow(5).isCursed) {
+      dimensionRange = `to Dimensions 1-4`;
     }
 
     let boostEffects;
