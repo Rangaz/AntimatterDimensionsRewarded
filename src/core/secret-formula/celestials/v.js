@@ -108,13 +108,13 @@ export const v = {
       name: "Young Boy",
       description: value => `Get ${format(Decimal.pow10(value))} Antimatter in Eternity Challenge 12 without
         unlocking Time Dilation.`,
-      values: [400e6, 450e6, 525e6, 625e6, 800e6, 1.3e9],
+      values: [400e6, 500e6, 600e6, 800e6, 1.1e9, 1.5e9],
       condition: () => V.isRunning && EternityChallenge(12).isRunning && !PlayerProgress.dilationUnlocked(),
       currentValue: () => Currency.antimatter.value.log10(),
       formatRecord: x => format(Decimal.pow10(x)),
-      shardReduction: tiers => 50e6 * tiers,
+      shardReduction: tiers => 100e6 * tiers,
       maxShardReduction: goal => goal - 400e6,
-      perReductionStep: DC.E500000,
+      perReductionStep: DC.E1E6,
       mode: V_REDUCTION_MODE.DIVISION
     },
     {

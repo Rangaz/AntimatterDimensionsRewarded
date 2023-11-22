@@ -82,14 +82,14 @@ export const Effarig = {
     let c;
     switch (this.currentStage) {
       case EFFARIG_STAGES.INFINITY:
-        c = 975;
+        c = 1111;
         break;
       case EFFARIG_STAGES.ETERNITY:
-        c = 28;
+        c = 28.28;
         break;
       case EFFARIG_STAGES.REALITY:
       default:
-        c = 25;
+        c = 25.25;
         break;
     }
     return 3 * (1 - c / (c + Math.sqrt(power.pLog10())));
