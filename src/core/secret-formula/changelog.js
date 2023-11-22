@@ -35,6 +35,8 @@ export const changelog = [
     <li>Enhanced Achievement 66 has a bigger multiplier (x16 ➜ x100).</li>
     <li>Enhanced Achievement 78 is changed: It now makes you stat with 100 Time Theorems (goes up to 1e100 with
     Enhanced Achievement 55).</li>
+    <li>Enhanced Achievement 94 gives a much higher Infinity Power multiplier (1e260 ➜ 1e26000) and Replicanti
+    speed (43.333 ➜ 260).</li>
     <br>
     <li>Teresa's Reality nerfs IP and EP more (^0.55 ➜ ^0.52).</li>
     <li>Effarig's stages are slightly harder.</li>

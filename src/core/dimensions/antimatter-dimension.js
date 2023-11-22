@@ -142,6 +142,7 @@ function applyNDMultipliers(mult, tier) {
         Achievement(71),
         Achievement(122),
         Achievement(122).enhancedEffect,
+        CursedRow(6),
         TimeStudy(234)
       );
   }
@@ -423,7 +424,7 @@ class AntimatterDimensionState extends DimensionState {
     const ENHANCED_COST_MULTIPLIERS = [null, 2, 2, 2, 2, 2, 2, 2, 32];
     this._enhancedCostMultipliers = ENHANCED_COST_MULTIPLIERS[tier];
     // These are the Cursed Row 1 values
-    const CURSED_BASE_COSTS = [null, 1e130, DC.E1000, DC.E10000, DC.E100000, DC.E500000, 
+    const CURSED_BASE_COSTS = [null, 1e129, DC.E10000, DC.E100000, DC.E320000, DC.E500000, 
       DC.E1E6, DC.E3E6, DC.E6E6];
     this._cursedBaseCosts = CURSED_BASE_COSTS[tier];
     const CURSED_COST_MULTPLIERS = [null, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, 

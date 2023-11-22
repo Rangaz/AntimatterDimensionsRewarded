@@ -417,7 +417,7 @@ export const normalAchievements = [
     effect: 50000,
     enhanced: {
       get reward() { return `Multiply starting Antimatter and Infinity Points by your Eternity amount,
-        and gain ${formatX(5)} more Eterrnities.`;},
+        and gain ${formatX(5)} more Eternities.`;},
       effect: () => Decimal.clampMin(player.eternities, 1).powEffectOf(Achievement(55).enhancedEffect),
       formatEffect: value => `${formatX(value, 2, 2)}`
     }
@@ -1339,11 +1339,11 @@ export const normalAchievements = [
     },
     enhanced: {
       get reward() {
-        return `Infinity Power gain ${formatX(DC.E260)}, and boost Replicanti speed by ${formatX(43.333, 3, 3)}.`;
+        return `Infinity Power gain ${formatX(DC.E26000)}, and boost Replicanti speed by ${formatX(260)}.`;
       },
       effects: {
-        infinityPowerGain: 1e260,
-        replicantiSpeed: 43.333
+        infinityPowerGain: DC.E26000,
+        replicantiSpeed: 260
       }
     }
   },

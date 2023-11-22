@@ -146,12 +146,14 @@ export const v = {
     },
     {
       id: 6,
-      name: "Requiem for a Glyph",
-      description: value => `Unlock Reality with at most ${formatInt(-value)} Glyphs equipped for the entire Reality.`,
+      name: "Dual Requiem",
+      description: value => `Unlock Reality with a total of at most ${formatInt(-value)} Glyphs equipped 
+        and Enhanced Achievements.`,
       // This achievement has internally negated values since the check is always greater than
-      values: [1, 4, 7, 10, 13],
+      values: [3, 12, 21, 30, 39],
       condition: () => V.isRunning && TimeStudy.reality.isBought,
-      currentValue: () => -player.requirementChecks.reality.maxGlyphs,
+      currentValue: () => -player.requirementChecks.reality.maxGlyphs - 
+        Achievements.totalEnhancementPoints + Achievements.enhancementPoints,
       formatRecord: x => formatInt(-x),
       shardReduction: () => 0,
       maxShardReduction: () => 0,
@@ -161,13 +163,13 @@ export const v = {
     {
       id: 7,
       name: "Post-destination",
-      description: value => `Get ${formatInt(400000)} Time Theorems with a /${format(Decimal.pow10(value), 2, 2)}
-        Black Hole or slower, without discharging or entering EC12.`,
+      description: value => `Get ${formatInt(500000)} Time Theorems with a /${format(Decimal.pow10(value), 2, 2)}
+        Black Hole or slower, without discharging, entering EC12 or Enhancing Achievement 78.`,
       values: [100, 150, 200, 250, 300],
       condition: () => V.isRunning,
       currentValue: () => (
-        // Dirty hack I know lmao
-        Currency.timeTheorems.gte(400000)
+        // Dirty hack I know lmao. (I'll join)
+        Currency.timeTheorems.gte(500000) && !Achievement(78).isEnhanced
           ? -Math.log10(player.requirementChecks.reality.slowestBH)
           : 0),
       formatRecord: x => `${formatInt(1)} / ${format(Math.pow(10, x))}`,
@@ -182,7 +184,7 @@ export const v = {
       id: 8,
       name: "Shutter Glyph",
       description: value => `Reach a Glyph of level ${formatInt(value)}.`,
-      values: [6500, 7000, 8000, 9000, 10000],
+      values: [6500, 7000, 8000, 9000, 10500],
       condition: () => V.isRunning,
       currentValue: () => gainedGlyphLevel().actualLevel,
       formatRecord: x => formatInt(x),

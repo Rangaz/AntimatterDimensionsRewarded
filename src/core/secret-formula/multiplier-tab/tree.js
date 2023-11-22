@@ -156,7 +156,7 @@ const targetedEffects = {
   },
   cursedRow: {
     checkFn: MultiplierTabHelper.cursedRowDimCheck,
-    AD: [4],
+    AD: [4, 6],
     IP: [7],
     replicanti: [10],
   }
