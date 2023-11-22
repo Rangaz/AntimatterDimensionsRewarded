@@ -30,6 +30,7 @@ export const changelog = [
     best amount this Reality.</li>
     <li>Enhanced Achievement 53's bonus 8th antimatter dims now also use Replicanti and Tachyon Galaxies.</li>
     <li>Enhanced Achievement 61 is free.</li>
+    <li>Enhanced Achievement 63 gives x8 the cost of an Infinity Dimension.</li>
     <li>Enhanced Achievement 66 has a bigger multiplier (x16 -> x100).</li>
     <li>Enhanced Achievement 78 is changed: It now makes you stat with 100 Time Theorems (goes up to 1e100 with
     Enhanced Achievement 55).</li>
