@@ -21,7 +21,7 @@ GameDatabase.celestials.descriptions = [
     name: "Teresa",
     effects() {
       return `Glyph Time Theorem generation is disabled.
-      You gain less Infinity Points and Eternity Points (x^${format(0.55, 2, 2)}).`;
+      You gain less Infinity Points and Eternity Points (x^${format(0.52, 2, 2)}).`;
     },
   },
   {

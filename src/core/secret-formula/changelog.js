@@ -26,6 +26,7 @@ export const changelog = [
     <li>Enhanced Achievement 34's formula is changed. Different Dimensions have different weights.</li>
     <li>Enhanced Achievement 37 now also gives x5 Eternities.</li>
     <li>Enhanced Achievement 42 scales slightly better.</li>
+    <li>Achievement 44 scales slightly better after 30 seconds.</li>
     <li>Achievements that rely on Antimatter Galaxies or total Galaxies (Er53, 66, 83, 132) are now based on
     best amount this Reality.</li>
     <li>Enhanced Achievement 53's bonus 8th antimatter dims now also use Replicanti and Tachyon Galaxies.</li>

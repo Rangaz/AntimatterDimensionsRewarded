@@ -106,7 +106,7 @@ export const EP = {
 
   nerfTeresa: {
     name: "Teresa's Reality",
-    powValue: () => 0.55,
+    powValue: () => 0.52,
     isActive: () => Teresa.isRunning,
     icon: MultiplierTabIcons.GENERIC_TERESA,
   },

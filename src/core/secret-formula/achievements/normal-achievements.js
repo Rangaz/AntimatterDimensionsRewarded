@@ -530,7 +530,7 @@ export const normalAchievements = [
     effect() {
       const excessTimeProduction = Time.timeWithExcessAMProd.totalSeconds;
       return excessTimeProduction >= 30 ?
-      Math.pow(excessTimeProduction - 30, 0.55) / 100 + 1.3 : 
+      Math.pow(excessTimeProduction - 30, 0.6) / 100 + 1.3 : 
       1 + excessTimeProduction / 100;
     },
     formatEffect: value => `${formatX(value, 2, 2)}`,

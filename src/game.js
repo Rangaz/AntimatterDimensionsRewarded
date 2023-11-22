@@ -104,7 +104,7 @@ export function gainedInfinityPoints() {
   // Pow effects from Achievements
   ip = ip.pow(Achievement(93).enhancedEffect.effectOrDefault(1));
   if (Teresa.isRunning) {
-    ip = ip.pow(0.55);
+    ip = ip.pow(0.52);
   } else if (V.isRunning) {
     ip = ip.pow(0.5);
   } else if (Laitela.isRunning) {
@@ -143,7 +143,7 @@ export function gainedEternityPoints() {
     gainedInfinityPoints()).log10() / div - 0.7).times(totalEPMult());
 
   if (Teresa.isRunning) {
-    ep = ep.pow(0.55);
+    ep = ep.pow(0.52);
   } else if (V.isRunning) {
     ep = ep.pow(0.5);
   } else if (Laitela.isRunning) {
