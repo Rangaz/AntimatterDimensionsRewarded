@@ -850,7 +850,7 @@ export const normalAchievements = [
     get reward() { return `Gain back those ${format(DC.E8)} IP you must have spent to get this Achievement.`},
     effect: DC.E8,
     enhanced: {
-      reward: "Buying Infinity Dimensions give their Infinity Point cost to you."
+      get reward() { return `Buying Infinity Dimensions give ${formatX(8)} their Infinity Point cost to you.` }
     }
   },
   {
@@ -1115,9 +1115,9 @@ export const normalAchievements = [
     enhanced: {
       get reward() {
         return `Start with ${Achievement(55).isEnhanced ? 
-          `${format(DC.E100)} (improved by Enhanced Achievement 55)` : formatInt(100)} Time Theorems.`
+          `${format(DC.E50)} (improved by Enhanced Achievement 55)` : formatInt(10)} Time Theorems.`
       },
-      effect: () => DC.E2.powEffectOf(Achievement(55).enhancedEffect),
+      effect: () => DC.E1.powEffectOf(Achievement(55).enhancedEffect),
     }
   },
   {
