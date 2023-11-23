@@ -68,6 +68,7 @@ export const DC = deepFreeze({
   C1D1_1245:                Decimal.div(1, 1.1245),
   D2P30D0_61:               Decimal.pow(2, 30 / 0.61),
   C2P30:                    Decimal.pow(2, 30),
+  C2P200:                   Decimal.pow(2, 200),
   C2P1024:                  Decimal.pow(2, 1024),
   C10P16000D3:              Decimal.pow(10, 16000 / 3),
 

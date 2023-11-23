@@ -577,7 +577,7 @@ export const normalAchievements = [
         "all AD amounts.",
         effect: () => Currency.antimatter.value.times(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(
           AntimatterDimension(3).amount.times(AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(
-            AntimatterDimension(6).amount.times(AntimatterDimension(7).amount))))))).pow(0.000025).plus(1),
+            AntimatterDimension(6).amount.times(AntimatterDimension(7).amount))))))).pow(0.00003).plus(1),
           formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
@@ -1500,9 +1500,9 @@ export const normalAchievements = [
     effect: 5e40,
     enhanced: {
       get reward() { return `When unlocking Dilation, start with ${Achievement(55).isEnhanced ? 
-        `${format(1e100)} Tachyon Particles (improved by Enhanced Achievement 55).` : 
-        `${formatInt(100)} Tachyon Particles.`}`},
-      effect: () => DC.E2.powEffectOf(Achievement(55).enhancedEffect),
+        `${format(DC.C2P200, 2, 2)} Tachyon Particles (improved by Enhanced Achievement 55).` : 
+        `${formatInt(16)} Tachyon Particles.`}`},
+      effect: () => DC.D16.powEffectOf(Achievement(55).enhancedEffect),
     }
   },
   {

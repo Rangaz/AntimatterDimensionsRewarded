@@ -5,7 +5,6 @@ export const cursedRows = [
 		id: 1,
 		get curse() { return `All Antimatter Dimensions have much higher initial costs, and their initial cost 
 			scaling is increased to ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)}.` },
-		effect: Decimal.NUMBER_MAX_VALUE
   },
 	{
 		id: 2,
@@ -27,7 +26,7 @@ export const cursedRows = [
 			"AD amounts.",
 		effect: () => Decimal.min(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(AntimatterDimension(3).
     	amount.times(AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(AntimatterDimension(6).amount.times(
-    	AntimatterDimension(7).amount)))))).plus(1).pow(-0.0005), 1),
+    	AntimatterDimension(7).amount)))))).plus(1).pow(-0.0006), 1),
 			formatEffect: value => `/${format(value.recip(), 2, 2)}`
 	},
 	{
@@ -45,7 +44,7 @@ export const cursedRows = [
 	{
 		id: 7,
 		curse: "Infinity Power divides IP gain at a reduced rate.",
-		effect: () => Decimal.pow(Currency.infinityPower.value.add(1), -0.005).clampMax(1),
+		effect: () => Decimal.pow(Currency.infinityPower.value.add(1), -0.006).clampMax(1),
     formatEffect: value => `${formatInt(1)}/${format(value.recip(), 2, 2)}`,
 	},
 	{
@@ -60,8 +59,8 @@ export const cursedRows = [
 	},
 	{
 		id: 10,
-		get curse() { return `Replicanti speed /${format(1e8)} if you have purchased a Replicanti Galaxy.`},
-		effect: 1e-8,
+		get curse() { return `Replicanti production stops if you have a purchased Replicanti Galaxy.`},
+		effect: 0,
 		effectCondition: () => Replicanti.galaxies.bought > 0
 	},
 	{
