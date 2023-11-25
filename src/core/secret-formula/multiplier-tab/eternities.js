@@ -7,7 +7,7 @@ export const eternities = {
     name: "Eternities gained per Eternity",
     isBase: true,
     multValue: () => gainedEternities(),
-    isActive: () => (PlayerProgress.realityUnlocked() || Achievement(113).isUnlocked) && !Pelle.isDoomed,
+    isActive: () => (PlayerProgress.realityUnlocked() || Achievement(113).isUnlocked) && !Pelle.isDoomed && !CursedRow(11).isCursed,
     overlay: ["Δ", "<i class='fa-solid fa-arrows-rotate' />"],
   },
   achievement: {

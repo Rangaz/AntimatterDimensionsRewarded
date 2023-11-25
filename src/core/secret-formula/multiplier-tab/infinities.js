@@ -11,7 +11,7 @@ export const infinities = {
     // The earliest sources of infinity multipliers, where I think is worth showing the tab for,
     // are ach87 and TS32, which may happen in either order
     isActive: () => (Achievement(87).isUnlocked || PlayerProgress.eternityUnlocked()) &&
-      !EternityChallenge(4).isRunning && !Pelle.isDoomed,
+      !EternityChallenge(4).isRunning && !Pelle.isDoomed && !CursedRow(11).isCursed,
     overlay: ["∞", "<i class='fa-solid fa-arrows-rotate' />"],
   },
   achievement: {

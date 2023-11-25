@@ -284,8 +284,12 @@ export function gainedEternities() {
   return Pelle.isDisabled("eternityMults")
     ? new Decimal(1)
     : new Decimal(getAdjustedGlyphEffect("timeetermult"))
-      .timesEffectsOf(RealityUpgrade(3), Achievement(102).enhancedEffect.effects.multiplier, 
-        Achievement(113), Achievement(113).enhancedEffect, Achievement(115).enhancedEffect.effects.eternityMultiplier,)
+      .timesEffectsOf(
+        RealityUpgrade(3), 
+        Achievement(102).enhancedEffect.effects.multiplier, 
+        Achievement(113), Achievement(113).enhancedEffect, 
+        Achievement(115).enhancedEffect.effects.eternityMultiplier,
+        CursedRow(11))
       .pow(AlchemyResource.eternity.effectValue).times(Achievement(37).isEnhanced ? 5 : 1);
 }
 
