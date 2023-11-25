@@ -212,7 +212,7 @@ class InfinityIPMultUpgrade extends GameMechanicState {
     }
     // And Er82 makes this upgrade give IP
     if (Achievement(82).isEnhanced) {
-      Currency.infinityPoints.add(Decimal.sumGeometricSeries(amount, this.cost, this.costIncrease, 0));
+      Currency.infinityPoints.add(Decimal.sumGeometricSeries(amount, this.cost, this.costIncrease, 0).times(2));
     }
     player.IPMultPurchases += amount;
     GameUI.update();

@@ -1072,8 +1072,8 @@ export const normalAchievements = [
     get description() { return `Play for ${formatInt(144)} hours (${formatInt(6)} days).`; },
     checkRequirement: () => Time.totalTimePlayed.totalHours >= 144,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    reward: "Extremely small multiplier to Antimatter Dimensions based on time played.",
-    effect: () => Math.max(Math.pow(Time.totalTimePlayed.totalDays / 2, 0.05), 1),
+    reward: "Very small multiplier to Antimatter Dimensions based on time played.",
+    effect: () => Math.max(Math.pow(Time.totalTimePlayed.totalDays / 2, 0.1), 1),
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       get reward() { 
@@ -1145,7 +1145,8 @@ export const normalAchievements = [
     checkEvent: [GAME_EVENT.INFINITY_CHALLENGE_COMPLETED, GAME_EVENT.REALITY_RESET_AFTER],
     get reward() { return `The ${formatX(2)} IP multiplier upgrade no longer spends IP.`;},
     enhanced: {
-      get reward() { return `The ${formatX(2)} IP multiplier upgrade gives IP instead of spending them.`;}
+      get reward() { return `The ${formatX(2)} IP multiplier upgrade gives ${formatX(2)} its IP cost 
+        instead of spending them.`;}
     }
   },
   {
