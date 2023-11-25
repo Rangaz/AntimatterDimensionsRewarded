@@ -17,8 +17,8 @@ export const cursedRows = [
 	},
 	{
 		id: 3,
-		get curse() { return `Divide starting tick speed by ${formatPostBreak(DC.E500000)}.` },
-		effect: DC.E500000
+		get curse() { return `Divide starting tick speed by ${formatPostBreak(DC.E1E6)}.` },
+		effect: DC.E1E6
 	},
 	{
 		id: 4,
@@ -26,7 +26,7 @@ export const cursedRows = [
 			"AD amounts.",
 		effect: () => Decimal.min(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(AntimatterDimension(3).
     	amount.times(AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(AntimatterDimension(6).amount.times(
-    	AntimatterDimension(7).amount)))))).plus(1).pow(-0.0006), 1),
+    	AntimatterDimension(7).amount)))))).plus(1).pow(-0.001), 1),
 			formatEffect: value => `/${format(value.recip(), 2, 2)}`
 	},
 	{
@@ -37,25 +37,25 @@ export const cursedRows = [
 		id: 6,
 		curse: "Dimension Autobuyer bulk is unlimited, but 1st AD gets an exponentially decreasing nerf " +
 		"that resets on Dimension Boosts, Antimatter Galaxies, and Infinities.",
-		effect: () => DC.D1_00038.pow(Math.pow(Time.timeSinceLastReset.totalSeconds, 0.075))
+		effect: () => DC.D1_00038.pow(Math.pow(Time.timeSinceLastReset.totalSeconds, 0.072))
 			.times(DC.E2E7.recip()).clampMax(DC.D1),
 		formatEffect: value => `${formatInt(1)}/${format(value.recip(), 2, 2)}`
 	},
 	{
 		id: 7,
 		curse: "Infinity Power divides IP gain at a reduced rate.",
-		effect: () => Decimal.pow(Currency.infinityPower.value.add(1), -0.006).clampMax(1),
+		effect: () => Decimal.pow(Currency.infinityPower.value.add(1), -0.01).clampMax(1),
     formatEffect: value => `${formatInt(1)}/${format(value.recip(), 2, 2)}`,
 	},
 	{
 		id: 8,
-		get curse() { return `All Galaxies are ${formatPercents(0.1)} weaker.` },
-		effect: 0.9,
+		get curse() { return `All Galaxies are ${formatPercents(0.15)} weaker.` },
+		effect: 0.85,
 	},
 	{
 		id: 9,
-		get curse() { return `Raise Infinity Dimension and Replicanti Upgrade cost by ${formatPow(1.2, 1, 1)}.` },
-		effect: 1.2
+		get curse() { return `Raise Infinity Dimension and Replicanti Upgrade cost by ${formatPow(1.25, 2, 2)}.` },
+		effect: 1.25
 	},
 	{
 		id: 10,
@@ -65,14 +65,13 @@ export const cursedRows = [
 	},
 	{
 		id: 11,
-		get curse() { return `The multiplier from Dimension Boosts to Antimatter Dimesions is /${formatInt(1000)}
-			lower.` },
-		effect: 0.001
+		get curse() { return `You can no longer gain Infinities nor Eternities, and disable IC6's reward.` },
+		effect: 0
 	},
 	{
 		id: 12,
-		get curse() { return `Time Dimensions are raised by ${formatPow(-0.001, 3, 3)} for every Time Study purchased.`},
-		effect: () => 1 - 0.001 * player.timestudy.studies.length,
+		get curse() { return `Time Dimensions are raised by ${formatPow(-0.002, 3, 3)} for every Time Study purchased.`},
+		effect: () => 1 - 0.002 * player.timestudy.studies.length,
 		formatEffect: value => `${formatPow(value, 3, 3)}`
 	},
 	{

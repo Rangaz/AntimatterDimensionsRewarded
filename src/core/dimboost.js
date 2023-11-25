@@ -32,7 +32,6 @@ export class DimBoost {
         Achievement(117),
         Achievement(117).enhancedEffect,
         Achievement(142),
-        CursedRow(11),
         GlyphEffect.dimBoostPower,
         PelleRifts.recursion.milestones[0]
       ).powEffectsOf(InfinityUpgrade.dimboostMult.chargedEffect);

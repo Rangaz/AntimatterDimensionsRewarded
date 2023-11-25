@@ -301,6 +301,7 @@ export function gainedInfinities() {
     Achievement(102).enhancedEffect.effects.multiplier,
     Achievement(164),
     Achievement(172).effects.infinityMultiplier,
+    CursedRow(11),
     Ra.unlocks.continuousTTBoost.effects.infinity
   );
   infGain = infGain.times(getAdjustedGlyphEffect("infinityinfmult"));
@@ -718,6 +719,7 @@ function passivePrestigeGen() {
       Achievement(113),
       Achievement(113).enhancedEffect,
       Achievement(115).enhancedEffect.effects.eternityMultiplier,
+      CursedRow(11),
       RealityUpgrade(3),
       RealityUpgrade(14)
     );
@@ -737,6 +739,7 @@ function passivePrestigeGen() {
       // Multipliers are done this way to explicitly exclude ach87 and TS32
       infGen = infGen.plus(0.5 * Time.deltaTimeMs / Math.clampMin(50, player.records.bestInfinity.time));
       infGen = infGen.timesEffectsOf(
+        CursedRow(11),
         RealityUpgrade(5),
         RealityUpgrade(7),
         Ra.unlocks.continuousTTBoost.effects.infinity
