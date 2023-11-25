@@ -1,4 +1,5 @@
 <script>
+import { Achievement } from '../../../core/globals';
 import { Time } from '../../../core/time';
 import { getGameSpeedupForDisplay } from '../../../game';
 
@@ -167,7 +168,7 @@ export default {
           const pending = Replicanti.galaxies.gain;
           let pendingTime = pending * secondsPerGalaxy.toNumber();
           // If popular music is unlocked add the divide amount
-          if (Achievement(126).isUnlocked && !Pelle.isDoomed) {
+          if (Achievement(126).isUnlocked && !Achievement(126).isCursed && !Pelle.isDoomed) {
             const leftPercentAfterGalaxy = replicantiAmount.log10() / LOG10_MAX_VALUE - pending;
             pendingTime += leftPercentAfterGalaxy * secondsPerGalaxy.toNumber();
           }

@@ -116,11 +116,11 @@ export const imaginaryUpgrades = [
     name: "Consequences of Illusions",
     id: 12,
     cost: 5e7,
-    requirement: () => `Make a level ${formatInt(9000)} Glyph with a single Glyph level factor weight at
+    requirement: () => `Make a level ${formatInt(9100)} Glyph with a single Glyph level factor weight at
     ${formatInt(100)}`,
     hasFailed: () => false,
     checkRequirement: () => Object.values(player.celestials.effarig.glyphWeights).some(w => w === 100) &&
-      gainedGlyphLevel().actualLevel >= 9000,
+      gainedGlyphLevel().actualLevel >= 9100,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     description: "Gain free Dimboosts based on Imaginary rebuyable count",
     effect: () => 2e4 * ImaginaryUpgrades.totalRebuyables,
