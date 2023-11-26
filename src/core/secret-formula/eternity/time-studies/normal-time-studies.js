@@ -103,7 +103,7 @@ export const normalTimeStudies = [
     requirement: [31],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
     description: () => `All Galaxies give a ${formatX(DC.D1_2, 1, 1)} multiplier to Infinity Points gained`,
-    effect: () => DC.D1_2.pow(Replicanti.galaxies.total + Galaxy.effectiveGalaxies + player.dilation.totalTachyonGalaxies),
+    effect: () => DC.D1_2.pow(Replicanti.galaxies.total + player.galaxies + player.dilation.totalTachyonGalaxies),
     formatEffect: value => formatX(value, 2, 1)
   },
   {
@@ -624,7 +624,7 @@ export const normalTimeStudies = [
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
     requiresST: [231],
     description: "All Galaxies are stronger based on Antimatter Galaxies",
-    effect: () => Math.pow(1 + Galaxy.effectiveGalaxies / 1000, 0.2),
+    effect: () => Math.pow(1 + player.galaxies / 1000, 0.2),
     formatEffect: value => `+${formatPercents(value - 1, 3)}`
   },
   {

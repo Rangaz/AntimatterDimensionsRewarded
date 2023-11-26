@@ -625,10 +625,9 @@ export function gameLoop(passDiff, options = {}) {
   Currency.timeTheorems.add(getTTPerSecond().times(diff / 1000));
   InfinityDimensions.tryAutoUnlock();
   
-  player.records.thisReality.bestAntimatterGalaxies = Math.max(player.records.thisReality.bestAntimatterGalaxies, 
-    Galaxy.effectiveGalaxies);
+  player.galaxies = Math.max(player.galaxies, Galaxy.continuumGalaxies);
   player.records.thisReality.bestTotalGalaxies = Math.max(player.records.thisReality.bestTotalGalaxies, 
-    Galaxy.effectiveGalaxies + player.replicanti.galaxies + player.dilation.totalTachyonGalaxies);
+    player.galaxies + player.replicanti.galaxies + player.dilation.totalTachyonGalaxies);
 
   BlackHoles.updatePhases(blackHoleDiff);
 

@@ -95,7 +95,7 @@ export default {
     update() {
       this.type = Galaxy.type;
       this.isThisContinuum = Laitela.continuumActive && Achievement(177).isUnlocked;
-      this.galaxies.normal = Galaxy.effectiveGalaxies + GalaxyGenerator.galaxies;
+      this.galaxies.normal = player.galaxies + GalaxyGenerator.galaxies;
       this.galaxies.replicanti = Replicanti.galaxies.total;
       this.galaxies.dilation = player.dilation.totalTachyonGalaxies;
       const requirement = Galaxy.requirement;

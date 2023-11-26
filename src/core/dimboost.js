@@ -180,9 +180,9 @@ export class DimBoost {
 
     const increase = GameCache.increasePerDimBoost.value;
     const dim = AntimatterDimension(this.maxDimensionsUnlockable).continuumValue * 10;
-    let maxBoosts = Math.min(Number.MAX_VALUE, 1 + (dim - 20) / increase);
+    let maxBoosts = Math.clamp(1 + (dim - 20) / increase, 0, Number.MAX_VALUE);
     if (!EternityChallenge(5).isRunning) {
-      player.dimensionBoosts = Math.floor(maxBoosts);
+      player.dimensionBoosts = Math.max(Math.floor(maxBoosts), 4);
       return maxBoosts * Achievement(176).effectOrDefault(1);
     }
     // But in case of EC5 it's not, so do binary search for appropriate boost amount

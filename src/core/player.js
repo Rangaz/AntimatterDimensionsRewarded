@@ -325,7 +325,6 @@ window.player = {
       bestEternitiesPerMs: DC.D0,
       maxReplicanti: DC.D0,
       maxDT: DC.D0,
-      bestAntimatterGalaxies: 0, // For various Achievement effects
       bestTotalGalaxies: 0,
       bestRSmin: 0,
       bestRSminVal: 0,

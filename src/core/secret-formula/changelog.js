@@ -28,14 +28,12 @@ export const changelog = [
     <li>Enhanced Achievement 42 scales slightly better.</li>
     <li>Achievement 44 scales slightly better after 30 seconds.</li>
     <li>Enhanced Achievement 46 is better.</li>
-    <li>Achievements that rely on Antimatter Galaxies or total Galaxies (Er53, 66, 83, 132) are now based on
-    best amount this Reality.</li>
-    <li>Enhanced Achievement 53's bonus 8th antimatter dims now also use Replicanti and Tachyon Galaxies.</li>
+    <li>Enhanced Achievements 53 and 66 now use your best total Galaxy amount this Reality.</li>
     <li>Enhanced Achievement 61 is free.</li>
     <li>Enhanced Achievement 63 gives x8 the cost of an Infinity Dimension.</li>
     <li>Enhanced Achievement 66 has a bigger multiplier (x16 ➜ x100).</li>
     <li>Achievement 76's normal effect is squared.</li>
-    <li>Enhanced Achievement 78 is changed: It now makes you stat with 100 Time Theorems (goes up to 1e100 with
+    <li>Enhanced Achievement 78 is changed: It now makes you stat with 10 Time Theorems (goes up to 1e50 with
     Enhanced Achievement 55).</li>
     <li>Enhanced Achievement 94 gives a much higher Infinity Power multiplier (1e260 ➜ 1e26000) and Replicanti
     speed (43.333 ➜ 260).</li>
