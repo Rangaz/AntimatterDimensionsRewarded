@@ -1666,7 +1666,7 @@ export const celestialNavigation = {
       const upgrade = DarkMatterDimension(4).unlockUpgrade;
       if (upgrade.canBeBought || upgrade.isBought) return 1;
       if (upgrade.isAvailableForPurchase) return upgrade.currency.value / upgrade.cost;
-      return (Replicanti.galaxies.total + Galaxy.effectiveGalaxies + player.dilation.totalTachyonGalaxies) / 80000;
+      return (Replicanti.galaxies.total + player.galaxies + player.dilation.totalTachyonGalaxies) / 80000;
     },
     node: {
       clickAction: () => Tab.celestials.laitela.show(true),
@@ -1696,7 +1696,7 @@ export const celestialNavigation = {
             / ${format(upgrade.cost, 1)}`
           ];
 
-          const allGalaxies = Replicanti.galaxies.total + Galaxy.effectiveGalaxies + player.dilation.totalTachyonGalaxies;
+          const allGalaxies = Replicanti.galaxies.total + player.galaxies + player.dilation.totalTachyonGalaxies;
           return [
             dmdText,
             `Have ${format(80000)} total Galaxies`,

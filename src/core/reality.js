@@ -693,7 +693,6 @@ export function finishProcessReality(realityProps) {
   }
   player.records.thisReality.time = 0;
   player.records.thisReality.realTime = 0;
-  player.records.thisReality.bestAntimatterGalaxies = 0;
   player.records.thisReality.bestTotalGalaxies = 0;
   player.records.thisReality.maxReplicanti = DC.D0;
   if (!PelleUpgrade.timeStudiesNoReset.canBeApplied) Currency.timeTheorems.reset();

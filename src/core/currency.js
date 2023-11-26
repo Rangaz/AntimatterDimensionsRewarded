@@ -474,11 +474,11 @@ Currency.replicanti = new class extends DecimalCurrency {
 
 Currency.galaxyGeneratorGalaxies = new class extends NumberCurrency {
   get value() {
-    return Galaxy.effectiveGalaxies + GalaxyGenerator.galaxies;
+    return player.galaxies + GalaxyGenerator.galaxies;
   }
 
   set value(value) {
-    const spent = Galaxy.effectiveGalaxies + GalaxyGenerator.galaxies - value;
+    const spent = player.galaxies + GalaxyGenerator.galaxies - value;
     player.celestials.pelle.galaxyGenerator.spentGalaxies += spent;
   }
 }();

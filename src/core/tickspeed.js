@@ -16,7 +16,7 @@ export function effectiveBaseGalaxies() {
   replicantiGalaxies += nonActivePathReplicantiGalaxies * Effects.sum(EternityChallenge(8).reward);
   let freeGalaxies = player.dilation.totalTachyonGalaxies;
   freeGalaxies *= 1 + Math.max(0, Replicanti.amount.log10() / 1e6) * AlchemyResource.alternation.effectValue;
-  return Math.max(Galaxy.effectiveGalaxies + GalaxyGenerator.galaxies + replicantiGalaxies + freeGalaxies, 0);
+  return Math.max(player.galaxies + GalaxyGenerator.galaxies + replicantiGalaxies + freeGalaxies, 0);
 }
 
 export function getTickSpeedMultiplier() {

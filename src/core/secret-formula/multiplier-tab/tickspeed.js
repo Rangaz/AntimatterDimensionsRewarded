@@ -55,7 +55,7 @@ export const tickspeed = {
   galaxies: {
     name: "Galaxies",
     displayOverride: () => {
-      const ag = Galaxy.effectiveGalaxies + GalaxyGenerator.galaxies;
+      const ag = player.galaxies + GalaxyGenerator.galaxies;
       const rg = Replicanti.galaxies.total;
       const tg = player.dilation.totalTachyonGalaxies;
       return `${formatInt(ag + rg + tg)} Total`;

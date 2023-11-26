@@ -29,7 +29,7 @@ export default {
     update() {
       this.mult.copyFrom(Tickspeed.multiplier);
       this.tickspeed.copyFrom(Tickspeed.perSecond);
-      this.galaxyCount = Galaxy.effectiveGalaxies;
+      this.galaxyCount = player.galaxies;
       this.purchasedTickspeed = player.totalTickBought;
       this.freeTickspeed = FreeTickspeed.amount;
     },

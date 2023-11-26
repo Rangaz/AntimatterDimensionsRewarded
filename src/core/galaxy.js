@@ -28,15 +28,16 @@ export class Galaxy {
   /**
    * Figure out what galaxy number we can buy up to
    * @param {number} currency Either dim 8 or dim 6, depends on current challenge
+   * @param {number} currentGalaxies Amount of owned galaxies to consider, 0 to recalculate
    * @returns {number} Max number of galaxies (total)
    */
-  static buyableGalaxies(currency) {
+  static buyableGalaxies(currency, currentGalaxies = player.galaxies) {
     const bulk = bulkBuyBinarySearch(new Decimal(currency), {
       costFunction: x => this.requirementAt(x).amount,
       cumulative: false,
-    }, player.galaxies);
+    }, currentGalaxies);
     if (!bulk) throw new Error("Unexpected failure to calculate galaxy purchase");
-    return player.galaxies + bulk.quantity;
+    return currentGalaxies + bulk.quantity;
   }
 
   static requirementAt(galaxies) {
@@ -85,18 +86,14 @@ export class Galaxy {
   static get continuumGalaxies() {
     if (!Achievement(177).isUnlocked || !Laitela.continuumActive) return 0;
     const dimAmount = AntimatterDimension(this.requiredTier).totalAmount.toNumber();
-    // Only call buyableGalaxy if neccesary
-    if (dimAmount > this.requirement.amount) {
-      player.galaxies = Galaxy.buyableGalaxies(dimAmount);
-    }
+
+    // Calling this makes sure that player.galaxies does not inflate.
+    // 0 galaxies as second parameter ensures player.galaxies is 'reset' properly
+    player.galaxies = Galaxy.buyableGalaxies(dimAmount, 0);
 
     const req1 = this.requirementAt(player.galaxies - 1).amount;
     const req2 = this.requirementAt(player.galaxies).amount;
     return (player.galaxies + (dimAmount - req1) / (req2 - req1)) * Achievement(177).effectOrDefault(1);
-  }
-
-  static get effectiveGalaxies() {
-    return Math.max(player.galaxies, Galaxy.continuumGalaxies);
   }
 
   static get canBeBought() {
