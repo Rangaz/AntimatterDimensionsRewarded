@@ -35,6 +35,7 @@ export const changelog = [
     <li>Achievement 76's normal effect is squared.</li>
     <li>Enhanced Achievement 78 is changed: It now makes you stat with 10 Time Theorems (goes up to 1e50 with
     Enhanced Achievement 55).</li>
+    <li>Enhanced Achievement 82 gives x2 as much IP per purchase.</li>
     <li>Enhanced Achievement 94 gives a much higher Infinity Power multiplier (1e260 ➜ 1e26000) and Replicanti
     speed (43.333 ➜ 260).</li>
     <br>
