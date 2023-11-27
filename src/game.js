@@ -627,7 +627,7 @@ export function gameLoop(passDiff, options = {}) {
   
   player.galaxies = Math.max(player.galaxies, Galaxy.continuumGalaxies);
   player.records.thisReality.bestTotalGalaxies = Math.max(player.records.thisReality.bestTotalGalaxies, 
-    player.galaxies + player.replicanti.galaxies + player.dilation.totalTachyonGalaxies);
+    player.galaxies + Replicanti.galaxies.total + player.dilation.totalTachyonGalaxies);
 
   BlackHoles.updatePhases(blackHoleDiff);
 

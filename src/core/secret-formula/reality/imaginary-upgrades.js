@@ -178,7 +178,7 @@ export const imaginaryUpgrades = [
   {
     name: "Massless Momentum",
     id: 16,
-    cost: 3.5e9,
+    cost: 4e9,
     formatCost: x => format(x, 1),
     requirement: () => `Destabilize Lai'tela's Reality in under ${formatInt(30)} seconds twice`,
     hasFailed: () => false,
@@ -189,7 +189,7 @@ export const imaginaryUpgrades = [
   {
     name: "Chiral Oscillation",
     id: 17,
-    cost: 6e9,
+    cost: 1e10,
     requirement: () => `Automatically condense at least ${formatInt(20)} Singularities at once`,
     hasFailed: () => false,
     checkRequirement: () => Singularity.singularitiesGained >= 20 &&
@@ -200,11 +200,11 @@ export const imaginaryUpgrades = [
   {
     name: "Dimensional Symmetry",
     id: 18,
-    cost: 1.5e10,
+    cost: 2e10,
     formatCost: x => format(x, 1),
-    requirement: () => `Have ${formatInt(80000)} total Galaxies`,
+    requirement: () => `Have ${formatInt(82000)} total Galaxies`,
     hasFailed: () => false,
-    checkRequirement: () => player.records.thisReality.bestTotalGalaxies >= 80000,
+    checkRequirement: () => player.records.thisReality.bestTotalGalaxies >= 82000,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: "Unlock the 4th Dark Matter Dimension",
   },
