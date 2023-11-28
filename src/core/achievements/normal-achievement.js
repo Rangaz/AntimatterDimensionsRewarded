@@ -92,22 +92,30 @@ class AchievementState extends GameMechanicState {
     // Handle special cases first
     // Free Enhancements should always be available
     if ([22, 61, 114, 126].includes(this.id)) return true;
+
+    // Used for Imaginary Upgrade's locks 
+    let effectiveEnhancementPoints = Achievements.enhancementPoints;
+    if (ImaginaryUpgrade(19).isLockingMechanics) {
+      // This should only leave 8 available
+      effectiveEnhancementPoints -= Achievements.totalEnhancementPoints - 8;
+    }
+
     // Er47 doesn't work if Teresa isn't unlocked, so avoid Enhancing it
     if (this.id === 47 && !Teresa.isUnlocked) return false;
 
     // Er57 requires Er32 first, so if there aren't enough Enhancement points to Enhance
     // both this and r32, or if r32 is cursed, don't allow enhancing
     if (this.id === 57 && (Achievement(32).isCursed || 
-      (!Achievement(32).isEnhanced && Achievements.enhancementPoints < 2))) {
+      (!Achievement(32).isEnhanced && effectiveEnhancementPoints < 2))) {
       return false;
     }
     // Similar with Er88, that requires Er57 & Er32
     if (this.id === 88 && (Achievement(32).isCursed || Achievement(57).isCursed || 
-      Achievements.enhancementPoints <= (!Achievement(32).isEnhanced + !Achievement(57).isEnhanced))) {
+      effectiveEnhancementPoints <= (!Achievement(32).isEnhanced + !Achievement(57).isEnhanced))) {
       return false;
     }
 
-    if (this.id === 118 && Achievements.enhancementPoints < 2) return false;
+    if (this.id === 118 && effectiveEnhancementPoints < 2) return false;
 
     if (this.id === 133 && (!V.isFullyCompleted || Ra.pets.v.level < 24)) {
       return false;
@@ -115,15 +123,15 @@ class AchievementState extends GameMechanicState {
 
     // Similar with Er136 requiring Er115, but Er136 itself is free
     if (this.id === 136 && (Achievement(115).isCursed || 
-    (!Achievement(115).isEnhanced && Achievements.enhancementPoints < 1))) {
+    (!Achievement(115).isEnhanced && effectiveEnhancementPoints < 1))) {
       return false;
     }
     if (!this.isEnhanced && this.id === 136) return true;
 
     // Er138 requires 3 Enhancement points
-    if (this.id === 138 && Achievements.enhancementPoints < 3) return false;
+    if (this.id === 138 && effectiveEnhancementPoints < 3) return false;
 
-    return Achievements.enhancementPoints > 0;
+    return effectiveEnhancementPoints > 0;
   }
 
   // The fromPreset argument is so that we can avoid notifications about Achievements being auto-Enhanced
@@ -156,7 +164,7 @@ class AchievementState extends GameMechanicState {
     if (this.id === 96) {
       player.eternityPoints = player.eternityPoints.plus(DC.E40.powEffectOf(Achievement(55).enhancedEffect));
     }
-    // Er136 makes Time Studies respecs instantaneous, so respec nmediately if it'd happen next eternity
+    // Er136 makes Time Studies respecs instantaneous, so respec inmediately if it'd happen next eternity
     if (this.id === 136 && player.respec) {
       if (player.timestudy.studies.length === 0) {
         SecretAchievement(34).unlock();

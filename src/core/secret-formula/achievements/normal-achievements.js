@@ -16,10 +16,10 @@ TODO:
 -Add Rewards for row 17 <DONE>
   |>Make player.records.bestGalaxies for Achievement Effects (to secretly improve performance) <DONE>
   |>Undo player.records.bestGalaxies as I've found a better solution <DONE>
--Balance existing rewards <IN PROGRESS>
+-Balance existing rewards <DONE FOR NOW>
 -Balance Hard V <DONE FOR NOW>
--Balance Imaginary upgrades' unlocks <IN PROGRESS>
--Balance Lai'tela
+-Balance Imaginary upgrades' unlocks <IN PROGRESS (12/15)>
+-Balance Lai'tela <DONE FOR NOW>
 -Update h2p entries
 -Changelog
 */

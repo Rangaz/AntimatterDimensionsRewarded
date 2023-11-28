@@ -211,22 +211,24 @@ export const imaginaryUpgrades = [
   {
     name: "Deterministic Radiation",
     id: 19,
-    cost: 2.8e10,
+    cost: 2e11,
     formatCost: x => format(x, 1),
-    requirement: () => `Reach ${formatInt(3.85e6)} Tickspeed Continuum without ever having more than
-      ${formatInt(8)} Time Studies in this Reality`,
-    hasFailed: () => player.requirementChecks.reality.maxStudies > 8,
+    requirement: () => `Reach ${formatInt(4.05e6)} Tickspeed Continuum without ever having more than
+      ${formatInt(8)} Time Studies and 8 Enhanced Achievements in this Reality`,
+    hasFailed: () => player.requirementChecks.reality.maxStudies > 8 || 
+      Achievements.totalEnhancementPoints - Achievements.enhancementPoints > 8,
     checkRequirement: () => player.requirementChecks.reality.maxStudies <= 8 &&
-      Tickspeed.continuumValue >= 3.85e6,
+      Achievements.totalEnhancementPoints - Achievements.enhancementPoints <= 8 &&
+      Tickspeed.continuumValue >= 4.05e6,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     canLock: true,
-    lockEvent: () => `purchase more than ${formatInt(8)} Time Studies`,
+    lockEvent: () => `purchase more than ${formatInt(8)} Time Studies or Enhance more than 8 Achievements`,
     description: "Unlock Dark Matter Annihilation"
   },
   {
     name: "Vacuum Acceleration",
     id: 20,
-    cost: 3e12,
+    cost: 6e13,
     requirement: () => `Have a Continuum increase of at least ${formatPercents(1)}`,
     hasFailed: () => false,
     checkRequirement: () => Laitela.matterExtraPurchaseFactor >= 2,
@@ -239,11 +241,11 @@ export const imaginaryUpgrades = [
   {
     name: "Existential Elimination",
     id: 21,
-    cost: 1e13,
-    requirement: () => `Reach ${format("1e7400000000000")} antimatter with Continuum disabled for the entire Reality`,
+    cost: 2e14,
+    requirement: () => `Reach ${format("1e16000000000000")} antimatter with Continuum disabled for the entire Reality`,
     hasFailed: () => !player.requirementChecks.reality.noContinuum,
     checkRequirement: () => player.requirementChecks.reality.noContinuum &&
-      Currency.antimatter.value.log10() >= 7.4e12,
+      Currency.antimatter.value.log10() >= 1.6e13,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     canLock: true,
     lockEvent: "enable Continuum",
@@ -255,14 +257,16 @@ export const imaginaryUpgrades = [
   {
     name: "Total Termination",
     id: 22,
-    cost: 1.5e14,
+    cost: 6e14,
     formatCost: x => format(x, 1),
-    requirement: () => `Reach ${format("1e150000000000")} antimatter in Effarig's Reality with
-      at least ${formatInt(4)} Cursed Glyphs equipped`,
+    requirement: () => `Reach ${format("1e155000000000")} antimatter in Effarig's Reality with
+      at least ${formatInt(4)} Cursed Glyphs and ${formatInt(9)} Cursed Rows`,
     // Note: 4 cursed glyphs is -12 glyph count, but equipping a positive glyph in the last slot is allowed
-    hasFailed: () => !Effarig.isRunning || player.requirementChecks.reality.maxGlyphs > -10,
+    hasFailed: () => !Effarig.isRunning || player.requirementChecks.reality.maxGlyphs > -10 || 
+      Achievements.effectiveCurses < 9,
     checkRequirement: () => Effarig.isRunning && player.requirementChecks.reality.maxGlyphs < -10 &&
-      Currency.antimatter.value.exponent >= 1.5e11,
+      Achievements.effectiveCurses >= 9 &&
+      Currency.antimatter.value.exponent >= 1.55e11,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: () => `All Glyph Sacrifice totals are increased to ${format(1e100)}`,
     effect: 1e100,
@@ -271,7 +275,7 @@ export const imaginaryUpgrades = [
   {
     name: "Planar Purification",
     id: 23,
-    cost: 6e14,
+    cost: 2e15,
     requirement: () => `Reach Glyph level ${formatInt(20000)} in Ra's Reality with
       at most ${formatInt(0)} Glyphs equipped`,
     hasFailed: () => !Ra.isRunning || player.requirementChecks.reality.maxGlyphs > 0,
@@ -286,7 +290,7 @@ export const imaginaryUpgrades = [
   {
     name: "Absolute Annulment",
     id: 24,
-    cost: 6e14,
+    cost: 2e15,
     // We unfortunately don't have the UI space to be more descriptive on this button without causing text overflow,
     // so hopefully the additional modals (from the upgrade lock) will mostly communicate the idea that this is under
     // the same conditions as hard V's Post-destination
@@ -306,7 +310,7 @@ export const imaginaryUpgrades = [
   {
     name: "Omnipresent Obliteration",
     id: 25,
-    cost: 1.6e15,
+    cost: 8e15,
     formatCost: x => format(x, 1),
     requirement: () => `Reach Reality in Lai'tela's Reality with all Dimensions disabled and
       at least ${formatInt(4)} empty Glyph slots`,
