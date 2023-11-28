@@ -1724,7 +1724,7 @@ export const celestialNavigation = {
       if (upgrade.canBeBought || upgrade.isBought) return 1;
       if (upgrade.isAvailableForPurchase) return Currency.imaginaryMachines.value / upgrade.cost;
       return upgrade.isPossible
-        ? Tickspeed.continuumValue / 3850000
+        ? Tickspeed.continuumValue / 4050000
         : 0;
     },
     node: {
