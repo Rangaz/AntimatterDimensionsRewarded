@@ -282,7 +282,7 @@ export const Glyphs = {
         RealityUpgrade(24).tryShowWarningModal();
         return;
       }
-      if (ImaginaryUpgrade(25).isLockingMechanics && this.activeWithoutCompanion.length === 1) {
+      if (ImaginaryUpgrade(25).isLockingMechanics && this.activeWithoutCompanion.length === 0) {
         ImaginaryUpgrade(25).tryShowWarningModal();
         return;
       }
