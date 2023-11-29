@@ -1,8 +1,6 @@
 <script>
 import { openExternalLink } from "@/utility/open-external-link";
 import { STEAM } from "@/env";
-import ModalConfirmationCheck from "../modals/ModalConfirmationCheck.vue";
-import { Achievement } from "../../core/globals";
 
 export default {
   name: "NewsTicker",

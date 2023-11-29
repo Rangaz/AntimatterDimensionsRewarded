@@ -20,8 +20,8 @@ TODO:
 -Balance Hard V <DONE FOR NOW>
 -Balance Imaginary upgrades' unlocks <DONE>
 -Balance Lai'tela <DONE FOR NOW>
--Update h2p entries <DONE FOR NOW>
--Changelog <NEXT>
+-Update h2p entries <DONE>
+-Changelog <IN PROGRESS>
 */
 
 export const normalAchievements = [
@@ -910,7 +910,7 @@ export const normalAchievements = [
     get description() { return `Get more than ${format(DC.E58)} ticks per second.`; },
     checkRequirement: () => Tickspeed.current.exponent <= -55,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return `Tickspeed is just over ${formatPercents(0.05, 2, 2)} faster per Antimatter Galaxy.`; },
+    get reward() { return `Tickspeed is just over ${formatPercents(0.05)} faster per Antimatter Galaxy.`; },
     effect: () => DC.D0_95.pow(player.galaxies),
     formatEffect: value => `${formatX(value.recip(), 2, 2)}`,
     enhanced: {
@@ -1150,7 +1150,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Modified & Enhanced! Now it's slightly better than pre-release r26!
+    // Modified & Enhanced! Now it's pre-release r26!
     id: 83,
     name: "YOU CAN GET 50 GALAXIES?!?!",
     get description() { return `Get ${formatInt(50)} Antimatter Galaxies.`; },
@@ -2368,7 +2368,7 @@ export const normalAchievements = [
     effect: 2,
   },
   {
-    // Last Achievement! To be implemented
+    // Implemented!
     id: 172,
     name: "Hitchhiker's Guide to Reality",
     get description() {
