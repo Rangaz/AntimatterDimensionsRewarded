@@ -22,6 +22,7 @@ export default {
       hasMaxedInterval: false,
       limitGalaxies: false,
       isBuyMaxUnlocked: false,
+      isThisContinuum: false,
       buyMax: false
     };
   },
@@ -41,6 +42,7 @@ export default {
       this.hasMaxedInterval = this.autobuyer.hasMaxedInterval;
       this.isBuyMaxUnlocked = this.autobuyer.isBuyMaxUnlocked;
       this.limitGalaxies = this.autobuyer.limitGalaxies;
+      this.isThisContinuum = Laitela.continuumActive && Achievement(177).isUnlocked;
     }
   }
 };
@@ -48,6 +50,7 @@ export default {
 
 <template>
   <AutobuyerBox
+    v-if="!isThisContinuum"
     :autobuyer="autobuyer"
     :is-modal="isModal"
     name="Automatic Antimatter Galaxies"
@@ -90,6 +93,12 @@ export default {
       />
     </template>
   </AutobuyerBox>
+  <span
+    v-else
+    class="c-autobuyer-box-row"
+  >
+    Thanks to Achievement 177 Antimatter Galaxies also automatically and continously scale.
+  </span>
 </template>
 
 <style scoped>
