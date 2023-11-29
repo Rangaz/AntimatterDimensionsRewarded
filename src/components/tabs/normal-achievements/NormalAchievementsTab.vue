@@ -239,7 +239,7 @@ export default {
       </PrimaryButton>
 
       <PrimaryButton
-        v-if="isCurseUnlocked"
+        v-if="isEnhancementUnlocked && isCurseUnlocked"
         :class="curseModeClassObject" 
         @click="curseMode = !curseMode"
       >Curse Achievements...</PrimaryButton>
