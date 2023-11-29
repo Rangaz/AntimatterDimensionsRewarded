@@ -19,7 +19,7 @@ export default {
         `Replicanti slows down more drastically above ${format(Number.MAX_VALUE, 2)}`,
         "Most Eternity Challenges are harder",
         `All Galaxies are only ${formatPercents(0.5)} as effective`,
-        `Antimatter Dimension multiplier is divided by ${formatInt(10)}`,
+        `Antimatter Dimension multiplier is divided by ${formatInt(32)}`,
         "Achievement multiplier and many achievement rewards are disabled",
         "All Infinity and Eternity multipliers and generation are disabled",
         "Black Holes are disabled",
