@@ -18,10 +18,10 @@ TODO:
   |>Undo player.records.bestGalaxies as I've found a better solution <DONE>
 -Balance existing rewards <DONE FOR NOW>
 -Balance Hard V <DONE FOR NOW>
--Balance Imaginary upgrades' unlocks <IN PROGRESS (12/15)>
+-Balance Imaginary upgrades' unlocks <DONE>
 -Balance Lai'tela <DONE FOR NOW>
--Update h2p entries
--Changelog
+-Update h2p entries <DONE FOR NOW>
+-Changelog <NEXT>
 */
 
 export const normalAchievements = [
