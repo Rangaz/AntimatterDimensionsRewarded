@@ -99,6 +99,10 @@ class AchievementState extends GameMechanicState {
       // This should only leave 8 available
       effectiveEnhancementPoints -= Achievements.totalEnhancementPoints - 8;
     }
+    if (ImaginaryUpgrade(25).isLockingMechanics) {
+      // This should only leave 0 available
+      effectiveEnhancementPoints -= Achievements.totalEnhancementPoints;
+    }
 
     // Er47 doesn't work if Teresa isn't unlocked, so avoid Enhancing it
     if (this.id === 47 && !Teresa.isUnlocked) return false;
@@ -554,7 +558,8 @@ export const Achievements = {
   // Otherwise it'll return the ids in purchase order, which looks messier.
   returnCurrrentEnhancementsAsPreset() {
     let enhancedAchievements = Array.from(player.reality.enhancedAchievements);
-    enhancedAchievements.sort();
+    // This should arrange them correctly so that 101 does not come before 11
+    enhancedAchievements.sort(function(a, b) {return a - b});
     let presetString = "";
     for (const id of enhancedAchievements) {
       presetString = presetString + id + ",";

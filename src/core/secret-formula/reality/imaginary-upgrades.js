@@ -179,7 +179,6 @@ export const imaginaryUpgrades = [
     name: "Massless Momentum",
     id: 16,
     cost: 4e9,
-    formatCost: x => format(x, 1),
     requirement: () => `Destabilize Lai'tela's Reality in under ${formatInt(30)} seconds twice`,
     hasFailed: () => false,
     checkRequirement: () => Laitela.maxAllowedDimension <= 6,
@@ -201,7 +200,6 @@ export const imaginaryUpgrades = [
     name: "Dimensional Symmetry",
     id: 18,
     cost: 2e10,
-    formatCost: x => format(x, 1),
     requirement: () => `Have ${formatInt(82000)} total Galaxies`,
     hasFailed: () => false,
     checkRequirement: () => player.records.thisReality.bestTotalGalaxies >= 82000,
@@ -212,7 +210,6 @@ export const imaginaryUpgrades = [
     name: "Deterministic Radiation",
     id: 19,
     cost: 2e11,
-    formatCost: x => format(x, 1),
     requirement: () => `Reach ${formatInt(4.05e6)} Tickspeed Continuum without ever having more than
       ${formatInt(8)} Time Studies and 8 Enhanced Achievements in this Reality`,
     hasFailed: () => player.requirementChecks.reality.maxStudies > 8 || 
@@ -275,12 +272,15 @@ export const imaginaryUpgrades = [
   {
     name: "Planar Purification",
     id: 23,
-    cost: 2e15,
-    requirement: () => `Reach Glyph level ${formatInt(20000)} in Ra's Reality with
-      at most ${formatInt(0)} Glyphs equipped`,
-    hasFailed: () => !Ra.isRunning || player.requirementChecks.reality.maxGlyphs > 0,
+    cost: 1.8e15,
+    formatCost: x => format(x, 1),
+    requirement: () => `Reach Glyph level ${formatInt(20800)} in Ra's Reality with
+      at most ${formatInt(0)} Glyphs equipped and ${formatInt(-1)} Enhanced Achievements`,
+    hasFailed: () => !Ra.isRunning || player.requirementChecks.reality.maxGlyphs > 0 || 
+      Achievements.totalEnhancementPoints - Achievements.enhancementPoints > -1,
     checkRequirement: () => Ra.isRunning && player.requirementChecks.reality.maxGlyphs <= 0 &&
-      gainedGlyphLevel().actualLevel >= 20000,
+      Achievements.totalEnhancementPoints - Achievements.enhancementPoints <= -1 &&
+      gainedGlyphLevel().actualLevel >= 20800,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: "Increase free Dimboost count based on Tesseract count",
     effect: () => Math.floor(0.25 * Math.pow(Tesseracts.effectiveCount, 2)),
@@ -290,15 +290,16 @@ export const imaginaryUpgrades = [
   {
     name: "Absolute Annulment",
     id: 24,
-    cost: 2e15,
+    cost: 1.8e15,
+    formatCost: x => format(x, 1),
     // We unfortunately don't have the UI space to be more descriptive on this button without causing text overflow,
     // so hopefully the additional modals (from the upgrade lock) will mostly communicate the idea that this is under
     // the same conditions as hard V's Post-destination
-    requirement: () => `Have ${formatInt(13000)} Antimatter Galaxies in Ra's Reality
+    requirement: () => `Have ${formatInt(13650)} Antimatter Galaxies in Ra's Reality
       with a fully inverted Black Hole`,
     hasFailed: () => !Ra.isRunning || player.requirementChecks.reality.slowestBH > 1e-300,
     checkRequirement: () => Ra.isRunning && player.requirementChecks.reality.slowestBH <= 1e-300 &&
-      player.galaxies >= 13000,
+      player.galaxies >= 13650,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     canLock: true,
     // Three locking events: uninvert, discharge, and entering (but not auto-completing) EC12
@@ -310,17 +311,18 @@ export const imaginaryUpgrades = [
   {
     name: "Omnipresent Obliteration",
     id: 25,
-    cost: 8e15,
-    formatCost: x => format(x, 1),
-    requirement: () => `Reach Reality in Lai'tela's Reality with all Dimensions disabled and
-      at least ${formatInt(4)} empty Glyph slots`,
+    cost: 2e16,
+    requirement: () => `Reach Reality in Lai'tela's Reality with all Dimensions disabled,
+      all Glyph slots empty and at most 0 Enhancements`,
     hasFailed: () => !Laitela.isRunning || Laitela.maxAllowedDimension !== 0 ||
-      Glyphs.activeWithoutCompanion.length > 1,
+      Glyphs.activeWithoutCompanion.length > 0 || 
+      Achievements.totalEnhancementPoints - Achievements.enhancementPoints > 0,
     checkRequirement: () => Laitela.isRunning && Laitela.maxAllowedDimension === 0 &&
-      Glyphs.activeWithoutCompanion.length <= 1 && TimeStudy.reality.isBought,
+      Achievements.totalEnhancementPoints - Achievements.enhancementPoints <= 0 &&
+      Glyphs.activeWithoutCompanion.length == 0 && TimeStudy.reality.isBought,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     canLock: true,
-    lockEvent: "equip another non-Companion Glyph",
+    lockEvent: "equip another non-Companion Glyph or Enhance more than 0 Achievements",
     description: "Unlock Pelle, Celestial of Antimatter",
   },
 ];

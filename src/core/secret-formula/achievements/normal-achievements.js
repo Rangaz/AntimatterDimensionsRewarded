@@ -2443,13 +2443,14 @@ export const normalAchievements = [
     formatEffect: value => `+${formatPercents(value - 1, 2, 2)}`
   },
   {
+    // Buffed!
     id: 178,
     name: "Destroyer of Worlds",
     get description() { return `Get ${formatInt(108000)} Antimatter Galaxies.`; },
     checkRequirement: () => player.galaxies >= 108000,
-    checkEvent: GAME_EVENT.GALAXY_RESET_AFTER,
-    get reward() { return `All Galaxies are ${formatPercents(0.01)} stronger.`; },
-    effect: 1.01
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() { return `All Galaxies are ${formatPercents(0.02)} stronger.`; },
+    effect: 1.02
   },
         
   // ----------------------------------------------------------------------
