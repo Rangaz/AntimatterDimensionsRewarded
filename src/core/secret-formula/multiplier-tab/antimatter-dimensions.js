@@ -539,7 +539,7 @@ export const AD = {
   },
   nerfPelle: {
     name: "Doomed Reality",
-    multValue: 0.1,
+    multValue: 1 / 32,
     powValue: () => (PelleStrikes.infinity.hasStrike ? 0.5 : 1),
     isActive: () => Pelle.isDoomed,
     icon: MultiplierTabIcons.PELLE,

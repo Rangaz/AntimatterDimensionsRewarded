@@ -42,7 +42,7 @@ export const changelog = [
     <li>Teresa's Reality nerfs IP and EP more (^0.55 ➜ ^0.52).</li>
     <li>Effarig's stages are slightly harder.</li>
     <li>V's "Young Boy" Achievements have higher goals, but Perk Points used are twice as effective.</li>
-    
+    <li>Pelle divides Antimatter Dimensions by /10 ➜ /32.</li>
     `
   },
   {
