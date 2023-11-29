@@ -211,7 +211,7 @@ export const infinityUpgrades = {
   ipOffline: {
     id: "ipOffline",
     cost: 1000,
-    checkRequirement: () => Achievement(41).isUnlocked,
+    checkRequirement: () => Achievement(41).isUnlocked && !Achievement(41).isCursed,
     description: () => (player.options.offlineProgress
       ? `Only while offline, gain ${formatPercents(0.5)} of your best IP/min without using Max All`
       : "This upgrade would give offline Infinity Point generation, but offline progress is currently disabled"),
@@ -224,17 +224,20 @@ export const infinityUpgrades = {
   ipMult: {
     id: "ipMult",
     cost: () => InfinityUpgrade.ipMult.cost,
-    checkRequirement: () => Achievement(41).isUnlocked,
+    checkRequirement: () => Achievement(41).isUnlocked && !Achievement(41).isCursed,
     costCap: DC.E6E6,
     costIncreaseThreshold: DC.E3E6,
-    description: () => Achievement(121).isUnlocked ? `Multiply Infinity Points from all sources by ${formatX(2.01, 2, 2)}` : 
-      `Multiply Infinity Points from all sources by ${formatX(2)}`,
+    description: () => `Multiply Infinity Points from all sources by ${Achievement(121).isEnhanced ? formatX(3) : 
+      (Achievement(121).canBeApplied ? formatX(2.01, 2, 2) : formatX(2))}`,
     // Normally the multiplier caps at e993k or so with 3300000 purchases, but if the cost is capped then we just give
     // an extra e7k to make the multiplier look nice... that is, without my r121.
-    effect: () => (Achievement(121).isUnlocked ? DC.D2.times(DC.D1_005).pow(player.IPMultPurchases) : DC.D2.pow(player.IPMultPurchases)),
+    effect: () => {
+      const baseMultiplier = Achievement(121).isEnhanced ? DC.D3 : (Achievement(121).canBeApplied ? DC.D2.times(DC.D1_005) : DC.D2);
+      return baseMultiplier.pow(player.IPMultPurchases)
+    },
     // The cap, while technically not gone with ipMultUncap upgrade, is practically impossible to obtain.
     cap: () => Effarig.eternityCap ?? (InfinityUpgrade.ipMultUncap.isBought && Achievement(41).isEnhanced ? DC.E1E15 : 
-      DC.D2.times(DC.D1_005).pow(3300000)),
+      Achievement(121).isEnhanced ? DC.D3 : (Achievement(121).canBeApplied ? DC.D2.times(DC.D1_005) : DC.D2).pow(3300000)),
     formatEffect: value => formatX(value, 2, 2),
   },
   ipMultUncap: {

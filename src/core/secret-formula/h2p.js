@@ -415,7 +415,7 @@ ${formatX(8)} then ${formatX(5)}; in both cases you will end up with a total sac
     }, {
       name: "Achievements",
       info: () => `
-Each Achievement has requirements to unlock. Once unlocked, ALL Achievements give a reward.
+Each Achievement has requirements to unlock. Once unlocked, they give a reward.
 Requirements and rewards vary in difficulty and benefit significantly.
 <br>
 <br>
@@ -426,20 +426,40 @@ effect from all Achievements together is shown above all the Achievement images.
 <br>
 ${Achievements.isEnhancementUnlocked ? `
 Achievement Enhancement is unlocked after you buy the perk ACHEH. It allows you to greatly strengthen an Achievement
-Reward of your choice, often overwriting its previous reward.
+Reward of your choice, overwriting its previous reward.
 <br>
 <br>
 The Achievements you can enhance are initially limited to the first 4 rows, and you permanently 
 gain an Enhancement Point for every Achievement unlocked in rows 14 and beyond.
 <br>
-<br>` : ``}
+<br>
+You can Enhance at any time, but you can only change them after a Reality. To Enhance an Achievement, click on the image.
+Clicking on an Enhanced Achievement will make it respec as soon as possible, and clicking again will undo this action.
+Free Enhancements, like 'FAKE NEWS!', are an exception and can be disenhanced at any time.
+<br>
+<br>
+${V.isFlipped ? `
+Cursed Achievement rows are unlocked with Hard V. Cursing an Achievement row disables all their Achievements, respecs any 
+active Enhancements and applies a nerf as long as it's cursed. 
+<br>
+<br>
+A cursed row counts as -2 Achievements Enhanced, effectively increasing the amount of Enhancements you can have active at 
+the same time. 
+<br>
+<br>
+You can only curse or uncurse rows after a Reality, and only rows you have Enhancements unlocked. 
+To curse or uncurse you first click on 'Curse Achievements...', and then click the rows you want to curse or uncurse.
+Clicking again will undo this action.
+<br>
+<br>
+`: ``}` : ``}
 
 Secret Achievements offer no gameplay benefits or advantages and are simply there for fun. Hovering over a Secret
 Achievement will give a hint on how to attain them.
 
 `,
       isUnlocked: () => true,
-      tags: ["earlygame", "awards", "earlygame"],
+      tags: ["earlygame", "awards", "reality", "lategame", "enhance", "enhancement", "curse", "rangaz"],
       tab: "achievements"
     }, {
       name: "Infinity",
@@ -638,6 +658,9 @@ amount of antimatter before you can attempt them.
 <br>
 <b>Infinity Challenge unlock thresholds:</b> ${GameDatabase.challenges.infinity
     .map(ic => formatPostBreak(ic.unlockAM)).join(", ")}
+<br>
+${Achievements.maxEnhancedRow >= 13 ? `<b>With Cursed row 13 these amounts are higher:</b> ${GameDatabase.challenges.infinity
+  .map(ic => formatPostBreak(ic.cursedUnlockAM)).join(", ")}` : ``}
 `,
       isUnlocked: () => Autobuyer.bigCrunch.hasMaxedInterval || PlayerProgress.eternityUnlocked(),
       tags: ["rewards", "break", "ic", "midgame"],
@@ -1484,14 +1507,12 @@ ${VUnlocks.vAchievementUnlock.isUnlocked
       <br>
       After completing the requirement, the V-Achievement threshold then increases and can be completed again
       if you can reach the new goal.  You can complete each category of V-Achievement up to six times.
-      Completed V-Achievements do three things:
+      Completed V-Achievements do two things:
       <br>
       - Upon reaching certain totals of V-Achievements, you automatically unlock upgrades on the V tab without needing
       to spend any resources.
       <br>
       - Each V-Achievement gives you one Space Theorem.
-      <br>
-      - Every 2nd V-Achievement also allows you to Enhance 1 more Achievement.
       <br>
       <br>
       The goal reduction unlocked by having ${formatInt(2)} V-Achievements allows you to make some V-Achievement
@@ -1724,7 +1745,9 @@ give a production boost equal to (upgrade multiplier)<sup>${format(5.3, 0, 1)}</
 Some upgrades will multiply Continuum value directly, which gives a production boost without affecting the cost
 scaling. However, these upgrades will not function if Continuum is disabled on the Autobuyers page, which may result
 in a loss of production if disabled. Continuum makes your autobuyers for Antimatter Dimensions and Tickspeed obsolete,
-so all the related autobuyer settings for these autobuyers are now hidden on that tab as long as Continuum is active.
+so all the related autobuyer settings for these autobuyers are now hidden on that tab as long as Continuum is active.<br>
+Eventually Dimension Boosts and Antimatter Galaxies will also be affected by Continuum, and they have a similar behavior
+to Antimatter Dimensions and Tickspeed.
 `,
       // Apparently continuumUnlocked is really important in a lot of places and if we keep it unlocked
       // Things break, so we check for the iMU instead.

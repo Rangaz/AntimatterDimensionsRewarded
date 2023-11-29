@@ -138,6 +138,7 @@ export const ID = {
         Achievement(76).enhancedEffect,
         Achievement(91).enhancedEffect,
         Achievement(107),
+        Achievement(107).enhancedEffect,
       );
 
       const dimMults = Array.repeat(DC.D1, 9);
@@ -147,6 +148,12 @@ export const ID = {
             Achievement(94).effects.infinityPowerGain,
             Achievement(94).enhancedEffect.effects.infinityPowerGain,
             Achievement(124),
+            Achievement(124).enhancedEffect,
+          );
+        }
+        if (tier === 8) {
+          dimMults[tier] = dimMults[tier].timesEffectOf(
+            Achievement(101).enhancedEffect
           );
         }
       }

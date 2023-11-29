@@ -1,5 +1,4 @@
 import { DC } from "./constants";
-import { Achievement } from "./globals";
 
 export class Sacrifice {
   // This is tied to the "buying an 8th dimension" achievement in order to hide it from new players before they reach
@@ -9,7 +8,7 @@ export class Sacrifice {
   }
 
   static get canSacrifice() {
-    return DimBoost.purchasedBoosts > 4 && !EternityChallenge(3).isRunning && this.nextBoost.gt(1) 
+    return DimBoost.realBoosts >= 5 && !EternityChallenge(3).isRunning && this.nextBoost.gt(1) 
       && AntimatterDimension(8).totalAmount.gt(0)
       && Currency.antimatter.lt(Player.infinityLimit) && !Enslaved.isRunning;
   }
@@ -17,7 +16,7 @@ export class Sacrifice {
   static get disabledCondition() {
     if (NormalChallenge(10).isRunning) return "8th Dimensions are disabled";
     if (EternityChallenge(3).isRunning) return "Eternity Challenge 3";
-    if (DimBoost.purchasedBoosts < 5) return `Requires ${formatInt(5)} Dimension Boosts`;
+    if (DimBoost.realBoosts < 5) return `Requires ${formatInt(5)} Dimension Boosts`;
     if (AntimatterDimension(8).totalAmount.eq(0)) return "No 8th Antimatter Dimensions";
     if (this.nextBoost.lte(1)) return `${formatX(1)} multiplier`;
     if (Player.isInAntimatterChallenge) return "Challenge goal reached";

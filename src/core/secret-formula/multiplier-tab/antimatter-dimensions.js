@@ -68,13 +68,14 @@ export const AD = {
       );
       // I'll pretend that r122 affects purchases, when in reality it doesn't.
       if (dim) {
-        return dim == 1 ? Decimal.pow(AntimatterDimensions.buyTenMultiplier, getPurchases(dim)).timesEffectOf(Achievement(122)) :
+        return dim == 1 ? Decimal.pow(AntimatterDimensions.buyTenMultiplier, getPurchases(dim)).
+          timesEffectsOf(Achievement(122), Achievement(122).enhancedEffect) :
           Decimal.pow(AntimatterDimensions.buyTenMultiplier, getPurchases(dim))
       };
       return AntimatterDimensions.all
         .filter(ad => ad.isProducing)
         .map(ad => Decimal.pow(AntimatterDimensions.buyTenMultiplier, getPurchases(ad.tier)))
-        .reduce((x, y) => x.times(y), DC.D1).timesEffectOf(Achievement(122));
+        .reduce((x, y) => x.times(y), DC.D1).timesEffectsOf(Achievement(122), Achievement(122).enhancedEffect);
     },
     isActive: () => !EternityChallenge(11).isRunning,
     icon: dim => MultiplierTabIcons.PURCHASE("AD", dim),
@@ -172,6 +173,7 @@ export const AD = {
             Achievement(46),
             Achievement(46).enhancedEffect,
             Achievement(101),
+            Achievement(101).enhancedEffect
           );
         }
         dimMults[tier] = dimMults[tier].timesEffectsOf(
@@ -512,9 +514,32 @@ export const AD = {
     isActive: () => getAdjustedGlyphEffect("curseddimensions") !== 1,
     icon: MultiplierTabIcons.SPECIFIC_GLYPH("cursed"),
   },
+  cursedRow: {
+    name: "Cursed Rows",
+    multValue: dim => {
+      const allMult = DC.D1;
+      const dimMults = Array.repeat(DC.D1, 9);
+      for (let tier = 1; tier <= 8; tier++) {
+        if (tier === 1) {
+          dimMults[tier] = dimMults[tier].timesEffectOf(CursedRow(6));
+        }
+        if (tier === 8) {
+          dimMults[tier] = dimMults[tier].timesEffectOf(CursedRow(4));
+        }
+      }
+      if (dim) return allMult.times(dimMults[dim]);
+      let totalMult = DC.D1;
+      for (let tier = 1; tier <= MultiplierTabHelper.activeDimCount("AD"); tier++) {
+        totalMult = totalMult.times(dimMults[tier]).times(allMult);
+      }
+      return totalMult;
+    },
+    isActive: () => CursedRow(4).canBeApplied,
+    icon: MultiplierTabIcons.CURSED_ROW,
+  },
   nerfPelle: {
     name: "Doomed Reality",
-    multValue: 0.1,
+    multValue: 1 / 32,
     powValue: () => (PelleStrikes.infinity.hasStrike ? 0.5 : 1),
     isActive: () => Pelle.isDoomed,
     icon: MultiplierTabIcons.PELLE,

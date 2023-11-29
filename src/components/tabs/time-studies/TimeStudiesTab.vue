@@ -32,6 +32,7 @@ export default {
       renderedStudyCount: 0,
       renderedConnectionCount: 0,
       isEnslaved: false,
+      hasEr136: false,
       delayTimer: 0,
     };
   },
@@ -66,6 +67,13 @@ export default {
   },
   watch: {
     respec(newValue) {
+      if (this.hasEr136){
+        if (player.timestudy.studies.length === 0) {
+          SecretAchievement(34).unlock();
+        }
+        respecTimeStudies(true);
+        return;
+      }
       player.respec = newValue;
     },
     vLevel() {
@@ -112,6 +120,7 @@ export default {
       this.layoutType = STUDY_TREE_LAYOUT_TYPE.current;
       this.vLevel = Ra.pets.v.level;
       this.isEnslaved = Enslaved.isRunning || Date.now() - this.delayTimer < 1000;
+      this.hasEr136 = Achievement(136).isEnhanced;
     },
     studyComponent(study) {
       switch (study.type) {
@@ -147,7 +156,7 @@ export default {
         :class="respecClassObject"
         @click="respec = !respec"
       >
-        Respec Time Studies on next Eternity
+        Respec Time Studies <span v-if="!hasEr136">on next Eternity</span><span v-else>now</span>
       </PrimaryButton>
       <PrimaryButton
         class="o-primary-btn--subtab-option"

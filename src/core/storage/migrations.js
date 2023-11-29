@@ -445,8 +445,29 @@ export const migrations = {
         player.options.hideAchievementRows = Number(player.options.hideCompletedAchievementRows);
       }
 
-      // Is it safe to do this?
       delete player.options.hideCompletedAchievementRows;
+    },
+    33: player => {
+      // The Cursed update
+      // Since I'm reducing the Enhancements that V gives I'll remove all Enhancements from the player if they
+      // have reached V, to avoid accidental exploits
+      if (player.celestials.v.unlockBits != 0) {
+        player.reality.enhancedAchievements = new Set();
+      }
+
+      // With the existence of toBeEnhancedAchievements, the disEnhance (now respecAchievements) 
+      // property is less useful as it's easy to replicate this behaviour with toBeEnhancedAchievements.
+      // However I still want to keep that variable to preserve automator behavior.
+      player.reality.toBeEnhancedAchievements = new Set();
+        
+      // Having toBeEnhancedAchievements be the same as enhancedAchievements is the same as nothing happening.
+      for (const id of player.reality.enhancedAchievements.values()) {
+        player.reality.toBeEnhancedAchievements.add(id);
+      }
+
+      // This is just a renaming, as this better encapsulate that this variable now also affects curses.
+      player.reality.respecAchievements = player.reality.disEnhance;
+      delete player.reality.disEnhance;
     }
   },
 

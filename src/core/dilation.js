@@ -131,7 +131,10 @@ export function getDilationGainPerSecond() {
     .timesEffectsOf(
       DilationUpgrade.dtGain,
       Achievement(132),
+      Achievement(132).enhancedEffect,
       Achievement(137),
+      Achievement(137).enhancedEffect,
+      CursedRow(13),
       RealityUpgrade(1),
       AlchemyResource.dilation,
       Ra.unlocks.continuousTTBoost.effects.dilatedTime,
@@ -153,6 +156,7 @@ export function tachyonGainMultiplier() {
     DilationUpgrade.tachyonGain,
     GlyphSacrifice.dilation,
     Achievement(132),
+    Achievement(132).enhancedEffect,
     RealityUpgrade(4),
     RealityUpgrade(8),
     RealityUpgrade(15)

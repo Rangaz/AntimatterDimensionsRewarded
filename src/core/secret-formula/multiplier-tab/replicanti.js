@@ -20,12 +20,15 @@ export const replicanti = {
         Achievement(94).effects.replicantiSpeed,
         Achievement(94).enhancedEffect.effects.replicantiSpeed, 
         Achievement(95).enhancedEffect,
-        Achievement(106)
+        Achievement(106),
+        Achievement(106).enhancedEffect,
+        Achievement(108).enhancedEffect.effects.replicantiSpeed,
+        Achievement(134).enhancedEffect,
       );
       if (Time.thisEternity.totalSeconds < 9 || Achievement(145).canBeApplied) {
         totalMult = totalMult.timesEffectOf(Achievement(108).effects.replicantiSpeed);
       }
-      if (Replicanti.amount.lte(replicantiCap())) totalMult  = totalMult.timesEffectOf(Achievement(134));
+      if (Replicanti.amount.lte(replicantiCap())) totalMult = totalMult.timesEffectOf(Achievement(134));
       return totalMult;
     },
     isActive: () => [94, 106, 108, 134].some(a => Achievement(a).canBeApplied || Achievement(a).isEnhanced),
@@ -81,6 +84,12 @@ export const replicanti = {
     multValue: () => Ra.unlocks.continuousTTBoost.effects.replicanti.effectOrDefault(1),
     isActive: () => Ra.unlocks.continuousTTBoost.isUnlocked,
     icon: MultiplierTabIcons.GENERIC_RA,
+  },
+  cursedRow: {
+    name: "Cursed Rows",
+    multValue: () => CursedRow(10).effectOrDefault(1),
+    isActive: () => CursedRow(10).isCursed,
+    icon: MultiplierTabIcons.CURSED_ROW,
   },
   pelle: {
     name: "Pelle Strike - Decay Rift",

@@ -1,7 +1,6 @@
 <script>
 import { openExternalLink } from "@/utility/open-external-link";
 import { STEAM } from "@/env";
-import ModalConfirmationCheck from "../modals/ModalConfirmationCheck.vue";
 
 export default {
   name: "NewsTicker",
@@ -48,7 +47,7 @@ export default {
       }
       this.isModern = player.options.newUI;
       this.enableAnimation = player.options.news.includeAnimated;
-      this.showFForward = Achievement(22).isUnlocked && player.options.news.showFForward;
+      this.showFForward = Achievement(22).isUnlocked && !Achievement(22).isCursed && player.options.news.showFForward;
       this.showSkip = Achievement(22).isEnhanced;
     },
     restart() {

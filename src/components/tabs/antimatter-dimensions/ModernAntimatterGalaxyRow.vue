@@ -13,6 +13,7 @@ export default {
         tier: 1,
         amount: 0
       },
+      isThisContinuum: false,
       canBeBought: false,
       distantStart: 0,
       remoteStart: 0,
@@ -34,11 +35,14 @@ export default {
     buttonText() {
       if (this.lockText !== null) return this.lockText;
       const reset = [];
-      if (!Achievement(111).isUnlocked) reset.push("Dimensions");
+      if (!Achievement(111).canBeApplied && !Achievement(111).isEnhanced) reset.push("Dimensions");
       if (!Achievement(143).isUnlocked) reset.push("Dimension Boosts");
       return reset.length === 0
         ? `Increase the power of Tickspeed upgrades`
         : `Reset your ${makeEnumeration(reset)} to increase the power of Tickspeed upgrades`;
+    },
+    continuumText() {
+      return `Continuum: ${formatFloat(this.galaxies.normal, 3, 3)}`;
     },
     sumText() {
       const parts = [Math.max(this.galaxies.normal, 0)];
@@ -82,6 +86,7 @@ export default {
         "o-primary-btn o-primary-btn--new o-primary-btn--dimension-reset": true,
         "tutorial--glow": this.canBeBought && this.hasTutorial,
         "o-primary-btn--disabled": !this.canBeBought,
+        "o-non-clickable o-continuum": this.isThisContinuum,
         "o-pelle-disabled-pointer": this.creditsClosed
       };
     }
@@ -89,6 +94,7 @@ export default {
   methods: {
     update() {
       this.type = Galaxy.type;
+      this.isThisContinuum = Laitela.continuumActive && Achievement(177).isUnlocked;
       this.galaxies.normal = player.galaxies + GalaxyGenerator.galaxies;
       this.galaxies.replicanti = Replicanti.galaxies.total;
       this.galaxies.dilation = player.dilation.totalTachyonGalaxies;
@@ -123,14 +129,15 @@ export default {
 <template>
   <div class="reset-container galaxy">
     <h4>{{ typeName }} ({{ sumText }})</h4>
-    <span>Requires: {{ formatInt(requirement.amount) }} {{ dimName }} Antimatter D</span>
+    <span v-if="!isThisContinuum">Requires: {{ formatInt(requirement.amount) }} {{ dimName }} Antimatter D</span>
     <span v-if="hasIncreasedScaling">{{ costScalingText }}</span>
     <button
       :class="classObject"
       @click.exact="buyGalaxy(true)"
       @click.shift.exact="buyGalaxy(false)"
     >
-      {{ buttonText }}
+      <span v-if="!isThisContinuum">{{ buttonText }}</span>
+      <span v-else>{{ continuumText }}</span>
       <div
         v-if="hasTutorial"
         class="fas fa-circle-exclamation l-notification-icon"
@@ -138,3 +145,22 @@ export default {
     </button>
   </div>
 </template>
+
+<style scoped>
+.o-non-clickable {
+  cursor: auto;
+}
+
+.o-continuum {
+  border-color: var(--color-laitela--accent);
+  color: var(--color-laitela--accent);
+  background: var(--color-laitela--base);
+  font-size: 1.2rem;
+}
+
+.o-continuum:hover {
+  border-color: var(--color-laitela--accent);
+  color: var(--color-laitela--base);
+  background: var(--color-laitela--accent);
+}
+</style>

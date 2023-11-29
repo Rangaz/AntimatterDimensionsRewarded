@@ -1,6 +1,5 @@
 <script>
 import ResetModal from "@/components/modals/prestige/ResetModal";
-import { Achievement } from "../../../core/globals";
 
 export default {
   name: "BigCrunchModal",
@@ -13,7 +12,8 @@ export default {
       gainedInfinityPoints: new Decimal(),
       startingBoosts: 0,
       startingAM: 10,
-      startingGalaxies: 0
+      startingGalaxies: 0,
+      doesNothing: false,
     };
   },
   computed: {
@@ -21,6 +21,7 @@ export default {
       return !PlayerProgress.infinityUnlocked();
     },
     message() {
+      if (this.doesNothing) return `Upon Infinity, nothing is reset.`;
       const info = this.isFirstInfinity ? this.firstInfinityInfo : ``;
       return `Upon Infinity, all Dimensions, Dimension Boosts, and Antimatter Galaxies are reset. ${info}`;
     },
@@ -33,6 +34,7 @@ export default {
         and ${quantify("Infinity Point", this.gainedInfinityPoints, 2, 0)}.`;
     },
     startingResources() {
+      if (this.doesNothing) return "You will start your next Infinities with the same resources you currently have.";
       const gainedResources = [];
       if (this.startingAM.gte(10)) gainedResources.push(`${quantify("Antimatter", this.startingAM, 2, 1)}`);
       if (this.startingBoosts > 0) gainedResources.push(`${quantify("Dimension Boost", this.startingBoosts)}`);
@@ -43,7 +45,7 @@ export default {
     // Achievement 115 won't keep dim boosts or galaxies if their respective autobuyers are off.
     autobuyerWarning() {
       if (player.auto.autobuyersOn && Autobuyer.dimboost.isActive && Autobuyer.galaxy.isActive) return;
-      if (!Achievement(115).canBeApplied) return;
+      if (!Achievement(115).canBeApplied || this.doesNothing) return;
       const unkeptResources = [];
       if (!Autobuyer.dimboost.isActive) unkeptResources.push("Dimension Boosts");
       if (!Autobuyer.galaxy.isActive) unkeptResources.push("Antimatter Galaxies");
@@ -60,6 +62,7 @@ export default {
     update() {
       this.gainedInfinities = gainedInfinities().round();
       this.gainedInfinityPoints = gainedInfinityPoints().round();
+      this.doesNothing = Achievement(115).isEnhanced;
       // r115 will keep up to 200 Dim Boosts and 50 Galaxies, but only if
       // their autobuyer is active.
       if (Achievement(115).canBeApplied) {

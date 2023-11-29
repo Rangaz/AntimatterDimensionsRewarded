@@ -29,6 +29,7 @@ export const MultiplierTabHelper = {
       Achievement(86),
       Achievement(86).enhancedEffect,
       Achievement(178),
+      CursedRow(8),
       InfinityChallenge(5).reward,
       PelleUpgrade.galaxyPower,
       PelleRifts.decay.milestones[1]
@@ -86,7 +87,9 @@ export const MultiplierTabHelper = {
       Achievement(45).enhancedEffect,
       Achievement(66),
       Achievement(66).enhancedEffect,
+      Achievement(118).enhancedEffect,
       Achievement(135),
+      CursedRow(3),
     );
     let baseFrac = base.log10() / Tickspeed.perSecond.log10();
 
@@ -109,7 +112,7 @@ export const MultiplierTabHelper = {
 
   // Helper method to check for whether an achievement affects a particular dimension or not. Format of dimStr is
   // expected to be a three-character string "XXN", eg. "AD3" or "TD2"
-  // Enhanced Achievements are +1000
+  // Enhanced Achievements are +10000, cursed rows are negative
   achievementDimCheck(ach, dimStr) {
     switch (ach) {
       case 23:
@@ -138,7 +141,10 @@ export const MultiplierTabHelper = {
       case 1094:
       case 11094:
       case 124:
+      case 10124:
         return dimStr === "ID1";
+      case 10101:
+        return dimStr === "AD8" || dimStr === "ID8";
       case 34:
       case 10034:
         return dimStr.substr(0, 2) === "AD" && Number(dimStr.charAt(2)) !== 8;
@@ -201,6 +207,17 @@ export const MultiplierTabHelper = {
         return dimStr.substr(0, 2) === "ID";
       case 7:
         return dimStr === "ID8";
+      default:
+        return false;
+    }
+  },
+
+  cursedRowDimCheck(row, dimStr) {
+    switch (row) {
+      case 4:
+        return dimStr === "AD8";
+      case 6:
+        return dimStr === "AD1";
       default:
         return false;
     }

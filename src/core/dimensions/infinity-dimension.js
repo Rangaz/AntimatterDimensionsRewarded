@@ -15,6 +15,7 @@ export function infinityDimensionCommonMultiplier() {
       Achievement(76).enhancedEffect,
       Achievement(91).enhancedEffect,
       Achievement(107),
+      Achievement(107).enhancedEffect,
       TimeStudy(82),
       TimeStudy(92),
       TimeStudy(162),
@@ -156,8 +157,10 @@ class InfinityDimensionState extends DimensionState {
         tier === 1 ? Achievement(94).effects.infinityPowerGain : null,
         tier === 1 ? Achievement(94).enhancedEffect.effects.infinityPowerGain : null,
         tier === 1 ? Achievement(124) : null,
+        tier === 1 ? Achievement(124).enhancedEffect : null,
         tier === 4 ? TimeStudy(72) : null,
-        tier === 1 ? EternityChallenge(2).reward : null
+        tier === 1 ? EternityChallenge(2).reward : null,
+        tier === 8 ? Achievement(101).enhancedEffect : null,
       );
     mult = mult.times(Decimal.pow(this.powerMultiplier, Math.floor(this.baseAmount / 10)));
 
@@ -209,6 +212,7 @@ class InfinityDimensionState extends DimensionState {
     let costMult = this._costMultiplier;
     EternityChallenge(12).reward.applyEffect(v => costMult = Math.pow(costMult, v));
     Achievement(98).enhancedEffect.applyEffect(v => costMult = Math.pow(costMult, v));
+    CursedRow(9).applyEffect(v => costMult = Math.pow(costMult, v));
     return costMult;
   }
 
@@ -278,7 +282,7 @@ class InfinityDimensionState extends DimensionState {
     // r98 will make IDs free of cost
     if (!Achievement(98).isEffectActive) {Currency.infinityPoints.purchase(this.cost);}
     // Enhanced r63 will make them give you their costs
-    if (Achievement(63).isEnhanced) Currency.infinityPoints.add(this.cost);
+    if (Achievement(63).isEnhanced) Currency.infinityPoints.add(this.cost.times(8));
     this.cost = Decimal.round(this.cost.times(this.costMultiplier));
     // Because each ID purchase gives 10 IDs
     this.amount = this.amount.plus(10);
@@ -311,13 +315,14 @@ class InfinityDimensionState extends DimensionState {
       this.cost,
       this.costMultiplier,
       purchasesUntilHardcap,
-      Achievement(98).isUnlocked // The free factor in LinearCostScaling, because r98 makes them free.
+       // The free factor in LinearCostScaling, because r98 makes them free, if it isn't cursed
+      Achievement(98).isUnlocked && !Achievement(98).isCursed
     );
 
     if (costScaling.purchases <= 0) return false;
 
     if (!Achievement(98).isEffectActive) {Currency.infinityPoints.purchase(costScaling.totalCost)};
-    if (Achievement(63).isEnhanced) {Currency.infinityPoints.add(costScaling.totalCost)};
+    if (Achievement(63).isEnhanced) {Currency.infinityPoints.add(costScaling.totalCost.times(8))};
     this.cost = this.cost.times(costScaling.totalCostMultiplier);
     // Because each ID purchase gives 10 IDs
     this.amount = this.amount.plus(10 * costScaling.purchases);

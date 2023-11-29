@@ -1,5 +1,4 @@
 import { DC } from "../constants";
-import { Achievement, Enslaved, InfinityChallenge, NormalChallenge } from "../globals";
 
 import { DimensionState } from "./dimension";
 
@@ -8,7 +7,7 @@ import { DimensionState } from "./dimension";
 export function antimatterDimensionCommonMultiplier() {
   let multiplier = DC.D1;
 
-  // The Achievement multiplier for Dimensions, since Er75 raises them by 80, must be decimalized
+  // The Achievement multiplier for Dimensions, since Er75 raises them by 100, must be decimalized
   // and calculated if neccesary.
   const achievementMultiplier = Achievement(75).isEnhanced ? Decimal.pow(Achievements.power, 
     Achievement(75).enhancedEffect.effects.powEffect.effectOrDefault(1)) : Achievements.power
@@ -64,7 +63,7 @@ export function antimatterDimensionCommonMultiplier() {
   multiplier = multiplier.times(getAdjustedGlyphEffect("powermult"));
   multiplier = multiplier.times(Currency.realityMachines.value.powEffectOf(AlchemyResource.force));
 
-  if (Pelle.isDoomed) multiplier = multiplier.dividedBy(10);
+  if (Pelle.isDoomed) multiplier = multiplier.dividedBy(32);
 
   return multiplier;
 }
@@ -142,6 +141,8 @@ function applyNDMultipliers(mult, tier) {
         Achievement(68).enhancedEffect,
         Achievement(71),
         Achievement(122),
+        Achievement(122).enhancedEffect,
+        CursedRow(6),
         TimeStudy(234)
       );
   }
@@ -156,6 +157,8 @@ function applyNDMultipliers(mult, tier) {
       Achievement(46),
       Achievement(46).enhancedEffect,
       Achievement(101),
+      Achievement(101).enhancedEffect,
+      CursedRow(4),
       TimeStudy(214),
     );
   }
@@ -418,8 +421,15 @@ class AntimatterDimensionState extends DimensionState {
     this._enhancedBaseCosts = ENHANCED_BASE_COSTS[tier];
     const BASE_COST_MULTIPLIERS = [null, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e12, 1e15];
     this._baseCostMultiplier = BASE_COST_MULTIPLIERS[tier];
-    const ENHANCED_COST_MULTIPLIERS = [null, 2, 2.4, 3, 3.6, 5.5, 8, 12, 32];
+    const ENHANCED_COST_MULTIPLIERS = [null, 2, 2, 2, 2, 2, 2, 2, 32];
     this._enhancedCostMultipliers = ENHANCED_COST_MULTIPLIERS[tier];
+    // These are the Cursed Row 1 values
+    const CURSED_BASE_COSTS = [null, 1e129, DC.E10000, DC.E100000, DC.E320000, DC.E500000, 
+      DC.E1E6, DC.E3E6, DC.E6E6];
+    this._cursedBaseCosts = CURSED_BASE_COSTS[tier];
+    const CURSED_COST_MULTPLIERS = [null, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, 
+      Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE];
+    this._cursedCostMultipliers = CURSED_COST_MULTPLIERS[tier];
     const C6_BASE_COSTS = [null, 1, 10, 10, 50, 250, 2e3, 2e4, 4e5];
     this._c6BaseCost = C6_BASE_COSTS[tier];
     const C6_BASE_COST_MULTIPLIERS = [null, 1e3, 5e3, 1e4, 1.2e4, 1.8e4, 2.6e4, 3.2e4, 4.2e4];
@@ -431,6 +441,15 @@ class AntimatterDimensionState extends DimensionState {
    */
   get costScale() {
     const row1Achievement = Achievement(10 + this.tier);
+    const isCursed = CursedRow(1).canBeApplied;
+    // Cursing row 1 already implies that all row 1 Achievements are disabled.
+    if (isCursed) {
+      return new ExponentialCostScaling({
+      baseCost: this._cursedBaseCosts,
+      baseIncrease: this._cursedCostMultipliers,
+      costScale: Player.dimensionMultDecrease,
+      scalingCostThreshold: Number.MAX_VALUE
+    })};
     // Having the enhanced achievement makes its effect also conveniently work for C6.
     if (row1Achievement.isEnhanced) {
       return new ExponentialCostScaling({
@@ -627,9 +646,15 @@ class AntimatterDimensionState extends DimensionState {
   }
 
   get isAvailableForPurchase() {
-    if (!EternityMilestone.unlockAllND.isReached && this.tier > DimBoost.totalBoosts + 4) return false;
+    if (EternityMilestone.unlockAllND.isReached) return this.tier < 7 || !NormalChallenge(10).isRunning;
+    if (this.tier > DimBoost.purchasedBoosts + 4) return false;
+    // With totalAmount here this would generate a long chain of commands that goes like
+    // (tier - 1).totalAmount -> continuumAmount -> continuumValue -> isAvailableForPurchase
+    // for all 8 tiers if we start from AD 8. This only happens if Continuum is enabled,
+    // so if we check and return for the Eternity Milestone first this shouldn't happen.
+    //const hasPrevTier = this.tier === 1 || AntimatterDimension(this.tier - 1).totalAmount.gt(0);
     const hasPrevTier = this.tier === 1 || AntimatterDimension(this.tier - 1).totalAmount.gt(0);
-    if (!EternityMilestone.unlockAllND.isReached && !hasPrevTier) return false;
+    if (!hasPrevTier) return false;
     return this.tier < 7 || !NormalChallenge(10).isRunning;
   }
 

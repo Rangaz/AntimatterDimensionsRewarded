@@ -13,7 +13,6 @@ class EnhancedAchievementState extends GameMechanicState {
   }
 }
 
-
 class AchievementState extends GameMechanicState {
   constructor(config) {
     super(config);
@@ -55,9 +54,15 @@ class AchievementState extends GameMechanicState {
     return Pelle.isDisabled("achievements") && Pelle.disabledAchievements.includes(this.id);
   }
 
+  // I want cursed to be different than disabled for now
+  get isCursed() {
+    if (CursedRow(this.row) == undefined) return false;
+    return CursedRow(this.row).isCursed;
+  }
+
   get isEffectActive() {
     // This means that enhanced achievements lose their regular effect
-    return this.isUnlocked && !this.isDisabled && !this.isEnhanced;
+    return this.isUnlocked && !this.isDisabled && !this.isEnhanced && !this.isCursed;
   }
 
   get hasEnhancedEffect() {
@@ -72,37 +77,69 @@ class AchievementState extends GameMechanicState {
     return player.reality.enhancedAchievements.has(this.id);
   }
 
+  get toBeUnenhanced() {
+    return this.isEnhanced && (!player.reality.toBeEnhancedAchievements.has(this.id) ||
+      player.reality.respecAchievements);
+  }
+
   get canEnhance() {
-    if (!Perk.achievementEnhancement.isBought) return false;
+    if (!Achievements.isEnhancementUnlocked || Pelle.isDisabled("enhancedAchievements") ||
+      this.row > Achievements.maxEnhancedRow || !this.isUnlocked || 
+      !this.hasEnhancedEffect || this.isEnhanced || this.isCursed) {
+        return false;
+    }
 
     // Handle special cases first
-    // Er22 is free and should always be available
-    if (this.id === 22 && !this.isEnhanced) return true;
+    // Free Enhancements should always be available
+    if ([22, 61, 114, 126].includes(this.id)) return true;
+
+    // Used for Imaginary Upgrade's locks 
+    let effectiveEnhancementPoints = Achievements.enhancementPoints;
+    if (ImaginaryUpgrade(19).isLockingMechanics) {
+      // This should only leave 8 available
+      effectiveEnhancementPoints -= Achievements.totalEnhancementPoints - 8;
+    }
+    if (ImaginaryUpgrade(25).isLockingMechanics) {
+      // This should only leave 0 available
+      effectiveEnhancementPoints -= Achievements.totalEnhancementPoints;
+    }
+
     // Er47 doesn't work if Teresa isn't unlocked, so avoid Enhancing it
-    if (this.id == 47 && !Teresa.isUnlocked) return false;
+    if (this.id === 47 && !Teresa.isUnlocked) return false;
 
     // Er57 requires Er32 first, so if there aren't enough Enhancement points to Enhance
-    // both this and r32, don't allow enhancing
-    if (this.id === 57 && !Achievement(32).isEnhanced && Achievements.enhancementPoints < 2) {
+    // both this and r32, or if r32 is cursed, don't allow enhancing
+    if (this.id === 57 && (Achievement(32).isCursed || 
+      (!Achievement(32).isEnhanced && effectiveEnhancementPoints < 2))) {
       return false;
     }
     // Similar with Er88, that requires Er57 & Er32
-    if (this.id === 88 && Achievements.enhancementPoints <= (
-      !Achievement(32).isEnhanced + !Achievement(57).isEnhanced)) {
+    if (this.id === 88 && (Achievement(32).isCursed || Achievement(57).isCursed || 
+      effectiveEnhancementPoints <= (!Achievement(32).isEnhanced + !Achievement(57).isEnhanced))) {
       return false;
     }
 
-    return this.isUnlocked &&
-      this.hasEnhancedEffect &&
-      !this.isEnhanced &&
-      this.row <= Achievements.maxEnhancedRow && // Maximum row allowed
-      Achievements.enhancementPoints > 0 &&
-      Achievements.isEnhancementUnlocked &&
-      !Pelle.isDisabled("enhancedAchievements");
+    if (this.id === 118 && effectiveEnhancementPoints < 2) return false;
+
+    if (this.id === 133 && (!V.isFullyCompleted || Ra.pets.v.level < 24)) {
+      return false;
+    }
+
+    // Similar with Er136 requiring Er115, but Er136 itself is free
+    if (this.id === 136 && (Achievement(115).isCursed || 
+    (!Achievement(115).isEnhanced && effectiveEnhancementPoints < 1))) {
+      return false;
+    }
+    if (!this.isEnhanced && this.id === 136) return true;
+
+    // Er138 requires 3 Enhancement points
+    if (this.id === 138 && effectiveEnhancementPoints < 3) return false;
+
+    return effectiveEnhancementPoints > 0;
   }
 
   // The fromPreset argument is so that we can avoid notifications about Achievements being auto-Enhanced
-  // if we're using a preset. This is useful if, fo example, 57 is written before 32.
+  // if we're using a preset. This is useful if, for example, 57 is written before 32.
   enhance(fromPreset = false) {
     if (!this.canEnhance) return;
     // Enhancing Achievement 57 requires Enhancing Achievement 32, so do that if neccesary.
@@ -117,6 +154,10 @@ class AchievementState extends GameMechanicState {
       Achievement(57).enhance();
       if (!fromPreset) GameUI.notify.success("Achievements 32 and 57 have been automatically Enhanced");
     }
+    if (this.id === 136 && !Achievement(115).isEnhanced) {
+      Achievement(115).enhance();
+      if (!fromPreset) GameUI.notify.success("Achievement 115 has been automatically Enhanced");
+    }
 
     // Enhancing Achievement 81 affects post-infinity scaling, and so does Er11.
     // However, since Er11 activates this effect only if the entire first row is Enhanced, 
@@ -127,15 +168,40 @@ class AchievementState extends GameMechanicState {
     if (this.id === 96) {
       player.eternityPoints = player.eternityPoints.plus(DC.E40.powEffectOf(Achievement(55).enhancedEffect));
     }
+    // Er136 makes Time Studies respecs instantaneous, so respec inmediately if it'd happen next eternity
+    if (this.id === 136 && player.respec) {
+      if (player.timestudy.studies.length === 0) {
+        SecretAchievement(34).unlock();
+      }
+      respecTimeStudies(true);
+      player.respec = false;
+      if (!fromPreset) GameUI.notify.eternity("Your Time Studies have been respec");
+    }
     player.reality.enhancedAchievements.add(this.id);
+    // It is assumed that when you Enhance an Achievement you want to keep it
+    player.reality.toBeEnhancedAchievements.add(this.id);
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENT_ENHANCED);
   }
 
-  // Should only be called when respeccing
   disEnhance() {
     player.reality.enhancedAchievements.delete(this.id);
+    player.reality.toBeEnhancedAchievements.delete(this.id);
+    // Some Achievements are a requirement for other Enhancements.
+    if (this.id === 32) {
+      Achievement(57).disEnhance();
+      Achievement(88).disEnhance();
+    }
+    if (this.id === 57) {
+      Achievement(88).disEnhance();
+    }
+    if (this.id === 115) {
+      Achievement(136).disEnhance();
+    }
   }
 
+  curse() {
+    if (this.isEnhanced) this.disEnhance();
+  }
 
   tryUnlock(args) {
     if (this.isUnlocked) return;
@@ -196,6 +262,66 @@ class AchievementState extends GameMechanicState {
   }
 }
 
+class CursedRowState extends GameMechanicState {
+  constructor(config) {
+    super(config);
+    this._row = this.id;
+    this._bitmask = 1 << (this.row - 1);
+    this._inverseBitmask = ~this._bitmask;
+    //this.registerEvents(config.checkEvent, args => this.tryUnlock(args));
+  }
+  get row() {
+    return this._row;
+  }
+
+  get isPreReality() {
+    return this.row < 14;
+  }
+  
+  get isPrePelle() {
+    return this.row < 18;
+  }
+  
+  get isCursed() {
+    return (player.celestials.ra.cursedRowBits & this._bitmask) !== 0;
+  }
+  
+  get toBeCursed() {
+    return (player.celestials.ra.toBeCursedBits & this._bitmask) !== 0 && !player.reality.respecAchievements;
+  }
+  
+  get isEffectActive() {
+    return this.isCursed;
+  }
+
+  uncurse() {
+    player.celestials.ra.cursedRowBits &= this._inverseBitmask;
+    if (this.row === 2) GameCache.distantGalaxyStart.invalidate();
+  }
+  
+  curse() {
+    player.celestials.ra.cursedRowBits |= this._bitmask;
+    for (let i = 1; i <= 8; i++) Achievement(10 * this.row + i).curse();
+    // Cursing r81, and possibly Er11, changes post-infinity scaling
+    if (this.row === 1 || this.row === 8) GameCache.dimensionMultDecrease.invalidate();
+    if (this.row === 2) GameCache.distantGalaxyStart.invalidate();
+  }
+
+  uncurseNextReality() {
+    player.celestials.ra.toBeCursedBits &= this._inverseBitmask;
+  }
+
+  curseNextReality() {
+    player.celestials.ra.toBeCursedBits |= this._bitmask;
+  }
+}
+
+/**
+ * @param {number} id
+ * @returns {CursedRowState}
+*/
+export const CursedRow = CursedRowState.createAccessor(GameDatabase.achievements.cursed);
+
 /**
  * @param {number} id
  * @returns {AchievementState}
@@ -207,6 +333,11 @@ export const Achievements = {
    * @type {AchievementState[]}
    */
   all: Achievement.index.compact(),
+
+  /**
+   * @type {CursedRowState[]}
+   */
+  allCursedRows: CursedRow.index.compact(),
 
   /**
    * @type {AchievementState[]}
@@ -254,15 +385,23 @@ export const Achievements = {
     return Perk.achievementEnhancement.isBought;
   },
 
+  get effectiveCurses() {
+    const activeCurses = Achievements.allCursedRows.countWhere(a => a.isCursed);
+    return activeCurses;
+  },
+
   get totalEnhancementPoints() {
     return Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality) + 
-      Math.floor(V.spaceTheorems / 2);
+      Math.floor(V.spaceTheorems / 7) + Achievement(172).effects.bonusEnhancements.effectOrDefault(0);
   },
   
-  // Er22 should be free, and we'll sneakily give +1 here so that it's practically free
+  // Free Enhancements add 1 to compensate for the bigger size of enhancedAchievements
   get enhancementPoints() {
     return this.totalEnhancementPoints - player.reality.enhancedAchievements.size +
-      Achievement(22).isEnhanced;
+      Achievement(22).isEnhanced + Achievement(61).isEnhanced + Achievement(114).isEnhanced + 
+      Achievement(126).isEnhanced + Achievement(136).isEnhanced - 
+      Achievement(118).isEnhanced - 2 * Achievement(138).isEnhanced 
+      + 2 * this.effectiveCurses;
   },
 
   get maxEnhancedRow() {
@@ -419,7 +558,8 @@ export const Achievements = {
   // Otherwise it'll return the ids in purchase order, which looks messier.
   returnCurrrentEnhancementsAsPreset() {
     let enhancedAchievements = Array.from(player.reality.enhancedAchievements);
-    enhancedAchievements.sort();
+    // This should arrange them correctly so that 101 does not come before 11
+    enhancedAchievements.sort(function(a, b) {return a - b});
     let presetString = "";
     for (const id of enhancedAchievements) {
       presetString = presetString + id + ",";
@@ -432,12 +572,18 @@ export const Achievements = {
   },
 
   disEnhanceAll() {
-    const enhancedAchievements = Achievements.preReality;
+    const enhancedAchievements = Achievements.preReality.filter(ach => ach.isEnhanced);
     for (const achievement of enhancedAchievements) {
       achievement.disEnhance();
     }
-    player.reality.disEnhance = false;
-    EventHub.dispatch(GAME_EVENT.ACHIEVEMENTS_DISENHANCED);
+    player.reality.respecAchievements = false;
+    
+  },
+
+  uncurseAll() {
+    const cursedRows = Achievements.allCursedRows.filter(row => CursedRow(row).isCursed);
+    for (const row of cursedRows) CursedRow(row).uncurse();
+    player.reality.respecAchievements = false;
   },
 
   autoAchieveUpdate(diff) {

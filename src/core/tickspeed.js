@@ -32,6 +32,7 @@ export function getTickSpeedMultiplier() {
     Achievement(86),
     Achievement(86).enhancedEffect,
     Achievement(178),
+    CursedRow(8),
     InfinityChallenge(5).reward,
     PelleUpgrade.galaxyPower,
     PelleRifts.decay.milestones[1]
@@ -181,7 +182,9 @@ export const Tickspeed = {
       Achievement(45).enhancedEffect,
       Achievement(66),
       Achievement(66).enhancedEffect,
+      Achievement(118).enhancedEffect,
       Achievement(135),
+      CursedRow(3)
     )
       .times(getTickSpeedMultiplier().pow(this.totalUpgrades));
   },
@@ -220,6 +223,7 @@ export const FreeTickspeed = {
     if (Enslaved.has(ENSLAVED_UNLOCKS.FREE_TICKSPEED_SOFTCAP)) {
       softcap += 100000;
     }
+    softcap += Achievement(135).enhancedEffect.effectOrDefault(0);
     return softcap;
   },
 

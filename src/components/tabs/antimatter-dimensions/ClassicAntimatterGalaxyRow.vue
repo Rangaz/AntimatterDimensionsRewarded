@@ -1,6 +1,5 @@
 <script>
 import PrimaryButton from "@/components/PrimaryButton";
-
 export default {
   name: "ClassicAntimatterGalaxyRow",
   components: {
@@ -18,6 +17,7 @@ export default {
         tier: 1,
         amount: 0
       },
+      isThisContinuum: false,
       canBeBought: false,
       distantStart: 0,
       remoteStart: 0,
@@ -39,7 +39,7 @@ export default {
     buttonText() {
       if (this.lockText !== null) return this.lockText;
       const reset = [];
-      if (!Achievement(111).isUnlocked) reset.push("Dimensions");
+      if (!Achievement(111).canBeApplied && !Achievement(111).isEnhanced) reset.push("Dimensions");
       if (!Achievement(143).isUnlocked) reset.push("Dimension Boosts");
       return reset.length === 0
         ? `Increase the power of Tickspeed upgrades`
@@ -54,6 +54,9 @@ export default {
         return `${sum} = ${this.formatGalaxies(parts.sum())}`;
       }
       return sum;
+    },
+    continuumText() {
+      return `Continuum: ${formatFloat(this.galaxies.normal, 3, 3)}`;
     },
     typeName() {
       switch (this.type) {
@@ -86,6 +89,7 @@ export default {
       return {
         "o-primary-btn--galaxy l-dim-row__prestige-button": true,
         "tutorial--glow": this.canBeBought && this.hasTutorial,
+        "o-non-clickable o-continuum": this.isThisContinuum,
         "o-pelle-disabled-pointer": this.creditsClosed,
       };
     }
@@ -93,6 +97,7 @@ export default {
   methods: {
     update() {
       this.type = Galaxy.type;
+      this.isThisContinuum = Laitela.continuumActive && Achievement(177).isUnlocked;
       this.galaxies.normal = player.galaxies + GalaxyGenerator.galaxies;
       this.galaxies.replicanti = Replicanti.galaxies.total;
       this.galaxies.dilation = player.dilation.totalTachyonGalaxies;
@@ -123,8 +128,8 @@ export default {
     <div
       class="l-dim-row__prestige-text c-dim-row__label c-dim-row__label--amount l-text-wrapper"
     >
-      {{ typeName }} ({{ sumText }}):
-      requires {{ formatInt(requirement.amount) }} {{ dimName }} Dimensions
+      {{ typeName }} ({{ sumText }})<span v-if="!isThisContinuum">:
+      requires {{ formatInt(requirement.amount) }} {{ dimName }} Dimensions</span>
       <div class="l-scaling-text-wrapper">
         {{ hasIncreasedScaling ? costScalingText : "" }}
       </div>
@@ -135,7 +140,8 @@ export default {
       @click.exact="buyGalaxy(true)"
       @click.shift.exact="buyGalaxy(false)"
     >
-      {{ buttonText }}
+      <span v-if="!isThisContinuum">{{ buttonText }}</span>
+      <span v-else>{{ continuumText }}</span>
       <div
         v-if="hasTutorial"
         class="fas fa-circle-exclamation l-notification-icon"
@@ -158,5 +164,22 @@ export default {
   height: 5.5rem;
   position: relative;
   font-size: 0.9rem;
+}
+
+.o-non-clickable {
+  cursor: auto;
+}
+
+.o-continuum {
+  border-color: var(--color-laitela--accent);
+  color: var(--color-laitela--accent);
+  background: var(--color-laitela--base);
+  font-size: 1.2rem;
+}
+
+.o-continuum:hover {
+  border-color: var(--color-laitela--accent);
+  color: var(--color-laitela--base);
+  background: var(--color-laitela--accent);
 }
 </style>

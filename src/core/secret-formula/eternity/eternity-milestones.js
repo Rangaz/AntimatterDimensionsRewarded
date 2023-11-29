@@ -32,13 +32,15 @@ export const eternityMilestones = {
         EternityMilestone.autoInfinities.isReached).gt(0);
       if (!player.options.offlineProgress) return `This milestone would give offline EP generation, but offline progress
         is currently disabled`;
-      const effectText = (em200 || em1000) ? "Inactive" : `Currently ${format(EPmin, 2, 2)} EP/min`;
-      return `While offline, gain ${formatPercents(Achievement(102).isEffectActive ? 0.9 : 0.25)} of your best Eternity Points per minute from previous
-        Eternities (${effectText})`;
+      const effectText = (!Achievement(102).isEnhanced && (em200 || em1000)) ? "Inactive" : `Currently ${format(EPmin, 2, 2)} EP/min`;
+      return `While offline, gain ${formatPercents(Achievement(102).isEnhanced ? 
+        1 : (Achievement(102).isEffectActive ? 0.9 : 0.25))} 
+        of your best Eternity Points per minute from previous Eternities (${effectText})`;
     },
     activeCondition: () => (player.options.offlineProgress
-      ? `Active as long as neither of the other offline milestones
-        (${formatInt(200)} or ${formatInt(1000)}) are also active`
+      ? (Achievement(102).isEnhanced ? `Always active thanks to Enhanced Achievement 102` :
+        `Active as long as neither of the other offline milestones
+        (${formatInt(200)} or ${formatInt(1000)}) are also active`)
       : ""),
   },
   autoIC: {
@@ -159,13 +161,15 @@ export const eternityMilestones = {
       const realTime = PlayerProgress.seenAlteredSpeed() ? " real-time" : "";
       // Achievement 145 will cap this effect so it always pretends you have a 33ms eternity.
       // eslint-disable-next-line prefer-template
-      return `While offline, gain Eternities at ${formatPercents(Achievement(102).isEffectActive ? 0.9 : 0.5)} `
-        + (Achievement(145).canBeApplied ? `efficiency every ${formatInt(33)} ms (improved by Achievement 145) ` : `the rate of your 
+      return `While offline, gain Eternities at ${formatPercents(Achievement(102).isEnhanced ? 
+        1 : (Achievement(102).isEffectActive ? 0.9 : 0.5))} ` + (Achievement(145).canBeApplied ? 
+        `efficiency every ${formatInt(33)} ms (improved by Achievement 145) ` : `the rate of your 
         fastest${realTime} Eternity `) + (eternities.gt(0) ? `(Currently ${format(eternities, 2, 2)}/hour)` : "(Inactive)");
     },
     activeCondition: () => (player.options.offlineProgress
-      ? `Must be outside of all Challenges and Dilation, and the Eternity Autobuyer must be set to Eternity at zero EP.
-        This milestone's effect is capped at ${formatInt(33)}ms.`
+      ? (Achievement(102).isEnhanced ? `Always active thanks to Enhanced Achievement 102.` : 
+          `Must be outside of all Challenges and Dilation, and the Eternity Autobuyer must be set to Eternity at zero EP.
+          This milestone's effect is capped at ${formatInt(33)}ms.`)
       : ""),
       pelleUseless: true
   },
@@ -177,14 +181,15 @@ export const eternityMilestones = {
       const infinities = getInfinitiedMilestoneReward(TimeSpan.fromHours(1).totalMilliseconds,
         player.eternities.gte(1000));
       // eslint-disable-next-line prefer-template
-      return `While offline, gain Infinities equal to ${formatPercents(Achievement(102).isEffectActive ? 0.9 : 0.5)}
+      return `While offline, gain Infinities equal to ${formatPercents(Achievement(102).isEnhanced ? 
+        1 : (Achievement(102).isEffectActive ? 0.9 : 0.5))}
         your best Infinities/hour this Eternity ` +
         (infinities.gt(0) ? `(Currently ${format(infinities, 2, 2)}/hour)` : "(Inactive)");
     },
     activeCondition: () => (player.options.offlineProgress
-      ? `Must be outside of Normal/Infinity Challenges and outside of EC4 and EC12,
+      ? (Achievement(102).isEnhanced ? `Always active thanks to Enhanced Achievement 102.` : `Must be outside of Normal/Infinity Challenges and outside of EC4 and EC12,
         the Big Crunch Autobuyer must be turned on and set to time mode with less than ${formatInt(60)} seconds,
-        and the Eternity Autobuyer must be turned off.`
+        and the Eternity Autobuyer must be turned off.`)
       : ""),
       pelleUseless: true
   }

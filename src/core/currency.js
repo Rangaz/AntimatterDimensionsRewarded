@@ -242,7 +242,7 @@ Currency.antimatter = new class extends DecimalCurrency {
       Achievement(55),
       Achievement(78)
     ).toDecimal().timesEffectsOf(Achievement(21).enhancedEffect, Achievement(37).enhancedEffect,
-      Achievement(54).enhancedEffect, Achievement(78).enhancedEffect);
+      Achievement(54).enhancedEffect);
   }
 }();
 
@@ -360,6 +360,10 @@ Currency.timeTheorems = new class extends DecimalCurrency {
   }
 
   get max() { return player.timestudy.maxTheorem; }
+
+  get startingValue() {
+    return Achievement(78).enhancedEffect.effectOrDefault(DC.D0);
+  }
 
   add(amount) {
     super.add(amount);

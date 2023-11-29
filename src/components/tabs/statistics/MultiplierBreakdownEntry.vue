@@ -147,18 +147,21 @@ export default {
       for (const entry of this.entries) {
         const multFrac = log10Mult === 0
           ? 0
-          : Decimal.log10(entry.data.mult) / log10Mult;
+          : Decimal.log10(entry.data.mult) / Math.abs(log10Mult);
+        
         const powFrac = totalPosPow === 1 ? 0 : Math.log(entry.data.pow) / Math.log(totalPosPow);
 
         // Handle nerf powers differently from everything else in order to render them with the correct bar percentage
         const perc = entry.data.pow >= 1
           ? multFrac / totalPosPow + powFrac * (1 - 1 / totalPosPow)
           : Math.log(entry.data.pow) / Math.log(totalNegPow) * (totalNegPow - 1);
-
+        
         // This is clamped to a minimum of something that's still nonzero in order to show it at <0.1% instead of 0%
+        // Later on, divisions that aren't powers will be converted to 0%, and display something like x0.00,
+        // which is not what I want when introducing cursed rows. That'swhat percentList[2] is for. 
         percentList.push(
-          [entry.ignoresNerfPowers, nerfBlacklist.includes(entry.key) ? Math.clampMin(perc, 0.0001) : perc]
-        );
+          [entry.ignoresNerfPowers, nerfBlacklist.includes(entry.key) ? Math.clampMin(perc, 0.0001) : perc,
+          entry.data.pow == 1]);
       }
 
       // Shortly after a prestige, these may add up to a lot more than the base amount as production catches up. This
@@ -172,8 +175,8 @@ export default {
       const nerfedPerc = percentList.filter(p => p[1] > 0)
         .reduce((x, y) => x + (y[0] ? y[1] : y[1] * totalNegPow), 0);
       percentList = percentList.map(p => {
-        if (p[1] > 0) {
-          return (p[0] ? p[1] : p[1] * totalNegPow) / nerfedPerc;
+        if (p[1] > 0 || p[2]) {
+          return Math.clampMin((p[0] ? p[1] : p[1] * totalNegPow) / nerfedPerc, -1);
         }
         return Math.clampMin(p[1] * (totalPerc - nerfedPerc) / totalPerc / totalNegPow, -1);
       });
@@ -283,7 +286,10 @@ export default {
     },
     nerfString(index) {
       const entry = this.entries[index];
-      const percString = padPercents(formatPercents(this.percentList[index], 1));
+      let percString = this.percentList[index];
+      if (percString < 0 && percString > -0.001) percString = `<-${formatPercents(0.001, 1)}`;
+      else percString = formatPercents(percString, 1);
+      percString = padPercents(percString);
 
       // Display both multiplier and powers, but make sure to give an empty string if there's neither
       const overrideStr = entry.displayOverride;

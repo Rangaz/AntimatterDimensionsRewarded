@@ -9,6 +9,67 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 11, 29], 
+    name: "Why are you cursing yourself?",
+    info: `
+    <b>Biggest update yet!!</b>
+    <br>
+    <b>Hard V, Imaginary upgrades and Lai'tela have been Rebalanced!</b>
+    <br>
+    <br>
+    <b>New content: </b>
+    <ul>
+    <li>Introducing: 13 Cursed Achievement rows! They are unlocked with Hard V and used in a V-Achievement
+    and some Imaginary unlocks. If used wisely they also allow for more Enhancements!</li>
+    <li>New rewards for Achievements: 172, 173, 174, 176 and 177!</li>
+    <li>32 new Enhanced effects for rows 10-13!</li>
+    </ul>
+    <br>
+    <br>
+    <b>Other changes: </b>
+    <ul>
+    <li>You can now individually respec Enhancements on Reality.</li>
+    <li>Improved Enhanced Achievements visual.</li>
+    <li>Updated How to play entry on Achievements.</li>
+    </ul>
+    <br>
+    <br>
+    Balance Changes:
+    <ul>
+    <li>All row 1 Enhancements, except 18, set their initial AM cost multiplier to x2.</li>
+    <li>Achievement 23 and its Enhanced version scale slightly better.</li>
+    <li>Enhanced Achievements 25 & 26 give +1 of their respective resource for every 1000 purchases.</li>
+    <li>Achievement 28's multiplier is ~25% bigger, and its Enhanced version ~^1.04 bigger.</li>
+    <li>Achievement 31 and its Enhanced version scale slightly better.</li>
+    <li>Enhanced Achievement 33 gives ~x5.3 more Infinities.</li>
+    <li>Enhanced Achievement 34's formula is changed. Different Dimensions have different weights.</li>
+    <li>Enhanced Achievement 37 now also gives x5 Eternities.</li>
+    <li>Enhanced Achievement 42 scales slightly better.</li>
+    <li>Achievement 44 scales slightly better after 30 seconds.</li>
+    <li>Enhanced Achievement 46 is better.</li>
+    <li>Enhanced Achievements 53 and 66 now use your best total Galaxy amount this Reality.</li>
+    <li>Enhanced Achievement 61 is free.</li>
+    <li>Enhanced Achievement 63 gives x8 the cost of an Infinity Dimension.</li>
+    <li>Enhanced Achievement 66 has a bigger multiplier (x16 ➜ x100).</li>
+    <li>Achievement 76's normal effect is squared.</li>
+    <li>Enhanced Achievement 78 is changed: It now makes you stat with 10 Time Theorems (goes up to 1e50 with
+    Enhanced Achievement 55).</li>
+    <li>Enhanced Achievement 82 gives x2 as much IP per purchase.</li>
+    <li>Enhanced Achievement 94 gives a much higher Infinity Power multiplier (1e260 ➜ 1e26000) and Replicanti
+    speed (43.333 ➜ 260).</li>
+    <li>Achievement 178 now gived more Galaxy strength 1% ➜ 2%.</li>
+    <br>
+    <li>Achievement 172 now also requires no Enhancements.</li>
+    <li>Achievement 178 now requires 100,000 ➜ 108,000 Antimatter Galaxies.</li>
+    <li>Teresa's Reality nerfs IP and EP more (^0.55 ➜ ^0.52).</li>
+    <li>Effarig's stages are slightly harder.</li>
+    <li>V-Achievements give less Enhancements (Every 2nd ➜ every 7th).</li>
+    <li>V's "Young Boy" Achievements have higher goals, but Perk Points used are twice as effective.</li>
+    <li>Pelle divides Antimatter Dimensions by /10 ➜ /32.</li>
+    </ul>
+    `
+  },
+  {
     date: [2023, 11, 3],
     name: "I don't want to Enhance",
     info: `
@@ -146,7 +207,7 @@ export const changelog = [
     <li>(13/10) Achievement 153's effect now only works in non-celestial Realities.</li>
     <li>(12/10) Cel-2's Reality is rebalanced:
     <ul>
-    <li>Tickspeed is dilated way more (Starting value: ^0.7 ➜ ^0.36).</li> |
+    <li>Tickspeed is dilated way more (Starting value: ^0.7 ➜ ^0.36).</li>
     <li>Gamespeed and Dimensions are slightly more dilated (Starting value: ^0.25 ➜ ^0.24).</li>
     <li>This makes Effarig's first 2 layers no longer trivial by Achievement Enhancement, but it should
     be slightly faster still with the correct Glyph and Enhancements setup.</li>

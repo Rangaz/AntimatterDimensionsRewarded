@@ -72,10 +72,12 @@ export class InfinityUpgradeState extends SetPurchasableMechanicState {
   }
 
   charge() {
+    if (this.id == "resetBoost") GameCache.increasePerDimBoost.invalidate();
     player.celestials.ra.charged.add(this.id);
   }
 
   disCharge() {
+    if (this.id == "resetBoost") GameCache.increasePerDimBoost.invalidate();
     player.celestials.ra.charged.delete(this.id);
   }
 }
@@ -100,8 +102,11 @@ export function totalIPMult() {
       Achievement(85).enhancedEffect,
       Achievement(93),
       Achievement(116),
+      Achievement(116).enhancedEffect,
       Achievement(125),
+      Achievement(125).enhancedEffect,
       Achievement(141).effects.ipGain,
+      CursedRow(7),
       InfinityUpgrade.ipMult,
       DilationUpgrade.ipMultDT,
       GlyphEffect.ipMult
@@ -187,7 +192,7 @@ class InfinityIPMultUpgrade extends GameMechanicState {
   }
 
   get isRequirementSatisfied() {
-    return Achievement(41).isUnlocked;
+    return Achievement(41).isUnlocked && !Achievement(41).isCursed;
   }
 
   get canBeBought() {
@@ -202,12 +207,12 @@ class InfinityIPMultUpgrade extends GameMechanicState {
       Autobuyer.bigCrunch.bumpAmount(DC.D2.pow(amount));
     }
     // r82 makes this upgrade no longer spend IP
-    if (!Achievement(82).isUnlocked) {
+    if (!Achievement(82).isUnlocked || Achievement(82).isCursed) {
       Currency.infinityPoints.subtract(Decimal.sumGeometricSeries(amount, this.cost, this.costIncrease, 0));
     }
     // And Er82 makes this upgrade give IP
     if (Achievement(82).isEnhanced) {
-      Currency.infinityPoints.add(Decimal.sumGeometricSeries(amount, this.cost, this.costIncrease, 0));
+      Currency.infinityPoints.add(Decimal.sumGeometricSeries(amount, this.cost, this.costIncrease, 0).times(2));
     }
     player.IPMultPurchases += amount;
     GameUI.update();
@@ -220,7 +225,7 @@ class InfinityIPMultUpgrade extends GameMechanicState {
       const availableIP = Currency.infinityPoints.value.clampMax(this.config.costIncreaseThreshold);
       var purchases = 0;
 
-      if (!Achievement(82).isUnlocked) {
+      if (!Achievement(82).isUnlocked || Achievement(82).isCursed) {
         purchases = Decimal.affordGeometricSeries(availableIP, this.cost, this.costIncrease, 0).toNumber();
       } else { // There might be issues where the Buy Max buys 1 less than what you can actually purchase due
         // to my Achievement 82 (no longer spends resources). I'll try to fix this issue.

@@ -325,6 +325,7 @@ window.player = {
       bestEternitiesPerMs: DC.D0,
       maxReplicanti: DC.D0,
       maxDT: DC.D0,
+      bestTotalGalaxies: 0,
       bestRSmin: 0,
       bestRSminVal: 0,
     },
@@ -364,7 +365,7 @@ window.player = {
     previousRuns: {}
   },
   IPMultPurchases: 0,
-  version: 32,
+  version: 33,
   infinityPower: DC.D1,
   postC4Tier: 0,
   eternityPoints: DC.D0,
@@ -522,8 +523,9 @@ window.player = {
     partEternitied: DC.D0,
     autoAchieve: true,
     gainedAutoAchievements: true,
-    disEnhance: false,
+    respecAchievements: false,
     enhancedAchievements: new Set(),
+    toBeEnhancedAchievements: new Set(),
     enhancedPresets: new Array(6).fill({
       name: "",
       enhancements: "",
@@ -670,6 +672,8 @@ window.player = {
       run: false,
       charged: new Set(),
       disCharge: false,
+      cursedRowBits: 0,
+      toBeCursedBits: 0,
       peakGamespeed: 1,
       petWithRemembrance: ""
     },

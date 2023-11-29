@@ -8,8 +8,6 @@ import { Quotes } from "../quotes";
 import wordShift from "../../word-shift";
 
 import zalgo from "./zalgo";
-import { disEnhanceAll } from "../../globals";
-
 
 const disabledMechanicUnlocks = {
   achievements: () => ({}),
@@ -86,6 +84,7 @@ export const Pelle = {
     player.options.confirmations.glyphReplace = true;
     player.reality.automator.state.repeat = false;
     player.reality.automator.state.forceRestart = false;
+    player.reality.respecAchievements = true;
     if (BlackHoles.arePaused) BlackHoles.togglePause();
     player.celestials.pelle.doomed = true;
     Pelle.armageddon(false);
@@ -94,6 +93,7 @@ export const Pelle = {
     player.IPMultPurchases = 0;
     Autobuyer.bigCrunch.mode = AUTO_CRUNCH_MODE.AMOUNT;
     Achievements.disEnhanceAll();
+    Achievements.uncurseAll();
     disChargeAll();
     clearCelestialRuns();
 
@@ -163,6 +163,7 @@ export const Pelle = {
     }
     finishProcessReality({ reset: true, armageddon: true });
     Achievements.disEnhanceAll();
+    Achievements.uncurseAll();
     disChargeAll();
     player.celestials.enslaved.isStoringReal = false;
     player.celestials.enslaved.autoStoreReal = false;
@@ -186,8 +187,8 @@ export const Pelle = {
   },
 
   get disabledAchievements() {
-    return [164, 156, 153, 152, 143, 142, 141, 137, 136, 134, 133, 132, 126, 125, 124, 122, 121, 118, 117, 116, 115, 
-      113, 111, 108, 107, 106, 104, 103, 101, 97, 95, 93, 92, 91, 87, 85, 78, 77, 76, 74, 65, 62, 55, 54, 37, 33, 31];
+    return [174, 172, 164, 163, 162, 156, 153, 152, 143, 142, 141, 137, 136, 134, 133, 132, 126, 125, 124, 122, 121, 118, 117, 
+      116, 115, 113, 111, 108, 107, 106, 104, 103, 101, 97, 95, 93, 92, 91, 87, 85, 78, 77, 76, 74, 65, 64, 62, 55, 54, 37, 33, 31];
   },
 
   get uselessInfinityUpgrades() {

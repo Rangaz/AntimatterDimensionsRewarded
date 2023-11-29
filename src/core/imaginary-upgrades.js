@@ -105,6 +105,7 @@ class ImaginaryUpgradeState extends BitPurchasableMechanicState {
       for (const key of Object.keys(player.reality.glyphs.sac)) {
         player.reality.glyphs.sac[key] = ImaginaryUpgrade(22).effectValue;
       }
+      GameCache.distantGalaxyStart.invalidate();
     }
     if (this.id === 25) {
       TabNotification.pelleUnlock.tryTrigger();

@@ -264,9 +264,10 @@ export const normalTimeStudies = [
     cost: 12,
     requirement: [101, 102, 103],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
-    description: () => (Achievement(103).canBeApplied
-      ? `Make the Infinity Point formula better log(x)/${formatFloat(307.8, 1)} ➜ log(x)/${formatFloat(284.8, 1)}`
-      : `Make the Infinity Point formula better log(x)/${formatInt(308)} ➜ log(x)/${formatInt(285)}`),
+    description: () => {
+      const before = Achievement(103).isEnhanced ? 303 : (Achievement(103).canBeApplied ? 307.8 : 308);
+      return `Make the Infinity Point formula better log(x)/${formatFloat(before, 1)} ➜ log(x)/${formatFloat(before - 23, 1)}`
+      },
     effect: 23
   },
   {
@@ -321,9 +322,9 @@ export const normalTimeStudies = [
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
     requiresST: [132, 133],
     description: () => (Achievement(138).isUnlocked
-      ? `You can get ${formatPercents(0.5)} more Replicanti Galaxies`
+      ? `You can get ${formatPercents(Achievement(138).isEnhanced ? 0.6 : 0.5)} more Replicanti Galaxies`
       : `Automatic Replicanti Galaxies are disabled, but you can get ${formatPercents(0.5)} more`),
-    effect: () => Math.floor(player.replicanti.boughtGalaxyCap / 2)
+    effect: () => Math.floor(player.replicanti.boughtGalaxyCap / 2 * Achievement(138).enhancedEffect.effectOrDefault(1))
   },
   {
     id: 132,
@@ -345,10 +346,10 @@ export const normalTimeStudies = [
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
     requiresST: [131, 132],
     description: () => (Achievement(138).isUnlocked
-      ? `Replicanti Galaxies are ${formatPercents(0.5)} stronger`
+      ? `Replicanti Galaxies are ${formatPercents(Achievement(138).isEnhanced ? 0.6 : 0.5)} stronger`
       : `Replicanti are ${formatX(10)} slower until ${format(Number.MAX_VALUE, 2)}` +
     `, but Replicanti Galaxies are ${formatPercents(0.5)} stronger`),
-    effect: 0.5
+    effect: () => 0.5 * Achievement(138).enhancedEffect.effectOrDefault(1),
   },
   {
     id: 141,

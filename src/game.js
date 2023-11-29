@@ -87,7 +87,7 @@ export function breakInfinity() {
 }
 
 export function gainedInfinityPoints() {
-  const div = 308 - Effects.sum(Achievement(103), TimeStudy(111));
+  const div = 308 - Effects.sum(Achievement(103), Achievement(103).enhancedEffect, TimeStudy(111));
   if (Pelle.isDisabled("IPMults")) {
     return Decimal.pow10(player.records.thisInfinity.maxAM.log10() / div - 0.75)
       .timesEffectsOf(PelleRifts.vacuum)
@@ -104,7 +104,7 @@ export function gainedInfinityPoints() {
   // Pow effects from Achievements
   ip = ip.pow(Achievement(93).enhancedEffect.effectOrDefault(1));
   if (Teresa.isRunning) {
-    ip = ip.pow(0.55);
+    ip = ip.pow(0.52);
   } else if (V.isRunning) {
     ip = ip.pow(0.5);
   } else if (Laitela.isRunning) {
@@ -125,6 +125,8 @@ function totalEPMult() {
       .timesEffectsOf(
         EternityUpgrade.epMult,
         Achievement(85).enhancedEffect,
+        Achievement(102).enhancedEffect.effects.multipier,
+        Achievement(116).enhancedEffect,
         Achievement(153),
         TimeStudy(61),
         TimeStudy(122),
@@ -136,11 +138,12 @@ function totalEPMult() {
 }
 
 export function gainedEternityPoints() {
+  const div = 308 - Effects.sum(Achievement(173)) - PelleRifts.recursion.effectValue.toNumber();
   let ep = DC.D5.pow(player.records.thisEternity.maxIP.plus(
-    gainedInfinityPoints()).log10() / (308 - PelleRifts.recursion.effectValue.toNumber()) - 0.7).times(totalEPMult());
+    gainedInfinityPoints()).log10() / div - 0.7).times(totalEPMult());
 
   if (Teresa.isRunning) {
-    ep = ep.pow(0.55);
+    ep = ep.pow(0.52);
   } else if (V.isRunning) {
     ep = ep.pow(0.5);
   } else if (Laitela.isRunning) {
@@ -203,13 +206,14 @@ export function resetInfinityRuns() {
 // Player gains 50% of infinities they would get based on their best infinities/hour crunch if they have the
 // milestone and turned on infinity autobuyer with 1 minute or less per crunch.
 // This amount increases to 90% with r102, but, since you get it anyway when you get this milestone,
-// I'll pretend it was always 90%.
+// so I'll pretend it was always 90%.
 // r145 will cap it too, its effect is already in bestInfinitiesPerMs
 export function getInfinitiedMilestoneReward(ms, considerMilestoneReached) {
   const infinitiesToGain = Decimal.floor(player.records.thisEternity.bestInfinitiesPerMs.
-    times(ms).dividedBy(1/.9));
-  return Autobuyer.bigCrunch.autoInfinitiesAvailable(considerMilestoneReached)
-    ? infinitiesToGain
+    times(ms));
+  const multiplier = Achievement(102).isEnhanced ? 1 : 0.9;
+  return Autobuyer.bigCrunch.autoInfinitiesAvailable(considerMilestoneReached) || Achievement(102).isEnhanced
+    ? infinitiesToGain.times(multiplier)
     : DC.D0;
 }
 
@@ -239,27 +243,28 @@ export function resetEternityRuns() {
 
 // Player gains 50% of the eternities they would get if they continuously repeated their fastest eternity, if they
 // have the auto-eternity milestone and turned on eternity autobuyer with 0 EP.
-// This amount increases to 90% with r102.
+// This amount increases to 90% with r102, and 100% with Er102.
 // And r145 will always cap it.
 export function getEternitiedMilestoneReward(ms, considerMilestoneReached) {
+  const multiplier = Achievement(102).isEnhanced ? 1 / 33 : Achievement(102).effectOrDefault(0.5) / 33;
   const eternitiesToGain = Achievement(145).canBeApplied ? 
-    Decimal.floor(gainedEternities().times(Achievement(102).effectOrDefault(0.5) / 33).times(ms)) :
+    Decimal.floor(gainedEternities().times(multiplier).times(ms)) :
     Decimal.floor(player.records.thisReality.bestEternitiesPerMs.times(ms).dividedBy(
     1 / Achievement(102).effectOrDefault(0.5)));
-  return Autobuyer.eternity.autoEternitiesAvailable(considerMilestoneReached)
+  return Autobuyer.eternity.autoEternitiesAvailable(considerMilestoneReached) || Achievement(102).isEnhanced
     ? eternitiesToGain
     : DC.D0;
 }
 
 function isOfflineEPGainEnabled() {
-  return player.options.offlineProgress && !Autobuyer.bigCrunch.autoInfinitiesAvailable() &&
-    !Autobuyer.eternity.autoEternitiesAvailable();
+  return player.options.offlineProgress && ((!Autobuyer.bigCrunch.autoInfinitiesAvailable() &&
+    !Autobuyer.eternity.autoEternitiesAvailable()) || Achievement(102).isEnhanced);
 }
 
 export function getOfflineEPGain(ms) {
   if (!EternityMilestone.autoEP.isReached || !isOfflineEPGainEnabled()) return DC.D0;
   return player.records.bestEternity.bestEPminReality.times(TimeSpan.fromMilliseconds(ms).totalMinutes * 
-  Effects.max(0.25, Achievement(102))); // r102 bumps the amount up to 90%.
+  Effects.max(0.25, Achievement(102), Achievement(102).enhancedEffect.effects.offlineMultiplier)); // r102 bumps the amount up to 90%.
 }
 
 // Note: realities and ampFactor must be distinct because there are a few things farther up which only multiply
@@ -293,7 +298,10 @@ export function gainedInfinities() {
     Achievement(33),
     Achievement(33).enhancedEffect,
     Achievement(87).enhancedEffect,
+    Achievement(102).enhancedEffect.effects.multiplier,
     Achievement(164),
+    Achievement(172).effects.infinityMultiplier,
+    CursedRow(11),
     Ra.unlocks.continuousTTBoost.effects.infinity
   );
   infGain = infGain.times(getAdjustedGlyphEffect("infinityinfmult"));
@@ -349,6 +357,7 @@ export function getGameSpeedupFactor(effectsToConsider, blackHolesActiveOverride
         if (!isActive) break;
         factor *= Math.pow(blackHole.power, BlackHoles.unpauseAccelerationFactor);
         factor *= VUnlocks.achievementBH.effectOrDefault(1);
+        factor *= Achievement(174).effectOrDefault(1);
       }
     }
   }
@@ -499,6 +508,7 @@ export function gameLoop(passDiff, options = {}) {
   GameCache.infinityDimensionCommonMultiplier.invalidate();
   GameCache.timeDimensionCommonMultiplier.invalidate();
   GameCache.totalIPMult.invalidate();
+  if (Achievement(176).isUnlocked && Laitela.continuumActive) GameCache.distantGalaxyStart.invalidate();
 
   const blackHoleDiff = realDiff;
   const fixedSpeedActive = EternityChallenge(12).isRunning;
@@ -539,7 +549,6 @@ export function gameLoop(passDiff, options = {}) {
     player.records.realTimeDoomed += realDiff;
     player.records.realTimePlayed += realDiff;
     player.records.totalTimePlayed += diff;
-    // There's now a 3 second grace window in r23's effect.
     player.records.timeSinceLastSacrifice += diff; // For r23
     player.records.timeWithExcessAMProd += diff; // For r44
     player.records.timeSinceLastReset += diff; // For r68
@@ -600,20 +609,25 @@ export function gameLoop(passDiff, options = {}) {
     player.records.timeWithExcessIPowerProd = 0;
   }
 
+  
   updatePrestigeRates();
   tryCompleteInfinityChallenges();
-
+  
   EternityChallenges.autoComplete.tick();
-
+  
   replicantiLoop(diff);
-
+  
   if (PlayerProgress.dilationUnlocked()) {
     Currency.dilatedTime.add(getDilationGainPerSecond().times(diff / 1000));
   }
-
+  
   updateTachyonGalaxies();
   Currency.timeTheorems.add(getTTPerSecond().times(diff / 1000));
   InfinityDimensions.tryAutoUnlock();
+  
+  player.galaxies = Math.max(player.galaxies, Galaxy.continuumGalaxies);
+  player.records.thisReality.bestTotalGalaxies = Math.max(player.records.thisReality.bestTotalGalaxies, 
+    player.galaxies + Replicanti.galaxies.total + player.dilation.totalTachyonGalaxies);
 
   BlackHoles.updatePhases(blackHoleDiff);
 
@@ -700,11 +714,17 @@ function passivePrestigeGen() {
   let eternitiedGain = 0;
   if (RealityUpgrade(14).isBought) {
     eternitiedGain = DC.D1.timesEffectsOf(
+      Achievement(102).enhancedEffect.effects.multiplier,
       Achievement(113),
+      Achievement(113).enhancedEffect,
+      Achievement(115).enhancedEffect.effects.eternityMultiplier,
+      CursedRow(11),
       RealityUpgrade(3),
       RealityUpgrade(14)
     );
+    // Since Er34's effect is the starting resources and I want to display that, this will ber a hardcoded effect.
     eternitiedGain = Decimal.times(eternitiedGain, getAdjustedGlyphEffect("timeetermult"));
+    if (Achievement(37).isEnhanced) eternitiedGain = eternitiedGain.times(5);
     eternitiedGain = new Decimal(Time.deltaTime).times(
       Decimal.pow(eternitiedGain, AlchemyResource.eternity.effectValue));
     player.reality.partEternitied = player.reality.partEternitied.plus(eternitiedGain);
@@ -718,6 +738,7 @@ function passivePrestigeGen() {
       // Multipliers are done this way to explicitly exclude ach87 and TS32
       infGen = infGen.plus(0.5 * Time.deltaTimeMs / Math.clampMin(50, player.records.bestInfinity.time));
       infGen = infGen.timesEffectsOf(
+        CursedRow(11),
         RealityUpgrade(5),
         RealityUpgrade(7),
         Ra.unlocks.continuousTTBoost.effects.infinity
@@ -884,7 +905,10 @@ export function getTTPerSecond() {
     Ra.unlocks.continuousTTBoost.effects.ttGen,
     Ra.unlocks.achievementTTMult,
     Achievement(137),
+    Achievement(137).enhancedEffect,
     Achievement(156),
+    Achievement(172).effects.timeTheoemMultiplier,
+    CursedRow(13),
   );
   if (GlyphAlteration.isAdded("dilation")) ttMult *= getSecondaryGlyphEffect("dilationTTgen");
 

@@ -174,7 +174,7 @@ export const AutomatorData = {
   MAX_ALLOWED_SCRIPT_COUNT: 20,
   MAX_ALLOWED_CONSTANT_NAME_LENGTH: 20,
   // Note that a study string with ALL studies in unshortened form without duplicated studies is ~230 characters,
-  // and the worst case scenario of an enhancement string with 66 ids in unshortened form is ~220 characters
+  // and the worst case scenario of an enhancement string with (eventually) 54 ids in unshortened form is ~190 characters
   MAX_ALLOWED_CONSTANT_VALUE_LENGTH: 250,
   MAX_ALLOWED_CONSTANT_COUNT: 30,
   MIN_CHARS_BETWEEN_UNDOS: 10,

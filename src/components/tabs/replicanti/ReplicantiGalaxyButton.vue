@@ -15,12 +15,14 @@ export default {
       isAutoActive: false,
       isAutoEnabled: false,
       isDivideUnlocked: false,
+      isFree: false,
       boughtGalaxies: 0,
       extraGalaxies: 0
     };
   },
   computed: {
     resetActionDisplay() {
+      if (this.isFree) return "Click";
       return this.isDivideUnlocked && !Pelle.isDoomed
         ? `Divide Replicanti by ${format(Number.MAX_VALUE, 1, 1)}`
         : "Reset Replicanti amount";
@@ -46,7 +48,8 @@ export default {
       this.isAvailable = rg.canBuyMore;
       this.boughtGalaxies = rg.bought;
       this.extraGalaxies = rg.extra;
-      this.isDivideUnlocked = Achievement(126).isUnlocked;
+      this.isDivideUnlocked = Achievement(126).canBeApplied;
+      this.isFree = Achievement(126).isEnhanced;
       const auto = Autobuyer.replicantiGalaxy;
       this.isAutoUnlocked = auto.isUnlocked;
       this.isAutoActive = auto.isActive;

@@ -7,22 +7,29 @@ import { MultiplierTabIcons } from "./icons";
 // Note most of the isActive entries in here have redundant-looking DT/s != 0 checks because DT is treated as a
 // special case due to not being a prestige currency but still needing to be treated like one in the UI. This
 // is because it requires dilation to be unlocked, which isn't a given, and we want the tab continuously visible
-// after the first ever dilation unlock on the 0th reality
+// after the first ever dilation unlock on the 0th reality.
+// Because Cursed Row 13 can multiply this by 0, instead of trying to face any issues I'll just hide it.
 export const DT = {
   total: {
     name: "Dilated Time gain",
     displayOverride: () => `${format(getDilationGainPerSecond().times(getGameSpeedupForDisplay()), 2, 2)}/sec`,
     multValue: () => getDilationGainPerSecond().times(getGameSpeedupForDisplay()),
-    isActive: () => PlayerProgress.realityUnlocked() ||
-      (PlayerProgress.dilationUnlocked() && getDilationGainPerSecond().gt(0)),
+    isActive: () => (PlayerProgress.realityUnlocked() ||
+      (PlayerProgress.dilationUnlocked() && getDilationGainPerSecond().gt(0))) && !CursedRow(13).canBeApplied,
     dilationEffect: () => (Enslaved.isRunning ? 0.85 : 1),
     isDilated: true,
     overlay: ["Ψ"],
   },
   achievement: {
     name: "Achievements",
-    multValue: () => Achievement(132).effectOrDefault(1) * Achievement(137).effectOrDefault(1),
-    isActive: () => (Achievement(132).canBeApplied || Achievement(137).canBeApplied) &&
+    multValue: () => DC.D1.timesEffectsOf(
+      Achievement(132),
+      Achievement(132).enhancedEffect,
+      Achievement(137),
+      Achievement(137).enhancedEffect,
+    ),
+    isActive: () => (Achievement(132).canBeApplied || Achievement(132).isEnhanced || 
+      Achievement(137).canBeApplied || Achievement(137).isEnhanced) &&
       getDilationGainPerSecond().neq(0),
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },

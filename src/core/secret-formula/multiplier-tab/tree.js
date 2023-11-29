@@ -7,13 +7,13 @@ const dynamicGenProps = ["TP", "DT", "tickspeed", "infinities", "eternities", "g
 const propList = {
   AD: ["purchase", "dimboost", "sacrifice", "achievementMult", "achievement", "infinityUpgrade",
     "breakInfinityUpgrade", "infinityPower", "infinityChallenge", "timeStudy", "eternityChallenge", "glyph", "v",
-    "alchemy", "pelle", "iap", "effectNC", "nerfIC", "nerfV", "nerfCursed", "nerfPelle"],
+    "alchemy", "pelle", "iap", "effectNC", "nerfIC", "nerfV", "nerfCursed", "cursedRow", "nerfPelle"],
   ID: ["purchase", "achievementMult", "achievement", "replicanti", "infinityChallenge", "timeStudy", "eternityUpgrade",
     "eternityChallenge", "glyph", "alchemy", "imaginaryUpgrade", "pelle", "iap", "nerfV", "nerfCursed", "nerfPelle"],
   TD: ["purchase", "achievementMult", "achievement", "timeStudy", "eternityUpgrade", "eternityChallenge",
-    "dilationUpgrade", "realityUpgrade", "glyph", "alchemy", "imaginaryUpgrade", "pelle", "iap", "nerfV", "nerfCursed"],
+    "dilationUpgrade", "realityUpgrade", "glyph", "alchemy", "cursedRow12", "imaginaryUpgrade", "pelle", "iap", "nerfV", "nerfCursed"],
   IP: ["base", "infinityUpgrade", "achievement", "timeStudy", "dilationUpgrade", "glyph", "alchemy", "pelle", "iap",
-    "nerfTeresa", "nerfV"],
+    "nerfTeresa", "nerfV", "cursedRow"],
   EP: ["base", "eternityUpgrade", "achievement", "timeStudy", "glyph", "realityUpgrade", "pelle", "iap", "nerfTeresa", "nerfV"],
 };
 
@@ -43,7 +43,7 @@ function getProps(resource, tier) {
   return newProps;
 }
 
-// Everything is multiplierTabTree is associated with values in multiplierTabValues. The only explicitly
+// Everything in multiplierTabTree is associated with values in multiplierTabValues. The only explicitly
 // initialized props here are the "root" props which are viewable on the tab with full breakdowns. After the initial
 // specification, all children props are dynamically added based on the arrays in the helper functions above
 export const multiplierTabTree = {
@@ -114,24 +114,26 @@ multiplierTabTree.DT_total[0].unshift("TP_total");
 
 // Additional data specification for dynamically-generated props
 const dimTypes = ["AD", "ID", "TD"];
-const singleRes = ["IP", "EP", "DT", "tickspeed", "infinities", "replicanti"];
+const singleRes = ["IP", "EP", "DT", "tickspeed", "infinities", "eternities", "replicanti"];
 const targetedEffects = {
   achievement: { 
     // Enhanced Achievements will be placed here as (10000 + actual number)
     // to distinguish them from the regular achievements, and 
     // 1000/2000 + actual number for when they have more than 1 effect to keep track of
+    // -row only when neccesary (-3) (cursed rows)
     checkFn: MultiplierTabHelper.achievementDimCheck,
     AD: [23, 10023, 24, 10024, 28, 10028, 31, 10031, 34, 10034, 35, 10035, 38, 10038, 42, 10042, 43, 10043, 
       44, 10044, 46, 10046, 47, 10047, 48, 10048, 56, 10056, 64, 10064, 65, 10065, 67, 10067, 68, 10068, 
-      71, 10071, 72, 10072, 73, 10073, 74, 10074, 76, 10076, 84, 10084, 91, 92, 101, 183],
-    ID: [10035, 48, 10048, 10067, 10074, 10076, 10091, 1094, 11094, 107, 124],
-    TD: [10035, 48, 10048, 10051, 10067, 10074, 10076, 10092, 105, 112, 123, 128],
-    IP: [62, 10062, 77, 10077, 85, 10085, 93, 10093, 116, 125, 141],
-    EP: [10085, 153],
-    DT: [132, 137],
-    tickspeed: [36, 10036, 45, 10045, 66, 10066, 135],
-    infinities: [33, 10033, 87, 10087, 164],
-    replicanti: [2094, 12094, 10095, 106, 108, 134]
+      71, 10071, 72, 10072, 73, 10073, 74, 10074, 76, 10076, 84, 10084, 91, 92, 101, 10101, 183],
+    ID: [10035, 48, 10048, 10067, 10074, 10076, 10091, 1094, 11094, 10101, 107, 10107, 124, 10124],
+    TD: [10035, 48, 10048, 10051, 10067, 10074, 10076, 10092, 105, 10105, 112, 10112, 123, 10123, 128, 10128],
+    IP: [62, 10062, 77, 10077, 85, 10085, 93, 10093, 116, 10116, 125, 10125, 141],
+    EP: [10085, 10102, 10116, 153],
+    DT: [132, 10132, 137, 10137],
+    tickspeed: [-3, 36, 10036, 45, 10045, 66, 10066, 10118, 135],
+    infinities: [33, 10033, 87, 10087, 10102, 164, 172],
+    eternities: [10037, 10102, 113, 10113, 10115],
+    replicanti: [2094, 12094, 10095, 106, 10106, 108, 10108, 134, 10134]
   },
   timeStudy: {
     checkFn: MultiplierTabHelper.timeStudyDimCheck,
@@ -152,6 +154,12 @@ const targetedEffects = {
     ID: [2, 4, 9],
     TD: [1, 10],
   },
+  cursedRow: {
+    checkFn: MultiplierTabHelper.cursedRowDimCheck,
+    AD: [4, 6],
+    IP: [7],
+    replicanti: [10],
+  }
 };
 
 // Highest actively-producing dimensions need a special case
@@ -176,7 +184,7 @@ for (const res of dimTypes) {
 // entries or have 8 identical entries, so we explicitly remove those lists for a cleaner appearance on the UI
 const removedRegexes = ["AD_sacrifice", "AD_breakInfinityUpgrade", "AD_nerfIC", "AD_infinityUpgrade", "AD_v",
   "ID_replicanti", "ID_infinityChallenge", "ID_eternityUpgrades",
-  "TD_achievement", "TD_eternityUpgrade", "TD_dilationUpgrade", "TD_realityUpgrade",
+  "TD_achievement", "TD_eternityUpgrade", "TD_dilationUpgrade", "TD_realityUpgrade", "TD_cursedRow12",
   ".._achievementMult", ".._glyph", ".._alchemy", ".._imaginaryUpgrade", ".._iap",
   ".._nerfV", ".._nerfCursed", ".._nerfPelle", ".._pelle"
 ];

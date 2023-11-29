@@ -115,13 +115,17 @@ export const TD = {
         Achievement(76).enhancedEffect,
         Achievement(92).enhancedEffect,
         Achievement(105), 
+        Achievement(105).enhancedEffect,
         Achievement(112), 
+        Achievement(112).enhancedEffect,
         Achievement(123), 
-        Achievement(128)
+        Achievement(128),
+        Achievement(128).enhancedEffect,
       );
       return Decimal.pow(baseMult, dim ? 1 : MultiplierTabHelper.activeDimCount("TD"));
     },
-    isActive: () =>  [48, 105, 112, 123, 128].some(a => Achievement(a).canBeApplied),
+    powValue: () => Achievement(123).enhancedEffect.effectOrDefault(1),
+    isActive: () =>  [48, 105, 112, 123, 128].some(a => Achievement(a).canBeApplied || Achievement(a).isEnhanced),
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   timeStudy: {
@@ -243,6 +247,12 @@ export const TD = {
     powValue: () => AlchemyResource.time.effectOrDefault(1) * Ra.momentumValue,
     isActive: () => Ra.unlocks.unlockGlyphAlchemy.canBeApplied,
     icon: MultiplierTabIcons.ALCHEMY,
+  },
+  cursedRow12: {
+    name: "Cursed Row 12",
+    powValue: () => CursedRow(12).effectOrDefault(1),
+    isActive: () => CursedRow(12).canBeApplied,
+    icon: MultiplierTabIcons.CURSED_ROW
   },
   imaginaryUpgrade: {
     name: "Imaginary Upgrade - Suspicion of Interference",

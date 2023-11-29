@@ -129,7 +129,7 @@ export function bigCrunchResetValues(enteringAntimatterChallenge, enteringC10OrI
   secondSoftReset(enteringAntimatterChallenge, enteringC10OrIC1);
 
   let remainingGalaxies = 0;
-  if (Achievement(95).isUnlocked && !Pelle.isDoomed) {
+  if (Achievement(95).isUnlocked && !Achievement(95).isCursed && !Pelle.isDoomed) {
     Replicanti.amount = currentReplicanti;
     remainingGalaxies += Achievement(95).isEnhanced ? Math.ceil(currentReplicantiGalaxies / 2) :
       Math.min(currentReplicantiGalaxies, 1);
@@ -139,6 +139,10 @@ export function bigCrunchResetValues(enteringAntimatterChallenge, enteringC10OrI
   }
 
   if (PelleUpgrade.replicantiGalaxyNoReset.canBeApplied) {
+    remainingGalaxies = currentReplicantiGalaxies;
+  }
+  if (Achievement(115).isEnhanced) {
+    Replicanti.amount = currentReplicanti;
     remainingGalaxies = currentReplicantiGalaxies;
   }
   // I don't think this Math.clampMax is technically needed, but if we add another source
@@ -156,6 +160,11 @@ function bigCrunchCheckUnlocks() {
 }
 
 export function secondSoftReset(enteringAntimatterChallenge, enteringC10OrIC1) {
+  Player.resetRequirements("infinity");
+  // Er115 makes Infinities no longer reset anything
+  if (Achievement(115).isEnhanced && !enteringAntimatterChallenge && !enteringC10OrIC1) {
+    return;
+  }
   // r115 keeps up to 200 dim boosts and 50 galaxies, but only if their
   // respective autobuyers are on.
   if (Achievement(115).canBeApplied) {
@@ -168,20 +177,20 @@ export function secondSoftReset(enteringAntimatterChallenge, enteringC10OrIC1) {
     player.galaxies = 0;
     player.records.timeWithExcessIPowerProd = 0;
   }
-
+  
+  if (enteringC10OrIC1) GameCache.increasePerDimBoost.invalidate();
+  player.records.timeSinceLastReset = 0;
+  player.records.thisInfinity.time = 0;
+  player.records.thisInfinity.lastBuyTime = 0;
+  player.records.thisInfinity.realTime = 0;
   player.records.thisInfinity.maxAM = DC.D0;
+  player.records.timeWithExcessAMProd = 0;
   Currency.antimatter.reset();
   softReset(0, true, true, enteringAntimatterChallenge, enteringC10OrIC1);
   if (!Achievement(115).isEffectActive) InfinityDimensions.resetAmount();
   if (player.replicanti.unl) Replicanti.amount = DC.D1;
   player.replicanti.galaxies = 0;
-  player.records.timeSinceLastReset = 0;
-  player.records.timeWithExcessAMProd = 0;
-  player.records.thisInfinity.time = 0;
-  player.records.thisInfinity.lastBuyTime = 0;
-  player.records.thisInfinity.realTime = 0;
-  Player.resetRequirements("infinity");
-  AchievementTimers.marathon2.reset();
+  //AchievementTimers.marathon2.reset();
 }
 
 export function preProductionGenerateIP(diff) {

@@ -52,13 +52,16 @@ export const EP = {
     icon: MultiplierTabIcons.UPGRADE("eternity"),
   },
   achievement: {
-    name: "Achievement rewards",
-    displayOverride: () => {
-      const val = Achievement(85).enhancedEffect.effectOrDefault(DC.D1).times(Achievement(153).effectOrDefault(1));
-      return `${formatX(val, 2, 2)}`;
-    },
-    multValue: () => Achievement(85).enhancedEffect.effectOrDefault(DC.D1).times(Achievement(153).effectOrDefault(1)),
-    isActive: () => PlayerProgress.eternityUnlocked() && (Achievement(153).canBeApplied || Achievement(85).isEnhanced)
+    name: "Achievement Rewards",
+  
+    multValue: () => DC.D1.timesEffectsOf(
+      Achievement(85).enhancedEffect,
+      Achievement(102).enhancedEffect.effects.multiplier,
+      Achievement(116).enhancedEffect,
+      Achievement(153),
+    ),
+    isActive: () => PlayerProgress.eternityUnlocked() && (Achievement(153).canBeApplied || 
+      Achievement(85).isEnhanced || Achievement(102).isEnhanced || Achievement(116).isEnhanced)
       && !Pelle.isDoomed,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
@@ -103,7 +106,7 @@ export const EP = {
 
   nerfTeresa: {
     name: "Teresa's Reality",
-    powValue: () => 0.55,
+    powValue: () => 0.52,
     isActive: () => Teresa.isRunning,
     icon: MultiplierTabIcons.GENERIC_TERESA,
   },

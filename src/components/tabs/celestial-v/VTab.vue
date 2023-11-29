@@ -207,6 +207,8 @@ export default {
         <br>
         Cursed Glyphs count as {{ formatInt(-3) }} Glyphs for the purposes of all requirements related to Glyph count.
         <br>
+        You can now Curse Achievements in the Achievements tab.
+        <br>
         <span v-if="!isDoomed">The Black Hole can now be used to slow down time if they are both permanent.</span>
         <br><br>
         Each Hard V-Achievement counts as two V-Achievements and will award {{ formatInt(2) }} Space Theorems
@@ -308,8 +310,6 @@ export default {
           allowing you to purchase Time Studies which are normally locked.
           <br>
           Space Theorems and available Enhancements can also be used as a Currency in the Automator.
-          <br>
-          Every 2nd V-Achievement also allows you to Enhance {{ formatInt(1) }} more Achievement.
         </span>
       </div>
       <br>

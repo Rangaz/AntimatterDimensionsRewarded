@@ -45,6 +45,7 @@ function giveEternityRewards(auto) {
 
   Currency.infinitiesBanked.value = Currency.infinitiesBanked.value.plusEffectsOf(
     Achievement(131),
+    Achievement(131).enhancedEffect,
     TimeStudy(191)
   );
 
@@ -69,8 +70,13 @@ export function eternity(force, auto, specialConditions = {}) {
     // eslint-disable-next-line no-param-reassign
     force = true;
   }
+
   // If we're exiting an EC it's important that r136 still resets TDs and Time shards
-  const exitingEC = player.challenge.eternity.current != 0;
+  const exitingEC = specialConditions.exitingEC || player.challenge.eternity.current != 0
+  const canApplyEr115 = Achievement(115).isEnhanced && !specialConditions.switchingDilation && !specialConditions.enteringEC
+    && !exitingEC;
+  const canApplyEr136 = Achievement(136).isEnhanced && !specialConditions.switchingDilation && !specialConditions.enteringEC
+    && !exitingEC;
 
   // We define this variable so we can use it in checking whether to give
   // the secret achievement for respec without studies.
@@ -99,8 +105,21 @@ export function eternity(force, auto, specialConditions = {}) {
     player.challenge.eternity.current = 0;
   }
 
+  if (canApplyEr136) {
+    if (!specialConditions.enteringEC && player.respec) {
+      if (noStudies) {
+        SecretAchievement(34).unlock();
+      }
+      respecTimeStudies(auto);
+      player.respec = false;
+    }
+    EventHub.dispatch(GAME_EVENT.ETERNITY_RESET_AFTER);
+    return;
+  }
+
+
   initializeChallengeCompletions();
-  initializeResourcesAfterEternity();
+  initializeResourcesAfterEternity(canApplyEr115);
 
   if (!Achievement(136).canBeApplied || specialConditions.switchingDilation || specialConditions.enteringEC) {
     Currency.timeShards.reset();
@@ -117,7 +136,12 @@ export function eternity(force, auto, specialConditions = {}) {
   }
   resetInfinityRuns();
   InfinityDimensions.fullReset();
+  // Er115 will keep some Replicanti Galaxies
+  const keptReplicantiGalaxies = Math.clampMax(player.replicanti.galaxies, 
+    Achievement(115).enhancedEffect.effects.galaxiesKept.effectOrDefault(0));
   Replicanti.reset();
+    if (canApplyEr115) player.replicanti.galaxies = keptReplicantiGalaxies;
+
   resetChallengeStuff();
   AntimatterDimensions.reset();
 
@@ -189,12 +213,12 @@ export function initializeChallengeCompletions(isReality) {
   if (!isReality && EternityMilestone.keepAutobuyers.isReached || Pelle.isDoomed) {
     NormalChallenges.completeAll();
   }
-  if (Achievement(133).isUnlocked && !Pelle.isDoomed) InfinityChallenges.completeAll();
+  if (Achievement(133).isUnlocked && !Achievement(133).isCursed && !Pelle.isDoomed) InfinityChallenges.completeAll();
   player.challenge.normal.current = 0;
   player.challenge.infinity.current = 0;
 }
 
-export function initializeResourcesAfterEternity() {
+export function initializeResourcesAfterEternity(canApplyEr115) {
   player.sacrificed = DC.D0;
   Currency.infinities.reset();
   player.records.bestInfinity.time = 999999999999;
@@ -205,8 +229,15 @@ export function initializeResourcesAfterEternity() {
   player.records.thisInfinity.time = 0;
   player.records.thisInfinity.lastBuyTime = 0;
   player.records.thisInfinity.realTime = 0;
-  player.dimensionBoosts = (EternityMilestone.keepInfinityUpgrades.isReached) ? 4 : 0;
-  player.galaxies = (EternityMilestone.keepInfinityUpgrades.isReached) ? 1 : 0;
+  if (canApplyEr115) {
+    player.dimensionBoosts = Math.clamp(
+      player.dimensionBoosts, 4, Achievement(115).enhancedEffect.effects.dimBoostsKept.effectOrDefault(4));
+    player.galaxies = Math.clamp(
+      player.galaxies, 1, Achievement(115).enhancedEffect.effects.galaxiesKept.effectOrDefault(1));
+  } else {
+    player.dimensionBoosts = (EternityMilestone.keepInfinityUpgrades.isReached) ? 4 : 0;
+    player.galaxies = (EternityMilestone.keepInfinityUpgrades.isReached) ? 1 : 0;
+  }
   player.partInfinityPoint = 0;
   player.partInfinitied = 0;
   player.IPMultPurchases = 0;
@@ -253,8 +284,13 @@ export function gainedEternities() {
   return Pelle.isDisabled("eternityMults")
     ? new Decimal(1)
     : new Decimal(getAdjustedGlyphEffect("timeetermult"))
-      .timesEffectsOf(RealityUpgrade(3), Achievement(113))
-      .pow(AlchemyResource.eternity.effectValue);
+      .timesEffectsOf(
+        RealityUpgrade(3), 
+        Achievement(102).enhancedEffect.effects.multiplier, 
+        Achievement(113), Achievement(113).enhancedEffect, 
+        Achievement(115).enhancedEffect.effects.eternityMultiplier,
+        CursedRow(11))
+      .pow(AlchemyResource.eternity.effectValue).times(Achievement(37).isEnhanced ? 5 : 1);
 }
 
 export class EternityMilestoneState {
@@ -325,7 +361,8 @@ class EPMultiplierState extends GameMechanicState {
 
   purchase() {
     if (!this.isAffordable) return false;
-    if (!Achievement(127).isUnlocked) Currency.eternityPoints.subtract(this.cost);
+    if (!Achievement(127).isUnlocked || Achievement(127).isCursed) Currency.eternityPoints.subtract(this.cost);
+    if (Achievement(127).isEnhanced) Currency.eternityPoints.add(this.cost.times(3));
     ++this.boughtAmount;
     return true;
   }
@@ -338,11 +375,12 @@ class EPMultiplierState extends GameMechanicState {
     }
     const bulk = bulkBuyBinarySearch(Currency.eternityPoints.value, {
       costFunction: this.costAfterCount,
-      cumulative: !Achievement(127).isUnlocked,
+      cumulative: !Achievement(127).isUnlocked || Achievement(127).isCursed,
       firstCost: this.cost,
     }, this.boughtAmount);
     if (!bulk) return false;
-    if (!Achievement(127).isUnlocked) Currency.eternityPoints.subtract(bulk.purchasePrice);
+    if (!Achievement(127).isUnlocked || Achievement(127).isCursed) Currency.eternityPoints.subtract(bulk.purchasePrice);
+    if (Achievement(127).isEnhanced) Currency.eternityPoints.add(bulk.purchasePrice.times(3));
     this.boughtAmount += bulk.quantity;
     return true;
   }

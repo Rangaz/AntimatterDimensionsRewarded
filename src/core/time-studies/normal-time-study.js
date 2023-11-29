@@ -86,6 +86,8 @@ export class NormalTimeStudyState extends TimeStudyState {
     player.timestudy.studies.push(this.id);
     player.requirementChecks.reality.maxStudies = Math.clampMin(player.requirementChecks.reality.maxStudies,
       player.timestudy.studies.length);
+    if (this.id === 211 || this.id === 222) GameCache.increasePerDimBoost.invalidate();
+    if ([223, 224, 302].includes(this.id)) GameCache.distantGalaxyStart.invalidate();
     if (this.id > 300) player.requirementChecks.reality.noTriads = false;
     Currency.timeTheorems.subtract(this.cost);
     GameCache.timeStudies.invalidate();

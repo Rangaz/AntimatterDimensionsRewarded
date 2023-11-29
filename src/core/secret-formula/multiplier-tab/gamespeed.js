@@ -52,6 +52,13 @@ export const gamespeed = {
     isActive: () => !BlackHoles.arePaused && VUnlocks.achievementBH.canBeApplied && !EternityChallenge(12).isRunning,
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
+  achievement174: {
+    name: "Achievement 174",
+    multValue: () => Math.pow(Achievement(174).effectOrDefault(1),
+      BlackHoles.list.countWhere(bh => bh.isUnlocked)),
+    isActive: () => !BlackHoles.arePaused && Achievement(174).canBeApplied && !EternityChallenge(12).isRunning,
+    icon: MultiplierTabIcons.ACHIEVEMENT,
+  },
   pulsing: {
     name: "Auto-Discharging Stored Time",
     multValue: () => (Enslaved.isAutoReleasing

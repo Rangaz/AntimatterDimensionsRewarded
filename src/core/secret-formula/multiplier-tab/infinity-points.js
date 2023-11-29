@@ -23,7 +23,7 @@ export const IP = {
     isBase: true,
     fakeValue: DC.D5,
     multValue: () => {
-      const div = 308 - Effects.sum(Achievement(103), TimeStudy(111));
+      const div = 308 - Effects.sum(Achievement(103), Achievement(103).enhancedEffect, TimeStudy(111));
       return Decimal.pow10(player.records.thisInfinity.maxAM.log10() / div - 0.75);
     },
     isActive: () => player.break,
@@ -48,8 +48,9 @@ export const IP = {
     icon: MultiplierTabIcons.DIVISOR("IP"),
   },
   infinityUpgrade: {
-    name: () => Achievement(121).canBeApplied ? `Infinity Upgrade - Repeatable ${formatX(2.01, 2, 2)} IP` : 
-    `Infinity Upgrade - Repeatable ${formatX(2)} IP`,
+    name: () => Achievement(121).isEnhanced ? `Infinity Upgrade - Repeatable ${formatX(3)} IP` : 
+    (Achievement(121).canBeApplied ? `Infinity Upgrade - Repeatable ${formatX(2.01, 2, 2)} IP` : 
+    `Infinity Upgrade - Repeatable ${formatX(2)} IP`),
     multValue: () => InfinityUpgrade.ipMult.effectOrDefault(1),
     isActive: () => player.break && !Pelle.isDoomed,
     icon: MultiplierTabIcons.UPGRADE("infinity"),
@@ -65,7 +66,9 @@ export const IP = {
       Achievement(85).enhancedEffect,
       Achievement(93),
       Achievement(116),
+      Achievement(116).enhancedEffect,
       Achievement(125),
+      Achievement(125).enhancedEffect,
       Achievement(141).effects.ipGain,
     ),
     powValue: () => Achievement(93).enhancedEffect.effectOrDefault(1),
@@ -118,7 +121,7 @@ export const IP = {
 
   nerfTeresa: {
     name: "Teresa's Reality",
-    powValue: () => 0.55,
+    powValue: () => 0.52,
     isActive: () => Teresa.isRunning,
     icon: MultiplierTabIcons.GENERIC_TERESA,
   },
@@ -128,4 +131,10 @@ export const IP = {
     isActive: () => V.isRunning,
     icon: MultiplierTabIcons.GENERIC_V,
   },
+  cursedRow: {
+    name: "Cursed Rows",
+    multValue: () => CursedRow(7).effectOrDefault(1),
+    isActive: () => CursedRow(7).canBeApplied,
+    icon: MultiplierTabIcons.CURSED_ROW,
+  }
 };

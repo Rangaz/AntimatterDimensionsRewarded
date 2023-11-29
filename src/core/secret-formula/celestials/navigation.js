@@ -1666,7 +1666,7 @@ export const celestialNavigation = {
       const upgrade = DarkMatterDimension(4).unlockUpgrade;
       if (upgrade.canBeBought || upgrade.isBought) return 1;
       if (upgrade.isAvailableForPurchase) return upgrade.currency.value / upgrade.cost;
-      return (Replicanti.galaxies.total + player.galaxies + player.dilation.totalTachyonGalaxies) / 80000;
+      return (Replicanti.galaxies.total + player.galaxies + player.dilation.totalTachyonGalaxies) / 82000;
     },
     node: {
       clickAction: () => Tab.celestials.laitela.show(true),
@@ -1699,8 +1699,8 @@ export const celestialNavigation = {
           const allGalaxies = Replicanti.galaxies.total + player.galaxies + player.dilation.totalTachyonGalaxies;
           return [
             dmdText,
-            `Have ${format(80000)} total Galaxies`,
-            `${format(Math.clampMax(allGalaxies, 80000))} / ${format(80000)}`
+            `Have ${format(82000)} total Galaxies`,
+            `${format(Math.clampMax(allGalaxies, 82000))} / ${format(82000)}`
           ];
         },
         angle: 225,
@@ -1724,7 +1724,7 @@ export const celestialNavigation = {
       if (upgrade.canBeBought || upgrade.isBought) return 1;
       if (upgrade.isAvailableForPurchase) return Currency.imaginaryMachines.value / upgrade.cost;
       return upgrade.isPossible
-        ? Tickspeed.continuumValue / 3850000
+        ? Tickspeed.continuumValue / 4050000
         : 0;
     },
     node: {
@@ -1807,7 +1807,7 @@ export const celestialNavigation = {
     visible: () => Laitela.difficultyTier > 4,
     complete: () => {
       if (Pelle.isUnlocked) return 1;
-      const imCost = Math.clampMax(emphasizeEnd(Math.log10(Currency.imaginaryMachines.value) / Math.log10(1.6e15)), 1);
+      const imCost = Math.clampMax(emphasizeEnd(Math.log10(Currency.imaginaryMachines.value) / Math.log10(2e16)), 1);
       let laitelaProgress = Laitela.isRunning ? Math.min(Currency.eternityPoints.value.log10() / 4000, 0.99) : 0;
       if (Laitela.difficultyTier !== 8 || Glyphs.activeWithoutCompanion.length > 1) laitelaProgress = 0;
       else if (ImaginaryUpgrade(25).isAvailableForPurchase) laitelaProgress = 1;
@@ -1838,7 +1838,7 @@ export const celestialNavigation = {
           return [
             "Unlock Pelle",
             "The Celestial of Antimatter",
-            `${format(Currency.imaginaryMachines.value, 2)} / ${format(1.6e15, 2)} iM`,
+            `${format(Currency.imaginaryMachines.value, 2)} / ${format(2e16, 2)} iM`,
             laitelaString
           ];
         },

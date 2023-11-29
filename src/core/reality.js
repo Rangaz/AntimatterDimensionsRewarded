@@ -599,7 +599,22 @@ export function finishProcessReality(realityProps) {
     if (player.celestials.ra.disCharge) {
       disChargeAll();
     }
-    if (player.reality.disEnhance) Achievements.disEnhanceAll();
+    if (player.reality.respecAchievements) Achievements.disEnhanceAll();
+    else {
+      for (const ach of player.reality.enhancedAchievements) {
+        if (Achievement(ach).toBeUnenhanced) Achievement(ach).disEnhance();
+      }
+    }
+    // Apply cursed rows
+    for (let i = 1; i <= 18; i++) {
+      if (CursedRow(i).toBeCursed && !CursedRow(i).isCursed) {
+        CursedRow(i).curse();
+        continue;
+      }
+      if (!CursedRow(i).toBeCursed && CursedRow(i).isCursed) {
+        CursedRow(i).uncurse();
+      }
+    }
   }
   if (player.options.automatorEvents.clearOnReality) AutomatorData.clearEventLog();
   if (Player.automatorUnlocked && AutomatorBackend.state.forceRestart) {
@@ -621,8 +636,16 @@ export function finishProcessReality(realityProps) {
   // add a flag to indicate that this is a reality reset.
   initializeChallengeCompletions(true);
 
+  
+  if (Achievement(131).isEnhanced) {
+    Currency.infinitiesBanked.value = Currency.infinitiesBanked.value.plusEffectsOf(
+      Achievement(131),
+      Achievement(131).enhancedEffect,
+      TimeStudy(191)
+      );
+    }
+  else Currency.infinitiesBanked.reset();
   Currency.infinities.reset();
-  Currency.infinitiesBanked.reset();
   player.records.bestInfinity.time = 999999999999;
   player.records.bestInfinity.realTime = 999999999999;
   player.records.timeSinceLastReset = 0;
@@ -670,6 +693,7 @@ export function finishProcessReality(realityProps) {
   }
   player.records.thisReality.time = 0;
   player.records.thisReality.realTime = 0;
+  player.records.thisReality.bestTotalGalaxies = 0;
   player.records.thisReality.maxReplicanti = DC.D0;
   if (!PelleUpgrade.timeStudiesNoReset.canBeApplied) Currency.timeTheorems.reset();
   player.celestials.v.STSpent = 0;
@@ -690,6 +714,17 @@ export function finishProcessReality(realityProps) {
   }
   if (!PelleUpgrade.tachyonParticlesNoReset.canBeApplied) {
     Currency.tachyonParticles.reset();
+  }
+  // With Er133 this will buy every study including Reality unlock.
+  if (Achievement(133).isEnhanced) {
+    // More than enough to buy everything
+    Currency.timeTheorems.bumpTo(2e9);
+    Currency.eternityPoints.bumpTo(DC.E4000);
+    TimeStudy.dilation.purchase();
+    TimeStudyTree.commitToGameState(buyStudiesUntil(304));
+    for (let dim = 5; dim <= 8; ++dim) TimeStudy.timeDimension(dim).purchase();
+    TimeStudy.reality.purchase();
+    Currency.eternityPoints.reset();
   }
   player.dilation.nextThreshold = DC.E3;
   player.dilation.baseTachyonGalaxies = 0;

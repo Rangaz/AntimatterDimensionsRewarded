@@ -39,12 +39,15 @@ export function replicantiGalaxy(auto) {
   }
   if (!Replicanti.galaxies.canBuyMore) return;
   const galaxyGain = Replicanti.galaxies.gain;
-  const minReplicanti = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
+  const minReplicanti = Effects.max(1, Achievement(108).effects.minReplicanti, 
+    Achievement(108).enhancedEffect.effects.minReplicanti).toDecimal();
   if (galaxyGain < 1) return;
   player.replicanti.timer = 0;
-  Replicanti.amount = Achievement(126).isUnlocked && !Pelle.isDoomed
-    ? Decimal.pow10(Replicanti.amount.log10() - LOG10_MAX_VALUE * galaxyGain).clampMin(minReplicanti)
-    : minReplicanti;
+  if (!Achievement(126).isEnhanced) {
+    Replicanti.amount = Achievement(126).isUnlocked && !Achievement(126).isCursed && !Pelle.isDoomed
+      ? Decimal.pow10(Replicanti.amount.log10() - LOG10_MAX_VALUE * galaxyGain).clampMin(minReplicanti)
+      : minReplicanti;
+  }
   addReplicantiGalaxies(galaxyGain);
 }
 
@@ -143,6 +146,10 @@ export function totalReplicantiSpeedMult(overCap) {
     Achievement(94).enhancedEffect.effects.replicantiSpeed,
     Achievement(95).enhancedEffect,
     Achievement(106),
+    Achievement(106).enhancedEffect,
+    Achievement(108).enhancedEffect.effects.replicantiSpeed,
+    Achievement(134).enhancedEffect,
+    CursedRow(10),
     TimeStudy(62),
     TimeStudy(213),
     RealityUpgrade(2),
@@ -155,6 +162,7 @@ export function totalReplicantiSpeedMult(overCap) {
     || Achievement(145).canBeApplied)) {
     totalMult = totalMult.timesEffectOf(Achievement(108).effects.replicantiSpeed);
   }
+
   if (TimeStudy(132).isBought && Perk.studyPassive.isBought) {
     totalMult = totalMult.times(3);
   }
@@ -346,7 +354,7 @@ export const ReplicantiUpgrade = {
 
     get cost() {
       return player.replicanti.chanceCost.dividedByEffectOf(PelleRifts.vacuum.milestones[1]).
-        powEffectOf(Achievement(98).enhancedEffect);
+        powEffectsOf(Achievement(98).enhancedEffect, CursedRow(9));
     }
 
     get baseCost() { return player.replicanti.chanceCost; }
@@ -398,7 +406,7 @@ export const ReplicantiUpgrade = {
 
     get cost() {
       return player.replicanti.intervalCost.dividedByEffectOf(PelleRifts.vacuum.milestones[1]).
-        powEffectOf(Achievement(98).enhancedEffect);
+        powEffectsOf(Achievement(98).enhancedEffect, CursedRow(9));
     }
 
     get baseCost() { return player.replicanti.intervalCost; }
@@ -434,7 +442,7 @@ export const ReplicantiUpgrade = {
 
     get cost() {
       return this.baseCost.dividedByEffectsOf(TimeStudy(233), PelleRifts.vacuum.milestones[1]).
-      powEffectOf(Achievement(98).enhancedEffect);
+      powEffectsOf(Achievement(98).enhancedEffect, CursedRow(9));
     }
 
     get baseCost() { return player.replicanti.galCost; }
@@ -517,10 +525,11 @@ export const Replicanti = {
   },
   reset(force = false) {
     const unlocked = force ? false : EternityMilestone.unlockReplicanti.isReached;
-    const minReplicanti = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
+    const minReplicanti = Effects.max(1, Achievement(108).effects.minReplicanti, 
+      Achievement(108).enhancedEffect.effects.minReplicanti).toDecimal();
     player.replicanti = {
       unl: unlocked,
-      // I want it to start at 9 replicanti if you have r108.
+      // I want it to start at more replicanti if you have E/r108.
       amount: unlocked ? minReplicanti : DC.D0,
       timer: 0,
       chance: 0.01,
@@ -539,7 +548,8 @@ export const Replicanti = {
       if (!freeUnlock) Currency.infinityPoints.subtract(cost);
       player.replicanti.unl = true;
       player.replicanti.timer = 0;
-      Replicanti.amount = new Decimal(Achievement(108).effects.minReplicanti.effectOrDefault(1));
+      Replicanti.amount = Effects.max(1, Achievement(108).effects.minReplicanti, 
+        Achievement(108).enhancedEffect.effects.minReplicanti).toDecimal();
     }
   },
   get amount() {
@@ -580,8 +590,9 @@ export const Replicanti = {
     },
     get gain() {
       if (!this.canBuyMore) return 0;
-      if (Achievement(126).isUnlocked) {
+      if (Achievement(126).isUnlocked && !Achievement(126).isCursed) {
         const maxGain = Replicanti.galaxies.max - player.replicanti.galaxies;
+        if (Achievement(126).isEnhanced) return maxGain;
         const logReplicanti = Replicanti.amount.log10();
         return Math.min(maxGain, Math.floor(logReplicanti / LOG10_MAX_VALUE));
       }

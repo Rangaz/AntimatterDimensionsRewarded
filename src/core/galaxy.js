@@ -28,15 +28,16 @@ export class Galaxy {
   /**
    * Figure out what galaxy number we can buy up to
    * @param {number} currency Either dim 8 or dim 6, depends on current challenge
+   * @param {number} currentGalaxies Amount of owned galaxies to consider, 0 to recalculate
    * @returns {number} Max number of galaxies (total)
    */
-  static buyableGalaxies(currency) {
+  static buyableGalaxies(currency, currentGalaxies = player.galaxies) {
     const bulk = bulkBuyBinarySearch(new Decimal(currency), {
       costFunction: x => this.requirementAt(x).amount,
       cumulative: false,
-    }, player.galaxies);
+    }, currentGalaxies);
     if (!bulk) throw new Error("Unexpected failure to calculate galaxy purchase");
-    return player.galaxies + bulk.quantity;
+    return currentGalaxies + bulk.quantity;
   }
 
   static requirementAt(galaxies) {
@@ -69,7 +70,9 @@ export class Galaxy {
 
   static get costMult() {
     return (NormalChallenge(10).isRunning ? 90 : 60) - Effects.sum(
-      Achievement(27).enhancedEffect.effects.perGalaxyReduction, TimeStudy(42));
+      Achievement(27).enhancedEffect.effects.perGalaxyReduction, 
+      TimeStudy(42), 
+      CursedRow(2).effects.perGalaxyIncrease);
   }
 
   static get baseCost() {
@@ -80,7 +83,21 @@ export class Galaxy {
     return NormalChallenge(10).isRunning ? 6 : 8;
   }
 
+  static get continuumGalaxies() {
+    if (!Achievement(177).isUnlocked || !Laitela.continuumActive) return 0;
+    const dimAmount = AntimatterDimension(this.requiredTier).totalAmount.toNumber();
+
+    // Calling this makes sure that player.galaxies does not inflate.
+    // 0 galaxies as second parameter ensures player.galaxies is 'reset' properly
+    player.galaxies = Galaxy.buyableGalaxies(dimAmount, 0);
+
+    const req1 = this.requirementAt(player.galaxies - 1).amount;
+    const req2 = this.requirementAt(player.galaxies).amount;
+    return (player.galaxies + (dimAmount - req1) / (req2 - req1)) * Achievement(177).effectOrDefault(1);
+  }
+
   static get canBeBought() {
+    if (Laitela.continuumActive && Achievement(177).isUnlocked) return false;
     if (EternityChallenge(6).isRunning && !Enslaved.isRunning) return false;
     if (NormalChallenge(8).isRunning || InfinityChallenge(7).isRunning) return false;
     if (player.records.thisInfinity.maxAM.gt(Player.infinityGoal) &&
@@ -98,12 +115,7 @@ export class Galaxy {
   }
 
   static get costScalingStart() {
-    return 100 + TimeStudy(302).effectOrDefault(0) + Effects.sum(
-      TimeStudy(223),
-      TimeStudy(224),
-      EternityChallenge(5).reward,
-      GlyphSacrifice.power
-    );
+    return GameCache.distantGalaxyStart.value
   }
 
   static get type() {
@@ -149,8 +161,9 @@ export function manualRequestGalaxyReset(bulk) {
 }
 
 // All galaxy reset requests, both automatic and manual, eventually go through this function; therefore it suffices
-// to restrict galaxy count for RUPG7's requirement here and nowhere else
+// to restrict galaxy count for RUPG7's requirement, and to check if there's continuum, here and nowhere else
 export function requestGalaxyReset(bulk, limit = Number.MAX_VALUE) {
+  if (Laitela.continuumActive && Achievement(177).isUnlocked) return false;
   const restrictedLimit = RealityUpgrade(7).isLockingMechanics ? 1 : limit;
   if (EternityMilestone.autobuyMaxGalaxies.isReached && bulk) return maxBuyGalaxies(restrictedLimit);
   if (player.galaxies >= restrictedLimit || !Galaxy.canBeBought || !Galaxy.requirement.isSatisfied) return false;

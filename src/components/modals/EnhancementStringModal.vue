@@ -7,7 +7,6 @@ import PrimaryButton from "@/components/PrimaryButton";
 import EnhancementStringPreview from "./enhancement-modal-preview/EnhancementStringPreview.vue";
 
 import { autoReality } from "../../core/reality";
-import { Achievements } from "../../core/globals";
 
 let savedImportString = "";
 
@@ -79,6 +78,11 @@ export default {
 
       const searchedString = `,${this.parsedInput},`
 
+      if (searchedString.includes(",136,") && !searchedString.includes(",115,")) {
+        return "Warning: Achievement 136 requires Achievement 115 to be Enhanced. " + 
+          "You may want to include 115 in your preset.";
+      }
+
       if (searchedString.includes(",88,") && !searchedString.includes(",57,")) {
         return "Warning: Achievement 88 requires Achievement 57 to be Enhanced. " + 
           "You may want to include 57 in your preset.";
@@ -92,8 +96,14 @@ export default {
       // An array with every Achievement id
       const achievementsInString = searchedString.slice(1, -1).split(",");
 
-      // Since Achievement 22 is free, we need to account for that.
-      const achievementAmount = achievementsInString.length - achievementsInString.includes("22");
+      let achievementAmount = achievementsInString.length;
+      
+      // Since some Achievements are free, we need to account for that.
+      ["22", "61", "114", "126", "136"].forEach(value => achievementAmount -= achievementsInString.includes(value));
+      
+      // A few Enhancements are worth more Achievements
+      achievementAmount += achievementsInString.includes("118") + 2 * achievementsInString.includes("138");
+
       // We want to look for duplicate ids, then display them
       // I don't know if performance is going to be a problem here
       const duplicates = [];
@@ -112,7 +122,7 @@ export default {
       }
 
       // We calculate how many elements are in the preset.
-      if (achievementAmount > (Achievements.totalEnhancementPoints)) {
+      if (achievementAmount > Achievements.totalEnhancementPoints) {
         return `Warning: Your preset includes ${formatInt(achievementAmount - 
           Achievements.totalEnhancementPoints)} more Achievements than you can Enhance.
           You may want to remove some IDs in your preset.`;
@@ -174,7 +184,7 @@ export default {
         this.deletePreset();
       } else if (this.isImporting) {
         if (this.respecAndLoad && this.canReality) {
-          player.reality.disEnhance = true;
+          player.reality.respecAchievements = true;
           autoReality();
           Achievements.enhanceFromPreset(this.parsedInput)
           return;

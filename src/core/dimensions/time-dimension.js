@@ -22,6 +22,7 @@ export function buySingleTimeDimension(tier, auto = false) {
   }
 
   if (!Achievement(127).canBeApplied) Currency.eternityPoints.subtract(dim.cost);
+  if (Achievement(127).isEnhanced) Currency.eternityPoints.add(dim.cost.times(3));
   dim.amount = dim.amount.plus(1);
   dim.bought += 1;
   dim.cost = dim.nextCost(dim.bought);
@@ -69,11 +70,12 @@ export function buyMaxTimeDimension(tier, portionToSpend = 1, isMaxAll = false) 
   if (Enslaved.isRunning) return buySingleTimeDimension(tier);
   const bulk = bulkBuyBinarySearch(canSpend, {
     costFunction: bought => dim.nextCost(bought),
-    cumulative: !Achievement(127).isUnlocked,
+    cumulative: !Achievement(127).isUnlocked || Achievement(127).isCursed,
     firstCost: dim.cost,
   }, dim.bought);
   if (!bulk) return false;
-  if (!Achievement(127).canBeApplied) Currency.eternityPoints.subtract(bulk.purchasePrice);
+  if (!Achievement(127).isUnlocked || Achievement(127).isCursed) Currency.eternityPoints.subtract(bulk.purchasePrice);
+  if (Achievement(127).isEnhanced) Currency.eternityPoints.add(bulk.purchasePrice.times(3));
   dim.amount = dim.amount.plus(bulk.quantity);
   dim.bought += bulk.quantity;
   dim.cost = dim.nextCost(dim.bought);
@@ -120,9 +122,12 @@ export function timeDimensionCommonMultiplier() {
       Achievement(76).enhancedEffect,
       Achievement(92).enhancedEffect,
       Achievement(105),
+      Achievement(105).enhancedEffect,
       Achievement(112),
+      Achievement(112).enhancedEffect,
       Achievement(123),
       Achievement(128),
+      Achievement(128).enhancedEffect,
       TimeStudy(93),
       TimeStudy(103),
       TimeStudy(151),
@@ -241,6 +246,8 @@ class TimeDimensionState extends DimensionState {
     mult = mult.pow(getAdjustedGlyphEffect("curseddimensions"));
     mult = mult.powEffectOf(AlchemyResource.time);
     mult = mult.pow(Ra.momentumValue);
+    mult = mult.pow(Achievement(123).enhancedEffect.effectOrDefault(1));
+    mult = mult.pow(CursedRow(12).effectOrDefault(1));
     mult = mult.pow(ImaginaryUpgrade(11).effectOrDefault(1));
     mult = mult.powEffectOf(PelleRifts.paradox);
 
