@@ -85,6 +85,12 @@ export const GameCache = {
     GlyphSacrifice.power
   )),
 
+  totalEnhancementPoints: new Lazy(() => 
+    Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality) + 
+    Math.floor(V.spaceTheorems / 7) + 
+    Achievement(172).effects.bonusEnhancements.effectOrDefault(0)
+  ),
+
   timeStudies: new Lazy(() => NormalTimeStudyState.studies
     .map(s => player.timestudy.studies.includes(s.id))),
 

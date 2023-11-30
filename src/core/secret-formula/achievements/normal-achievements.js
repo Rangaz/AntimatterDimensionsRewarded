@@ -3,25 +3,12 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Add curses for Achievement rows <DONE FOR NOW>
-  |>Multiplier tab functionality <DONE>
-  |>Add visuals to indicate when a row is about to be cursed, and when it's cursed <DONE>
-  |>Make it disable Achievements <DONE>
-  |>Allow to curse rows in-game <DONE>
-  |>Allow to remove cursed rows upon Reality <DONE>
-  |>Improve visuals <DONE FOR NOW>
-  |>Implement 13 curses <DONE>
--Allow individual Enhancements to be respec <DONE>
--Add Enhancements for rows 10-13 <DONE>
--Add Rewards for row 17 <DONE>
-  |>Make player.records.bestGalaxies for Achievement Effects (to secretly improve performance) <DONE>
-  |>Undo player.records.bestGalaxies as I've found a better solution <DONE>
--Balance existing rewards <DONE FOR NOW>
--Balance Hard V <DONE FOR NOW>
--Balance Imaginary upgrades' unlocks <DONE>
--Balance Lai'tela <DONE FOR NOW>
--Update h2p entries <DONE>
--Changelog <IN PROGRESS>
+-Make presets work with curses <IN PROGRESS>
+-Shift-click to lock an Enhancement
+-Link Glyph presets with Enhancement presets
+-Add curses and individual respecs in automator
+-Change secret Achievement 33 to something like 'Do you want it or not?'
+
 */
 
 export const normalAchievements = [

@@ -9,6 +9,29 @@ export const changelog = [
    * }
    */
   {
+    date: [2023, 11, 30],
+    name: "Have better life quality",
+    info: `
+    <b>A bunch of QoL before the Pelle update</b>
+    <br>
+    <br>
+    <b>Changes: </b>
+    <ul>
+    <li>Coming today: Curses being saved in Enhancement presets.</li>
+    <li>Coming soon: Ability to lock enhancements, preventing most respec instances.</li>
+    <li>Coming later: Ability to link Glyph presets with Enhancement presets, loading both simultaneously.</li>
+    <li>Coming later: Secret Achievement 33 being changed.</li>
+    <li>Coming later: Automator support to curse Achievement rows and individual respecs.</li>
+    <br>
+    <li>Slightly improved performance in the Achievements tab.</li>
+    <li>Slightly improved performance when reading presets.</li>
+    <li>When opening an edit Enhancement preset modal the preview now works correctly.</li>
+    <li>Potentially fixed bug where you could prematurely see Eternity Challenges by pressing its button
+    in the Time Study tree. Let me know if there's odd behaviour!</li>
+    </ul>
+    `
+  },
+  {
     date: [2023, 11, 29], 
     name: "Why are you cursing yourself?",
     info: `

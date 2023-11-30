@@ -253,7 +253,7 @@ export default {
           continue;
         }
         if (Number.parseInt(boundaries[1]) > Achievements.maxEnhancedRow * 10 + 8) {
-          const fixedGroup = boundaries[0].toString() + "-" + Achievements.maxEnhancedRow + "9";
+          const fixedGroup = boundaries[0].toString() + "-" + Achievements.maxEnhancedRow + "8";
           fixedString = fixedString.replaceAll(group.toString(), fixedGroup);
         }
       }

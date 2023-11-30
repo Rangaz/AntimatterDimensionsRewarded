@@ -258,6 +258,7 @@ class AchievementState extends GameMechanicState {
       player.speedrun.achievementTimes[this.id] = Math.floor(player.records.realTimePlayed);
     }
     Achievements._power.invalidate();
+    GameCache.totalEnhancementPoints.invalidate();
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENT_UNLOCKED);
   }
 }
@@ -391,8 +392,7 @@ export const Achievements = {
   },
 
   get totalEnhancementPoints() {
-    return Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality) + 
-      Math.floor(V.spaceTheorems / 7) + Achievement(172).effects.bonusEnhancements.effectOrDefault(0);
+    return GameCache.totalEnhancementPoints.value;
   },
   
   // Free Enhancements add 1 to compensate for the bigger size of enhancedAchievements
@@ -436,13 +436,16 @@ export const Achievements = {
       parsedString = parsedString.replace(groupedRow, parsedGroupedRows.slice(0, -1));
     }
 
-    // Looks at strings containing "row" and some amount of digits
-    const rowsToParse = Array.from(parsedString.matchAll(/row\d+/g));
+    // Looks at strings containing "row" and some amount of digits.
+    // Be careful here: It makes sense to write curses like '|row 1, row 2,(...)',
+    // so rows will only be parsed if they are before the '|'.
+    const rowsToParse = Array.from(parsedString.split("|")[0].matchAll(/row\d+/g));
     
     for (const row of rowsToParse) {
       const parsedRow = Array.range(0, 8).map(value => 
         {return Number.parseInt(row.toString().slice(3)) * 10 + value + 1}
       )
+      // Because the replace() function only works on the first match, it shouldn't affect curses
       parsedString = parsedString.replace(row, parsedRow.toString());
     }
 
@@ -450,12 +453,12 @@ export const Achievements = {
     const groupsToParse = Array.from(parsedString.matchAll(/\d+-\d+/g));
 
     for (const group of groupsToParse) {
-      const boundaries = group.toString().split("-");
+      const boundaries = group.toString().split("-").map(value => Number.parseInt(value));
 
       // We want to avoid unnecesarily expensive operations if by mistake you write 11-3437
       // We also want something like "66-61" to be valid
-      const potentialIds = Array.range(Math.min(Number.parseInt(boundaries[0]), Number.parseInt(boundaries[1])), 
-        Math.clampMax(Math.abs(Number.parseInt(boundaries[1]) - Number.parseInt(boundaries[0])) + 1, GROUP_LIMIT));
+      const potentialIds = Array.range(Math.min(boundaries[0], boundaries[1]), 
+        Math.clampMax(Math.abs(boundaries[1] - boundaries[0]) + 1, GROUP_LIMIT));
       let parsedGroup = [];
       for (const id of potentialIds) {
         if (Achievement(id) != undefined) parsedGroup.push(id);
@@ -523,22 +526,23 @@ export const Achievements = {
         continue;
       }
 
-      const achievement = Achievements.all.filter(a => a.id == Number.parseInt(i));
+      //const achievement = Achievements.all.filter(a => a.id == Number.parseInt(i))[0];
+      const achievement = Achievement(Number.parseInt(i));
 
       // This is if i is a number but does not correspond to an existing Achievement
-      if (achievement[0] == undefined) {
+      if (achievement == undefined) {
         invalidIds.push(i);
         continue;
       }
 
       // We'll also show as invalid Achievements that don't have 
       // an Enhancement effect or aren't unlocked
-      if (!achievement[0].hasEnhancedEffect || achievement[0].row > Achievements.maxEnhancedRow) {
+      if (!achievement.hasEnhancedEffect || achievement.row > Achievements.maxEnhancedRow) {
         invalidIds.push(i);
         continue;
       }
 
-      achievementsToEnhance.push(achievement[0]);
+      achievementsToEnhance.push(achievement);
     }
     return [achievementsToEnhance, invalidIds];
   },

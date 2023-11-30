@@ -62,6 +62,19 @@ export default {
     },
     
   },
+  mounted() {
+    const achievementsToEnhance = this.newEnhancements.split(",");
+      for (const pseudoAchievement of this.$refs.id) {
+        if (achievementsToEnhance.includes(pseudoAchievement.innerHTML)) {
+          pseudoAchievement.style["background-color"] = 'yellow';
+          pseudoAchievement.style["color"] = 'black';
+        }
+        else {
+          pseudoAchievement.style["background-color"] = '#40b050';
+          pseudoAchievement.style["color"] = 'white';
+        }
+      }
+  },
   watch: {
     newEnhancements(newVal) {
       // Update Enhanced Achievements when the string changes
