@@ -464,7 +464,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return `1st Antimatter Dimensions are stronger based on your current
     Antimatter amount, but only if your production is larger.`},
-    effect: () => Decimal.max(1, Decimal.pow(DC.D1_2, Math.pow(Math.log10(Currency.antimatter.exponent) - 1, 2))),
+    effect: () => Decimal.max(1, DC.D1_2.pow(Math.pow(Math.log10(Currency.antimatter.exponent + 10) - 1, 2.2))),
     effectCondition: () => Time.timeWithExcessAMProd.totalMilliseconds >= 200,
     formatEffect: value => Time.timeWithExcessAMProd.totalMilliseconds >= 200 ? `${formatX(value, 2, 2)}` :
     `Inactive (would be ${formatX(value, 2, 2)})`,

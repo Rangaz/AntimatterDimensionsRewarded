@@ -66,6 +66,7 @@ export function eternityResetRequest() {
 }
 
 export function eternity(force, auto, specialConditions = {}) {
+  console.log(specialConditions);
   if (specialConditions.switchingDilation && !Player.canEternity) {
     // eslint-disable-next-line no-param-reassign
     force = true;
@@ -113,6 +114,7 @@ export function eternity(force, auto, specialConditions = {}) {
       respecTimeStudies(auto);
       player.respec = false;
     }
+    player.dilation.active = false;
     EventHub.dispatch(GAME_EVENT.ETERNITY_RESET_AFTER);
     return;
   }
