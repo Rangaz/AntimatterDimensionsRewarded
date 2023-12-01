@@ -87,6 +87,9 @@ export class Galaxy {
     if (!Achievement(177).isUnlocked || !Laitela.continuumActive) return 0;
     const dimAmount = AntimatterDimension(this.requiredTier).totalAmount.toNumber();
 
+    // If the amount is too small, not enough for a Galaxy 1, return 0 and don't calculate
+    if (dimAmount < 80) return 0;
+
     // Calling this makes sure that player.galaxies does not inflate.
     // 0 galaxies as second parameter ensures player.galaxies is 'reset' properly
     player.galaxies = Galaxy.buyableGalaxies(dimAmount, 0);

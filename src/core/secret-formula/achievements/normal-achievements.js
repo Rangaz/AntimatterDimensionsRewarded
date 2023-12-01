@@ -917,14 +917,15 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       get reward() {
-        return `For every Celestial Reality beaten, all Dimensions${Laitela.isUnlocked ? 
-        `, excluding Dark Matter Dimensions,` : ``} are ${format(DC.E250)} times stronger.`
+        return `All Dimensions${Laitela.isUnlocked ? 
+        `, excluding Dark Matter Dimensions,` : ``} are ${format(DC.E70)} times stronger, raised by
+        the square of all the celestial Realities you have beaten.`
       },
       // At this point it is assumed that, since you need 14 V-achs to enhance this, 
       // all previous Celestial Realities have been completed.
-      effect: () => DC.E250.pow(4 + 
-        (player.celestials.ra.pets.teresa.memories > 1) +
-        (Laitela.difficultyTier >= 1),
+      effect: () => DC.E70.pow(16 + 
+        9 * (player.celestials.ra.pets.teresa.memories > 1) +
+        11 * (Laitela.difficultyTier >= 1),
       ),
       formatEffect: value => `${formatX(value)}`
     }
