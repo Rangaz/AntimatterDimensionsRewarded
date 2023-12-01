@@ -509,6 +509,9 @@ export function gameLoop(passDiff, options = {}) {
   GameCache.timeDimensionCommonMultiplier.invalidate();
   GameCache.totalIPMult.invalidate();
   if (Achievement(176).isUnlocked && Laitela.continuumActive) GameCache.distantGalaxyStart.invalidate();
+  GameCache.activeADCount.invalidate();
+  GameCache.activeIDCount.invalidate();
+  GameCache.activeTDCount.invalidate();
 
   const blackHoleDiff = realDiff;
   const fixedSpeedActive = EternityChallenge(12).isRunning;
