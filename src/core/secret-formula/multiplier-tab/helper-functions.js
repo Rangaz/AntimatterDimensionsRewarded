@@ -5,14 +5,11 @@ export const MultiplierTabHelper = {
   activeDimCount(type) {
     switch (type) {
       case "AD":
-        // Technically not 100% correct, but within EC7 any AD8 production is going to be irrelevant compared to AD7
-        // and making the UI behave as if it's inactive produces a better look overall
-        return Math.clamp(AntimatterDimensions.all.filter(ad => ad.isProducing).length,
-          1, EternityChallenge(7).isRunning ? 7 : 8);
+        return GameCache.activeADCount.value;
       case "ID":
-        return InfinityDimensions.all.filter(id => id.isProducing).length;
+        return GameCache.activeIDCount.value;
       case "TD":
-        return TimeDimensions.all.filter(td => td.isProducing).length;
+        return GameCache.activeTDCount.value;
       default:
         throw new Error("Unrecognized Dimension type in Multiplier tab GameDB entry");
     }

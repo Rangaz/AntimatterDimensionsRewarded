@@ -113,6 +113,15 @@ export const GameCache = {
     .min()
   ),
 
+  // These values are used a lot in Multiplier Tab, so cashing it should reduce the lag it produces.
+  // Technically not 100% correct, but within EC7 any AD8 production is going to be irrelevant compared to AD7
+  // and making the UI behave as if it's inactive produces a better look overall
+  activeADCount: new Lazy(() => Math.clamp(AntimatterDimensions.all.filter(ad => ad.isProducing).length,
+    1, EternityChallenge(7).isRunning ? 7 : 8)
+  ),
+  activeIDCount: new Lazy(() => InfinityDimensions.all.filter(id => id.isProducing).length),
+  activeTDCount: new Lazy(() => TimeDimensions.all.filter(td => td.isProducing).length),
+
   // The effect is defined in antimatter_dimensions.js because that's where the non-cached
   // code originally lived.
   antimatterDimensionCommonMultiplier: new Lazy(() => antimatterDimensionCommonMultiplier()),
