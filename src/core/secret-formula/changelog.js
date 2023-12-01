@@ -17,17 +17,28 @@ export const changelog = [
     <br>
     <b>Changes: </b>
     <ul>
-    <li>Coming today: Curses being saved in Enhancement presets.</li>
+    <li>Coming today (I promise): Curses being saved in Enhancement presets.</li>
     <li>Coming soon: Ability to lock enhancements, preventing most respec instances.</li>
     <li>Coming later: Ability to link Glyph presets with Enhancement presets, loading both simultaneously.</li>
     <li>Coming later: Secret Achievement 33 being changed.</li>
     <li>Coming later: Automator support to curse Achievement rows and individual respecs.</li>
     <br>
+    30/11
     <li>Slightly improved performance in the Achievements tab.</li>
     <li>Slightly improved performance when reading presets.</li>
     <li>When opening an edit Enhancement preset modal the preview now works correctly.</li>
     <li>Potentially fixed bug where you could prematurely see Eternity Challenges by pressing its button
     in the Time Study tree. Let me know if there's odd behaviour!</li>
+    <li>Fixed Enhanced Achievement 136 preventing exiting Dilation through means other than the button at
+    the Dilation tab.</li>
+    <li>Achievement 42's effect scales slightly better.</li>
+    <li>Massively improved performance in Multiplier Tab when viewing Antimatter Dimensions, 
+    Infinity Dimensions and Time Dimensions.</li>
+    1/12
+    <li>Fixed Galaxies giving errors if you had Cursed Row 1 active whila all Dimensions were disabled in
+    Lai'tela's Reality.</li>
+    <li>Enhanced Achievement 67's base multiplier is now 1e250 ➜ 1e70, but now takes into account the square
+    of the amount of Celestial Realities you have beaten.</li>
     </ul>
     `
   },
