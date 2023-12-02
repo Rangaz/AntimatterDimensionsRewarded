@@ -77,8 +77,13 @@ class AchievementState extends GameMechanicState {
     return player.reality.enhancedAchievements.has(this.id);
   }
 
+  get isEnhancementLocked() {
+    return player.reality.lockedEnhancements.has(this.id);
+  }
+
   get toBeUnenhanced() {
-    return this.isEnhanced && (!player.reality.toBeEnhancedAchievements.has(this.id) ||
+    return this.isEnhanced && (!this.isEnhancementLocked || CursedRow(this.row).toBeCursed) &&
+      (!player.reality.toBeEnhancedAchievements.has(this.id) ||
       player.reality.respecAchievements);
   }
 
@@ -183,24 +188,35 @@ class AchievementState extends GameMechanicState {
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENT_ENHANCED);
   }
 
-  disEnhance() {
+  disEnhance(ignoreLock = false) {
+    if (!ignoreLock && this.isEnhancementLocked) return;
     player.reality.enhancedAchievements.delete(this.id);
     player.reality.toBeEnhancedAchievements.delete(this.id);
     // Some Achievements are a requirement for other Enhancements.
     if (this.id === 32) {
-      Achievement(57).disEnhance();
-      Achievement(88).disEnhance();
+      Achievement(57).disEnhance(ignoreLock);
+      Achievement(88).disEnhance(ignoreLock);
     }
     if (this.id === 57) {
-      Achievement(88).disEnhance();
+      Achievement(88).disEnhance(ignoreLock);
     }
     if (this.id === 115) {
-      Achievement(136).disEnhance();
+      Achievement(136).disEnhance(ignoreLock);
     }
+    this.unlockEnhancement();
   }
 
   curse() {
-    if (this.isEnhanced) this.disEnhance();
+    if (this.isEnhanced) this.disEnhance(true);
+  }
+
+  lockEnhancement() {
+    if (!this.isEnhanced) return;
+    player.reality.lockedEnhancements.add(this.id);
+  }
+
+  unlockEnhancement() {
+    if (this.isEnhancementLocked) player.reality.lockedEnhancements.delete(this.id);
   }
 
   tryUnlock(args) {
@@ -644,8 +660,8 @@ export const Achievements = {
 
   uncurseAll() {
     if (Achievements.effectiveCurses == 0) return;
-    const cursedRows = Achievements.allCursedRows.filter(row => CursedRow(row).isCursed);
-    for (const row of cursedRows) CursedRow(row).uncurse();
+    const cursedRows = Achievements.allCursedRows.filter(row => row.isCursed);
+    for (const row of cursedRows) row.uncurse();
     player.reality.respecAchievements = false;
   },
 

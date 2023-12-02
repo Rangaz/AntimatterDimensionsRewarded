@@ -599,7 +599,10 @@ export function finishProcessReality(realityProps) {
     if (player.celestials.ra.disCharge) {
       disChargeAll();
     }
-    if (player.reality.respecAchievements) Achievements.disEnhanceAll();
+    if (player.reality.respecAchievements) {
+      Achievements.disEnhanceAll();
+      Achievements.uncurseAll();
+    }
     else {
       for (const ach of player.reality.enhancedAchievements) {
         if (Achievement(ach).toBeUnenhanced) Achievement(ach).disEnhance();
@@ -642,8 +645,8 @@ export function finishProcessReality(realityProps) {
       Achievement(131),
       Achievement(131).enhancedEffect,
       TimeStudy(191)
-      );
-    }
+    );
+  }
   else Currency.infinitiesBanked.reset();
   Currency.infinities.reset();
   player.records.bestInfinity.time = 999999999999;

@@ -33,6 +33,7 @@ export default {
       canBeEnhanced: false,
       toBeUnenhanced: false,
       isEnhanced: false,
+      hasLock: false,
       isCursed: false,
       toBeCursed: false,
       isMouseOver: false,
@@ -174,6 +175,7 @@ export default {
       this.isEnhanced = this.achievement.isEnhanced && !Pelle.isDoomed;
       this.canBeEnhanced = this.achievement.canEnhance && !Pelle.isDoomed;
       this.toBeUnenhanced = this.achievement.toBeUnenhanced || (this.toBeCursed && this.isEnhanced);
+      this.hasLock = this.achievement.isEnhancementLocked;
       this.isCancer = Theme.current().name === "S4" || player.secretUnlocks.cancerAchievements;
       this.showUnlockState = player.options.showHintText.achievementUnlockStates;
       this.realityUnlocked = PlayerProgress.realityUnlocked();
@@ -201,6 +203,12 @@ export default {
     },
     onClick() {
       if (this.curseMode) return;
+
+      if (this.shiftDown) {
+        if (this.hasLock) this.achievement.unlockEnhancement();
+        else this.achievement.lockEnhancement();
+        return;
+      }
       // Free Enhancements should be easy to disEnhance
       if (this.isEnhanced && [22, 61, 114, 126, 136].includes(this.id)) {
         this.achievement.disEnhance();
@@ -327,6 +335,14 @@ export default {
           {{ achievedTime }}
         </div>
       </template>
+    </div>
+    <div
+      v-if="isEnhanced && hasLock"
+      class="o-requirement-lock"
+    >
+      <i
+        class="fas fa-lock"
+      />
     </div>
     <div
       v-if="showUnlockState"
