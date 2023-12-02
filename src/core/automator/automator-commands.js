@@ -940,7 +940,7 @@ export const AutomatorCommands = [
       return () => {
         const imported = Achievements.parseInput(player.reality.enhancedPresets[presetIndex - 1].enhancements)
         const beforeCount = player.reality.enhancedAchievements.size;
-        Achievements.enhanceFromPreset(imported);
+        Achievements.applyEnhancementPreset(imported);
         const afterCount = player.reality.enhancedAchievements.size;
         // Check if there are still any unenhanced achievements from the preset after attempting to commit it all
         const missingEnhancementCount = imported.split(",")

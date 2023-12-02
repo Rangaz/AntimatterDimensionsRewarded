@@ -63,9 +63,14 @@ export default {
     
   },
   mounted() {
-    const achievementsToEnhance = this.newEnhancements.split(",");
+    const achievementsToEnhance = this.newEnhancements.split("|")[0].split(",");
+    const rowsToCurse = this.newEnhancements.split("|")[1].split(",");
       for (const pseudoAchievement of this.$refs.id) {
-        if (achievementsToEnhance.includes(pseudoAchievement.innerHTML)) {
+        if (rowsToCurse.includes(pseudoAchievement.innerHTML.slice(0, -1))) {
+          pseudoAchievement.style["background-color"] = 'white';
+          pseudoAchievement.style["color"] = 'black';
+        }
+        else if (achievementsToEnhance.includes(pseudoAchievement.innerHTML)) {
           pseudoAchievement.style["background-color"] = 'yellow';
           pseudoAchievement.style["color"] = 'black';
         }

@@ -461,13 +461,15 @@ export const Achievements = {
         Math.clampMax(Math.abs(boundaries[1] - boundaries[0]) + 1, GROUP_LIMIT));
       let parsedGroup = [];
       for (const id of potentialIds) {
-        if (Achievement(id) != undefined) parsedGroup.push(id);
+        if (Achievement(id) != undefined || CursedRow(id) != undefined) parsedGroup.push(id);
       }
       // If the group contains no Achievements, don't parse it so that it's displayed as an error
       if (parsedGroup.length == 0) continue;
 
       parsedString = parsedString.replace(group, parsedGroup.toString());
     }
+    // Give a pipe at the end if there's none, so less issues arise
+    if (!parsedString.includes("|")) parsedString += "|";
 
     return parsedString;
   },
@@ -485,6 +487,7 @@ export const Achievements = {
       .replaceAll(" ", "")
       // Allows 11,,21 to be parsed as 11,21
       .replace(/,{2,}/gu, ",")
+      .replace(/,\|/gu, "|");
   },
 
   /** Instead of "11,12,13,14,15,row2", it'll return "11, 12, 13, 14, 15, row 2"
@@ -493,7 +496,8 @@ export const Achievements = {
   */
   formatAchievementsList(input) {
     const internal = this.truncateInput(input);
-    return internal.replaceAll(",", ", ").replaceAll("row", "row ").replaceAll("row s", "rows ");
+    return internal.replaceAll(",", ", ").replaceAll("row", "row ").replaceAll("row s", "rows ")
+      .replace("|", " | ");
   },
 
   /** 
@@ -509,42 +513,76 @@ export const Achievements = {
    */
   readPreset(input, parseInput = true) {
     if (parseInput) input = this.parseInput(input);
-    const enhancementArray = input.split(",");
+    const enhancementArray = input.split("|")[0]?.split(",");
+    const cursedArray = input.split("|")[1]?.split(",");
     let achievementsToEnhance = [];
+    let cursesToApply = [];
     let invalidIds = [];
-    for (const i of enhancementArray) {
-      // An empty string should do nothing
-      if (i == "") continue;
-      // Errors won't stop the function, as we want to inform if there are errors
-      if (isNaN(Number.parseInt(i))) {
-        invalidIds.push(i);
-        continue;
-      }
-      // Anything that isn't a whole number (for now) will be forbidden too
-      if (Number.parseInt(i).toString() != i) {
-        invalidIds.push(i);
-        continue;
-      }
+    let invalidCurses = [];
+    if (enhancementArray != undefined) {
+      for (const i of enhancementArray) {
+        // An empty string should do nothing
+        if (i == "") continue;
+        // Errors won't stop the function, as we want to inform if there are errors
+        if (isNaN(Number.parseInt(i))) {
+          invalidIds.push(i);
+          continue;
+        }
+        // Anything that isn't a whole number (for now) will be forbidden too
+        if (Number.parseInt(i).toString() != i) {
+          invalidIds.push(i);
+          continue;
+        }
 
-      //const achievement = Achievements.all.filter(a => a.id == Number.parseInt(i))[0];
-      const achievement = Achievement(Number.parseInt(i));
+        const achievement = Achievement(Number.parseInt(i));
 
-      // This is if i is a number but does not correspond to an existing Achievement
-      if (achievement == undefined) {
-        invalidIds.push(i);
-        continue;
+        // This is if i is a number but does not correspond to an existing Achievement
+        if (achievement == undefined) {
+          invalidIds.push(i);
+          continue;
+        }
+
+        // We'll also show as invalid Achievements that don't have 
+        // an Enhancement effect or aren't unlocked
+        if (!achievement.hasEnhancedEffect || achievement.row > Achievements.maxEnhancedRow) {
+          invalidIds.push(i);
+          continue;
+        }
+
+        achievementsToEnhance.push(achievement);
       }
-
-      // We'll also show as invalid Achievements that don't have 
-      // an Enhancement effect or aren't unlocked
-      if (!achievement.hasEnhancedEffect || achievement.row > Achievements.maxEnhancedRow) {
-        invalidIds.push(i);
-        continue;
-      }
-
-      achievementsToEnhance.push(achievement);
     }
-    return [achievementsToEnhance, invalidIds];
+    if (cursedArray != undefined) {
+      for (const i of cursedArray) {
+        if (i == "") continue;
+        const actualNumber = Number.parseInt(i.replace("row", ""));
+
+        if (isNaN(actualNumber)) {
+          invalidCurses.push(i);
+          continue;
+        }
+        // Anything that isn't a whole number or a 'row' + whole number will be forbidden too
+        if (actualNumber.toString() != i.replace("row","")) {
+          invalidCurses.push(i);
+          continue;
+        }
+        // We'll also show as invalid Curses that aren't unlocked
+        if (actualNumber > Achievements.maxEnhancedRow) {
+          invalidCurses.push(i);
+          continue;
+        }
+
+        const curse = CursedRow(actualNumber);
+
+        if (curse == undefined) {
+          invalidCurses.push(i);
+          continue;
+        }
+
+        cursesToApply.push(curse);
+      }
+    }
+    return [achievementsToEnhance, invalidIds, cursesToApply, invalidCurses];
   },
 
   enhanceFromArray(achievementsToEnhance) {
@@ -553,8 +591,16 @@ export const Achievements = {
     }
   },
 
-  enhanceFromPreset(text) {
-    this.enhanceFromArray(this.readPreset(text)[0]);
+  curseFromArray(cursesToApply) {
+    for (const curse of cursesToApply) {
+      curse.curseNextReality();
+    }
+  },
+
+  applyEnhancementPreset(text) {
+    const preset = this.readPreset(text);
+    this.curseFromArray(preset[2]);
+    this.enhanceFromArray(preset[0]);
   },
 
   // Return the current enhancements as a preset.
@@ -572,6 +618,18 @@ export const Achievements = {
     if (presetString.length) {
       presetString = presetString.slice(0, -1);
     }
+    // If there's a curse...
+    const cursedRowBits = player.celestials.ra.cursedRowBits;
+    if (cursedRowBits) {
+      
+      // The separator between Achievements and Curses
+      presetString = presetString + "|";
+
+      for (let i = 0; i < 13; i++) {
+        if ((cursedRowBits & (1 << i)) != 0) presetString = presetString + (i+1).toString() + ",";
+      }
+      presetString = presetString.slice(0, -1);
+    }
     return presetString;
   },
 
@@ -585,6 +643,7 @@ export const Achievements = {
   },
 
   uncurseAll() {
+    if (Achievements.effectiveCurses == 0) return;
     const cursedRows = Achievements.allCursedRows.filter(row => CursedRow(row).isCursed);
     for (const row of cursedRows) CursedRow(row).uncurse();
     player.reality.respecAchievements = false;

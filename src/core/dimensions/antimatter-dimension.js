@@ -652,7 +652,6 @@ class AntimatterDimensionState extends DimensionState {
     // (tier - 1).totalAmount -> continuumAmount -> continuumValue -> isAvailableForPurchase
     // for all 8 tiers if we start from AD 8. This only happens if Continuum is enabled,
     // so if we check and return for the Eternity Milestone first this shouldn't happen.
-    //const hasPrevTier = this.tier === 1 || AntimatterDimension(this.tier - 1).totalAmount.gt(0);
     const hasPrevTier = this.tier === 1 || AntimatterDimension(this.tier - 1).totalAmount.gt(0);
     if (!hasPrevTier) return false;
     return this.tier < 7 || !NormalChallenge(10).isRunning;
