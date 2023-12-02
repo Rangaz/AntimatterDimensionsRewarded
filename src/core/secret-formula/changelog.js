@@ -44,6 +44,9 @@ export const changelog = [
     2/12
     <li>Fixed Enhancement preview not updating curses while typing.</li>
     <li>Fixed 'Respec and Load' buttons not working if there's an active curse.</li>
+    <li>Fixed Galaxies giving errors if you had Cursed Row 2 active while all Dimensions were disabled in
+    Lai'tela's Reality.</li>
+    <li>Fixed Continuum Dimension Boosts not accounting for free Dimensions from Enhanced Achievement 53.</li>
     </ul>
     `
   },
