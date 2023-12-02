@@ -49,32 +49,57 @@ export default {
     },
 
     achievementsList() {
-      if (!this.hasInput || !this.inputIsValidTree) return null;
-      const achievementsList = this.parsedInput.split(",").sort().join(", ");
+      if (!this.hasInput || !this.inputIsValidEnhancements) return null;
+      const achievementsList = this.parsedInput.split("|")[0].split(",").sort((a, b) => a - b).join(", ");
+      if (achievementsList == "") return null;
       return "Importing without Enhancements will Enhance Achievements: " + achievementsList;
+    },
+
+    cursesList() {
+      if (!this.hasInput || !this.inputIsValidEnhancements) return null;
+      const cursesList = this.parsedInput.split("|")[1].split(",").sort((a, b) => a - b).join(", ");
+      if (cursesList == "") return null;
+      return "This will also curse next Reality the rows: " + cursesList;
     },
     
     invalidMessage() {
-      if (!this.hasInput || this.inputIsValidTree) return null;
-      // Pad the input with non-digits which we remove later in order to not cause erroneous extra matches within IDs
-      // and limit the string length to stop excessive UI stretch.
-      // The extra ',' allow to properly find the ids if they are at the start or end of the string.
-      let coloredString = `#,${this.parsedInput},#`;
-      if (coloredString.length > 300) coloredString = `${coloredString.slice(0, 297)}...`;
+      if (!this.hasInput || this.inputIsValidEnhancements) return null;
 
-      for (const id of Achievements.readPreset(this.parsedInput, false)[1]) {
-        coloredString = coloredString.replaceAll(`,${id},`,
-              `,<span style="color: var(--color-bad);">${id}</span>,`);
+      const preset = Achievements.readPreset(this.parsedInput, false);
+
+      if (preset[1].length > 0) {
+        // Pad the input with non-digits which we remove later in order to not cause erroneous extra matches within IDs
+        // and limit the string length to stop excessive UI stretch.
+        // The extra ',' allow to properly find the ids if they are at the start or end of the string.
+        let coloredString = `#,${this.parsedInput.split("|")[0]},#`;
+        if (coloredString.length > 300) coloredString = `${coloredString.slice(0, 297)}...`;
+
+        for (const id of preset[1]) {
+          coloredString = coloredString.replaceAll(`,${id},`,
+            `,<span style="color: var(--color-bad);">${id}</span>,`);
+        }
+        return `Your import string has invalid achievement IDs: 
+          ${coloredString.replaceAll("#", "").slice(1, -1).replaceAll(",", ", ")}<br><br>`;
       }
-      return `Your import string has invalid achievement IDs: 
-        ${coloredString.replaceAll("#", "").slice(1, -1).replaceAll(",", ", ")}<br><br>`;
+      if (preset[3].length > 0) {
+        let coloredString = `#,${this.parsedInput.split("|")[1]},#`;
+        if (coloredString.length > 300) coloredString = `${coloredString.slice(0, 297)}...`;
+
+        for (const id of preset[3]) {
+          coloredString = coloredString.replaceAll(`,${id},`,
+            `,<span style="color: var(--color-bad);">${id}</span>,`);
+        }
+        return `Your import string has invalid curse IDs: 
+          ${coloredString.replaceAll("#", "").slice(1, -1).replaceAll(",", ", ")}<br><br>`;
+      }
     },
 
     // Some Achievements, like 57 & 88, require other Achievements to be Enhanced.
     // Warn if some of their requirements are missing in the preset.
-    // Also warn if your preset has more Achievements than you can Enhance
+    // Also warn if your preset has more Achievements than you can Enhance.
+    // Also warn if you're Enhancing an Achievement that would be cursed
     warningMessage() {
-      if (!this.hasInput || !this.inputIsValidTree) return null;
+      if (!this.hasInput || !this.inputIsValidEnhancements) return null;
 
       const searchedString = `,${this.parsedInput},`
 
@@ -93,20 +118,16 @@ export default {
           "You may want to include 32 in your preset.";
       }
 
-      // An array with every Achievement id
-      const achievementsInString = searchedString.slice(1, -1).split(",");
+      // An array with every Achievement id, and another one with every Curse id.
+      const achievementsInString = searchedString.slice(1, -1).split("|")[0].split(",");
+      const cursesInString = searchedString.slice(1, -1).split("|")[1].split(",");
 
-      let achievementAmount = achievementsInString.length;
-      
-      // Since some Achievements are free, we need to account for that.
-      ["22", "61", "114", "126", "136"].forEach(value => achievementAmount -= achievementsInString.includes(value));
-      
-      // A few Enhancements are worth more Achievements
-      achievementAmount += achievementsInString.includes("118") + 2 * achievementsInString.includes("138");
 
       // We want to look for duplicate ids, then display them
       // I don't know if performance is going to be a problem here
       const duplicates = [];
+      // We also want to look for if an Enhanced Achievement is getting cursed
+      const enhancedAndCursed = [];
       for (const id of achievementsInString) {
         if (achievementsInString.indexOf(id) != achievementsInString.lastIndexOf(id)) {
           duplicates.push(id);
@@ -115,11 +136,35 @@ export default {
           // once if they are repeated 3 or more times, but I doubt I'll have to worry about that.
           achievementsInString.splice(achievementsInString.lastIndexOf(id), 1);
         }
+        // The first digit is the column and the rest is the row
+        if (cursesInString.includes(id.slice(0, -1))) enhancedAndCursed.push(id);
+      }
+      for (const id of cursesInString) {
+        if (cursesInString.indexOf(id) != cursesInString.lastIndexOf(id)) {
+          duplicates.push(id);
+          cursesInString.splice(cursesInString.lastIndexOf(id), 1);
+        }
+      }
+      if (enhancedAndCursed.length > 0) {
+        return `Warning: You're Enhancing Achievements that will get cursed: 
+          ${enhancedAndCursed.join(", ")}. You may want to remove these IDs or uncurse their row.`;
       }
       if (duplicates.length > 0) {
         return `Warning: Your preset includes the following duplicated IDs: ${duplicates.join(", ")}.
-          You may want to remove the duplicates.`
+          You may want to remove the duplicates.`;
       }
+
+      let achievementAmount = achievementsInString.length;
+      const curseAmount = cursesInString.length;
+      
+      // Since some Achievements are free, we need to account for that.
+      ["22", "61", "114", "126", "136"].forEach(value => achievementAmount -= achievementsInString.includes(value));
+      
+      // A few Enhancements are worth more Achievements
+      achievementAmount += achievementsInString.includes("118") + 2 * achievementsInString.includes("138");
+      
+      // Every curse practically gives 2 free Achievements
+      achievementAmount -= 2 * curseAmount;
 
       // We calculate how many elements are in the preset.
       if (achievementAmount > Achievements.totalEnhancementPoints) {
@@ -142,10 +187,11 @@ export default {
       return this.truncatedInput !== "";
     },
     inputIsValid() {
-      return this.inputIsValidTree || this.inputIsSecret;
+      return this.inputIsValidEnhancements || this.inputIsSecret;
     },
-    inputIsValidTree() {
-      return Achievements.readPreset(this.parsedInput, false)[1].length == 0;
+    inputIsValidEnhancements() {
+      const preset = Achievements.readPreset(this.parsedInput, false);
+      return preset[1].length == 0 && preset[3].length == 0;
     },
     inputIsSecret() {
       // The button to open the modal and the actual modal itself display two different strings;
@@ -186,7 +232,7 @@ export default {
         if (this.respecAndLoad && this.canReality) {
           player.reality.respecAchievements = true;
           autoReality();
-          Achievements.enhanceFromPreset(this.parsedInput)
+          Achievements.applyEnhancementPreset(this.parsedInput);
           return;
         }
         this.importEnhancements();
@@ -269,7 +315,7 @@ export default {
       if (this.inputIsSecret) SecretAchievement(37).unlock();
       savedImportString = "";
       this.emitClose();
-      Achievements.enhanceFromPreset();
+      Achievements.applyEnhancementPreset();
     },
     savePreset() {
       if (this.inputIsValid) {
@@ -330,6 +376,11 @@ export default {
           v-html="achievementsList"
           />
           <div
+          v-if="cursesList"
+          class="l-modal-import-tree__tree-info-line"
+          v-html="cursesList"
+          />
+          <div
             v-if="warningMessage"
             class="l-modal-import-tree__tree-info-line"
             style="color:orange"
@@ -337,7 +388,7 @@ export default {
           />
         </template>
         <PrimaryButton 
-          v-if="!deleting && !inputIsValidTree && hasInput"
+          v-if="!deleting && !inputIsValidEnhancements && hasInput"
           v-tooltip="'This will remove the invalid IDs in your preset.'"
           @click="fixInput"
         >
@@ -347,14 +398,14 @@ export default {
       
       <div class="c-enhancement-preview">
         <EnhancementStringPreview
-          :show-preview="inputIsValidTree && hasInput"
+          :show-preview="inputIsValidEnhancements && hasInput"
           :new-enhancements="parsedInput"
           :disregard-current-enhancements="!isImporting || (canReality && respecAndLoad)"
         />
       </div>
       
     </div>
-    <div v-if="!isImporting && inputIsValidTree">
+    <div v-if="!isImporting && inputIsValidEnhancements">
       <br>
       <PrimaryButton
         v-if="!deleting"

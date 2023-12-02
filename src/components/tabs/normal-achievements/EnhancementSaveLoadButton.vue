@@ -1,4 +1,5 @@
 <script>
+import { Achievements } from "../../../core/globals";
 import HoverMenu from "./HoverMenu";
 
 // Yes, I literally copy-pasted "TimeStudySaveLoadButton.vue" to make my own 
@@ -60,7 +61,7 @@ export default {
     load() {
       this.hideContextMenu();
       if (this.preset.enhancements) {
-        Achievements.enhanceFromPreset(Achievements.truncateInput(this.preset.enhancements));
+        Achievements.applyEnhancementPreset(Achievements.truncateInput(this.preset.enhancements));
 
         const presetName = this.name ? `Enhancement preset "${this.name}"` : "Enhancement preset";
         GameUI.notify.reality(`${presetName} loaded from slot ${this.saveslot}`);
@@ -71,10 +72,13 @@ export default {
     // This function assumes you can auto-reality, which should be true at the time you unlock presets.
     respecAndLoad() {
       if (this.canReality) {
-        player.reality.respecAchievements = true;
+        // I manually remove Enhancements and curses so that the new Enhancements and curses can be applied
+        // before a Reality. This makes Enhancements with starting resources and curses work inmediately
+        Achievements.disEnhanceAll();
+        Achievements.uncurseAll();
         
+        Achievements.applyEnhancementPreset(Achievements.truncateInput(this.preset.enhancements));
         autoReality();
-        Achievements.enhanceFromPreset(this.preset.enhancements);
       }
     },
     deletePreset() {

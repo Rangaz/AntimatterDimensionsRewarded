@@ -17,7 +17,7 @@ export const changelog = [
     <br>
     <b>Changes: </b>
     <ul>
-    <li>Coming today (I promise): Curses being saved in Enhancement presets.</li>
+    <li>1/12: Curses are now saved in Enhancement presets!</li>
     <li>Coming soon: Ability to lock enhancements, preventing most respec instances.</li>
     <li>Coming later: Ability to link Glyph presets with Enhancement presets, loading both simultaneously.</li>
     <li>Coming later: Secret Achievement 33 being changed.</li>
@@ -39,6 +39,8 @@ export const changelog = [
     Lai'tela's Reality.</li>
     <li>Enhanced Achievement 67's base multiplier is now 1e250 ➜ 1e70, but now takes into account the square
     of the amount of Celestial Realities you have beaten.</li>
+    <li>The 'Respec and Load' button in Enhancement presets now Enhances (and curses) Achievements right 
+    before a Reality.</li>
     </ul>
     `
   },
