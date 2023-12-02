@@ -557,16 +557,16 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "8th Antimatter Dimensions are slightly stronger based on the product of all your AD amounts.",
     effect: () => Decimal.max(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(AntimatterDimension(3).
-    amount.times(AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(AntimatterDimension(6).amount.times(
-    AntimatterDimension(7).amount)))))).pow(0.00002).plus(0.05), 1),
+      amount.times(AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(AntimatterDimension(6).amount.times(
+      AntimatterDimension(7).amount)))))).pow(0.00002).plus(0.05), 1),
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "8th Antimatter Dimensions are significantly stronger based on the product of your Antimatter and " + 
         "all AD amounts.",
         effect: () => Currency.antimatter.value.times(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(
           AntimatterDimension(3).amount.times(AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(
-            AntimatterDimension(6).amount.times(AntimatterDimension(7).amount))))))).pow(0.00003).plus(1),
-          formatEffect: value => `${formatX(value, 2, 2)}`,
+          AntimatterDimension(6).amount.times(AntimatterDimension(7).amount))))))).pow(0.00003).plus(1),
+        formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
   {
@@ -1814,7 +1814,7 @@ export const normalAchievements = [
         return `Time Dimensions are raised by +${formatPow(0.0005, 4, 4)} for every unique Eternity Challenge tier completed.`;
       },
       effect: () => 1 + 0.0005 * EternityChallenges.completions,
-      formatEffect: value => `${formatPow(value, 2, 2)}`,
+      formatEffect: value => `${formatPow(value, 3, 3)}`,
     }
   },
   {
@@ -1975,7 +1975,7 @@ export const normalAchievements = [
     reward: "You start Eternities with all Infinity Challenges unlocked and completed.",
     enhanced: {
       reward: "You start Eternities with all Infinity Challenges unlocked and completed, and all Realities with " +
-        "a fully purchased Time Study tree. This requires fully completing Hard V and 4 Triad Studies unlocked.",
+        "a fully purchased Time Study tree. This requires fully completing Hard V.",
     }
   },
   {

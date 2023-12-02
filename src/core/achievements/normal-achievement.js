@@ -126,7 +126,7 @@ class AchievementState extends GameMechanicState {
 
     if (this.id === 118 && effectiveEnhancementPoints < 2) return false;
 
-    if (this.id === 133 && (!V.isFullyCompleted || Ra.pets.v.level < 24)) {
+    if (this.id === 133 && !V.isFullyCompleted) {
       return false;
     }
 

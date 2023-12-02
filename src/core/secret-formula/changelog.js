@@ -47,6 +47,8 @@ export const changelog = [
     <li>Fixed Galaxies giving errors if you had Cursed Row 2 active while all Dimensions were disabled in
     Lai'tela's Reality.</li>
     <li>Fixed Continuum Dimension Boosts not accounting for free Dimensions from Enhanced Achievement 53.</li>
+    <li>Enhanced Achievement 133 no longer requires unlocking 4 Triad Studies, but it can't buy the 
+    Reality Study anymore.</li>
     </ul>
     `
   },
