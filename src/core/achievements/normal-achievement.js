@@ -649,10 +649,10 @@ export const Achievements = {
     return presetString;
   },
 
-  disEnhanceAll() {
+  disEnhanceAll(ignoreLock = false) {
     const enhancedAchievements = Achievements.preReality.filter(ach => ach.isEnhanced);
     for (const achievement of enhancedAchievements) {
-      achievement.disEnhance();
+      achievement.disEnhance(ignoreLock);
     }
     player.reality.respecAchievements = false;
     
