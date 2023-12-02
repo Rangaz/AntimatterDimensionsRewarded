@@ -66,7 +66,6 @@ export function eternityResetRequest() {
 }
 
 export function eternity(force, auto, specialConditions = {}) {
-  console.log(specialConditions);
   if (specialConditions.switchingDilation && !Player.canEternity) {
     // eslint-disable-next-line no-param-reassign
     force = true;

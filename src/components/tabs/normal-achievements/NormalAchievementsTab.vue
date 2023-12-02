@@ -272,7 +272,7 @@ export default {
       class="c-achievements-tab__header"
       style="font-size:small"
     >
-      Hold shift to see enhanced effects. 
+      Hold shift to see enhanced effects. Shift-click to lock.<br>
       You have enhanced {{ formatInt(totalEnhancementPoints - enhancementPoints) }}/{{ formatInt(totalEnhancementPoints) }} Achievements.
     </div>
     <div 

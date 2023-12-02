@@ -18,7 +18,7 @@ export const changelog = [
     <b>Changes: </b>
     <ul>
     <li>1/12: Curses are now saved in Enhancement presets!</li>
-    <li>Coming soon: Ability to lock enhancements, preventing most respec instances.</li>
+    <li>2/12: You can now lock enhancements, preventing most respec instances.</li>
     <li>Coming later: Ability to link Glyph presets with Enhancement presets, loading both simultaneously.</li>
     <li>Coming later: Secret Achievement 33 being changed.</li>
     <li>Coming later: Automator support to curse Achievement rows and individual respecs.</li>
@@ -35,12 +35,15 @@ export const changelog = [
     <li>Massively improved performance in Multiplier Tab when viewing Antimatter Dimensions, 
     Infinity Dimensions and Time Dimensions.</li>
     1/12
-    <li>Fixed Galaxies giving errors if you had Cursed Row 1 active whila all Dimensions were disabled in
+    <li>Fixed Galaxies giving errors if you had Cursed Row 1 active while all Dimensions were disabled in
     Lai'tela's Reality.</li>
     <li>Enhanced Achievement 67's base multiplier is now 1e250 ➜ 1e70, but now takes into account the square
     of the amount of Celestial Realities you have beaten.</li>
     <li>The 'Respec and Load' button in Enhancement presets now Enhances (and curses) Achievements right 
     before a Reality.</li>
+    2/12
+    <li>Fixed Enhancement preview not updating curses while typing.</li>
+    <li>Fixed 'Respec and Load' buttons not working if there's an active curse.</li>
     </ul>
     `
   },

@@ -65,6 +65,26 @@ export default {
   mounted() {
     const achievementsToEnhance = this.newEnhancements.split("|")[0].split(",");
     const rowsToCurse = this.newEnhancements.split("|")[1].split(",");
+    for (const pseudoAchievement of this.$refs.id) {
+      if (rowsToCurse.includes(pseudoAchievement.innerHTML.slice(0, -1))) {
+        pseudoAchievement.style["background-color"] = 'white';
+        pseudoAchievement.style["color"] = 'black';
+      }
+      else if (achievementsToEnhance.includes(pseudoAchievement.innerHTML)) {
+        pseudoAchievement.style["background-color"] = 'yellow';
+        pseudoAchievement.style["color"] = 'black';
+      }
+      else {
+        pseudoAchievement.style["background-color"] = '#40b050';
+        pseudoAchievement.style["color"] = 'white';
+      }
+    }
+  },
+  watch: {
+    newEnhancements(newVal) {
+      // Update Enhanced Achievements when the string changes
+      const achievementsToEnhance = this.newEnhancements.split("|")[0].split(",");
+      const rowsToCurse = this.newEnhancements.split("|")[1].split(",");
       for (const pseudoAchievement of this.$refs.id) {
         if (rowsToCurse.includes(pseudoAchievement.innerHTML.slice(0, -1))) {
           pseudoAchievement.style["background-color"] = 'white';
@@ -79,20 +99,6 @@ export default {
           pseudoAchievement.style["color"] = 'white';
         }
       }
-  },
-  watch: {
-    newEnhancements(newVal) {
-      // Update Enhanced Achievements when the string changes
-      const achievementsToEnhance = newVal.split(",");
-      for (const pseudoAchievement of this.$refs.id)
-        if (achievementsToEnhance.includes(pseudoAchievement.innerHTML)) {
-          pseudoAchievement.style["background-color"] = 'yellow';
-          pseudoAchievement.style["color"] = 'black';
-        }
-        else {
-          pseudoAchievement.style["background-color"] = '#40b050';
-          pseudoAchievement.style["color"] = 'white';
-        }
     }
   },
   methods: {
