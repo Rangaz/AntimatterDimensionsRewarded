@@ -718,15 +718,13 @@ export function finishProcessReality(realityProps) {
   if (!PelleUpgrade.tachyonParticlesNoReset.canBeApplied) {
     Currency.tachyonParticles.reset();
   }
-  // With Er133 this will buy every study including Reality unlock.
+  // With Er133 this will buy every study excluding Reality unlock.
   if (Achievement(133).isEnhanced) {
     // More than enough to buy everything
     Currency.timeTheorems.bumpTo(2e9);
-    Currency.eternityPoints.bumpTo(DC.E4000);
     TimeStudy.dilation.purchase();
     TimeStudyTree.commitToGameState(buyStudiesUntil(304));
     for (let dim = 5; dim <= 8; ++dim) TimeStudy.timeDimension(dim).purchase();
-    TimeStudy.reality.purchase();
     Currency.eternityPoints.reset();
   }
   player.dilation.nextThreshold = DC.E3;
