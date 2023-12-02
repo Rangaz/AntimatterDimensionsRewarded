@@ -92,7 +92,7 @@ export const Pelle = {
     Currency.infinityPoints.reset();
     player.IPMultPurchases = 0;
     Autobuyer.bigCrunch.mode = AUTO_CRUNCH_MODE.AMOUNT;
-    Achievements.disEnhanceAll();
+    Achievements.disEnhanceAll(true);
     Achievements.uncurseAll();
     disChargeAll();
     clearCelestialRuns();
@@ -162,7 +162,7 @@ export const Pelle = {
       this.cel.remnants += this.remnantsGain;
     }
     finishProcessReality({ reset: true, armageddon: true });
-    Achievements.disEnhanceAll();
+    Achievements.disEnhanceAll(true);
     Achievements.uncurseAll();
     disChargeAll();
     player.celestials.enslaved.isStoringReal = false;
