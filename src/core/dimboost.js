@@ -179,7 +179,10 @@ export class DimBoost {
     // Inverting bulkRequirement to improve performance, assuming EC5 is not active
 
     const increase = GameCache.increasePerDimBoost.value;
-    const dim = AntimatterDimension(this.maxDimensionsUnlockable).continuumValue * 10;
+    // continuumValue is used because it preserved decimals, 
+    // but does not add the free Dimensions from Er53, so they must be manually added
+    const dim = AntimatterDimension(this.maxDimensionsUnlockable).continuumValue * 10 +
+      AntimatterDimension(this.maxDimensionsUnlockable).freeDimensions;
     let maxBoosts = Math.clamp(1 + (dim - 20) / increase, 0, Number.MAX_VALUE);
     if (!EternityChallenge(5).isRunning) {
       player.dimensionBoosts = Math.max(Math.floor(maxBoosts), 4);
