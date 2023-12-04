@@ -661,7 +661,10 @@ export const Achievements = {
   uncurseAll() {
     if (Achievements.effectiveCurses == 0) return;
     const cursedRows = Achievements.allCursedRows.filter(row => row.isCursed);
-    for (const row of cursedRows) row.uncurse();
+    for (const row of cursedRows) {
+      row.uncurse();
+      row.uncurseNextReality();
+    };
     player.reality.respecAchievements = false;
   },
 
