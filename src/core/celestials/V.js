@@ -188,6 +188,7 @@ export const V = {
     this.quotes.realityEnter.show();
   },
   updateTotalRunUnlocks() {
+    GameCache.totalEnhancementPoints.invalidate();
     let sum = 0;
     for (let i = 0; i < player.celestials.v.runUnlocks.length; i++) {
       if (i < 6) sum += player.celestials.v.runUnlocks[i];

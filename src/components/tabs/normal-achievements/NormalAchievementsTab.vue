@@ -250,7 +250,7 @@ export default {
       <span 
         class="c-enhancement-save-load-text">{{ saveLoadText }}</span>
       <EnhancementSaveLoadButton
-        v-for="saveslot in 6"
+        v-for="saveslot in 7"
         :key="saveslot"
         :saveslot="saveslot"
       />

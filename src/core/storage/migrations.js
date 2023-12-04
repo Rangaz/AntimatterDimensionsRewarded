@@ -468,6 +468,11 @@ export const migrations = {
       // This is just a renaming, as this better encapsulate that this variable now also affects curses.
       player.reality.respecAchievements = player.reality.disEnhance;
       delete player.reality.disEnhance;
+    },
+    34: player => {
+      // The Glyphs + Enhancements update
+      // I want to add a 7th Enhancement slot to match the 7 existing Glyph preset slots
+      player.reality.enhancedPresets.push({name: "", enhancements: ""});
     }
   },
 
