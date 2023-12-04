@@ -365,7 +365,7 @@ window.player = {
     previousRuns: {}
   },
   IPMultPurchases: 0,
-  version: 33,
+  version: 34,
   infinityPower: DC.D1,
   postC4Tier: 0,
   eternityPoints: DC.D0,
@@ -527,7 +527,7 @@ window.player = {
     lockedEnhancements: new Set(),
     enhancedAchievements: new Set(),
     toBeEnhancedAchievements: new Set(),
-    enhancedPresets: new Array(6).fill({
+    enhancedPresets: new Array(7).fill({
       name: "",
       enhancements: "",
     }),
@@ -673,6 +673,7 @@ window.player = {
       run: false,
       charged: new Set(),
       disCharge: false,
+      glyphLinksToEnhancements: [0, 0, 0, 0, 0, 0, 0],
       cursedRowBits: 0,
       toBeCursedBits: 0,
       peakGamespeed: 1,
