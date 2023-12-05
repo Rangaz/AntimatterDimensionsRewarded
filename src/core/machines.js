@@ -56,6 +56,7 @@ export const MachineHandler = {
     if (this.uncappedRM.gte(this.baseRMCap)) {
       if (this.baseIMCap > player.reality.iMCap) {
         player.records.bestReality.iMCapSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
+        player.records.bestReality.iMCapEnhancementSet = Achievements.returnCurrentEnhancementsAsPreset();
         player.reality.iMCap = this.baseIMCap;
       }
     }

@@ -26,6 +26,7 @@ export default {
       rmMult: 0,
       bestAM: new Decimal(0),
       bestAMSet: [],
+      bestAMEnhancementSet: "",
       lastMachines: new Decimal(0),
       runReward: 0,
       perkPoints: 0,
@@ -111,6 +112,7 @@ export default {
       this.raisedPerkShop = Ra.unlocks.perkShopIncrease.canBeApplied;
       this.bestAM.copyFrom(player.celestials.teresa.bestRunAM);
       this.bestAMSet = Glyphs.copyForRecords(player.celestials.teresa.bestAMSet);
+      this.bestAMEnhancementSet = player.celestials.teresa.bestAMEnhancementSet;
       this.lastMachines.copyFrom(player.celestials.teresa.lastRepeatedMachines);
       this.runReward = Teresa.runRewardMultiplier;
       this.perkPoints = Currency.perkPoints.value;
@@ -177,6 +179,7 @@ export default {
                 :text-hidden="true"
                 :force-name-color="false"
                 :glyphs="bestAMSet"
+                :enhancements="bestAMEnhancementSet"
               />
             </span>
             <span v-else>

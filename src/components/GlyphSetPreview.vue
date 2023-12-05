@@ -28,7 +28,7 @@ export default {
     enhancements: {
       type: String,
       required: false,
-      default: "11,33,55,77|2,4,6,8"
+      default: ""
     },
     ignoreModifiedLevel: {
       type: Boolean,
