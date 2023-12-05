@@ -54,7 +54,7 @@ export default {
     },
     save() {
       this.hideContextMenu();
-      this.preset.enhancements = Achievements.returnCurrrentEnhancementsAsPreset();
+      this.preset.enhancements = Achievements.returnCurrentEnhancementsAsPreset();
       const presetName = this.name ? `Enhancement preset "${this.name}"` : "Enhancement preset";
       GameUI.notify.reality(`${presetName} saved in slot ${this.saveslot}`);
     },

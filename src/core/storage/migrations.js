@@ -473,8 +473,6 @@ export const migrations = {
       // The Glyphs + Enhancements update
       // I want to add a 7th Enhancement slot to match the 7 existing Glyph preset slots
       player.reality.enhancedPresets.push({name: "", enhancements: ""});
-
-      
     }
   },
 
