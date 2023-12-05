@@ -4,7 +4,7 @@ import { sha512_256 } from "js-sha512";
 import ModalWrapperChoice from "@/components/modals/ModalWrapperChoice";
 import PrimaryButton from "@/components/PrimaryButton";
 
-import EnhancementStringPreview from "./enhancement-modal-preview/EnhancementStringPreview.vue";
+import EnhancementStringPreview from "@/components/EnhancementStringPreview.vue";
 
 import { autoReality } from "../../core/reality";
 
