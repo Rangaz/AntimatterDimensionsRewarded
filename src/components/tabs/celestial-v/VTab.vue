@@ -103,6 +103,7 @@ export default {
       this.showReduction = VUnlocks.shardReduction.isUnlocked;
       this.runRecords = Array.from(player.celestials.v.runRecords);
       this.runGlyphs = player.celestials.v.runGlyphs.map(gList => Glyphs.copyForRecords(gList));
+      this.runEnhancements = player.celestials.v.runEnhancements;
       this.isFlipped = V.isFlipped;
       this.wantsFlipped = player.celestials.v.wantsFlipped;
       this.isRunning = V.isRunning;
@@ -256,6 +257,7 @@ export default {
               <p>
                 <GlyphSetPreview
                   :glyphs="runGlyphs[hex.id]"
+                  :enhancements="runEnhancements[hex.id]"
                   :text="hex.config.name"
                   :text-hidden="true"
                 />
@@ -296,7 +298,7 @@ export default {
           </div>
           <div v-else>
             <div class="l-v-hexagon l-placeholder-invisible" />
-          </div>
+          </div> 
         </li>
       </div>
       <div class="c-v-info-text">
