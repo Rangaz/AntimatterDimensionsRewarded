@@ -76,6 +76,7 @@ class VRunUnlockState extends GameMechanicState {
     if (this.config.condition() && Decimal.gte(value, playerData.runRecords[this.id])) {
       playerData.runRecords[this.id] = value;
       playerData.runGlyphs[this.id] = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
+      playerData.runEnhancements[this.id] = Achievements.returnCurrentEnhancementsAsPreset();
     }
 
     while (this.completions < this.config.values.length &&
