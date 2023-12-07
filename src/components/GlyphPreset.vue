@@ -1,20 +1,36 @@
 <script>
 import GlyphSetPreview from "@/components/GlyphSetPreview";
-import GlyphPreset from "@/components/GlyphPreset";
-import ToggleButton from "@/components/ToggleButton";
+
+// This was mae into a distinct .vue file so that loading presets can be done in tabs oher than Glyphs.
 
 export default {
-  name: "GlyphSetSavePanel",
+  name: "GlyphPreset",
   components: {
-    ToggleButton,
-    GlyphSetPreview,
-    GlyphPreset,
+    GlyphSetPreview
+  },
+  props: {
+    id: {
+      type: Number,
+      required: true,
+    },
+    showName: {
+      type: Boolean,
+      default: true,
+    },
+    showOptions: {
+      type: Boolean,
+      default: true,
+    },
+    canUseLink: {
+      type: Boolean,
+      required: true,
+    }
   },
   data() {
     return {
       hasEquipped: true,
-      glyphSets: 7,
-      names: [],
+      glyphSet: [],
+      name: "",
       effects: false,
       rarity: false,
       level: false,
@@ -22,33 +38,16 @@ export default {
     };
   },
   computed: {
-    questionmarkTooltip() {
-      return `Glyph Presets work like Time Study Loadouts, allowing you to equip a
-        full set of previously-saved Glyphs`;
-    },
-    /* noSet() {
+    noSet() {
       return `No Glyph Preset saved in this slot`;
-    }, */
-  },
-  watch: {
-    effects(newValue) {
-      player.options.ignoreGlyphEffects = newValue;
-    },
-    rarity(newValue) {
-      player.options.ignoreGlyphRarity = newValue;
-    },
-    level(newValue) {
-      player.options.ignoreGlyphLevel = newValue;
     },
   },
-  /* created() {
-    this.on$(GAME_EVENT.GLYPHS_EQUIPPED_CHANGED, this.refreshGlyphSets);
-    this.on$(GAME_EVENT.GLYPH_SET_SAVE_CHANGE, this.refreshGlyphSets);
-    this.refreshGlyphSets();
-    for (let i = 0; i < player.reality.glyphs.sets.length; i++) {
-      this.names[i] = player.reality.glyphs.sets[i].name;
-    }
-  }, */
+  created() {
+    this.on$(GAME_EVENT.GLYPHS_EQUIPPED_CHANGED, this.refreshGlyphSet);
+    this.on$(GAME_EVENT.GLYPH_SET_SAVE_CHANGE, this.refreshGlyphSet);
+    this.refreshGlyphSet();
+    this.name = player.reality.glyphs.sets[this.id].name;
+  },
   methods: {
     update() {
       this.hasEquipped = Glyphs.activeList.length > 0;
@@ -56,25 +55,27 @@ export default {
       this.rarity = player.options.ignoreGlyphRarity;
       this.level = player.options.ignoreGlyphLevel;
     },
-    /* refreshGlyphSets() {
-      this.glyphSets = player.reality.glyphs.sets.map(g => Glyphs.copyForRecords(g.glyphs));
+    refreshGlyphSet() {
+      console.log(this.id);
+      console.log(player.reality.glyphs.sets);
+      this.glyphSet = Glyphs.copyForRecords(player.reality.glyphs.sets[this.id].glyphs);
     },
-    setName(id) {
-      const name = this.names[id] === "" ? "" : `: ${this.names[id]}`;
-      return `Glyph Preset #${id + 1}${name}`;
+    setName() {
+      const name = this.name === "" ? "" : `: ${this.name}`;
+      return `Glyph Preset #${this.id + 1}${name}`;
     },
-    saveGlyphSet(id) {
-      if (!this.hasEquipped || player.reality.glyphs.sets[id].glyphs.length) return;
-      player.reality.glyphs.sets[id].glyphs = Glyphs.active.compact();
-      this.refreshGlyphSets();
+    saveGlyphSet() {
+      if (!this.hasEquipped || player.reality.glyphs.sets[this.id].glyphs.length) return;
+      player.reality.glyphs.sets[this.id].glyphs = Glyphs.active.compact();
+      this.refreshGlyphSet();
       EventHub.dispatch(GAME_EVENT.GLYPH_SET_SAVE_CHANGE);
     },
     // A proper full solution to this turns out to contain an NP-hard problem as a subproblem, so instead we do
     // something which should work in most cases - we match greedily when it won't obviously lead to an incomplete
     // preset match, and leniently when matching greedily may lead to an incomplete set being loaded
-    loadGlyphSet(set, id) {
+    loadGlyphSet(set) {
       if (!this.setLengthValid(set)) return;
-      let glyphsToLoad = [...set].sort((a, b) => -a.level * a.strength + b.level * b.strength);
+      let glyphsToLoad = [...set];
       const activeGlyphs = [...Glyphs.active.filter(g => g)];
 
       // Create an array where each entry contains a single active glyph and all its matches in the preset which it
@@ -118,7 +119,6 @@ export default {
       for (const glyph of selectedFromInventory) {
         const idx = Glyphs.active.indexOf(null);
         if (idx !== -1) {
-          //console.log(idx);
           // Special behaviour for my Companion Glyph slot
           if (glyph.type == "companion") {
             Glyphs.equip(glyph, 5);
@@ -132,9 +132,9 @@ export default {
       }
       if (missingGlyphs > 0) {
         GameUI.notify.error(`Could not find or equip ${missingGlyphs} ${pluralize("Glyph", missingGlyphs)} from
-          ${this.setName(id)}.`);
+          ${this.setName()}.`);
       } else {
-        GameUI.notify.success(`Successfully loaded ${this.setName(id)}.`);
+        GameUI.notify.success(`Successfully loaded ${this.setName()}.`);
       }
     },
     // Given a list of options for suitable matches to those glyphs and a maximum glyph count to match, returns the
@@ -155,28 +155,29 @@ export default {
       for (let index = 0; index < optionList.length; index++) {
         if (slotsLeft === 0) break;
         const entry = optionList[index];
+        const greedyPick = index === optionList.length - 1 || optionList[index + 1].options.length > 1;
 
         const filteredOptions = entry.options.filter(g => !toLoad.includes(g));
         if (filteredOptions.length === 0) continue;
-        const selectedGlyph = filteredOptions[filteredOptions.length - 1];
+        const selectedGlyph = filteredOptions[greedyPick ? 0 : (filteredOptions.length - 1)];
         toLoad.push(selectedGlyph);
         slotsLeft--;
       }
       return toLoad;
     },
-    deleteGlyphSet(id) {
-      if (!player.reality.glyphs.sets[id].glyphs.length) return;
-      if (player.options.confirmations.deleteGlyphSetSave) Modal.glyphSetSaveDelete.show({ glyphSetId: id });
+    deleteGlyphSet() {
+      if (!player.reality.glyphs.sets[this.id].glyphs.length) return;
+      if (player.options.confirmations.deleteGlyphSetSave) Modal.glyphSetSaveDelete.show({ glyphSetId: this.id });
       else {
-        player.reality.glyphs.sets[id].glyphs = [];
-        this.refreshGlyphSets();
+        player.reality.glyphs.sets[this.id].glyphs = [];
+        this.refreshGlyphSet();
         EventHub.dispatch(GAME_EVENT.GLYPH_SET_SAVE_CHANGE);
       }
     },
     nicknameBlur(event) {
       player.reality.glyphs.sets[event.target.id].name = event.target.value.slice(0, 20);
       this.names[event.target.id] = player.reality.glyphs.sets[event.target.id].name;
-      this.refreshGlyphSets();
+      this.refreshGlyphSet();
     },
     setLengthValid(set) {
       return set.length && set.length <= Glyphs.activeSlotCount;
@@ -185,7 +186,7 @@ export default {
       return this.setLengthValid(set) && this.hasEquipped
         ? "This set may not load properly because you already have some Glyphs equipped"
         : null;
-    }, */
+    },
     glyphSetKey(set, index) {
       return `${index} ${Glyphs.hash(set)}`;
     }
@@ -194,128 +195,76 @@ export default {
 </script>
 
 <template>
-  <div class="l-glyph-sacrifice-options c-glyph-sacrifice-options l-glyph-sidebar-panel-size">
-    <span
-      v-tooltip="questionmarkTooltip"
-      class="l-glyph-sacrifice-options__help c-glyph-sacrifice-options__help o-questionmark"
-    >
-      ?
-    </span>
-    <div class="l-glyph-set-save__header">
-      When loading a preset, try to match the following attributes. "Exact" will only equip Glyphs
-      identical to the ones in the preset. The other settings will, loosely speaking, allow "better" Glyphs to be
-      equipped in their place.
-    </div>
-    <div class="c-glyph-set-save-container">
-      <ToggleButton
-        v-model="effects"
-        class="c-glyph-set-save-setting-button"
-        label="Effects:"
-        on="Including"
-        off="Exact"
-      />
-      <ToggleButton
-        v-model="level"
-        class="c-glyph-set-save-setting-button"
-        label="Level:"
-        on="Increased"
-        off="Exact"
-      />
-      <ToggleButton
-        v-model="rarity"
-        class="c-glyph-set-save-setting-button"
-        label="Rarity:"
-        on="Increased"
-        off="Exact"
+  <div>
+    <div class="c-glyph-set-preview-area">
+      <GlyphSetPreview
+        :key="glyphSetKey(glyphSet, id)"
+        :text="setName()"
+        :text-hidden="true"
+        :glyphs="glyphSet"
+        :flip-tooltip="true"
+        :none-text="noSet"
       />
     </div>
-    <div
-      v-for="id of Array.range(0, glyphSets)"
-      :key="id"
-      class="c-glyph-single-set-save"
-    >
-      <GlyphPreset
-        :id="id"
-        :showName="true"
-        :showOptions="true"
-        :canUseLink="true"
+    <div class="c-glyph-single-set-save-flexbox">
+      <div 
+        v-if="showName"
+        ach-tooltip="Set a custom name (up to 20 characters)"
       >
-      </GlyphPreset>
-      <!-- <div class="c-glyph-set-preview-area">
-        <GlyphSetPreview
-          :key="glyphSetKey(set, id)"
-          :text="setName(id)"
-          :text-hidden="true"
-          :glyphs="set"
-          :flip-tooltip="true"
-          :none-text="noSet"
-        />
+        <input
+          :id="id"
+          type="text"
+          size="20"
+          maxlength="20"
+          placeholder="Custom set name"
+          class="c-glyph-sets-save-name__input"
+          :value="name"
+          @blur="nicknameBlur"
+        >
       </div>
-      <div class="c-glyph-single-set-save-flexbox">
-        <div ach-tooltip="Set a custom name (up to 20 characters)">
-          <input
-            :id="id"
-            type="text"
-            size="20"
-            maxlength="20"
-            placeholder="Custom set name"
-            class="c-glyph-sets-save-name__input"
-            :value="names[id]"
-            @blur="nicknameBlur"
-          >
-        </div>
-        <div class="c-glyph-single-set-save-flexbox-buttons">
-          <button
-            class="c-glyph-set-save-button"
-            :class="{'c-glyph-set-save-button--unavailable': !hasEquipped || set.length}"
-            @click="saveGlyphSet(id)"
-          >
-            Save
-          </button>
-          <button
-            v-tooltip="loadingTooltip(set)"
-            class="c-glyph-set-save-button"
-            :class="{'c-glyph-set-save-button--unavailable': !setLengthValid(set)}"
-            @click="loadGlyphSet(set, id)"
-          >
-            Load
-          </button>
-          <button
-            class="c-glyph-set-save-button"
-          >
-            Link
-          </button>
-          <button
-            class="c-glyph-set-save-button"
-            :class="{'c-glyph-set-save-button--unavailable': !set.length}"
-            @click="deleteGlyphSet(id)"
-          >
-            Delete
-          </button>
-        </div>
-      </div> -->
+      <div 
+        v-if="showOptions"
+        class="c-glyph-single-set-save-flexbox-buttons"
+      >
+        <button
+          class="c-glyph-set-save-button"
+          :class="{'c-glyph-set-save-button--unavailable': !hasEquipped || glyphSet.length}"
+          @click="saveGlyphSet()"
+        >
+          Save
+        </button>
+        <button
+          v-tooltip="loadingTooltip(glyphSet)"
+          class="c-glyph-set-save-button"
+          :class="{'c-glyph-set-save-button--unavailable': !setLengthValid(glyphSet)}"
+          @click="loadGlyphSet(glyphSet)"
+        >
+          Load
+        </button>
+        <button
+          class="c-glyph-set-save-button"
+        >
+          Link
+        </button>
+        <button
+          class="c-glyph-set-save-button"
+          :class="{'c-glyph-set-save-button--unavailable': !glyphSet.length}"
+          @click="deleteGlyphSet()"
+        >
+          Delete
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-.l-glyph-set-save__header {
-  margin: -1.5rem 2rem 0;
-}
-
-.c-glyph-set-save-container {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  justify-content: center;
-  margin: 1rem auto 0;
-}
-
+<style scoped> 
 .c-glyph-single-set-save-flexbox {
   width: 17rem;
 }
 
 .c-glyph-set-preview-area {
   width: 18rem;
+  float: left;
 }
 </style>
