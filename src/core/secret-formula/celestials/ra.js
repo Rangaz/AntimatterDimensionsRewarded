@@ -124,9 +124,10 @@ export const ra = {
       level: 5,
       displayIcon: `<span class="fas fa-clone"></span>`
     },
-    glyphEffectCount: {
+    glyphEffectCountAndLinks: {
       id: 10,
-      reward: () => `Glyphs always have ${formatInt(4)} effects, and Effarig Glyphs can now have up to ${formatInt(7)}`,
+      reward: () => `Glyphs always have ${formatInt(4)} effects, and Effarig Glyphs can now have up to ${formatInt(7)}.
+        You can now link Glyph presets with Enhancement presets`,
       pet: "effarig",
       level: 10,
       displayIcon: `<span class="fas fa-braille"></span>`

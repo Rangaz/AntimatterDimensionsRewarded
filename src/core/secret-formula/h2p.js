@@ -1314,7 +1314,7 @@ ${EffarigUnlock.reality.isUnlocked
     ? `a new Glyph type, <span style='color: var(--color-effarig--base);'>Effarig</span> Glyphs. Effarig Glyphs have
       ${formatInt(7)} different possible effects, which you can view in the Glyph filter settings. You can only
       have one Effarig Glyph equipped at a time.
-${Ra.unlocks.glyphEffectCount.canBeApplied
+${Ra.unlocks.glyphEffectCountAndLinks.canBeApplied
     ? `Due to having Effarig at level 10 within Ra, there are no longer any restrictions on effects that appear on
       Effarig Glyphs. Any given Effarig Glyph can now have up to all ${formatInt(7)} effects at the same time.`
     : `Effarig Glyphs can only have at most ${formatInt(4)} effects, and the RM multiplier and Glyph instability

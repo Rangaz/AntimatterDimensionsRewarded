@@ -239,8 +239,8 @@ export const GlyphGenerator = {
     // as preventing all of the glyphs changing drastically when RU17 is purchased.
     const random1 = rng.uniform();
     const random2 = rng.uniform();
-    if (type !== "effarig" && Ra.unlocks.glyphEffectCount.canBeApplied) return 4;
-    const maxEffects = Ra.unlocks.glyphEffectCount.canBeApplied ? 7 : 4;
+    if (type !== "effarig" && Ra.unlocks.glyphEffectCountAndLinks.canBeApplied) return 4;
+    const maxEffects = Ra.unlocks.glyphEffectCountAndLinks.canBeApplied ? 7 : 4;
     let num = Math.min(
       maxEffects,
       Math.floor(Math.pow(random1, 1 - (Math.pow(level * strength, 0.5)) / 100) * 1.5 + 1)
@@ -250,7 +250,7 @@ export const GlyphGenerator = {
     if (RealityUpgrade(17).isBought && random2 < Effects.max(0, RealityUpgrade(17), Achievement(157))) {
       num = Math.min(num + 1, maxEffects);
     }
-    return Ra.unlocks.glyphEffectCount.canBeApplied ? Math.max(num, 4) : num;
+    return Ra.unlocks.glyphEffectCountAndLinks.canBeApplied ? Math.max(num, 4) : num;
   },
 
   // Populate a list of reality glyph effects based on level

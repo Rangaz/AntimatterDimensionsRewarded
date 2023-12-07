@@ -19,12 +19,17 @@ export default {
     return {
       name: "",
       displayName: "",
-      canReality: false
+      canReality: false,
+      areLinksUnlocked: false,
     };
   },
   computed: {
     preset() {
       return player.reality.enhancedPresets[this.saveslot - 1];
+    },
+    linkedGlyphPreset() {
+      return this.areLinksUnlocked ? player.reality.glyphs.set[
+        player.celestials.ra.glyphLinksToEnhancements.indexOf(this.saveslot)] : null;
     },
   },
   methods: {
@@ -32,6 +37,7 @@ export default {
       this.name = player.reality.enhancedPresets[this.saveslot - 1].name;
       this.displayName = this.name === "" ? this.saveslot : this.name;
       this.canReality = TimeStudy.reality.isBought;
+      this.areLinksUnlocked = Ra.unlocks.glyphEffectCountAndLinks.canBeApplied;
     },
     nicknameBlur(event) {
       const newName = event.target.value.slice(0, 4).trim();
