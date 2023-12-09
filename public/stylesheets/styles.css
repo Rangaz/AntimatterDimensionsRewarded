@@ -6602,7 +6602,7 @@ kbd {
 
 .l-v-unlocks-container {
   display: flex;
-  overflow: hidden;
+  /* I've removed overflow so that my tooltips can appear outside of it */
   flex-wrap: wrap;
   width: 97.5rem;
   justify-content: center;
@@ -6613,13 +6613,9 @@ kbd {
 }
 
 .l-v-unlocks-container li {
-  visibility: visible;
-  overflow: hidden;
   list-style-type: none;
   width: 27rem;
   position: relative;
-  padding: 0 0 31.2rem;
-  transform: rotate(-60deg) skewY(30deg);
 }
 
 /* required for hex structure */
@@ -6637,7 +6633,7 @@ kbd {
 .l-v-unlocks-container li:nth-child(6n+1),
 .l-v-unlocks-container li:nth-child(6n+2),
 .l-v-unlocks-container li:nth-child(6n+3) {
-  transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  transform: translateX(50%);
 }
 
 .l-v-unlocks-container li:nth-child(6n+1) {
@@ -6730,7 +6726,6 @@ kbd {
   left: 0;
   justify-content: center;
   align-items: center;
-  transform: skewY(-30deg) rotate(60deg);
   -webkit-user-select: none;
   user-select: none;
 }
