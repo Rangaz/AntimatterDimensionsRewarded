@@ -182,7 +182,7 @@ export default {
           :new-enhancements="enhancements"
           :includeBorder="false"></EnhancementStringPreview>
       </div>
-  </div>
+    </div>
   </div>
 </template>
 
