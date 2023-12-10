@@ -1,7 +1,7 @@
 <script>
 import GlyphSetPreview from "@/components/GlyphSetPreview";
 
-// This was mae into a distinct .vue file so that loading presets can be done in tabs oher than Glyphs.
+// This was made into a distinct .vue file so that loading presets could be done in tabs oher than Glyphs.
 
 export default {
   name: "GlyphPreset",
@@ -35,12 +35,18 @@ export default {
       rarity: false,
       level: false,
       areLinksUnlocked: false,
+      linkedEnhancementPreset: 0, // Refers to the number id
+      canReality: false,
     };
   },
   computed: {
     noSet() {
       return `No Glyph Preset saved in this slot`;
     },
+    enhancedPreset() {
+      return this.linkedEnhancementPreset ? player.reality.enhancedPresets
+        [this.linkedEnhancementPreset - 1].enhancements : "";
+    }
   },
   created() {
     this.on$(GAME_EVENT.GLYPHS_EQUIPPED_CHANGED, this.refreshGlyphSet);
@@ -54,10 +60,11 @@ export default {
       this.effects = player.options.ignoreGlyphEffects;
       this.rarity = player.options.ignoreGlyphRarity;
       this.level = player.options.ignoreGlyphLevel;
+      this.areLinksUnlocked = Ra.unlocks.glyphEffectCountAndLinks.canBeApplied;
+      this.linkedEnhancementPreset = this.areLinksUnlocked && this.canUseLink ? 
+        player.celestials.ra.glyphLinksToEnhancements[this.id] : 0;
     },
     refreshGlyphSet() {
-      console.log(this.id);
-      console.log(player.reality.glyphs.sets);
       this.glyphSet = Glyphs.copyForRecords(player.reality.glyphs.sets[this.id].glyphs);
     },
     setName() {
@@ -136,6 +143,7 @@ export default {
       } else {
         GameUI.notify.success(`Successfully loaded ${this.setName()}.`);
       }
+      if (this.enhancedPreset) this.loadEnhancementPreset();
     },
     // Given a list of options for suitable matches to those glyphs and a maximum glyph count to match, returns the
     // set of glyphs which should be loaded. This is a tricky matching process to do since on one hand we don't want
@@ -174,9 +182,18 @@ export default {
         EventHub.dispatch(GAME_EVENT.GLYPH_SET_SAVE_CHANGE);
       }
     },
+    loadEnhancementPreset() {
+      if (this.enhancedPreset == "") return;
+      Achievements.applyEnhancementPreset(Achievements.parseInput(this.enhancedPreset));
+
+      const presetName = player.reality.enhancedPresets
+        [this.linkedEnhancementPreset - 1].name ? `Enhancement preset "${player.reality.enhancedPresets
+        [this.linkedEnhancementPreset - 1].name}"` : "Enhancement preset";
+      GameUI.notify.reality(`${presetName} loaded from slot ${this.linkedEnhancementPreset}`);
+    },
     nicknameBlur(event) {
       player.reality.glyphs.sets[event.target.id].name = event.target.value.slice(0, 20);
-      this.names[event.target.id] = player.reality.glyphs.sets[event.target.id].name;
+      this.name = player.reality.glyphs.sets[event.target.id].name;
       this.refreshGlyphSet();
     },
     setLengthValid(set) {
@@ -202,6 +219,7 @@ export default {
         :text="setName()"
         :text-hidden="true"
         :glyphs="glyphSet"
+        :enhancements="enhancedPreset"
         :flip-tooltip="true"
         :none-text="noSet"
       />
