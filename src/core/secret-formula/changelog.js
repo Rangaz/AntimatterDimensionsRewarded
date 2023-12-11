@@ -18,7 +18,8 @@ export const changelog = [
     <b>Changes: </b>
     <ul>
     <li>1/12: Curses are now saved in Enhancement presets!</li>
-    <li>2/12: You can now lock enhancements, preventing most respec instances.</li>
+    <li>2/12: You can now lock enhancements, preventing most respec instances 
+    (thank you Legendis for the suggestion).</li>
     <li>Coming later: Ability to link Glyph presets with Enhancement presets, loading both simultaneously.</li>
     <li>Coming later: Secret Achievement 33 being changed.</li>
     <li>Coming later: Automator support to curse Achievement rows and individual respecs.</li>
