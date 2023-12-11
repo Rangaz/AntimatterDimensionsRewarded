@@ -853,7 +853,7 @@ window.player = {
     ignoreGlyphEffects: true,
     ignoreGlyphLevel: true,
     ignoreGlyphRarity: true,
-    glyphsRespecEnhancements: false,
+    glyphPresetsRespecAll: false,
     enhancementsRespecGlyphs: false,
     glyphBG: GLYPH_BG_SETTING.AUTO,
     glyphBorders: true,

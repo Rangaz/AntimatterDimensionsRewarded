@@ -1,5 +1,6 @@
 <script>
 import GlyphSetPreview from "@/components/GlyphSetPreview";
+import { Modal } from "../core/modal";
 
 // This was made into a distinct .vue file so that loading presets could be done in tabs oher than Glyphs.
 
@@ -37,6 +38,7 @@ export default {
       areLinksUnlocked: false,
       linkedEnhancementPreset: 0, // Refers to the number id
       canReality: false,
+      respecAll: false,
     };
   },
   computed: {
@@ -63,6 +65,8 @@ export default {
       this.areLinksUnlocked = Ra.unlocks.glyphEffectCountAndLinks.canBeApplied;
       this.linkedEnhancementPreset = this.areLinksUnlocked && this.canUseLink ? 
         player.celestials.ra.glyphLinksToEnhancements[this.id] : 0;
+      this.canReality = TimeStudy.reality.isBought && player.records.thisReality.maxEP.exponent >= 4000;
+      this.respecAll = player.options.glyphPresetsRespecAll;
     },
     refreshGlyphSet() {
       this.glyphSet = Glyphs.copyForRecords(player.reality.glyphs.sets[this.id].glyphs);
@@ -182,6 +186,10 @@ export default {
         EventHub.dispatch(GAME_EVENT.GLYPH_SET_SAVE_CHANGE);
       }
     },
+    openLinkModal() {
+      if (!this.canUseLink || !this.areLinksUnlocked) return;
+      Modal.glyphEnhancementLink.show({ glyphPresetId: this.id + 1 });
+    },
     loadEnhancementPreset() {
       if (this.enhancedPreset == "") return;
       Achievements.applyEnhancementPreset(Achievements.parseInput(this.enhancedPreset));
@@ -260,7 +268,9 @@ export default {
           Load
         </button>
         <button
+          v-if="areLinksUnlocked"
           class="c-glyph-set-save-button"
+          @click="openLinkModal()"
         >
           Link
         </button>
