@@ -97,12 +97,12 @@ export const changelog = [
     <li>Enhanced Achievement 63 gives x8 the cost of an Infinity Dimension.</li>
     <li>Enhanced Achievement 66 has a bigger multiplier (x16 ➜ x100).</li>
     <li>Achievement 76's normal effect is squared.</li>
-    <li>Enhanced Achievement 78 is changed: It now makes you stat with 10 Time Theorems (goes up to 1e50 with
+    <li>Enhanced Achievement 78 is changed: It now makes you start with 10 Time Theorems (goes up to 1e50 with
     Enhanced Achievement 55).</li>
     <li>Enhanced Achievement 82 gives x2 as much IP per purchase.</li>
     <li>Enhanced Achievement 94 gives a much higher Infinity Power multiplier (1e260 ➜ 1e26000) and Replicanti
     speed (43.333 ➜ 260).</li>
-    <li>Achievement 178 now gived more Galaxy strength 1% ➜ 2%.</li>
+    <li>Achievement 178 now gives more Galaxy strength 1% ➜ 2%.</li>
     <br>
     <li>Achievement 172 now also requires no Enhancements.</li>
     <li>Achievement 178 now requires 100,000 ➜ 108,000 Antimatter Galaxies.</li>
