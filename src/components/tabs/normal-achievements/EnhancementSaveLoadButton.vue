@@ -1,6 +1,6 @@
 <script>
-import { Achievements } from "../../../core/globals";
 import HoverMenu from "./HoverMenu";
+import GlyphPreset from "@/components/GlyphPreset";
 
 // Yes, I literally copy-pasted "TimeStudySaveLoadButton.vue" to make my own 
 // presets for Achievement Enhancement
@@ -8,6 +8,7 @@ export default {
   name: "EnhancementSaveLoadButton",
   components: {
     HoverMenu,
+    GlyphPreset,
   },
   props: {
     saveslot: {
@@ -28,9 +29,16 @@ export default {
       return player.reality.enhancedPresets[this.saveslot - 1];
     },
     linkedGlyphPreset() {
-      return this.areLinksUnlocked ? player.reality.glyphs.set[
-        player.celestials.ra.glyphLinksToEnhancements.indexOf(this.saveslot)] : null;
+      return player.celestials.ra.glyphLinksToEnhancements.indexOf(this.saveslot) + 1;
     },
+    hoverMenuStyle() {
+      return {"top": this.areLinksUnlocked ? "22.2rem" : "19.7rem"};
+    }
+  },
+  created() {
+    EventHub.logic.on(GAME_EVENT.LINKS_CHANGED, () => {
+      this.$recompute("linkedGlyphPreset");
+    });
   },
   methods: {
     update() {
@@ -87,6 +95,10 @@ export default {
         autoReality();
       }
     },
+    openLinkModal() {
+      if (!this.areLinksUnlocked) return;
+      Modal.glyphEnhancementLink.show({ enhancementPresetId: this.saveslot });
+    },
     deletePreset() {
       this.hideContextMenu();
       if (this.preset.enhancements) Modal.enhancementString.show({ id: this.saveslot - 1, deleting: true });
@@ -117,7 +129,10 @@ export default {
       </button>
     </template>
     <template #menu>
-      <div class="l-acheh-save-load-btn__menu c-acheh-save-load-btn__menu">
+      <div 
+        class="l-acheh-save-load-btn__menu c-acheh-save-load-btn__menu"
+        :style="hoverMenuStyle"
+      >
         <span ach-tooltip="Set a custom name (up to 4 ASCII characters)">
           <input
             type="text"
@@ -166,6 +181,28 @@ export default {
             </div>
           </div>
         </div>
+        <div 
+          v-if="areLinksUnlocked"
+          class="l-acheh-save-load-btn__menu-item"
+        >
+          <div
+            class="c-acheh-save-load-btn__menu-item"
+            @click="openLinkModal"
+          >
+            Link
+          </div>
+          <div 
+            v-if="linkedGlyphPreset"
+            class="c-acheh-save-load-btn__menu-item__hover-options"
+          >
+            <GlyphPreset
+            :id="linkedGlyphPreset - 1"
+            :show-options="false"
+            :can-edit-name="false"
+            :can-use-link="false"
+          ></GlyphPreset>
+          </div>
+        </div>
         <div
           class="l-acheh-save-load-btn__menu-item c-acheh-save-load-btn__menu-item"
           @click="deletePreset"
@@ -205,7 +242,6 @@ export default {
 
 .l-acheh-save-load-btn__menu {
   position: absolute;
-  top: 19.7rem;
   left: 50%;
   padding: 0.5rem 0;
   z-index: 2;

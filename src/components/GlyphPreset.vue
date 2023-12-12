@@ -18,6 +18,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    canEditName: {
+      type: Boolean,
+      default: true,
+    },
     showOptions: {
       type: Boolean,
       default: true,
@@ -147,7 +151,7 @@ export default {
       } else {
         GameUI.notify.success(`Successfully loaded ${this.setName()}.`);
       }
-      if (this.enhancedPreset) this.loadEnhancementPreset();
+      if (this.enhancedPreset && this.canUseLink) this.loadEnhancementPreset();
     },
     // Given a list of options for suitable matches to those glyphs and a maximum glyph count to match, returns the
     // set of glyphs which should be loaded. This is a tricky matching process to do since on one hand we don't want
@@ -235,9 +239,10 @@ export default {
     <div class="c-glyph-single-set-save-flexbox">
       <div 
         v-if="showName"
-        ach-tooltip="Set a custom name (up to 20 characters)"
+        :ach-tooltip="canEditName ? 'Set a custom name (up to 20 characters)' : null"
       >
         <input
+          v-if="canEditName"
           :id="id"
           type="text"
           size="20"
@@ -247,6 +252,11 @@ export default {
           :value="name"
           @blur="nicknameBlur"
         >
+        <span v-else
+          class="c-glyph-sets-save-name"
+        >
+          {{ name ? name : "Glyph preset #" + (id + 1) }}
+        </span>
       </div>
       <div 
         v-if="showOptions"
@@ -294,5 +304,17 @@ export default {
 .c-glyph-set-preview-area {
   width: 18rem;
   float: left;
+}
+
+.c-glyph-sets-save-name {
+  width: 17rem;
+  height: 1.5rem;
+  text-align: center;
+  font-family: Typewriter, serif;
+  font-size: 1.35rem;
+  color: var(--color-reality-dark);
+}
+.s-base--dark .c-glyph-sets-save-name {
+  color: var(--color-reality-light);
 }
 </style>
