@@ -74,25 +74,41 @@ export default {
     },
     load() {
       this.hideContextMenu();
-      if (this.preset.enhancements) {
-        Achievements.applyEnhancementPreset(Achievements.truncateInput(this.preset.enhancements));
-
-        const presetName = this.name ? `Enhancement preset "${this.name}"` : "Enhancement preset";
-        GameUI.notify.reality(`${presetName} loaded from slot ${this.saveslot}`);
-      } else {
+      if (!this.preset.enhancements) {
         Modal.message.show("This Enhancements list currently contains no Achievements.");
+        return;
+      }
+      Achievements.applyEnhancementPreset(Achievements.truncateInput(this.preset.enhancements));
+
+      const presetName = this.name ? `Enhancement preset "${this.name}"` : "Enhancement preset";
+      GameUI.notify.reality(`${presetName} loaded from slot ${this.saveslot}`);
+      
+      if (this.$refs.glyphPreset != undefined) {
+        this.$refs.glyphPreset.loadGlyphSet(this.$refs.glyphPreset.glyphSet);
       }
     },
     // This function assumes you can auto-reality, which should be true at the time you unlock presets.
     respecAndLoad() {
-      if (this.canReality) {
-        // I manually remove Enhancements and curses so that the new Enhancements and curses can be applied
-        // before a Reality. This makes Enhancements with starting resources and curses work inmediately
-        Achievements.disEnhanceAll();
-        Achievements.uncurseAll();
-        
-        Achievements.applyEnhancementPreset(Achievements.truncateInput(this.preset.enhancements));
-        autoReality();
+      if (!this.canReality) return;
+      // I manually remove Enhancements and curses so that the new Enhancements and curses can be applied
+      // before a Reality. This makes Enhancements with starting resources and curses work inmediately
+      Achievements.disEnhanceAll();
+      Achievements.uncurseAll();
+      
+      Achievements.applyEnhancementPreset(Achievements.truncateInput(this.preset.enhancements));
+
+      const presetName = this.name ? `Enhancement preset "${this.name}"` : "Enhancement preset";
+      GameUI.notify.reality(`${presetName} loaded from slot ${this.saveslot}`);
+
+      // Only if there's a linked preset should Glyphs be respec.
+      // This means that if this is linked to an empty Glyph preset the Glyphs will still be removed
+      if (this.areLinksUnlocked && player.options.enhancementsRespecGlyphs && this.$refs.glyphPreset != undefined) {
+        player.reality.respec = true;
+      }
+
+      autoReality();
+      if (this.$refs.glyphPreset != undefined) {
+        this.$refs.glyphPreset.loadGlyphSet(this.$refs.glyphPreset.glyphSet);
       }
     },
     openLinkModal() {
@@ -196,6 +212,7 @@ export default {
             class="c-acheh-save-load-btn__menu-item__hover-options"
           >
             <GlyphPreset
+            ref="glyphPreset"
             :id="linkedGlyphPreset - 1"
             :show-options="false"
             :can-edit-name="false"
