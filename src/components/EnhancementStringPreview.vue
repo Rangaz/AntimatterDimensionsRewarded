@@ -70,8 +70,9 @@ export default {
     
   },
   mounted() {
-    const achievementsToEnhance = this.newEnhancements.split("|")[0].split(",");
-    const rowsToCurse = this.newEnhancements.split("|")[1].split(",");
+    const achievementsToEnhance = this.newEnhancements.split("|")[0]?.split(",");
+    // rowsToCurse can be undefined at this stage for some reason, so I'll make it at least be ""
+    const rowsToCurse = this.newEnhancements.split("|")[1]?.split(",") ?? "";
     for (const pseudoAchievement of this.$refs.id) {
       if (rowsToCurse.includes(pseudoAchievement.innerHTML.slice(0, -1))) {
         pseudoAchievement.style["background-color"] = 'white';

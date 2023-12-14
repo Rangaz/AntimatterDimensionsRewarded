@@ -31,6 +31,8 @@ export default {
       showAutoAchieve: false,
       isAutoAchieveActive: false,
       isEnhancementUnlocked: false,
+      areLinksUnlocked: false,
+      enhancementsRespecGlyphs: false,
       respecAll: false,
       showEnhancementPresets: false,
       hideRows: 0,
@@ -79,6 +81,10 @@ export default {
         case 2: return "Completed";
       }
     },
+    enhancementsRespecGlyphsTooltip() {
+      return "If the preset has a link, using 'Respec and Load' will also unequip all Glyphs and equip " +
+        "the linked Glyph preset";
+    },
     respecClassObject() {
       return {
         "o-primary-btn--subtab-option": true,
@@ -116,6 +122,9 @@ export default {
     },
     curseMode(newValue) {
       this.curseMode = newValue;
+    },
+    enhancementsRespecGlyphs(newValue) {
+      player.options.enhancementsRespecGlyphs = newValue;
     }
   },
   created() {
@@ -140,6 +149,8 @@ export default {
       this.totalEnhancementPoints = Achievements.totalEnhancementPoints;
       this.respecAll = player.reality.respecAchievements;
       this.isEnhancementUnlocked = Achievements.isEnhancementUnlocked && !this.isDoomed;
+      this.areLinksUnlocked = Ra.unlocks.glyphEffectCountAndLinks.canBeApplied;
+      this.enhancementsRespecGlyphs = player.options.enhancementsRespecGlyphs;
       this.isCurseUnlocked = V.isFlipped;
       this.maxEnhancedRow = Achievements.maxEnhancedRow * this.isEnhancementUnlocked;
       this.showAutoAchieve = PlayerProgress.realityUnlocked() && !Perk.achievementGroup5.isBought;
@@ -254,6 +265,12 @@ export default {
         :key="saveslot"
         :saveslot="saveslot"
       />
+      <i 
+        v-if="areLinksUnlocked"
+        class="fas fa-up-down l-extra-enhancement-button"
+        :class="{ 'o-glyph-respec': enhancementsRespecGlyphs}"
+        v-tooltip="enhancementsRespecGlyphsTooltip"
+        @click="enhancementsRespecGlyphs = !enhancementsRespecGlyphs"></i>
     </div>
     <div 
       v-if="!curseMode"
@@ -351,5 +368,19 @@ export default {
 .o-primary-btn--enhanced-respec-active:hover {
   color: #000000;
   background-color: #aaaa33 !important;
+}
+.l-extra-enhancement-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: var(--var-border-width, 0.2rem) solid;
+  width: 2rem;
+  height: 2.2rem;
+  margin: 0.25rem 0 0 0.3rem;
+  padding: 0.2rem;
+}
+.o-glyph-respec {
+  background: var(--color-good);
 }
 </style>
