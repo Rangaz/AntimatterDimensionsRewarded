@@ -18,9 +18,12 @@ export const changelog = [
     <b>Changes: </b>
     <ul>
     <li>1/12: Curses are now saved in Enhancement presets!</li>
-    <li>2/12: You can now lock enhancements, preventing most respec instances.</li>
-    <li>Coming later: Ability to link Glyph presets with Enhancement presets, loading both simultaneously.</li>
-    <li>Coming later: Secret Achievement 33 being changed.</li>
+    <li>2/12: You can now lock enhancements, preventing most respec instances 
+    (thank you Legendis for the suggestion).</li>
+    <li>15/12: You can now link Glyph presets with Enhancement presets, loading both simultaneously.
+    This is unlocked at Ra, with Effarig level 10.</li>
+    <li>15/12: You can now see what Enhancements you had active in records. This includes V-Achievements.</li>
+    <li>Coming soon: Secret Achievement 33 being changed.</li>
     <li>Coming later: Automator support to curse Achievement rows and individual respecs.</li>
     <br>
     30/11
@@ -49,6 +52,11 @@ export const changelog = [
     <li>Fixed Continuum Dimension Boosts not accounting for free Dimensions from Enhanced Achievement 53.</li>
     <li>Enhanced Achievement 133 no longer requires unlocking 4 Triad Studies, but it can't buy the 
     Reality Study anymore.</li>
+    15/12
+    <li>Added a 7th Enhancement preset slot.</li>
+    <li>Respec and load functionality for Enhancement presets now works even if you can't Reality. In this case 
+    it'd be the same as starting the Reality over.</li>
+    <li>
     </ul>
     `
   },
@@ -96,12 +104,12 @@ export const changelog = [
     <li>Enhanced Achievement 63 gives x8 the cost of an Infinity Dimension.</li>
     <li>Enhanced Achievement 66 has a bigger multiplier (x16 ➜ x100).</li>
     <li>Achievement 76's normal effect is squared.</li>
-    <li>Enhanced Achievement 78 is changed: It now makes you stat with 10 Time Theorems (goes up to 1e50 with
+    <li>Enhanced Achievement 78 is changed: It now makes you start with 10 Time Theorems (goes up to 1e50 with
     Enhanced Achievement 55).</li>
     <li>Enhanced Achievement 82 gives x2 as much IP per purchase.</li>
     <li>Enhanced Achievement 94 gives a much higher Infinity Power multiplier (1e260 ➜ 1e26000) and Replicanti
     speed (43.333 ➜ 260).</li>
-    <li>Achievement 178 now gived more Galaxy strength 1% ➜ 2%.</li>
+    <li>Achievement 178 now gives more Galaxy strength 1% ➜ 2%.</li>
     <br>
     <li>Achievement 172 now also requires no Enhancements.</li>
     <li>Achievement 178 now requires 100,000 ➜ 108,000 Antimatter Galaxies.</li>

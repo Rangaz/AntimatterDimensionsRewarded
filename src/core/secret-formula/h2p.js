@@ -1314,7 +1314,7 @@ ${EffarigUnlock.reality.isUnlocked
     ? `a new Glyph type, <span style='color: var(--color-effarig--base);'>Effarig</span> Glyphs. Effarig Glyphs have
       ${formatInt(7)} different possible effects, which you can view in the Glyph filter settings. You can only
       have one Effarig Glyph equipped at a time.
-${Ra.unlocks.glyphEffectCount.canBeApplied
+${Ra.unlocks.glyphEffectCountAndLinks.canBeApplied
     ? `Due to having Effarig at level 10 within Ra, there are no longer any restrictions on effects that appear on
       Effarig Glyphs. Any given Effarig Glyph can now have up to all ${formatInt(7)} effects at the same time.`
     : `Effarig Glyphs can only have at most ${formatInt(4)} effects, and the RM multiplier and Glyph instability
@@ -1392,6 +1392,10 @@ If any are not found, it will display a warning, but equip all the rest regardle
 When loading a set, you can be Level and/or Rarity sensitive. The best Glyph from the possible Glyphs
 will always be the one equipped. Just like other groups of circular Glyphs, you can click any of them
 in order to bring up a modal summarizing the whole set of Glyphs.
+<br>
+<br>
+You can also make Glyph Presets automatically unequip current Glyphs and perform an automatic Reality. 
+Note that if Reality is not available when loading a preset the Reality will start over instead and give no rewards.
 `,
       isUnlocked: () => EffarigUnlock.adjuster.isUnlocked,
       tags: ["glyph", "weight", "adjustment", "sacrifice", "filter", "threshold", "set", "save", "reality", "lategame",

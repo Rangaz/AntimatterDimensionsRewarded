@@ -622,7 +622,7 @@ export const Achievements = {
   // Return the current enhancements as a preset.
   // I use Array.from() to use its sort() function, as that returns a nicer string.
   // Otherwise it'll return the ids in purchase order, which looks messier.
-  returnCurrrentEnhancementsAsPreset() {
+  returnCurrentEnhancementsAsPreset() {
     let enhancedAchievements = Array.from(player.reality.enhancedAchievements);
     // This should arrange them correctly so that 101 does not come before 11
     enhancedAchievements.sort(function(a, b) {return a - b});
@@ -634,12 +634,13 @@ export const Achievements = {
     if (presetString.length) {
       presetString = presetString.slice(0, -1);
     }
+    // The separator between Achievements and Curses. We always include it to avoid issues
+    presetString = presetString + "|";
+
     // If there's a curse...
     const cursedRowBits = player.celestials.ra.cursedRowBits;
     if (cursedRowBits) {
       
-      // The separator between Achievements and Curses
-      presetString = presetString + "|";
 
       for (let i = 0; i < 13; i++) {
         if ((cursedRowBits & (1 << i)) != 0) presetString = presetString + (i+1).toString() + ",";
@@ -664,7 +665,7 @@ export const Achievements = {
     for (const row of cursedRows) {
       row.uncurse();
       row.uncurseNextReality();
-    };
+    }
     player.reality.respecAchievements = false;
   },
 

@@ -5,9 +5,11 @@ import { PlayerProgress } from "../../player-progress";
 TODO:
 -Make presets work with curses <DONE>
 -Shift-click to lock an Enhancement <DONE>
--Link Glyph presets with Enhancement presets
--Add curses and individual respecs in automator
+-Link Glyph presets with Enhancement presets <DONE>
+  ->Allow Glyphs or Enhancements to respec the other <DONE>
+-Store Enhancements as well as Glyphs in records <DONE>
 -Change secret Achievement 33 to something like 'Do you want it or not?'
+-Add curses and individual respecs in automator
 
 */
 
@@ -24,7 +26,8 @@ export const normalAchievements = [
         their initial cost scaling is ${formatX(2)}. If this row is fully Enhanced, decrease
         post-infinity cost scaling for Antimatter Dimensions by -${format(0.01, 2, 2)}.`},
       effect: () => {
-        for (let i = 1; i <= 8; i++) {
+        // Doesn't check itself, otherwise it wouldn't be active
+        for (let i = 2; i <= 8; i++) {
           if (!Achievement(10 + i).isEnhanced) return 0;
         }
         return 0.01;

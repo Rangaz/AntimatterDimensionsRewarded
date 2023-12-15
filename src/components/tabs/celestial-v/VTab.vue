@@ -82,7 +82,6 @@ export default {
     },
     runButtonClassObject() {
       return {
-        "l-v-hexagon": true,
         "c-v-run-button": true,
         "c-v-run-button--running": this.isRunning,
         "c-celestial-run-button--clickable": !this.isDoomed,
@@ -103,6 +102,7 @@ export default {
       this.showReduction = VUnlocks.shardReduction.isUnlocked;
       this.runRecords = Array.from(player.celestials.v.runRecords);
       this.runGlyphs = player.celestials.v.runGlyphs.map(gList => Glyphs.copyForRecords(gList));
+      this.runEnhancements = player.celestials.v.runEnhancements;
       this.isFlipped = V.isFlipped;
       this.wantsFlipped = player.celestials.v.wantsFlipped;
       this.isRunning = V.isRunning;
@@ -223,15 +223,39 @@ export default {
         You have {{ quantify("Perk Point", pp, 2, 0) }}.
       </div>
       <div class="l-v-unlocks-container">
+        <!--Since my tooltips overflow up and to the right, the zIndex calculation here
+        makes sure that other hexagons don't interfere with them-->
         <li
           v-for="(hex, hexId) in hexGrid"
           :key="hexId + '-v-hex'"
-          :style="[hex.isRunButton ? {zIndex: 1} : {zIndex: 0}]"
+          :style="[hex.isRunButton ? {zIndex: 0} : {zIndex: -(hexId % 3) + Math.floor(hexId / 3) + 1}]"
         >
+          <!--This is the hexagon visual. The clicking functionality is moved to here since the hover 
+          effect that changes the background color should affect this. That's why the text part of the 
+          run button has pointer-events: none, so that this div can detect the hover and click-->
+          <div 
+            v-if="hex.config || hex.isRunButton"
+            class="l-v-hexagon-look"
+            @click="hex.isRunButton ? startRun() : null"
+          >
+            <div
+              class="l-v-hexagon-deeper-look"
+              :class="hex.isRunButton ? runButtonClassObject : ''"
+              :style="hex.config ? 'background-color: ' + hexColor(hex) : ''"
+            >
+              <div v-if="hex.isRunButton"
+                style="transform: skewY(-30deg)"
+              >
+                <div class="c-v-run-button__line c-v-run-button__line--1" />
+                <div class="c-v-run-button__line c-v-run-button__line--2" />
+                <div class="c-v-run-button__line c-v-run-button__line--3" />
+              </div>
+            </div>
+          </div>
           <div
             v-if="hex.config"
-            class="l-v-hexagon c-v-unlock"
-            :style="'background-color: ' + hexColor(hex)"
+            class="l-v-hexagon"
+            style="color: #000;"
           >
             <p class="o-v-unlock-name">
               <br v-if="hex.canBeReduced && showReduction">{{ hex.config.name }}
@@ -256,6 +280,7 @@ export default {
               <p>
                 <GlyphSetPreview
                   :glyphs="runGlyphs[hex.id]"
+                  :enhancements="runEnhancements[hex.id]"
                   :text="hex.config.name"
                   :text-hidden="true"
                 />
@@ -275,8 +300,8 @@ export default {
           </div>
           <div
             v-else-if="hex.isRunButton"
-            :class="runButtonClassObject"
-            @click="startRun()"
+            class="l-v-hexagon"
+            style="color: #000; pointer-events: none;"
           >
             <b
               class="o-v-start-text"
@@ -290,13 +315,10 @@ export default {
             <div :style="{ 'font-size': hasAlchemy ? '1.2rem' : '' }">
               {{ runDescription }}
             </div>
-            <div class="c-v-run-button__line c-v-run-button__line--1" />
-            <div class="c-v-run-button__line c-v-run-button__line--2" />
-            <div class="c-v-run-button__line c-v-run-button__line--3" />
           </div>
           <div v-else>
             <div class="l-v-hexagon l-placeholder-invisible" />
-          </div>
+          </div> 
         </li>
       </div>
       <div class="c-v-info-text">
@@ -356,4 +378,24 @@ export default {
 .l-cursed-glyph-creation {
   background: var(--color-effarig--base);
 }
+
+.l-v-hexagon-look {
+  visibility: visible;
+  overflow: hidden;
+  width: 27rem;
+  position: relative;
+  display: inline-block;
+  margin-bottom: -0.7rem;
+}
+
+.l-v-hexagon-look .l-v-hexagon-deeper-look {
+  visibility: visible;
+  overflow: hidden;
+  width: 27rem;
+  padding: 0 0 31.2rem;
+  display: inline-block;
+  transform: rotate(-60deg) skewY(30deg);
+  z-index: -2;
+}
+
 </style>

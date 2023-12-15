@@ -330,20 +330,31 @@ window.player = {
       bestRSminVal: 0,
     },
     bestReality: {
+      // It would be less messy if the Enhancement set was placed inside these pre-existing Glyph set
+      // variables to look like [[Glyphs], "Enhancements"], however that would break backward 
+      // compatibility with base game and would require more internal changes and migrations than simply 
+      // making a new variable for each of these
       time: Number.MAX_VALUE,
       realTime: Number.MAX_VALUE,
       glyphStrength: 0,
       RM: DC.D0,
       RMSet: [],
+      RMEnhancementSet: "",
       RMmin: DC.D0,
       RMminSet: [],
+      RMminEnhancementSet: "",
       glyphLevel: 0,
       glyphLevelSet: [],
+      glyphLevelEnhancementSet: "",
       bestEP: DC.D0,
       bestEPSet: [],
       speedSet: [],
       iMCapSet: [],
       laitelaSet: [],
+      bestEPEnhancementSet: "",
+      speedEnhancementSet: "",
+      iMCapEnhancementSet: "",
+      laitelaEnhancementSet: "",
     },
   },
   speedrun: {
@@ -365,7 +376,7 @@ window.player = {
     previousRuns: {}
   },
   IPMultPurchases: 0,
-  version: 33,
+  version: 34,
   infinityPower: DC.D1,
   postC4Tier: 0,
   eternityPoints: DC.D0,
@@ -527,7 +538,7 @@ window.player = {
     lockedEnhancements: new Set(),
     enhancedAchievements: new Set(),
     toBeEnhancedAchievements: new Set(),
-    enhancedPresets: new Array(6).fill({
+    enhancedPresets: new Array(7).fill({
       name: "",
       enhancements: "",
     }),
@@ -575,6 +586,7 @@ window.player = {
       run: false,
       bestRunAM: DC.D1,
       bestAMSet: [],
+      bestAMEnhancementSet: "",
       perkShop: Array.repeat(0, 5),
       lastRepeatedMachines: DC.D0
     },
@@ -619,6 +631,7 @@ window.player = {
       goalReductionSteps: [0, 0, 0, 0, 0, 0, 0, 0, 0],
       STSpent: 0,
       runGlyphs: [[], [], [], [], [], [], [], [], []],
+      runEnhancements: ["", "", "", "", "", "", "", "", ""],
       // The -10 is for glyph count, as glyph count for V is stored internally as a negative number
       runRecords: [-10, 0, 0, 0, 0, 0, 0, 0, 0],
       wantsFlipped: true,
@@ -673,6 +686,7 @@ window.player = {
       run: false,
       charged: new Set(),
       disCharge: false,
+      glyphLinksToEnhancements: [0, 0, 0, 0, 0, 0, 0],
       cursedRowBits: 0,
       toBeCursedBits: 0,
       peakGamespeed: 1,
@@ -839,6 +853,8 @@ window.player = {
     ignoreGlyphEffects: false,
     ignoreGlyphLevel: false,
     ignoreGlyphRarity: false,
+    glyphPresetsRespecAll: false,
+    enhancementsRespecGlyphs: false,
     glyphBG: GLYPH_BG_SETTING.AUTO,
     glyphBorders: true,
     showHintText: {

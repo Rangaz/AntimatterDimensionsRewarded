@@ -1,6 +1,6 @@
 <script>
-import { Achievements } from "../../../core/globals";
 import HoverMenu from "./HoverMenu";
+import GlyphPreset from "@/components/GlyphPreset";
 
 // Yes, I literally copy-pasted "TimeStudySaveLoadButton.vue" to make my own 
 // presets for Achievement Enhancement
@@ -8,6 +8,7 @@ export default {
   name: "EnhancementSaveLoadButton",
   components: {
     HoverMenu,
+    GlyphPreset,
   },
   props: {
     saveslot: {
@@ -19,19 +20,32 @@ export default {
     return {
       name: "",
       displayName: "",
-      canReality: false
+      canReality: false,
+      areLinksUnlocked: false,
     };
   },
   computed: {
     preset() {
       return player.reality.enhancedPresets[this.saveslot - 1];
     },
+    linkedGlyphPreset() {
+      return player.celestials.ra.glyphLinksToEnhancements.indexOf(this.saveslot) + 1;
+    },
+    hoverMenuStyle() {
+      return {"top": this.areLinksUnlocked ? "22.2rem" : "19.7rem"};
+    }
+  },
+  created() {
+    EventHub.logic.on(GAME_EVENT.LINKS_CHANGED, () => {
+      this.$recompute("linkedGlyphPreset");
+    });
   },
   methods: {
     update() {
       this.name = player.reality.enhancedPresets[this.saveslot - 1].name;
       this.displayName = this.name === "" ? this.saveslot : this.name;
       this.canReality = TimeStudy.reality.isBought;
+      this.areLinksUnlocked = Ra.unlocks.glyphEffectCountAndLinks.canBeApplied;
     },
     nicknameBlur(event) {
       const newName = event.target.value.slice(0, 4).trim();
@@ -54,32 +68,51 @@ export default {
     },
     save() {
       this.hideContextMenu();
-      this.preset.enhancements = Achievements.returnCurrrentEnhancementsAsPreset();
+      this.preset.enhancements = Achievements.returnCurrentEnhancementsAsPreset();
       const presetName = this.name ? `Enhancement preset "${this.name}"` : "Enhancement preset";
       GameUI.notify.reality(`${presetName} saved in slot ${this.saveslot}`);
     },
     load() {
       this.hideContextMenu();
-      if (this.preset.enhancements) {
-        Achievements.applyEnhancementPreset(Achievements.truncateInput(this.preset.enhancements));
-
-        const presetName = this.name ? `Enhancement preset "${this.name}"` : "Enhancement preset";
-        GameUI.notify.reality(`${presetName} loaded from slot ${this.saveslot}`);
-      } else {
+      if (!this.preset.enhancements) {
         Modal.message.show("This Enhancements list currently contains no Achievements.");
+        return;
+      }
+      Achievements.applyEnhancementPreset(Achievements.truncateInput(this.preset.enhancements));
+
+      const presetName = this.name ? `Enhancement preset "${this.name}"` : "Enhancement preset";
+      GameUI.notify.reality(`${presetName} loaded from slot ${this.saveslot}`);
+      
+      if (this.$refs.glyphPreset != undefined) {
+        this.$refs.glyphPreset.loadGlyphSet(this.$refs.glyphPreset.glyphSet);
       }
     },
     // This function assumes you can auto-reality, which should be true at the time you unlock presets.
     respecAndLoad() {
-      if (this.canReality) {
-        // I manually remove Enhancements and curses so that the new Enhancements and curses can be applied
-        // before a Reality. This makes Enhancements with starting resources and curses work inmediately
-        Achievements.disEnhanceAll();
-        Achievements.uncurseAll();
-        
-        Achievements.applyEnhancementPreset(Achievements.truncateInput(this.preset.enhancements));
-        autoReality();
+      // I manually remove Enhancements and curses so that the new Enhancements and curses can be applied
+      // before a Reality. This makes Enhancements with starting resources and curses work inmediately
+      Achievements.disEnhanceAll();
+      Achievements.uncurseAll();
+      
+      Achievements.applyEnhancementPreset(Achievements.truncateInput(this.preset.enhancements));
+
+      const presetName = this.name ? `Enhancement preset "${this.name}"` : "Enhancement preset";
+      GameUI.notify.reality(`${presetName} loaded from slot ${this.saveslot}`);
+
+      // Only if there's a linked preset should Glyphs be respec.
+      // This means that if this is linked to an empty Glyph preset the Glyphs will still be removed
+      if (this.areLinksUnlocked && player.options.enhancementsRespecGlyphs && this.$refs.glyphPreset != undefined) {
+        player.reality.respec = true;
       }
+
+      beginProcessReality(getRealityProps(!this.canReality))
+      if (this.$refs.glyphPreset != undefined) {
+        this.$refs.glyphPreset.loadGlyphSet(this.$refs.glyphPreset.glyphSet);
+      }
+    },
+    openLinkModal() {
+      if (!this.areLinksUnlocked) return;
+      Modal.glyphEnhancementLink.show({ enhancementPresetId: this.saveslot });
     },
     deletePreset() {
       this.hideContextMenu();
@@ -111,7 +144,10 @@ export default {
       </button>
     </template>
     <template #menu>
-      <div class="l-acheh-save-load-btn__menu c-acheh-save-load-btn__menu">
+      <div 
+        class="l-acheh-save-load-btn__menu c-acheh-save-load-btn__menu"
+        :style="hoverMenuStyle"
+      >
         <span ach-tooltip="Set a custom name (up to 4 ASCII characters)">
           <input
             type="text"
@@ -150,14 +186,34 @@ export default {
           </div>
           <div class="c-acheh-save-load-btn__menu-item__hover-options">
             <div
-              :class="{
-                'c-acheh-save-load-btn__menu-item__hover-option': true,
-                'c-acheh-save-load-btn__menu-item__hover-option--disabled': !canReality,
-              }"
+              class="c-acheh-save-load-btn__menu-item__hover-option"
               @click="respecAndLoad"
             >
               Respec and Load
             </div>
+          </div>
+        </div>
+        <div 
+          v-if="areLinksUnlocked"
+          class="l-acheh-save-load-btn__menu-item"
+        >
+          <div
+            class="c-acheh-save-load-btn__menu-item"
+            @click="openLinkModal"
+          >
+            Link
+          </div>
+          <div 
+            v-if="linkedGlyphPreset"
+            class="c-acheh-save-load-btn__menu-item__hover-options"
+          >
+            <GlyphPreset
+            ref="glyphPreset"
+            :id="linkedGlyphPreset - 1"
+            :show-options="false"
+            :can-edit-name="false"
+            :can-use-link="false"
+          ></GlyphPreset>
           </div>
         </div>
         <div
@@ -199,7 +255,6 @@ export default {
 
 .l-acheh-save-load-btn__menu {
   position: absolute;
-  top: 19.7rem;
   left: 50%;
   padding: 0.5rem 0;
   z-index: 2;

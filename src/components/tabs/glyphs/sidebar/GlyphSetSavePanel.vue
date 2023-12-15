@@ -1,21 +1,25 @@
 <script>
 import GlyphSetPreview from "@/components/GlyphSetPreview";
+import GlyphPreset from "@/components/GlyphPreset";
 import ToggleButton from "@/components/ToggleButton";
 
 export default {
   name: "GlyphSetSavePanel",
   components: {
     ToggleButton,
-    GlyphSetPreview
+    GlyphSetPreview,
+    GlyphPreset,
   },
   data() {
     return {
       hasEquipped: true,
-      glyphSets: [],
+      glyphSets: 7,
       names: [],
       effects: false,
       rarity: false,
       level: false,
+      glyphPresetsRespecAll: false,
+      areLinksUnlocked: false,
     };
   },
   computed: {
@@ -23,9 +27,13 @@ export default {
       return `Glyph Presets work like Time Study Loadouts, allowing you to equip a
         full set of previously-saved Glyphs`;
     },
-    noSet() {
+    glyphPresetsRespecAllTooltip() {
+      return `Loading a preset will perform a Reality and unequip your current
+        Glyphs before loading${this.areLinksUnlocked ? ". If there's a link, Enhancements will be respec as well" : ""}`;
+    }
+    /* noSet() {
       return `No Glyph Preset saved in this slot`;
-    },
+    }, */
   },
   watch: {
     effects(newValue) {
@@ -37,23 +45,27 @@ export default {
     level(newValue) {
       player.options.ignoreGlyphLevel = newValue;
     },
+    glyphPresetsRespecAll(newValue) {
+      player.options.glyphPresetsRespecAll = newValue;
+    }
   },
-  created() {
+  /* created() {
     this.on$(GAME_EVENT.GLYPHS_EQUIPPED_CHANGED, this.refreshGlyphSets);
     this.on$(GAME_EVENT.GLYPH_SET_SAVE_CHANGE, this.refreshGlyphSets);
     this.refreshGlyphSets();
     for (let i = 0; i < player.reality.glyphs.sets.length; i++) {
       this.names[i] = player.reality.glyphs.sets[i].name;
     }
-  },
+  }, */
   methods: {
     update() {
       this.hasEquipped = Glyphs.activeList.length > 0;
       this.effects = player.options.ignoreGlyphEffects;
       this.rarity = player.options.ignoreGlyphRarity;
       this.level = player.options.ignoreGlyphLevel;
+      this.areLinksUnlocked = Ra.unlocks.glyphEffectCountAndLinks.canBeApplied;
     },
-    refreshGlyphSets() {
+    /* refreshGlyphSets() {
       this.glyphSets = player.reality.glyphs.sets.map(g => Glyphs.copyForRecords(g.glyphs));
     },
     setName(id) {
@@ -183,7 +195,7 @@ export default {
       return this.setLengthValid(set) && this.hasEquipped
         ? "This set may not load properly because you already have some Glyphs equipped"
         : null;
-    },
+    }, */
     glyphSetKey(set, index) {
       return `${index} ${Glyphs.hash(set)}`;
     }
@@ -193,12 +205,20 @@ export default {
 
 <template>
   <div class="l-glyph-sacrifice-options c-glyph-sacrifice-options l-glyph-sidebar-panel-size">
-    <span
-      v-tooltip="questionmarkTooltip"
-      class="l-glyph-sacrifice-options__help c-glyph-sacrifice-options__help o-questionmark"
-    >
-      ?
-    </span>
+    <div class="c-preset-extra-btns">
+      <span
+        v-tooltip="questionmarkTooltip"
+        class="o-questionmark"
+        style="margin-top: 1rem;"
+      >
+        ?
+      </span>
+      <span 
+        v-tooltip="glyphPresetsRespecAllTooltip"
+        class="fas fa-up-down l-top-right-btn c-top-right"
+        :class="{ 'o-glyph-respec': glyphPresetsRespecAll}"
+        @click="glyphPresetsRespecAll = !glyphPresetsRespecAll"></span>
+    </div>
     <div class="l-glyph-set-save__header">
       When loading a preset, try to match the following attributes. "Exact" will only equip Glyphs
       identical to the ones in the preset. The other settings will, loosely speaking, allow "better" Glyphs to be
@@ -228,11 +248,18 @@ export default {
       />
     </div>
     <div
-      v-for="(set, id) in glyphSets"
+      v-for="id of Array.range(0, glyphSets)"
       :key="id"
       class="c-glyph-single-set-save"
     >
-      <div class="c-glyph-set-preview-area">
+      <GlyphPreset
+        :id="id"
+        :showName="true"
+        :showOptions="true"
+        :canUseLink="true"
+      >
+      </GlyphPreset>
+      <!-- <div class="c-glyph-set-preview-area">
         <GlyphSetPreview
           :key="glyphSetKey(set, id)"
           :text="setName(id)"
@@ -273,20 +300,25 @@ export default {
           </button>
           <button
             class="c-glyph-set-save-button"
+          >
+            Link
+          </button>
+          <button
+            class="c-glyph-set-save-button"
             :class="{'c-glyph-set-save-button--unavailable': !set.length}"
             @click="deleteGlyphSet(id)"
           >
             Delete
           </button>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <style scoped>
 .l-glyph-set-save__header {
-  margin: -1.5rem 2rem 0;
+  margin: 0 2rem 0;
 }
 
 .c-glyph-set-save-container {
@@ -303,5 +335,32 @@ export default {
 
 .c-glyph-set-preview-area {
   width: 18rem;
+}
+.c-preset-extra-btns {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  top: 0;
+  z-index: 2;
+  font-size: 1.3rem;
+}
+.c-top-right {
+  left: calc(100% - 5rem);
+}
+.l-top-right-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  border: var(--var-border-width, 0.2rem) solid;
+  width: 2rem;
+  height: 2rem;
+  margin: 0.5rem 0.5rem 0 0;
+  padding: 0.2rem;
+}
+.o-glyph-respec {
+  background: var(--color-good);
 }
 </style>

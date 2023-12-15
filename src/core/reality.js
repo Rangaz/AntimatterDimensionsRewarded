@@ -286,15 +286,18 @@ function updateRealityRecords(realityProps) {
   if (player.records.bestReality.RMmin.lt(thisRunRMmin)) {
     player.records.bestReality.RMmin = thisRunRMmin;
     player.records.bestReality.RMminSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
+    player.records.bestReality.RMminEnhancementSet = Achievements.returnCurrentEnhancementsAsPreset();
   }
   if (player.records.bestReality.glyphLevel < realityProps.gainedGlyphLevel.actualLevel) {
     player.records.bestReality.glyphLevel = realityProps.gainedGlyphLevel.actualLevel;
     player.records.bestReality.glyphLevelSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
+    player.records.bestReality.glyphLevelEnhancementSet = Achievements.returnCurrentEnhancementsAsPreset();
   }
   player.records.bestReality.time = Math.min(player.records.thisReality.time, player.records.bestReality.time);
   if (player.records.thisReality.realTime < player.records.bestReality.realTime) {
     player.records.bestReality.realTime = player.records.thisReality.realTime;
     player.records.bestReality.speedSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
+    player.records.bestReality.speedEnhancementSet = Achievements.returnCurrentEnhancementsAsPreset();
   }
 }
 
@@ -337,6 +340,7 @@ function giveRealityRewards(realityProps) {
     if (Currency.antimatter.gt(player.celestials.teresa.bestRunAM)) {
       player.celestials.teresa.bestRunAM = Currency.antimatter.value;
       player.celestials.teresa.bestAMSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
+      player.celestials.teresa.bestAMEnhancementSet = Achievements.returnCurrentEnhancementsAsPreset();
 
       // Encode iM values into the RM variable as e10000 * iM in order to only require one prop
       let machineRecord;
@@ -588,6 +592,7 @@ export function finishProcessReality(realityProps) {
   if (player.records.bestReality.bestEP.lt(finalEP)) {
     player.records.bestReality.bestEP = new Decimal(finalEP);
     player.records.bestReality.bestEPSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
+    player.records.bestReality.bestEPEnhancementSet = Achievements.returnCurrentEnhancementsAsPreset();
   }
 
   const realityRealTime = player.records.thisReality.realTime;
@@ -642,7 +647,6 @@ export function finishProcessReality(realityProps) {
   
   if (Achievement(131).isEnhanced) {
     Currency.infinitiesBanked.value = Currency.infinitiesBanked.value.plusEffectsOf(
-      Achievement(131),
       Achievement(131).enhancedEffect,
       TimeStudy(191)
     );

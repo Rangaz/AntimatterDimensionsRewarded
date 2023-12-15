@@ -1,12 +1,14 @@
 <script>
 import GlyphComponent from "@/components/GlyphComponent";
 import GlyphSetName from "@/components/GlyphSetName";
+import EnhancementStringPreview from "@/components/EnhancementStringPreview.vue";
 
 export default {
   name: "GlyphSetPreview",
   components: {
     GlyphComponent,
-    GlyphSetName
+    GlyphSetName,
+    EnhancementStringPreview
   },
   props: {
     text: {
@@ -22,6 +24,11 @@ export default {
     glyphs: {
       type: Array,
       required: true
+    },
+    enhancements: {
+      type: String,
+      required: false,
+      default: ""
     },
     ignoreModifiedLevel: {
       type: Boolean,
@@ -67,6 +74,7 @@ export default {
   data() {
     return {
       realityGlyphBoost: 0,
+      isMouseOver: false,
     };
   },
   computed: {
@@ -84,6 +92,9 @@ export default {
     glyphs() {
       this.$recompute("orderedGlyphs");
     }
+  },
+  beforeDestroy() {
+    clearTimeout(this.mouseOverInterval);
   },
   methods: {
     update() {
@@ -105,7 +116,14 @@ export default {
     // Necessary to force a re-render for the set name if the set itself changes
     glyphHash() {
       return Glyphs.hash(this.glyphs);
-    }
+    },
+    onEnhancementMouseEnter() {
+      clearTimeout(this.mouseOverInterval);
+      this.isMouseOver = true;
+    },
+    onEnhancementMouseLeave() {
+      this.mouseOverInterval = setTimeout(() => this.isMouseOver = false, 300);
+    },
   }
 };
 </script>
@@ -153,11 +171,71 @@ export default {
       />
       {{ noneText }}
     </span>
+    <div 
+      v-if="enhancements"
+      class="fas fa-trophy l-enhancement-preview o-enhancement-preview"
+      @mouseenter="onEnhancementMouseEnter"
+      @mouseleave="onEnhancementMouseLeave">
+      <div class="o-enhancement-preview__tooltip">
+        <EnhancementStringPreview
+          :show-preview="true"
+          :new-enhancements="enhancements"
+          :includeBorder="false"></EnhancementStringPreview>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .l-preview {
   margin: 0.2rem;
+}
+.l-enhancement-preview {
+  margin: 0.4rem;
+  position: relative;
+}
+
+.o-enhancement-preview__tooltip {
+  width: 20.6rem;
+  position: absolute;
+  bottom: 2rem;
+  z-index: 3;
+  font-size: 1.4rem;
+  opacity: 0;
+  color: var(--color-text);
+  background: var(--color-base);
+  border: 0.1rem solid black;
+  border-radius: var(--var-border-radius, 0.8rem);
+  margin-left: -9.6rem;
+  padding: 0.2rem;
+  transition-duration: 0.3s;
+  pointer-events: none;
+  background: var(--color-base);
+  border: 0.1rem solid var(--color-accent);
+}
+
+.o-enhancement-preview__tooltip::after {
+  content: " ";
+  width: 0;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  z-index: 0;
+  border-top: 0 solid black;
+  border-right: 0.7rem solid transparent;
+  border-left: 0.7rem solid transparent;
+  margin-bottom: 0;
+  margin-left: -0.7rem;
+  transition-duration: 0.3s;
+  border-top-color: var(--color-accent);
+}
+.o-enhancement-preview:hover .o-enhancement-preview__tooltip {
+  bottom: 2.8rem;
+  opacity: 1;
+}
+
+.o-enhancement-preview:hover .o-enhancement-preview__tooltip::after {
+  border-top-width: 0.7rem;
+  margin-bottom: -0.7rem;
 }
 </style>

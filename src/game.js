@@ -833,6 +833,7 @@ function laitelaRealityTick(realDiff) {
         <br>Highest Active Dimension: ${formatInt(8 - oldInfo.difficultyTier)}`;
       }
       player.records.bestReality.laitelaSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
+      player.records.bestReality.laitelaEnhancementSet = Achievements.returnCurrentEnhancementsAsPreset();
     } else {
       completionText += ` You need to destabilize in faster than
         ${TimeSpan.fromSeconds(laitelaInfo.fastestCompletion).toStringShort()} to improve your multiplier.`;

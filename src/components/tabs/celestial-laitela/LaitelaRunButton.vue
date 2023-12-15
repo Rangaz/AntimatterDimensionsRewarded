@@ -14,6 +14,7 @@ export default {
       realityReward: 1,
       singularitiesUnlocked: false,
       bestSet: [],
+      bestEnhancementSet: "",
       tierNotCompleted: true,
     };
   },
@@ -38,6 +39,7 @@ export default {
       this.isRunning = Laitela.isRunning;
       this.singularitiesUnlocked = Currency.singularities.gt(0);
       this.bestSet = Glyphs.copyForRecords(player.records.bestReality.laitelaSet);
+      this.bestEnhancementSet = player.records.bestReality.laitelaEnhancementSet;
       this.tierNotCompleted = this.realityTime === 3600 || (this.realityTime === 300 && this.maxDimTier < 8);
     },
     startRun() {
@@ -89,6 +91,7 @@ export default {
           :text-hidden="true"
           :force-name-color="false"
           :glyphs="bestSet"
+          :enhancements="bestEnhancementSet"
         />
       </span>
       <span v-else>

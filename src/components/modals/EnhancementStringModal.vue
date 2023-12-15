@@ -4,9 +4,7 @@ import { sha512_256 } from "js-sha512";
 import ModalWrapperChoice from "@/components/modals/ModalWrapperChoice";
 import PrimaryButton from "@/components/PrimaryButton";
 
-import EnhancementStringPreview from "./enhancement-modal-preview/EnhancementStringPreview.vue";
-
-import { autoReality } from "../../core/reality";
+import EnhancementStringPreview from "@/components/EnhancementStringPreview.vue";
 
 let savedImportString = "";
 
@@ -415,10 +413,11 @@ export default {
         Format Preset Text
       </PrimaryButton>
     </div>
+    <!--I think the isImporting property is useless to me, I'll remove this in the future-->
     <span v-if="isImporting">
       <br>
       <div
-        v-tooltip="canReality ? '' : 'You are currently unable to reality, so this will only do a normal load.'"
+        v-tooltip="canReality ? '' : 'You are currently unable to reality, so this will reset with no reward.'"
         class="c-modal__confirmation-toggle"
         @click="respecAndLoad = !respecAndLoad"
       >

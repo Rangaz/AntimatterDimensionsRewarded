@@ -323,6 +323,7 @@ Currency.eternityPoints = new class extends DecimalCurrency {
     if (player.records.bestReality.bestEP.lt(value)) {
       player.records.bestReality.bestEP = value;
       player.records.bestReality.bestEPSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
+      player.records.bestReality.bestEPEnhancementSet = Achievements.returnCurrentEnhancementsAsPreset();
     }
 
     if (Pelle.isDoomed) {
@@ -408,6 +409,7 @@ Currency.realityMachines = new class extends DecimalCurrency {
     if (player.records.bestReality.RM.lt(addedThisReality)) {
       player.records.bestReality.RM = addedThisReality;
       player.records.bestReality.RMSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
+      player.records.bestReality.RMEnhancementSet = Achievements.returnCurrentEnhancementsAsPreset();
     }
   }
 }();
