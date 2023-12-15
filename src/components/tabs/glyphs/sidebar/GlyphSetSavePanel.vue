@@ -209,6 +209,7 @@ export default {
       <span
         v-tooltip="questionmarkTooltip"
         class="o-questionmark"
+        style="margin-top: 1rem;"
       >
         ?
       </span>
