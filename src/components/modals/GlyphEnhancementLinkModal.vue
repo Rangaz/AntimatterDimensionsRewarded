@@ -93,6 +93,8 @@ export default {
     :show-confirm="canConfirm"
     @confirm="confirmModal(false)"
   >
+    You can link any Glyph preset with any Enhancement preset.<br>
+    If one of them is used the other is automatically loaded.<br>
     Links are bi-directional and index based.<br>
     They persist even after renaming or deleting one of the presets.<br>
     Links can be undone at any time by pressing the 'Unlink' button.

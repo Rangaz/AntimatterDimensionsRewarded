@@ -5,8 +5,8 @@ import { PlayerProgress } from "../../player-progress";
 TODO:
 -Make presets work with curses <DONE>
 -Shift-click to lock an Enhancement <DONE>
--Link Glyph presets with Enhancement presets <IN PROGRESS>
-  ->Allow Glyphs or Enhancements to respec the other <LATER>
+-Link Glyph presets with Enhancement presets <DONE>
+  ->Allow Glyphs or Enhancements to respec the other <DONE>
 -Store Enhancements as well as Glyphs in records <DONE>
 -Change secret Achievement 33 to something like 'Do you want it or not?'
 -Add curses and individual respecs in automator

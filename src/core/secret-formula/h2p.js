@@ -1392,6 +1392,10 @@ If any are not found, it will display a warning, but equip all the rest regardle
 When loading a set, you can be Level and/or Rarity sensitive. The best Glyph from the possible Glyphs
 will always be the one equipped. Just like other groups of circular Glyphs, you can click any of them
 in order to bring up a modal summarizing the whole set of Glyphs.
+<br>
+<br>
+You can also make Glyph Presets automatically unequip current Glyphs and perform an automatic Reality. 
+Note that if Reality is not available when loading a preset the Reality will start over instead and give no rewards.
 `,
       isUnlocked: () => EffarigUnlock.adjuster.isUnlocked,
       tags: ["glyph", "weight", "adjustment", "sacrifice", "filter", "threshold", "set", "save", "reality", "lategame",
