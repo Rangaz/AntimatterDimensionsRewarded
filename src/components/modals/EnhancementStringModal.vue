@@ -6,8 +6,6 @@ import PrimaryButton from "@/components/PrimaryButton";
 
 import EnhancementStringPreview from "@/components/EnhancementStringPreview.vue";
 
-import { autoReality } from "../../core/reality";
-
 let savedImportString = "";
 
 // This is totally a 100% original modal for Enhancement presets and not
@@ -415,10 +413,11 @@ export default {
         Format Preset Text
       </PrimaryButton>
     </div>
+    <!--I think the isImporting property is useless to me, I'll remove this in the future-->
     <span v-if="isImporting">
       <br>
       <div
-        v-tooltip="canReality ? '' : 'You are currently unable to reality, so this will only do a normal load.'"
+        v-tooltip="canReality ? '' : 'You are currently unable to reality, so this will reset with no reward.'"
         class="c-modal__confirmation-toggle"
         @click="respecAndLoad = !respecAndLoad"
       >

@@ -92,7 +92,7 @@ export default {
     loadGlyphSet(set) {
       if (!this.setLengthValid(set)) return;
 
-      if (this.respecAll && this.canUseLink && this.canReality) {
+      if (this.respecAll && this.canUseLink) {
         player.reality.respec = true;
         // Enhancements are manually removed and added before Reality so that
         // effects with starting resources can work inmediately.
@@ -101,7 +101,7 @@ export default {
           Achievements.disEnhanceAll();
           this.loadEnhancementPreset();
         }
-        autoReality();
+        beginProcessReality(getRealityProps(!this.canReality));
       }
       else if (this.enhancedPreset && this.canUseLink) this.loadEnhancementPreset();
 

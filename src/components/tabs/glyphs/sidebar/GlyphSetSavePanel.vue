@@ -28,7 +28,7 @@ export default {
         full set of previously-saved Glyphs`;
     },
     glyphPresetsRespecAllTooltip() {
-      return `If Reality is possible, loading a preset will perform a Reality and unequip your current
+      return `Loading a preset will perform a Reality and unequip your current
         Glyphs before loading${this.areLinksUnlocked ? ". If there's a link, Enhancements will be respec as well" : ""}`;
     }
     /* noSet() {
