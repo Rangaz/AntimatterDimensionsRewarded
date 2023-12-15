@@ -22,6 +22,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    showSetName: { // Refers to the title that appears depending on the set's content
+      type: Boolean,
+      default: true,
+    },
     showOptions: {
       type: Boolean,
       default: true,
@@ -246,6 +250,7 @@ export default {
         :key="glyphSetKey(glyphSet, id)"
         :text="setName()"
         :text-hidden="true"
+        :show-name="showSetName"
         :glyphs="glyphSet"
         :enhancements="enhancedPreset"
         :flip-tooltip="true"

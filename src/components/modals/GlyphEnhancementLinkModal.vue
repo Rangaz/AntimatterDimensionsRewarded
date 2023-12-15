@@ -129,6 +129,7 @@ export default {
         <GlyphPreset
           :id="index"
           :show-options="false"
+          :show-set-name="false"
           :can-edit-name="false"
           :can-use-link="false"
           style="pointer-events: none"
