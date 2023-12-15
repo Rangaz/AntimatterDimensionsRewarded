@@ -89,7 +89,6 @@ export default {
     },
     // This function assumes you can auto-reality, which should be true at the time you unlock presets.
     respecAndLoad() {
-      if (!this.canReality) return;
       // I manually remove Enhancements and curses so that the new Enhancements and curses can be applied
       // before a Reality. This makes Enhancements with starting resources and curses work inmediately
       Achievements.disEnhanceAll();
@@ -106,7 +105,7 @@ export default {
         player.reality.respec = true;
       }
 
-      autoReality();
+      beginProcessReality(getRealityProps(!this.canReality))
       if (this.$refs.glyphPreset != undefined) {
         this.$refs.glyphPreset.loadGlyphSet(this.$refs.glyphPreset.glyphSet);
       }
@@ -187,10 +186,7 @@ export default {
           </div>
           <div class="c-acheh-save-load-btn__menu-item__hover-options">
             <div
-              :class="{
-                'c-acheh-save-load-btn__menu-item__hover-option': true,
-                'c-acheh-save-load-btn__menu-item__hover-option--disabled': !canReality,
-              }"
+              class="c-acheh-save-load-btn__menu-item__hover-option"
               @click="respecAndLoad"
             >
               Respec and Load
