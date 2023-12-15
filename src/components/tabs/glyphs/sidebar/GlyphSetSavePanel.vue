@@ -18,6 +18,7 @@ export default {
       effects: false,
       rarity: false,
       level: false,
+      glyphPresetsRespecAll: false,
       areLinksUnlocked: false,
     };
   },
@@ -26,6 +27,10 @@ export default {
       return `Glyph Presets work like Time Study Loadouts, allowing you to equip a
         full set of previously-saved Glyphs`;
     },
+    glyphPresetsRespecAllTooltip() {
+      return `If Reality is possible, loading a preset will perform a Reality and unequip your current
+        Glyphs before loading${this.areLinksUnlocked ? ". If there's a link, Enhancements will be respec as well" : ""}`;
+    }
     /* noSet() {
       return `No Glyph Preset saved in this slot`;
     }, */
@@ -40,6 +45,9 @@ export default {
     level(newValue) {
       player.options.ignoreGlyphLevel = newValue;
     },
+    glyphPresetsRespecAll(newValue) {
+      player.options.glyphPresetsRespecAll = newValue;
+    }
   },
   /* created() {
     this.on$(GAME_EVENT.GLYPHS_EQUIPPED_CHANGED, this.refreshGlyphSets);
@@ -55,6 +63,7 @@ export default {
       this.effects = player.options.ignoreGlyphEffects;
       this.rarity = player.options.ignoreGlyphRarity;
       this.level = player.options.ignoreGlyphLevel;
+      this.areLinksUnlocked = Ra.unlocks.glyphEffectCountAndLinks.canBeApplied;
     },
     /* refreshGlyphSets() {
       this.glyphSets = player.reality.glyphs.sets.map(g => Glyphs.copyForRecords(g.glyphs));
@@ -196,12 +205,19 @@ export default {
 
 <template>
   <div class="l-glyph-sacrifice-options c-glyph-sacrifice-options l-glyph-sidebar-panel-size">
-    <span
-      v-tooltip="questionmarkTooltip"
-      class="l-glyph-sacrifice-options__help c-glyph-sacrifice-options__help o-questionmark"
-    >
-      ?
-    </span>
+    <div class="c-preset-extra-btns">
+      <span
+        v-tooltip="questionmarkTooltip"
+        class="o-questionmark"
+      >
+        ?
+      </span>
+      <span 
+        v-tooltip="glyphPresetsRespecAllTooltip"
+        class="fas fa-up-down l-top-right-btn c-top-right"
+        :class="{ 'o-glyph-respec': glyphPresetsRespecAll}"
+        @click="glyphPresetsRespecAll = !glyphPresetsRespecAll"></span>
+    </div>
     <div class="l-glyph-set-save__header">
       When loading a preset, try to match the following attributes. "Exact" will only equip Glyphs
       identical to the ones in the preset. The other settings will, loosely speaking, allow "better" Glyphs to be
@@ -301,7 +317,7 @@ export default {
 
 <style scoped>
 .l-glyph-set-save__header {
-  margin: -1.5rem 2rem 0;
+  margin: 0 2rem 0;
 }
 
 .c-glyph-set-save-container {
@@ -318,5 +334,32 @@ export default {
 
 .c-glyph-set-preview-area {
   width: 18rem;
+}
+.c-preset-extra-btns {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  top: 0;
+  z-index: 2;
+  font-size: 1.3rem;
+}
+.c-top-right {
+  left: calc(100% - 5rem);
+}
+.l-top-right-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  border: var(--var-border-width, 0.2rem) solid;
+  width: 2rem;
+  height: 2rem;
+  margin: 0.5rem 0.5rem 0 0;
+  padding: 0.2rem;
+}
+.o-glyph-respec {
+  background: var(--color-good);
 }
 </style>

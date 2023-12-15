@@ -376,8 +376,8 @@ export default {
   cursor: pointer;
   border: var(--var-border-width, 0.2rem) solid;
   width: 2rem;
-  height: 2.2rem;
-  margin: 0.25rem 0 0 0.3rem;
+  height: 2rem;
+  margin: 0.35rem 0 0 0.3rem;
   padding: 0.2rem;
 }
 .o-glyph-respec {

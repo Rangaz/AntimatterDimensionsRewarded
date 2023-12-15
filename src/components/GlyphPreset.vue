@@ -50,8 +50,8 @@ export default {
       return `No Glyph Preset saved in this slot`;
     },
     enhancedPreset() {
-      return this.linkedEnhancementPreset ? player.reality.enhancedPresets
-        [this.linkedEnhancementPreset - 1].enhancements : "";
+      return this.linkedEnhancementPreset ? Achievements.parseInput(player.reality.enhancedPresets
+        [this.linkedEnhancementPreset - 1].enhancements) : "";
     }
   },
   created() {
@@ -87,9 +87,24 @@ export default {
     },
     // A proper full solution to this turns out to contain an NP-hard problem as a subproblem, so instead we do
     // something which should work in most cases - we match greedily when it won't obviously lead to an incomplete
-    // preset match, and leniently when matching greedily may lead to an incomplete set being loaded
+    // preset match, and leniently when matching greedily may lead to an incomplete set being loaded.
+    // Respec and linking functionality is at the beginning.
     loadGlyphSet(set) {
       if (!this.setLengthValid(set)) return;
+
+      if (this.respecAll && this.canUseLink && this.canReality) {
+        player.reality.respec = true;
+        // Enhancements are manually removed and added before Reality so that
+        // effects with starting resources can work inmediately.
+        if (this.enhancedPreset) {
+          Achievements.uncurseAll();
+          Achievements.disEnhanceAll();
+          this.loadEnhancementPreset();
+        }
+        autoReality();
+      }
+      else if (this.enhancedPreset && this.canUseLink) this.loadEnhancementPreset();
+
       let glyphsToLoad = [...set];
       const activeGlyphs = [...Glyphs.active.filter(g => g)];
 
@@ -151,7 +166,6 @@ export default {
       } else {
         GameUI.notify.success(`Successfully loaded ${this.setName()}.`);
       }
-      if (this.enhancedPreset && this.canUseLink) this.loadEnhancementPreset();
     },
     // Given a list of options for suitable matches to those glyphs and a maximum glyph count to match, returns the
     // set of glyphs which should be loaded. This is a tricky matching process to do since on one hand we don't want
@@ -212,7 +226,9 @@ export default {
       return set.length && set.length <= Glyphs.activeSlotCount;
     },
     loadingTooltip(set) {
-      return this.setLengthValid(set) && this.hasEquipped
+      if (!this.setLengthValid(set)) return null;
+      if (this.respecAll) return "Loading this set will Reality and remove all equipped Glyphs beforehand";
+      return this.hasEquipped
         ? "This set may not load properly because you already have some Glyphs equipped"
         : null;
     },
