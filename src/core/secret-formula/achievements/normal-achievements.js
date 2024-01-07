@@ -310,11 +310,11 @@ export const normalAchievements = [
     checkRequirement: () => Currency.infinities.gte(10),
     checkEvent: GAME_EVENT.BIG_CRUNCH_AFTER,
     get reward() {
-      return `Infinities more than ${formatInt(60)} seconds long
-      give ${formatX(2)} more Infinities.`;
+      return `Infinities more than ${formatInt(30)} seconds long
+      give ${formatX(2)} more Infinities${Time.thisInfinity.totalSeconds >= 30 ? " (active)" : " (inactive)"}.`;
     },
     effect: 2,
-    effectCondition: () => Time.thisInfinity.totalSeconds > 60,
+    effectCondition: () => Time.thisInfinity.totalSeconds >= 30,
     enhanced: {
       reward: "Gain more Infinities based on the length of your current Infinity.",
       effect: () => Math.clampMin(Math.pow(Math.log(Time.thisInfinity.totalSeconds + 1), 2), 1),
@@ -1208,7 +1208,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() {
       return `Infinities more than ${formatInt(5)} seconds long
-      give ${formatX(250)} more Infinities.`;
+      give ${formatX(250)} more Infinities${Time.thisInfinity.totalSeconds >= 5 ? " (active)" : " (inactive)"}.`;
     },
     effect: 250,
     effectCondition: () => Time.thisInfinity.totalSeconds > 5,
