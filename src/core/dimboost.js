@@ -174,7 +174,10 @@ export class DimBoost {
     if (!Laitela.continuumActive || !Achievement(176).isUnlocked) return 0;
     // This is a modification of maxBuyDimboosts()
     // If we still don't have all available dimensions, this is disabled
-    if (DimBoost.canUnlockNewDimension) return 0;
+    if (DimBoost.canUnlockNewDimension) {
+      if (DimBoost.requirement.isSatisfied) softReset(1);
+      return 0;
+    }
     
     // Inverting bulkRequirement to improve performance, assuming EC5 is not active
 
