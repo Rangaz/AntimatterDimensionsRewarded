@@ -56,7 +56,10 @@ export const changelog = [
     <li>Added a 7th Enhancement preset slot.</li>
     <li>Respec and load functionality for Enhancement presets now works even if you can't Reality. In this case 
     it'd be the same as starting the Reality over.</li>
-    <li>
+    7/1
+    <li>Fixed Enhanced Achievement 121 only allowing 1 purchase without Enhanced Achievement 41.</li>
+    <li>Standarized most Enhancements' minimum values to be x1000.</li>
+    <li>Changed some Achievement and Enhancement descriptions to be shorter.</li>
     </ul>
     `
   },

@@ -237,7 +237,8 @@ export const infinityUpgrades = {
     },
     // The cap, while technically not gone with ipMultUncap upgrade, is practically impossible to obtain.
     cap: () => Effarig.eternityCap ?? (InfinityUpgrade.ipMultUncap.isBought && Achievement(41).isEnhanced ? DC.E1E15 : 
-      Achievement(121).isEnhanced ? DC.D3 : (Achievement(121).canBeApplied ? DC.D2.times(DC.D1_005) : DC.D2).pow(3300000)),
+      Achievement(121).isEnhanced ? DC.D3.pow(3300000) : (Achievement(121).canBeApplied ? DC.D2.times(DC.D1_005) : 
+      DC.D2).pow(3300000)),
     formatEffect: value => formatX(value, 2, 2),
   },
   ipMultUncap: {
