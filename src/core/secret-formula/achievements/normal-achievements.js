@@ -75,7 +75,7 @@ export const normalAchievements = [
     get reward() { return `5th Antimatter Dimensions are ${formatInt(100)} times cheaper.`; },
     enhanced: {
       get reward() { return `5th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(2, 1, 1)}.`}
+        their initial cost scaling is ${formatX(2)}.`}
     }
   },
   {
@@ -171,7 +171,7 @@ export const normalAchievements = [
         "8th Antimatter Dimensions are way stronger the first million years after a Dimensional Sacrifice."},
       effect: () => Sacrifice.totalBoost.lte(1) ? DC.D1 : 
         Achievement(145).canBeApplied ? DC.E11111 : 
-        DC.E11111.pow(1 - Math.clampMax(Time.timeSinceLastSacrifice.totalYears / 1e6, 1)),
+        DC.E11111.pow(1 - Math.clampMax(Time.timeSinceLastSacrifice.totalYears / 1e6, 11108/11111)),
       formatEffect: value => `${formatX(value, 1, 1)}`,
     }
   },
@@ -187,7 +187,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "2nd Antimatter Dimensions are mildly stronger based on current Antimatter.",
-      effect: () => DC.D1_3.pow(Math.pow(Currency.antimatter.exponent, 0.56)),
+      effect: () => DC.D1_3.pow(Math.pow(Currency.antimatter.exponent, 0.56)).clampMin(1000),
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
@@ -255,7 +255,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "1st Antimatter Dimensions are significantly stronger based on their amount.",
-      effect: () => Decimal.pow(AntimatterDimension(1).amount.exponent, 1250).clampMin(1),
+      effect: () => Decimal.pow(AntimatterDimension(1).amount.exponent, 1250).clampMin(1000),
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
@@ -349,7 +349,7 @@ export const normalAchievements = [
         for (let i = 4; i > 0; i--) {
           if (DarkMatterDimension(i).isUnlocked) dimensionPower += 1;
         }
-        return DC.E150.pow(76 - dimensionPower).clampMin(10);
+        return DC.E150.pow(76 - dimensionPower).clampMin(1000);
       },
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
@@ -428,7 +428,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "8th Antimatter Dimensions are way stronger the less sacrifices you have.",
-      effect: () => DC.E22500.divide(Sacrifice.totalBoost.pow(0.001)).clampMin(10),
+      effect: () => DC.E22500.divide(Sacrifice.totalBoost.pow(0.001)).clampMin(1000),
       formatEffect: value => `${formatX(value, 2, 2)}`
     }
   },
@@ -530,7 +530,7 @@ export const normalAchievements = [
       "exceeds your current antimatter.",
       effect() {
         const excessTimeProduction = Time.timeWithExcessAMProd.totalMilliseconds;
-        return Decimal.pow(excessTimeProduction, 1000).clampMin(1);
+        return Decimal.pow(excessTimeProduction, 1000).clampMin(1000);
       },
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
@@ -568,7 +568,7 @@ export const normalAchievements = [
         "all AD amounts.",
         effect: () => Currency.antimatter.value.times(AntimatterDimension(1).amount.times(AntimatterDimension(2).amount.times(
           AntimatterDimension(3).amount.times(AntimatterDimension(4).amount.times(AntimatterDimension(5).amount.times(
-          AntimatterDimension(6).amount.times(AntimatterDimension(7).amount))))))).pow(0.00003).plus(1),
+          AntimatterDimension(6).amount.times(AntimatterDimension(7).amount))))))).pow(0.00003).plus(1000),
         formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
@@ -657,7 +657,7 @@ export const normalAchievements = [
     reward: "Antimatter Dimensions and Tickspeed Upgrades no longer spend Antimatter.",
     enhanced: {
       get reward() { return `Antimatter Dimensions and Tickspeed Upgrades give their Antimatter cost 
-        when purchased, multiplied by the common Buy 10 factor 
+        when purchased, multiplied by the Buy 10 factor 
         (${formatX(AntimatterDimensions.buyTenMultiplier, 2, 2)}), instead of spending them.` }
     }
   },
@@ -861,7 +861,7 @@ export const normalAchievements = [
       reward: "Antimatter Dimensions 1-4 are way stronger the less Dimension Boosts " +
         "and Antimatter Galaxies you have bought.",
       effect: () => Decimal.pow(DC.E300000.pow(1 - Math.clampMax(player.galaxies, 100000) / 100000), 
-        1 - DimBoost.realBoosts / 30000000).clampMin(100),
+        1 - DimBoost.realBoosts / 30000000).clampMin(1000),
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
@@ -944,12 +944,12 @@ export const normalAchievements = [
     },
     checkRequirement: () => NormalChallenge(3).isOnlyActiveChallenge && Time.thisInfinityRealTime.totalSeconds <= 10,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    reward: "1st Antimatter Dimensions get an exponentially increasing multiplier that " +
+    reward: "1st ADs get an exponentially increasing multiplier that " +
       "resets after Dimension Boosts, Antimatter Galaxies, and Infinities.",
     effect: () => DC.D1_00038.pow(Time.timeSinceLastReset.totalSeconds * 20).times(1.21).clampMax(DC.E15),
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
-      reward: "1st Antimatter Dimensions get an uncapped exponentially increasing multiplier that " +
+      reward: "1st ADs get an uncapped exponentially increasing multiplier that " +
         "resets after Dimension Boosts, Antimatter Galaxies, and Infinities.",
       effect() {
         const timeSinceLastReset = Time.timeSinceLastReset.totalSeconds;
@@ -972,14 +972,14 @@ export const normalAchievements = [
       DimBoost.purchasedBoosts === 0 &&
       player.galaxies === 0,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return `1st Antimatter Dimensions are stronger the longer you don't buy an 
+    get reward() { return `1st ADs are stronger the longer you don't buy an 
       Antimatter Dimension or Tickspeed upgrade. Caps at ${formatInt(3)} minutes${
         player.records.thisInfinity.time - player.records.thisInfinity.lastBuyTime >= 180000 ? 
       ` (capped).` : `.`}`; },
     effect: () => Math.clamp(player.records.thisInfinity.time - player.records.thisInfinity.lastBuyTime, 0, 180000) * 0.0001 + 2,
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
-      reward: "All Antimatter Dimensions are way stronger the longer you don't buy an " +
+      reward: "All ADs are way stronger the longer you don't buy an " +
         "Antimatter Dimension or Tickspeed upgrade. Has no cap.",
       effect: () => Decimal.pow(Math.clampMin(player.records.thisInfinity.time - player.records.thisInfinity.lastBuyTime, 1), 2000),
       formatEffect: value => `${formatX(value, 2, 2)}`,
@@ -1015,7 +1015,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "Antimatter Dimensions gain a bigger multiplier based on current antimatter.",
-      effect: () => Currency.antimatter.value.pow(0.000029).plus(1),
+      effect: () => Currency.antimatter.value.pow(0.000029).plus(1000),
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
@@ -1088,7 +1088,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "A moderate multiplier to IP based on Infinity Power.",
-      effect: () => Decimal.pow(Currency.infinityPower.value, 0.001).clampMin(1),
+      effect: () => Decimal.pow(Currency.infinityPower.value, 0.001).clampMin(1000),
       cap: () => Effarig.eternityCap,
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
@@ -1168,7 +1168,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "Antimatter Dimensions are way stronger the more unspent antimatter you have.",
-      effect: () => Currency.antimatter.value.pow(0.000031).plus(1),
+      effect: () => Currency.antimatter.value.pow(0.000031).plus(1000),
       formatEffect: value => `${formatX(value, 2, 2)}`
     }
   },
@@ -1244,7 +1244,7 @@ export const normalAchievements = [
           ${Sacrifice.getSacrificeDescription({ "Achievement88": true, "Enhancement88": false})} ➜
           ${Sacrifice.getSacrificeDescription({ "Achievement32": false, "Enhancement32": true, 
           "Achievement57": false, "Enhancement57": true, "Achievement88": false, "Enhancement88": true})}. 
-          This requires Achievements 32 and 57 to be Enhanced.`;
+          This requires Achievement 57 to be Enhanced.`;
       },
       effect: 0.16
     }
@@ -1385,7 +1385,7 @@ export const normalAchievements = [
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER],
     get reward() { return Achievement(145).canBeApplied ? 
       "IC1's reward is raised (maxed by Achievement 145)." :
-      (Time.infinityChallengeSum.totalSeconds < 0.666 ? 
+      (Time.infinityChallengeSum.totalSeconds <= 0.6 ? 
       "IC1's reward is raised based on sum of IC times (capped)." : 
       "IC1's reward is raised based on sum of IC times.") 
     },
@@ -1434,7 +1434,7 @@ export const normalAchievements = [
         AntimatterDimension(6).continuumAmount * AntimatterDimension(7).continuumAmount, AntimatterDimension(8).continuumAmount / 800).plus(1) : 
         Decimal.pow(AntimatterDimension(1).bought * AntimatterDimension(2).bought * AntimatterDimension(3).bought * 
         AntimatterDimension(4).bought * AntimatterDimension(5).bought * AntimatterDimension(6).bought * 
-        AntimatterDimension(7).bought, AntimatterDimension(8).bought / 800).plus(1),
+        AntimatterDimension(7).bought, AntimatterDimension(8).bought / 800).plus(1000),
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
@@ -1510,7 +1510,7 @@ export const normalAchievements = [
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
       reward: "Time Dimensions gain a bigger multiplier based on tickspeed.",
-      effect: () => Tickspeed.perSecond.pow(0.000008),
+      effect: () => Tickspeed.perSecond.pow(0.000008).times(1000),
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
@@ -1550,7 +1550,7 @@ export const normalAchievements = [
     },
     enhanced: {
       reward: "Greatly boost Infinity Dimensions the more Infinities you have.",
-      effect: () => Decimal.pow(Currency.infinitiesTotal.value.clampMin(1), 25).powEffectOf(TimeStudy(31)),
+      effect: () => Decimal.pow(Currency.infinitiesTotal.value.clampMin(2), 25).powEffectOf(TimeStudy(31)),
       formatEffect: value => {
         // Since TS31 is already accounted for in the effect prop, we need to "undo" it to display the base value here
         const mult = formatX(value, 2, 2);
@@ -1685,8 +1685,8 @@ export const normalAchievements = [
     },
     enhanced: {
       get reward() { return `Infinities no longer reset anything. Keep up to ${formatInt(1000000)} 
-        Dimension Boosts and ${formatInt(5000)} Antimatter & Replicanti Galaxies between Eternities, except on Challenges or Dilation,
-        and gain ${formatInt(77777)} times more Eternities.`},
+        Dimension Boosts and ${formatInt(5000)} AGs & RGs between Eternities, except on Challenges or Dilation,
+        and gain ×${formatInt(77777)} more Eternities.`},
       effects: {
         dimBoostsKept: 1000000,
         galaxiesKept: 5000,
@@ -1752,9 +1752,9 @@ export const normalAchievements = [
     reward: `Dimensional Sacrifice doesn't reset your Antimatter Dimensions
       and the Autobuyer activates every tick if turned on.`,
     enhanced: {
-      reward: `Dimensional Sacrifice doesn't reset your Antimatter Dimensions
+      get reward() { return `Dimensional Sacrifice doesn't reset your Antimatter Dimensions
         and the Autobuyer activates every tick if turned on. It now affects Tickspeed at a reduced rate.
-        This counts as 2 Achievements Enhanced.`,
+        This costs ${formatInt(2)} Achievements.` },
       effect: () => Sacrifice.totalBoost.pow(-0.04),
       formatEffect: value => `${formatX(value.recip(), 3, 3)}`
     }
@@ -1960,7 +1960,7 @@ export const normalAchievements = [
     enhanced: {
       reward: "Gain a bigger multiplier to Tachyon Particle and Dilated Time gain based on " +
         "Antimatter Galaxies.",
-      effect: () => 1.22 * player.galaxies,
+      effect: () => 1.22 * (player.galaxies + 1),
       formatEffect: value => `${formatX(value, 2, 2)}`,
     }
   },
@@ -1980,7 +1980,7 @@ export const normalAchievements = [
     reward: "You start Eternities with all Infinity Challenges unlocked and completed.",
     enhanced: {
       reward: "You start Eternities with all Infinity Challenges unlocked and completed, and all Realities with " +
-        "a fully purchased Time Study tree. This requires fully completing Hard V.",
+        "a full Time Study tree. This requires fully completing Hard V.",
     }
   },
   {
@@ -2030,7 +2030,7 @@ export const normalAchievements = [
     reward: "Eternities no longer reset Time shards nor TD amounts, unless entering or exiting Eternity Challenges," +
       " or Dilating.",
     enhanced: {
-      reward: "Eternities no longer reset anything, unless entering or exiting challenges or Dilating, and " +
+      reward: "Eternities no longer reset anything, except on challenges or Dilation, and " +
         "respeccing Studies can be done at any time. This can be Enhanced for free, but " + 
         "requires Enhanced Achievement 115."
     }
@@ -2070,8 +2070,8 @@ export const normalAchievements = [
     reward: "Removes the downsides from Time Study 131 and 133 in the Active and Idle Time Study paths.",
     enhanced: {
       get reward() {
-        return `Remove the downsides and strengthen the effects of Time Studies 131 and 133. This counts as
-          ${formatInt(3)} Achievements Enhanced.`;
+        return `Remove the downsides and strengthen the effects of Time Studies 131 and 133. This costs
+          ${formatInt(3)} Achievements.`;
       },
       // This will directly multiply the values of the Time Studies.
       effect: 1.2
