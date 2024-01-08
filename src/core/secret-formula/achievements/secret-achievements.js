@@ -123,8 +123,8 @@ export const secretAchievements = [
   {
     id: 34,
     name: "You do know how these work, right?",
-    get description() { return `Respec with an empty Time Study Tree
-      ${PlayerProgress.realityUnlocked() ? " or no Enhancements" : ""}.` }
+    get description() { return `Respec Time Studies with an empty Time Study Tree${PlayerProgress.realityUnlocked() ?
+      ", or Achievements with no Enhancements" : ""}.` }
   },
   {
     id: 35,
