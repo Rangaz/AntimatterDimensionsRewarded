@@ -23,7 +23,7 @@ export const changelog = [
     <li>15/12: You can now link Glyph presets with Enhancement presets, loading both simultaneously.
     This is unlocked at Ra, with Effarig level 10.</li>
     <li>15/12: You can now see what Enhancements you had active in records. This includes V-Achievements.</li>
-    <li>Coming soon: Secret Achievement 33 being changed.</li>
+    <li>8/1: There's a new Secret Achievement 33.</li>
     <li>Coming later: Automator support to curse Achievement rows and individual respecs.</li>
     <br>
     30/11
@@ -63,6 +63,10 @@ export const changelog = [
     <li>Fixed Continous Dim Boosts breaking inside normal Challenge 10.</li>
     <li>Achievement 33 now gives x2 Infinities after 60 ➜ 30 seconds, and its description now says 
     when it's active (applies to 87 too).</li>
+    8/1
+    <li>There's an additional way to unlock Secret Achievement 34.</li>
+    <li>Improved Achievement 76's image.</li>
+    <li>Improved performance in Achievements tab.</li>
     </ul>
     `
   },
