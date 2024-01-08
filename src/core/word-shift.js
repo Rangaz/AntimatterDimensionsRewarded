@@ -3,9 +3,10 @@ function predictableRandom(x) {
   const a = 15485863;
   const b = 521791;
   start = (start * a) % b;
-  for (let i = 0; i < (x * x) % 90 + 90; i++) {
-    start = (start * a) % b;
-  }
+  // This function shouldn't need this many calculations
+  //for (let i = 0; i < (x * x) % 90 + 90; i++) {
+  //  start = (start * a) % b;
+  //}
   return start / b;
 }
 
