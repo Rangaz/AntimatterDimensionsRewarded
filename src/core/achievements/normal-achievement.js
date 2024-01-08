@@ -185,6 +185,15 @@ class AchievementState extends GameMechanicState {
     player.reality.enhancedAchievements.add(this.id);
     // It is assumed that when you Enhance an Achievement you want to keep it
     player.reality.toBeEnhancedAchievements.add(this.id);
+
+    if (player.requirementChecks.permanent.lastEnhancedAchievement == this.id) {
+      player.requirementChecks.permanent.consecutiveEnhancements++;
+    }
+    else {
+      player.requirementChecks.permanent.consecutiveEnhancements = 1;
+      player.requirementChecks.permanent.lastEnhancedAchievement = this.id;
+    }
+    if (player.requirementChecks.permanent.consecutiveEnhancements >= 10) SecretAchievement(33).unlock();
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENT_ENHANCED);
   }
 
@@ -194,8 +203,8 @@ class AchievementState extends GameMechanicState {
     player.reality.toBeEnhancedAchievements.delete(this.id);
     // Some Achievements are a requirement for other Enhancements.
     if (this.id === 32) {
-      Achievement(57).disEnhance(ignoreLock);
       Achievement(88).disEnhance(ignoreLock);
+      Achievement(57).disEnhance(ignoreLock);
     }
     if (this.id === 57) {
       Achievement(88).disEnhance(ignoreLock);
@@ -203,6 +212,15 @@ class AchievementState extends GameMechanicState {
     if (this.id === 115) {
       Achievement(136).disEnhance(ignoreLock);
     }
+    
+    if (player.requirementChecks.permanent.lastEnhancedAchievement == this.id) {
+      player.requirementChecks.permanent.consecutiveEnhancements++;
+    }
+    else {
+      player.requirementChecks.permanent.consecutiveEnhancements = 1;
+      player.requirementChecks.permanent.lastEnhancedAchievement = this.id;
+    }
+    if (player.requirementChecks.permanent.consecutiveEnhancements >= 10) SecretAchievement(33).unlock();
     this.unlockEnhancement();
   }
 

@@ -117,13 +117,14 @@ export const secretAchievements = [
   },
   {
     id: 33,
-    name: "A sound financial decision",
-    description: "Click on the button to purchase STD coins."
+    name: "Do you want it or not?",
+    get description() { return `Enhance and disenhance the same Achievement ${formatInt(10)} times in a row.`; }
   },
   {
     id: 34,
     name: "You do know how these work, right?",
-    description: "Respec with an empty Time Study Tree."
+    get description() { return `Respec Time Studies with an empty Time Study Tree${PlayerProgress.realityUnlocked() ?
+      ", or Achievements with no Enhancements" : ""}.` }
   },
   {
     id: 35,

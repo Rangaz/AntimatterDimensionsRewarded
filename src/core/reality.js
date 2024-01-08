@@ -605,6 +605,9 @@ export function finishProcessReality(realityProps) {
       disChargeAll();
     }
     if (player.reality.respecAchievements) {
+      if (player.reality.enhancedAchievements.size == 0 && player.celestials.ra.cursedRowBits == 0) {
+        SecretAchievement(34).unlock();
+      }
       Achievements.disEnhanceAll();
       Achievements.uncurseAll();
     }
