@@ -265,7 +265,9 @@ window.player = {
     permanent: {
       emojiGalaxies: 0,
       singleTickspeed: 0,
-      perkTreeDragging: 0
+      perkTreeDragging: 0,
+      lastEnhancedAchievement: 0,
+      consecutiveEnhancements: 0,
     }
   },
   records: {
