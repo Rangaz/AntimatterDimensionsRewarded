@@ -651,7 +651,7 @@ export const automator = {
             {
               header: "<i>selector</i>",
               description: `
-                Finds and loads the specified Enhancement preset by its slot number. This is numbered one through six,
+                Finds and loads the specified Enhancement preset by its slot number. This is numbered one through seven,
                 ordered from left to right.`
             },
             {
@@ -691,6 +691,32 @@ export const automator = {
         "enhance achievements 11,21,31",
         "enhance achievements 22-28, 32, 41-44",
         "enhance achievements glyphFarm",
+      ]
+    },
+    {
+      id: 23,
+      isUnlocked: () => V.isFlipped,
+      keyword: "CURSE ROWS",
+      category: 1,
+      syntax: `<b>curse</b> <b>rows <u>curse_list</u></b>`,
+      description: "Curse Achievement rows specified from a list of rows the next Reality.",
+      sections: [
+        {
+          name: "INPUTS",
+          items: [
+            {
+              header: "<i>curse_list</i>",
+              description: `
+                This is a list of row IDs separated by commas. This command also allows ranges of rows (for example, <u>2-8</u>).
+                A variable name may be used in place of the entire Curse list as well (see the definition panel).`
+            },
+          ]
+        }
+      ],
+      examples: [
+        "curse rows 1,3,6",
+        "curse rows 1-3, 5, 6-9",
+        "curse rows requiem",
       ]
     },
   ],

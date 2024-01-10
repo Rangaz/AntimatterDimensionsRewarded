@@ -8,8 +8,9 @@ TODO:
 -Link Glyph presets with Enhancement presets <DONE>
   ->Allow Glyphs or Enhancements to respec the other <DONE>
 -Store Enhancements as well as Glyphs in records <DONE>
--Change secret Achievement 33 to something like 'Do you want it or not?'
+-Change secret Achievement 33 to something like 'Do you want it or not?' <DONE>
 -Add curses and individual respecs in automator
+  ->See if allowing negative numbers in Ehancements/Curse notation is a problem (to individually respec)
 
 */
 
