@@ -128,7 +128,7 @@ export function sacrificeReset() {
   const nextBoost = Sacrifice.nextBoost;
   player.chall8TotalSacrifice = player.chall8TotalSacrifice.times(nextBoost);
   player.sacrificed = player.sacrificed.plus(AntimatterDimension(1).amount);
-  const isAch118Unlocked = Achievement(118).canBeApplied;
+  const isAch118Unlocked = Achievement(118).canBeApplied || Achievement(118).isEnhanced;
   if (NormalChallenge(8).isRunning) {
     if (!isAch118Unlocked) {
       AntimatterDimensions.reset();

@@ -289,7 +289,7 @@ export function buyManyDimension(tier) {
     return true; // Without this 'return' you may buy more than you can afford.
   }
 
-  const cost = dimension.costUntil10;
+  const cost = Achievement(52).canBeApplied ? dimension.cost : dimension.costUntil10;
 
   if (tier === 8 && Enslaved.isRunning) return buyOneDimension(8);
   if (Achievement(52).isEnhanced) dimension.currencyAmount = dimension.currencyAmount.plus(
@@ -357,7 +357,9 @@ export function buyMaxDimension(tier, bulk = Infinity) {
   // so that the game can update the cost and not make you lose unnecesary Antimatter.
   if (!Achievement(10 + tier).isUnlocked) buyOneDimension(tier);
   
-  const cost = dimension.costUntil10;
+  // This r52 check makes it possible to buy all 10 Dimensions at once when you can purchase 1.
+  // Because r52 makes it not spend AM we don't need to wait until having x10 the cost.
+  const cost = Achievement(52).canBeApplied ? dimension.cost : dimension.costUntil10;
   let bulkLeft = bulk;
   const goal = Player.infinityGoal;
   if (dimension.cost.gt(goal) && Player.isInAntimatterChallenge) return;
@@ -502,6 +504,7 @@ class AntimatterDimensionState extends DimensionState {
 
   get howManyCanBuy() {
     const ratio = this.currencyAmount.dividedBy(this.cost);
+    if ((Achievement(52).canBeApplied || Achievement(52).isEnhanced) && ratio.gte(1)) return 10 - this.boughtBefore10;
     return Decimal.floor(Decimal.max(Decimal.min(ratio, 10 - this.boughtBefore10), 0)).toNumber();
   }
 
@@ -642,7 +645,10 @@ class AntimatterDimensionState extends DimensionState {
    */
   get isAffordableUntil10() {
     if (!player.break && this.cost.gt(Decimal.NUMBER_MAX_VALUE)) return false;
-    return this.costUntil10.lte(this.currencyAmount);
+    // With r52 unlocked we don't need to wait to 'afford' everything, only the 1st unit
+    return Achievement(52).canBeApplied || Achievement(52).isEnhanced ? 
+      this.cost.lte(this.currencyAmount) :
+      this.costUntil10.lte(this.currencyAmount);
   }
 
   get isAvailableForPurchase() {
