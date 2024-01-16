@@ -203,14 +203,14 @@ class AchievementState extends GameMechanicState {
     player.reality.toBeEnhancedAchievements.delete(this.id);
     // Some Achievements are a requirement for other Enhancements.
     if (this.id === 32) {
-      Achievement(88).disEnhance(ignoreLock);
-      Achievement(57).disEnhance(ignoreLock);
+      Achievement(88).disEnhance(true);
+      Achievement(57).disEnhance(true);
     }
     if (this.id === 57) {
-      Achievement(88).disEnhance(ignoreLock);
+      Achievement(88).disEnhance(true);
     }
     if (this.id === 115) {
-      Achievement(136).disEnhance(ignoreLock);
+      Achievement(136).disEnhance(true);
     }
     
     if (player.requirementChecks.permanent.lastEnhancedAchievement == this.id) {
@@ -230,10 +230,28 @@ class AchievementState extends GameMechanicState {
 
   lockEnhancement() {
     if (!this.isEnhanced) return;
+    if (this.id == 57) {
+      Achievement(32).lockEnhancement();
+    }
+    if (this.id == 88) {
+      Achievement(57).lockEnhancement();
+    }
+    if (this.id == 136) {
+      Achievement(115).lockEnhancement();
+    }
     player.reality.lockedEnhancements.add(this.id);
   }
 
   unlockEnhancement() {
+    if (this.id == 32) {
+      Achievement(57).unlockEnhancement();
+    }
+    if (this.id == 57) {
+      Achievement(88).unlockEnhancement();
+    }
+    if (this.id == 115) {
+      Achievement(136).unlockEnhancement();
+    }
     if (this.isEnhancementLocked) player.reality.lockedEnhancements.delete(this.id);
   }
 

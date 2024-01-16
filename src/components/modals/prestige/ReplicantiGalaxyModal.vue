@@ -34,8 +34,8 @@ export default {
   methods: {
     update() {
       this.replicanti.copyFrom(player.replicanti.amount);
-      this.minReplicanti = Effects.max(1, Achievement(108).effects.minReplicanti, 
-        Achievement(108).enhancedEffect.effects.minReplicanti);
+      this.minReplicanti = Achievement(108).isEnhanced ? Achievement(108).enhancedEffect.effects.minReplicanti.effectOrDefault(1) : 
+        Effects.max(1, Achievement(108).effects.minReplicanti);
       this.divideReplicanti = Achievement(126).canBeApplied;
       this.doNothing = Achievement(126).isEnhanced;
       this.canBeBought = Replicanti.galaxies.gain;

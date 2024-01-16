@@ -35,7 +35,7 @@ export default {
   methods: {
     update() {
       this.isUnlocked = this.autobuyer.isUnlocked;
-      this.isHiddenSacrifice = this.isSacrifice && Achievement(118).canBeApplied;
+      this.isHiddenSacrifice = this.isSacrifice && (Achievement(118).canBeApplied || Achievement(118).isEnhanced)
     },
   }
 };

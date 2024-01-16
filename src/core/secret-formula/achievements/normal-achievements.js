@@ -1582,11 +1582,11 @@ export const normalAchievements = [
     effectCondition: () => player.replicanti.unl,
     enhanced: {
       get reward() {
-        return `You'll always have at least ${format(Number.MAX_VALUE, 1, 1)} Replicanti. Gain ${formatX(999)} 
+        return `You'll always have at least ${format(replicantiCap(), 1, 1)} Replicanti. Gain ${formatX(999)} 
           Replicanti speed.`;
       },
       effects: {
-        minReplicanti: Number.MAX_VALUE,
+        minReplicanti: () => replicantiCap(),
         replicantiSpeed: 999
       },
     }
@@ -1886,7 +1886,7 @@ export const normalAchievements = [
     get reward() {
       return Achievement(108).isUnlocked && !Achievement(108).isCursed ? `Replicanti Galaxies divide your Replicanti 
         by ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)} instead of resetting them to ${
-          Achievement(108).isEnhanced ? format(Decimal.NUMBER_MAX_VALUE, 1, 0) : formatInt(9)}.` : 
+          Achievement(108).isEnhanced ? format(replicantiCap(), 1, 0) : formatInt(9)}.` : 
         `Replicanti Galaxies divide your Replicanti by ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)}
         instead of resetting them to ${formatInt(1)}.`;
     },

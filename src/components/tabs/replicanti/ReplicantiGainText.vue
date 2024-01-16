@@ -25,8 +25,8 @@ export default {
         (Math.log(player.replicanti.chance + 1)), getReplicantiInterval(false)).dividedBy(Math.LN10);
 
       const replicantiAmount = Replicanti.amount;
-      const minReplicanti = Effects.max(1, Achievement(108).effects.minReplicanti, 
-        Achievement(108).enhancedEffect.effects.minReplicanti).toDecimal();
+      const minReplicanti = Effects.max(1, Achievement(108).effects.minReplicanti).toDecimal()
+        .clampMin(Achievement(108).enhancedEffect.effects.minReplicanti.effectOrDefault(1));
       const isAbove308 = Replicanti.isUncapped && replicantiAmount.log10() > LOG10_MAX_VALUE;
 
       // The Achievements that give conditional Replicanti speed.

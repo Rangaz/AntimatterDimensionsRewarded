@@ -39,7 +39,7 @@ export const changelog = [
     Infinity Dimensions and Time Dimensions.</li>
     1/12
     <li>Fixed Galaxies giving errors if you had Cursed Row 1 active while all Dimensions were disabled in
-    Lai'tela's Reality.</li>
+    Lai'tela's Reality (Thank you JamesM for reporting).</li>
     <li>Enhanced Achievement 67's base multiplier is now 1e250 ➜ 1e70, but now takes into account the square
     of the amount of Celestial Realities you have beaten.</li>
     <li>The 'Respec and Load' button in Enhancement presets now Enhances (and curses) Achievements right 
@@ -48,7 +48,7 @@ export const changelog = [
     <li>Fixed Enhancement preview not updating curses while typing.</li>
     <li>Fixed 'Respec and Load' buttons not working if there's an active curse.</li>
     <li>Fixed Galaxies giving errors if you had Cursed Row 2 active while all Dimensions were disabled in
-    Lai'tela's Reality.</li>
+    Lai'tela's Reality (Thank you FIQ and JamesM for this issue).</li>
     <li>Fixed Continuum Dimension Boosts not accounting for free Dimensions from Enhanced Achievement 53.</li>
     <li>Enhanced Achievement 133 no longer requires unlocking 4 Triad Studies, but it can't buy the 
     Reality Study anymore.</li>
@@ -57,16 +57,24 @@ export const changelog = [
     <li>Respec and load functionality for Enhancement presets now works even if you can't Reality. In this case 
     it'd be the same as starting the Reality over.</li>
     7/1
-    <li>Fixed Enhanced Achievement 121 only allowing 1 purchase without Enhanced Achievement 41.</li>
+    <li>Fixed Enhanced Achievement 121 only allowing 1 purchase without Enhanced Achievement 41 (Thank you 'HRH' for reporting).</li>
     <li>Standarized most Enhancements' minimum values to be x1000.</li>
     <li>Changed some Achievement and Enhancement descriptions to be shorter.</li>
-    <li>Fixed Continous Dim Boosts breaking inside normal Challenge 10.</li>
+    <li>Fixed Continous Dim Boosts breaking inside normal Challenge 10 (Thank you JamesM for reporting).</li>
     <li>Achievement 33 now gives x2 Infinities after 60 ➜ 30 seconds, and its description now says 
     when it's active (applies to 87 too).</li>
     8/1
     <li>There's an additional way to unlock Secret Achievement 34.</li>
     <li>Improved Achievement 76's image.</li>
     <li>Improved performance in Achievements tab.</li>
+    16/1
+    <li>Fixed a bug where you could respec the requirements of Enhancements while keeping it intact if you lock only them
+    (Thank you 'HRH' for reporting).</li>
+    <li>Locking an Enhancement with prerequisites now also automatically locks those prerequisites.</li>
+    <li>Un-locking an Enhancement that others depend on will also un-lock those Enhancements.</li>
+    <li>Fixed Enhanced Achievement 118 not calling the Sacrifice Autobuyer every tick (Thank you 'HRH' for reporting).</li>
+    <li>Having Achievement 52 now makes autobuyers and manual actions buy 10 Dimensions as soon as 1 can be afforded.</li>
+    <li>Enhanced Achievement 108 now makes sure you have at least 1.8e308 Replicanti ➜ your Replicanti cap without TS192.</li>
     </ul>
     `
   },

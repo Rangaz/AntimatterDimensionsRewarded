@@ -39,8 +39,8 @@ export function replicantiGalaxy(auto) {
   }
   if (!Replicanti.galaxies.canBuyMore) return;
   const galaxyGain = Replicanti.galaxies.gain;
-  const minReplicanti = Effects.max(1, Achievement(108).effects.minReplicanti, 
-    Achievement(108).enhancedEffect.effects.minReplicanti).toDecimal();
+  const minReplicanti = Effects.max(1, Achievement(108).effects.minReplicanti).toDecimal()
+    .clampMin(Achievement(108).enhancedEffect.effects.minReplicanti.effectOrDefault(1));
   if (galaxyGain < 1) return;
   player.replicanti.timer = 0;
   if (!Achievement(126).isEnhanced) {
@@ -525,8 +525,8 @@ export const Replicanti = {
   },
   reset(force = false) {
     const unlocked = force ? false : EternityMilestone.unlockReplicanti.isReached;
-    const minReplicanti = Effects.max(1, Achievement(108).effects.minReplicanti, 
-      Achievement(108).enhancedEffect.effects.minReplicanti).toDecimal();
+    const minReplicanti = Effects.max(1, Achievement(108).effects.minReplicanti).toDecimal()
+      .clampMin(Achievement(108).enhancedEffect.effects.minReplicanti.effectOrDefault(1));
     player.replicanti = {
       unl: unlocked,
       // I want it to start at more replicanti if you have E/r108.
@@ -548,8 +548,8 @@ export const Replicanti = {
       if (!freeUnlock) Currency.infinityPoints.subtract(cost);
       player.replicanti.unl = true;
       player.replicanti.timer = 0;
-      Replicanti.amount = Effects.max(1, Achievement(108).effects.minReplicanti, 
-        Achievement(108).enhancedEffect.effects.minReplicanti).toDecimal();
+      Replicanti.amount = Effects.max(1, Achievement(108).effects.minReplicanti).toDecimal()
+        .clampMin(Achievement(108).enhancedEffect.effects.minReplicanti.effectOrDefault(1));
     }
   },
   get amount() {
