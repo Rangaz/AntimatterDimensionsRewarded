@@ -103,7 +103,8 @@ export default {
       this.bought = dimension.bought;
       this.boughtBefore10 = dimension.boughtBefore10;
       this.singleCost.copyFrom(dimension.cost);
-      this.until10Cost.copyFrom(dimension.costUntil10);
+      this.until10Cost.copyFrom(Achievement(52).canBeApplied || Achievement(52).isEnhanced ? 
+        dimension.cost : dimension.costUntil10);
       if (tier < 8) {
         this.rateOfChange.copyFrom(dimension.rateOfChange);
       }
