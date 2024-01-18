@@ -154,8 +154,8 @@ export default {
         const idx = Glyphs.active.indexOf(null);
         if (idx !== -1) {
           // Special behaviour for my Companion Glyph slot
-          if (glyph.type == "companion") {
-            Glyphs.equip(glyph, 5);
+          if (glyph.type == "companion" && Achievement(152).canBeApplied) {
+            Glyphs.equip(glyph, Glyphs.activeSlotCount - 1);
             missingGlyphs--;
           } // idx 5 is my Companion Glyph slot
           else if (idx != 5) {
