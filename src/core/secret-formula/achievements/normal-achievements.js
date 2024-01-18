@@ -2015,9 +2015,9 @@ export const normalAchievements = [
     effect: () => DC.D2.pow(player.dilation.totalTachyonGalaxies).recip(),
     formatEffect: value => `${formatX(value.recip(), 1, 1)}`,
     enhanced: {
-      reward: "Increase the softcap to Tickspeed Upgrades from Time Dimensions by your current Tachyon " +
+      reward: "Increase the softcap to Tickspeed Upgrades from Time Dimensions based on your current Tachyon " +
         "Galaxy amount.",
-      effect: () => player.dilation.totalTachyonGalaxies,
+      effect: () => Math.floor(Math.pow(player.dilation.totalTachyonGalaxies, 1.1)),
       formatEffect: value => `+${formatInt(value)}`,
     }
   },

@@ -287,7 +287,7 @@ export const Glyphs = {
         return;
       }
       // For the special Glyph slot that only accepts the Companion Glyph
-      if (Achievement(152).canBeApplied && targetSlot == 5) return;
+      if (Achievement(152).canBeApplied && targetSlot == this.activeSlotCount - 1) return;
     }
 
     this.validate();
