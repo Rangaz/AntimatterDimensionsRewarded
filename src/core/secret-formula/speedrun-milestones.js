@@ -10,7 +10,7 @@ export const speedrunMilestones = [
   {
     id: 2,
     key: "firstGalaxy",
-    name: "First Galaxy",
+    name: "Achievement 26",
     description: "Get your first Galaxy",
     checkRequirement: () => true,
     checkEvent: GAME_EVENT.GALAXY_RESET_AFTER,
@@ -18,7 +18,7 @@ export const speedrunMilestones = [
   {
     id: 3,
     key: "firstInfinity",
-    name: "First Infinity",
+    name: "Achievement 21",
     description: "Complete your first Infinity",
     checkRequirement: () => true,
     checkEvent: GAME_EVENT.BIG_CRUNCH_AFTER,
@@ -34,7 +34,7 @@ export const speedrunMilestones = [
   {
     id: 5,
     key: "completeAllNC",
-    name: "All Normal Challenges",
+    name: "Achievement 48",
     description: "Complete all Normal Challenges",
     checkRequirement: () => NormalChallenges.all.countWhere(c => !c.isCompleted) === 0,
     checkEvent: GAME_EVENT.BIG_CRUNCH_AFTER,
@@ -42,7 +42,7 @@ export const speedrunMilestones = [
   {
     id: 6,
     key: "breakInfinity",
-    name: "Break Infinity",
+    name: "Achievement 51",
     description: "Break Infinity for the first time",
     checkRequirement: () => player.break,
     checkEvent: GAME_EVENT.BREAK_INFINITY,
@@ -74,7 +74,7 @@ export const speedrunMilestones = [
   {
     id: 10,
     key: "firstEternity",
-    name: "First Eternity",
+    name: "Achievement 96",
     description: "Complete your first Eternity",
     checkRequirement: () => true,
     checkEvent: GAME_EVENT.ETERNITY_RESET_AFTER,
@@ -82,7 +82,7 @@ export const speedrunMilestones = [
   {
     id: 11,
     key: "allEternityMilestones",
-    name: "All Eternity Milestones",
+    name: "Achievement 102",
     description: "Unlock all Eternity Milestones",
     checkRequirement: () => EternityMilestone.all.every(m => m.isReached),
     checkEvent: GAME_EVENT.ETERNITY_RESET_AFTER,
@@ -106,7 +106,7 @@ export const speedrunMilestones = [
   {
     id: 14,
     key: "firstDilation",
-    name: "First Dilated Eternity",
+    name: "Achievement 136",
     description: "Complete a Dilated Eternity for the first time",
     checkRequirement: () => player.dilation.active,
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
@@ -122,7 +122,7 @@ export const speedrunMilestones = [
   {
     id: 16,
     key: "firstReality",
-    name: "First Reality",
+    name: "Achievement 141",
     description: "Complete your first Reality",
     checkRequirement: () => true,
     checkEvent: GAME_EVENT.REALITY_RESET_AFTER,
@@ -130,7 +130,7 @@ export const speedrunMilestones = [
   {
     id: 17,
     key: "upgradeBlackHole",
-    name: "Black Hole",
+    name: "Achievement 144",
     description: "Unlock the Black Hole",
     checkRequirement: () => true,
     checkEvent: GAME_EVENT.BLACK_HOLE_UNLOCKED,
@@ -138,7 +138,7 @@ export const speedrunMilestones = [
   {
     id: 18,
     key: "allRealityUpgrades",
-    name: "All Reality Upgrades",
+    name: "Achievement 147",
     description: "Purchase all Reality Upgrades",
     checkRequirement: () => RealityUpgrades.allBought,
     checkEvent: GAME_EVENT.REALITY_UPGRADE_BOUGHT,
@@ -194,7 +194,7 @@ export const speedrunMilestones = [
   {
     id: 25,
     key: "completeFullGame",
-    name: "Game Completed!",
+    name: "Achievement 188!",
     description: "Complete the entire game",
     checkRequirement: () => Achievement(188).isUnlocked,
     checkEvent: GAME_EVENT.ACHIEVEMENT_UNLOCKED,
