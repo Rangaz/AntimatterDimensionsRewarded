@@ -95,7 +95,7 @@ export default {
       const angle = 2 * Math.PI * idx / (this.hasCompanionSlot ? this.slotCount - 1 : this.slotCount);
       const dx = -this.GLYPH_SIZE / 2 + this.arrangementRadius * Math.sin(angle);
       const dy = -this.GLYPH_SIZE / 2 + this.arrangementRadius * Math.cos(angle);
-      if (this.hasCompanionSlot && idx == 5) return {
+      if (this.hasCompanionSlot && idx == this.slotCount - 1) return {
           position: "absolute",
           left: `calc(50% - 2.5rem)`,
           top: `calc(50% - 2.5rem)`,
@@ -121,7 +121,7 @@ export default {
       const id = parseInt(event.dataTransfer.getData(GLYPH_MIME_TYPE), 10);
       if (isNaN(id)) return;
       const glyph = Glyphs.findById(id);
-      if (this.hasCompanionSlot && idx == 5 && glyph.type != "companion") {
+      if (this.hasCompanionSlot && idx == this.slotCount - 1 && glyph.type != "companion") {
         GameUI.notify.error("This slot does not accept this type of Glyph", 10000);
         return;
       };
@@ -202,7 +202,7 @@ export default {
           
           :class="['l-equipped-glyphs__empty', 'c-equipped-glyphs__empty',
                    {'c-equipped-glyphs__empty--dragover': dragoverIndex === idx,
-                   'c-companion-slot': idx == 5}]"
+                   'c-companion-slot': idx === slotCount - 1}]"
         ></div>
       </div>
     </div>

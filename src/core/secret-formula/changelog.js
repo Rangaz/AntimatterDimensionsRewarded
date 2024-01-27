@@ -75,6 +75,10 @@ export const changelog = [
     <li>Fixed Enhanced Achievement 118 not calling the Sacrifice Autobuyer every tick (Thank you 'HRH' for reporting).</li>
     <li>Having Achievement 52 now makes autobuyers and manual actions buy 10 Dimensions as soon as 1 can be afforded.</li>
     <li>Enhanced Achievement 108 now makes sure you have at least 1.8e308 Replicanti ➜ your Replicanti cap without TS192.</li>
+    18/1
+    <li>Fixed Achievement 152 causing issues when you don't have 5 glyph slots (Thank you Lapis for reporting)
+    (Hopefully this doesn't cause more bugs).</li>
+    <li>Enhanced Achievement 135's effect is now raised by ^1.1.</li>
     </ul>
     `
   },
