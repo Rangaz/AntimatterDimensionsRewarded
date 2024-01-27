@@ -1,7 +1,6 @@
 import { lexer, tokenMap as T } from "./lexer";
 import { AutomatorCommands } from "./automator-commands";
 import { parser } from "./parser";
-import { AUTOMATOR_VAR_TYPES } from "./automator-backend";
 
 const BaseVisitor = parser.getBaseCstVisitorConstructorWithDefaults();
 

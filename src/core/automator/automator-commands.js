@@ -900,9 +900,9 @@ export const AutomatorCommands = [
         }
 
         const id = parseInt(split[1], 10);
-        if (id < 1 || id > 6) {
+        if (id < 1 || id > 7) {
           V.addError(ctx.Id[0], `Could not find a preset with an id of ${id}`,
-            "Type in a valid id (1 - 6) for your enhancement preset");
+            "Type in a valid id (1 - 7) for your enhancement preset");
           return false;
         }
         ctx.$presetIndex = id;
@@ -943,7 +943,7 @@ export const AutomatorCommands = [
         Achievements.applyEnhancementPreset(imported);
         const afterCount = player.reality.enhancedAchievements.size;
         // Check if there are still any unenhanced achievements from the preset after attempting to commit it all
-        const missingEnhancementCount = imported.split(",")
+        const missingEnhancementCount = imported.split("|")[0].split(",")
           .filter(s => !player.reality.enhancedAchievements.has(Number.parseInt(s))).length;
 
         const presetRepresentation = ctx.Name ? ctx.Name[0].image : ctx.Id[0].image;
