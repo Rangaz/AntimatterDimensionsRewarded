@@ -24,7 +24,7 @@ export const changelog = [
     This is unlocked at Ra, with Effarig level 10.</li>
     <li>15/12: You can now see what Enhancements you had active in records. This includes V-Achievements.</li>
     <li>8/1: There's a new Secret Achievement 33.</li>
-    <li>Coming later: Automator support to curse Achievement rows and individual respecs.</li>
+    <li>12/2: Implemented CURSE ROWS command.</li>
     <br>
     30/11
     <li>Slightly improved performance in the Achievements tab.</li>
@@ -79,6 +79,10 @@ export const changelog = [
     <li>Fixed Achievement 152 causing issues when you don't have 5 glyph slots (Thank you Lapis for reporting)
     (Hopefully this doesn't cause more bugs).</li>
     <li>Enhanced Achievement 135's effect is now raised by ^1.1.</li>
+    12/2
+    <li>Fixed ENHANCE LOAD ID 7 Automator command not working.</li>
+    <li>Note: Individual Enhancement respecs in Automator won't be implemented as it's too niche and only 
+    complicates the code. Ask me if you believe this feature is necessary.</li>
     </ul>
     `
   },
