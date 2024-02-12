@@ -94,6 +94,12 @@ export const automatorBlocks = [
     A: ["*"],
     targets: ["singleTextInput"],
   }, {
+    cmd: "CURSE ROWS",
+    alias: "CURSE ROWS",
+    allowedPatterns: ["A"],
+    A: ["*"],
+    targets: ["singleTextInput"],
+  }, {
     cmd: "INFINITY",
     canWait: true
   }, {
