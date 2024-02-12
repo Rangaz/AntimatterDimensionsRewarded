@@ -60,8 +60,9 @@ export default {
       const isStudyString = TimeStudyTree.isValidImportString(this.valueString);
 
       const isEnhancementString = Achievements.readPreset(this.valueString)[1].length == 0;
+      const isCurseString = Achievements.readPreset("|" + this.valueString)[3].length == 0;
 
-      if (!isNumber && !isStudyString && !isEnhancementString) return "Constant value must be a number, " + 
+      if (!isNumber && !isStudyString && !isEnhancementString && !isCurseString) return "Constant value must be a number, " + 
         "Time Study string, or Enhancement string";
       return null;
     },
