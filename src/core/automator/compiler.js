@@ -1,7 +1,6 @@
 import { lexer, tokenMap as T } from "./lexer";
 import { AutomatorCommands } from "./automator-commands";
 import { parser } from "./parser";
-import { AUTOMATOR_VAR_TYPES } from "./automator-backend";
 
 const BaseVisitor = parser.getBaseCstVisitorConstructorWithDefaults();
 
@@ -199,6 +198,16 @@ class Validator extends BaseVisitor {
     return achievementNumber;
   }
 
+  checkCurseNumber(token) {
+    const curseNumber = parseFloat(token.image);
+    if (CursedRow(curseNumber) == undefined) {
+      this.addError(token, `Invalid Curse identifier ${curseNumber}`,
+        `Make sure you copied or typed in your achievement row IDs correctly`);
+      return 0;
+    }
+    return curseNumber;
+  }
+
   lookupVar(identifier, type) {
     const varName = identifier.image;
     const varInfo = {};
@@ -226,6 +235,9 @@ class Validator extends BaseVisitor {
       case AUTOMATOR_VAR_TYPES.ENHANCEMENTS:
         varInfo.value = {normal: Achievements.parseInput(value).split(",")};
         break;
+      case AUTOMATOR_VAR_TYPES.CURSES:
+        varInfo.value = {normal: Achievements.parseInput("|" + value).replace("|", "").split(",")};
+        break;
       case AUTOMATOR_VAR_TYPES.DURATION:
         varInfo.value = parseInt(1000 * value, 10);
         break;
@@ -250,6 +262,8 @@ class Validator extends BaseVisitor {
         return value.match(/^-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?$/u);
       case AUTOMATOR_VAR_TYPES.ENHANCEMENTS:
         return Achievements.readPreset(value)[1].length == 0;
+      case AUTOMATOR_VAR_TYPES.CURSES:
+        return Achievements.readPreset("|" + value)[3].length == 0;
       case AUTOMATOR_VAR_TYPES.STUDIES:
         return TimeStudyTree.isValidImportString(value);
       case AUTOMATOR_VAR_TYPES.DURATION:
@@ -344,7 +358,7 @@ class Validator extends BaseVisitor {
     if (ctx.ECNumber) {
       if (ctx.ECNumber.isInsertedInRecovery) {
         this.addError(ctx.Pipe[0], "Missing Eternity Challenge number",
-        "Specify which Eternity Challenge is being referred to");
+          "Specify which Eternity Challenge is being referred to");
       }
       const ecNumber = parseFloat(ctx.ECNumber[0].image);
       if (!Number.isInteger(ecNumber) || ecNumber < 0 || ecNumber > 12) {
@@ -379,7 +393,7 @@ class Validator extends BaseVisitor {
     }
     if (ctx.NumberLiteral) {
       if (ctx.NumberLiteral[0].isInsertedInRecovery) {
-        this.addError(ctx, "Missing Achievement number", "Provide an Achievement ID to purchase");
+        this.addError(ctx, "Missing Achievement number", "Provide an Achievement ID to enhance");
         return;
       }
       const id = this.checkAchievementNumber(ctx.NumberLiteral[0]);
@@ -396,6 +410,51 @@ class Validator extends BaseVisitor {
     const positionRange = Validator.getPositionRange(ctx);
     ctx.$cached = {
       normal: achievementsOut,
+      image: this.rawText.substr(positionRange.startOffset, positionRange.endOffset - positionRange.startOffset + 1),
+    };
+
+    return ctx.$cached;
+  }
+
+  curseRange(ctx, cursesOut) {
+    if (!ctx.firstRow || ctx.firstRow[0].isInsertedInRecovery ||
+      !ctx.lastRow || ctx.lastRow[0].isInsertedInRecovery) {
+      this.addError(ctx, "Missing Achievement number in range",
+        "Provide starting and ending IDs for Achievement number ranges");
+      return;
+    }
+    const first = this.checkCurseNumber(ctx.firstRow[0]);
+    const last = this.checkCurseNumber(ctx.lastRow[0]);
+    if (!first || !last || !cursesOut) return;
+    for (let id = first; id <= last; ++id) {
+      if (CursedRow(id)) cursesOut.push(id);
+    }
+  }
+
+  curseListEntry(ctx, cursesOut) {
+    if (ctx.curseRange) {
+      this.visit(ctx.curseRange, cursesOut);
+      return;
+    }
+    if (ctx.NumberLiteral) {
+      if (ctx.NumberLiteral[0].isInsertedInRecovery) {
+        this.addError(ctx, "Missing Achievement row number", "Provide an Achievement row ID to curse");
+        return;
+      }
+      const id = this.checkCurseNumber(ctx.NumberLiteral[0]);
+      if (id) cursesOut.push(id);
+      return;
+    }
+  }
+
+  // I don't know if $cached is needed here either
+  curseList(ctx) {
+    if (ctx.$cached !== undefined) return ctx.$cached;
+    const cursesOut = [];
+    for (const sle of ctx.curseListEntry) this.visit(sle, cursesOut);
+    const positionRange = Validator.getPositionRange(ctx);
+    ctx.$cached = {
+      normal: cursesOut,
       image: this.rawText.substr(positionRange.startOffset, positionRange.endOffset - positionRange.startOffset + 1),
     };
 

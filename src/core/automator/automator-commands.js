@@ -900,9 +900,9 @@ export const AutomatorCommands = [
         }
 
         const id = parseInt(split[1], 10);
-        if (id < 1 || id > 6) {
+        if (id < 1 || id > 7) {
           V.addError(ctx.Id[0], `Could not find a preset with an id of ${id}`,
-            "Type in a valid id (1 - 6) for your enhancement preset");
+            "Type in a valid id (1 - 7) for your enhancement preset");
           return false;
         }
         ctx.$presetIndex = id;
@@ -943,7 +943,7 @@ export const AutomatorCommands = [
         Achievements.applyEnhancementPreset(imported);
         const afterCount = player.reality.enhancedAchievements.size;
         // Check if there are still any unenhanced achievements from the preset after attempting to commit it all
-        const missingEnhancementCount = imported.split(",")
+        const missingEnhancementCount = imported.split("|")[0].split(",")
           .filter(s => !player.reality.enhancedAchievements.has(Number.parseInt(s))).length;
 
         const presetRepresentation = ctx.Name ? ctx.Name[0].image : ctx.Id[0].image;
@@ -989,6 +989,98 @@ export const AutomatorCommands = [
       return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
     },
     blockify: () => automatorBlocksMap["ENHANCE RESPEC"]
+  },
+  {
+    id: "curseRows",
+    rule: $ => () => {
+      $.CONSUME(T.Curse);
+      $.CONSUME(T.Rows);
+      $.OR([
+        { ALT: () => $.SUBRULE($.curseList) },
+        { ALT: () => $.CONSUME1(T.Identifier) },
+      ]);
+    },
+    validate: (ctx, V) => {
+      ctx.startLine = ctx.Curse[0].startLine;
+      if (!Achievements.isEnhancementUnlocked) {
+        V.addError(ctx.Curse[0], "You do not have Enhancements unlocked.", 
+          "Buy the ACHEH perk to unlock.");
+        return false;
+      }
+      if (!VUnlocks.enhancementPresets.canBeApplied) {
+        V.addError(ctx.Curse[0], "You do not have Enhancement automation unlocked.", 
+          "Unlock it from V first."); 
+        return false;
+      }
+      // I'd use V.isFlipped here but that doesn't work here
+      if (!Ra.unlocks.unlockHardV.canBeApplied) {
+        V.addError(ctx.Curse[0], "You do not have Curses unlocked.", 
+          "Unlock hard V first."); 
+        return false;
+      }
+      if (ctx.Identifier) {
+        if (!V.isValidVarFormat(ctx.Identifier[0], AUTOMATOR_VAR_TYPES.CURSES)) {
+          V.addError(ctx, `Constant ${ctx.Identifier[0].image} is not a valid Curse constant`,
+            `Ensure that ${ctx.Identifier[0].image} is a properly-formatted Curse string`);
+          return false;
+        }
+        const varInfo = V.lookupVar(ctx.Identifier[0], AUTOMATOR_VAR_TYPES.CURSES);
+        ctx.$curses = varInfo.value;
+        ctx.$curses.image = ctx.Identifier[0].image;
+      } else if (ctx.curseList) {
+        ctx.$curses = V.visit(ctx.curseList);
+      }
+      return true;
+    },
+    compile: ctx => {
+      if (!Achievements.isEnhancementUnlocked || !VUnlocks.enhancementPresets.canBeApplied || !V.isFlipped) {
+        AutomatorData.logCommandEvent(`Attempted to automatically Curse Achievement rows, but failed 
+          (not unlocked yet)`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+      }
+      const curses = ctx.$curses;
+      return () => {
+        let preCursedRows = 0;
+        let cursedRows = 0;
+        let errors = 0;
+        for (const rowNumber of curses.normal) {
+          if (CursedRow(rowNumber) == undefined) {
+            errors++;
+            continue; // I'll figure this out later
+          }
+          if (CursedRow(rowNumber).isCursed) {
+            preCursedRows++;
+            continue;
+          }
+          if (rowNumber > Achievements.maxEnhancedRow) {
+            errors++;
+            continue;
+          }
+          CursedRow(rowNumber).curseNextReality();
+          cursedRows++;
+        }
+
+        if (errors > 0) {
+          AutomatorData.logCommandEvent(`Cursed ${cursedRows} Rows for next Reality, but couldn't curse
+        ${errors} rows`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+        }
+        if (preCursedRows + cursedRows == 0) {
+          AutomatorData.logCommandEvent(`No Achievement rows were selected`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+        }
+        if (cursedRows == 0) {
+          AutomatorData.logCommandEvent(`Specified Achievement rows were already Cursed`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+        }
+        AutomatorData.logCommandEvent(`Cursed all specified Achievement rows for next Reality`, ctx.startLine);
+        return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+      };
+    },
+    blockify: ctx => ({
+      singleTextInput: ctx.$curses.image,
+      ...automatorBlocksMap["CURSE ROWS"]
+    })
   },
   {
     id: "unlockDilation",

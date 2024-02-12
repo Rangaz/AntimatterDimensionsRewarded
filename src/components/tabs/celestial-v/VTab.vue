@@ -207,7 +207,7 @@ export default {
         <br>
         Cursed Glyphs count as {{ formatInt(-3) }} Glyphs for the purposes of all requirements related to Glyph count.
         <br>
-        You can now Curse Achievements in the Achievements tab.
+        You can now Curse Achievement rows in the Achievements tab.
         <br>
         <span v-if="!isDoomed">The Black Hole can now be used to slow down time if they are both permanent.</span>
         <br><br>

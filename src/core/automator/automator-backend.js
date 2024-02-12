@@ -21,7 +21,8 @@ export const AUTOMATOR_VAR_TYPES = {
   NUMBER: { id: 0, name: "number" },
   STUDIES: { id: 1, name: "studies" },
   DURATION: { id: 2, name: "duration" },
-  ENHANCEMENTS: {id: 3, name: "enhancements"},
+  ENHANCEMENTS: { id: 3, name: "enhancements" },
+  CURSES: { id: 4, name: "curses" },
   UNKNOWN: { id: -1, name: "unknown" },
 };
 
