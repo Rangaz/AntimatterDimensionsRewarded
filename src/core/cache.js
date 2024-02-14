@@ -85,6 +85,12 @@ export const GameCache = {
     GlyphSacrifice.power
   )),
 
+  // Calculates how many row 1 Achievements are Enhanced. 
+  // Used for Er11's effect, no need to calculate this every frame
+  row1Enhancements: new Lazy(() => [0, 11, 12, 13, 14, 15, 16, 17, 18].reduce((total, value) => 
+    total + Achievement(value).isEnhanced 
+  )),
+
   totalEnhancementPoints: new Lazy(() => 
     Achievements.all.countWhere(a => a.isUnlocked && !a.isPreReality) + 
     Math.floor(V.spaceTheorems / 7) + 

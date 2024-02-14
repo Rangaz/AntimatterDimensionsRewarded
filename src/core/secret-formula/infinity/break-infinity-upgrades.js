@@ -128,7 +128,7 @@ export const breakInfinityUpgrades = {
     // I want this text to also appear if you have r81, as that also changes this value
     afterEC: () => ((EternityChallenge(6).completions > 0 || Achievement(81).isEffectActive 
     || Achievement(81).isEnhanced)
-      ? `After other effects: ${formatX(Player.dimensionMultDecrease, 2, 2)}`
+      ? `After other effects: ${formatX(Player.dimensionMultDecrease, 3, 3)}`
       : ""
     ),
     noLabel: true,

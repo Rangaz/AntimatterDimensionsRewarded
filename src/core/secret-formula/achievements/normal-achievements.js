@@ -3,15 +3,14 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 TODO:
--Make presets work with curses <DONE>
--Shift-click to lock an Enhancement <DONE>
--Link Glyph presets with Enhancement presets <DONE>
-  ->Allow Glyphs or Enhancements to respec the other <DONE>
--Store Enhancements as well as Glyphs in records <DONE>
--Change secret Achievement 33 to something like 'Do you want it or not?' <DONE>
--Add curses and individual respecs in automator
-  ->See if allowing negative numbers in Enhancements/Curse notation is a problem (to individually respec) <NOT WORTH IT>
-
+QOL before Pelle:
+-Fix bugs <IN PROGRESS>
+  ->0 Dim Boosts on Ra <DONE>
+  ->Companion slot fixes
+  ->Speedup/Skip News ticker buttons appearing on credits <DONE>
+-Improve the About window
+-Make credits include this mod's development
+-Nameless change?
 */
 
 export const normalAchievements = [
@@ -23,16 +22,11 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `1st Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
     enhanced: {
-      get reward() { return `1st Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(2)}. If this row is fully Enhanced, decrease
-        post-infinity cost scaling for Antimatter Dimensions by -${format(0.01, 2, 2)}.`},
-      effect: () => {
-        // Doesn't check itself, otherwise it wouldn't be active
-        for (let i = 2; i <= 8; i++) {
-          if (!Achievement(10 + i).isEnhanced) return 0;
-        }
-        return 0.01;
-      }
+      get reward() { return `1st ADs' initial cost scaling is ${formatX(2)}. 
+        For every Enhancement on this row, post-infinity cost multiplier for ADs is reduced by 
+        -${format(0.0015, 4, 4)}.`},
+      effect: () => 0.0015 * GameCache.row1Enhancements.value,
+      formatEffect: value => `-${format(value, 4, 4)}`
     }
   },
   {
@@ -42,8 +36,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `2nd Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
     enhanced: {
-      get reward() { return `2nd Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(2)}.`}
+      get reward() { return `2nd Antimatter Dimensions' initial cost scaling is ${formatX(2)}.`}
     }
   },
   {
@@ -53,8 +46,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `3rd Antimatter Dimensions are ${formatInt(10)} times cheaper.`; },
     enhanced: {
-      get reward() { return `3rd Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(2)}.`}
+      get reward() { return `3rd Antimatter Dimensions' initial cost scaling is ${formatX(2)}.`}
     }
   },
   {
@@ -64,8 +56,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `4th Antimatter Dimensions are ${formatInt(100)} times cheaper.`; },
     enhanced: {
-      get reward() { return `4th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(2)}.`}
+      get reward() { return `4th Antimatter Dimensions' initial cost scaling is ${formatX(2)}.`}
     }
   },
   {
@@ -75,8 +66,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `5th Antimatter Dimensions are ${formatInt(100)} times cheaper.`; },
     enhanced: {
-      get reward() { return `5th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(2)}.`}
+      get reward() { return `5th Antimatter Dimensions' initial cost scaling is ${formatX(2)}.`}
     }
   },
   {
@@ -90,8 +80,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `6th Antimatter Dimensions are ${formatInt(1000)} times cheaper.`; },
     enhanced: {
-      get reward() { return `6th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(2)}.`}
+      get reward() { return `6th Antimatter Dimensions' initial cost scaling is ${formatX(2)}.`}
     }
   },
   {
@@ -101,8 +90,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `7th Antimatter Dimensions are ${formatInt(1000)} times cheaper.`; },
     enhanced: {
-      get reward() { return `7th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(2)}.`}
+      get reward() { return `7th Antimatter Dimensions' initial cost scaling is ${formatX(2)}.`}
     }
   },
   {
@@ -116,8 +104,7 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
     get reward() { return `8th Antimatter Dimensions are ${formatInt(1000)} times cheaper.`; },
     enhanced: {
-      get reward() { return `8th Antimatter Dimensions' starting cost is ${formatInt(1)} AM, and
-        their initial cost scaling is ${formatX(32)}.`}
+      get reward() { return `8th Antimatter Dimensions' initial cost scaling is ${formatX(32)}.`}
     }
   },
   {
@@ -1096,7 +1083,7 @@ export const normalAchievements = [
 
   },
   {
-    // Buffed & Enhanced! But could be better...
+    // Buffed & Enhanced!
     id: 78,
     name: "Blink of an eye",
     get description() { return `Infinity in under ${formatInt(250)}ms.`; },
@@ -2260,7 +2247,8 @@ export const normalAchievements = [
     description: "Make both Black Holes permanent.",
     checkRequirement: () => BlackHole(1).isPermanent && BlackHole(2).isPermanent,
     checkEvent: GAME_EVENT.BLACK_HOLE_UPGRADE_BOUGHT,
-    get reward() { return `Black Hole power increased by ${formatPercents(0.1)}.`; },
+    get reward() { return `Black Hole power increased by ${formatPercents(0.1)}, and upgrades no longer
+      spend Reality Machines.`; },
     effect: 1.1
   },
 
@@ -2335,7 +2323,8 @@ export const normalAchievements = [
     get description() { return `Reach ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)} Reality Machines.`; },
     checkRequirement: () => Currency.realityMachines.gte(Decimal.NUMBER_MAX_VALUE),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    reward: "Gain more Reality Machines based on your current Reality Machines.",
+    reward: "Gain more Reality Machines based on your current Reality Machines, " + 
+      "and Reality Upgrades no longer spend them.",
     effect: () => Math.clampMin(1, Currency.realityMachines.value.log2()),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },

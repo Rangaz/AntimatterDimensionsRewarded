@@ -111,6 +111,10 @@ class RebuyableRealityUpgradeState extends RebuyableMechanicState {
     return Currency.realityMachines;
   }
 
+  get isFree() {
+    return Achievement(167).canBeApplied;
+  }
+
   get boughtAmount() {
     return player.reality.rebuyables[this.id];
   }
