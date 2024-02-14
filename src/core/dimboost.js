@@ -186,7 +186,7 @@ export class DimBoost {
     // but does not add the free Dimensions from Er53, so they must be manually added
     const dim = AntimatterDimension(this.maxDimensionsUnlockable).continuumValue * 10 +
       AntimatterDimension(this.maxDimensionsUnlockable).freeDimensions;
-    let maxBoosts = Math.clamp(1 + (dim - 20) / increase, 0, Number.MAX_VALUE);
+    let maxBoosts = Math.clamp(1 + (dim - 20) / increase, 0, this.maxBoosts);
     if (!EternityChallenge(5).isRunning) {
       player.dimensionBoosts = Math.max(Math.floor(maxBoosts), 4);
       return maxBoosts * Achievement(176).effectOrDefault(1);
@@ -205,7 +205,7 @@ export class DimBoost {
   }
 
   static get realBoosts() {
-    return Math.clampMax(Math.max(this.purchasedBoosts, this.continuumBoosts), this.maxBoosts);
+    return Math.max(this.purchasedBoosts, this.continuumBoosts);
   }
 
   static get imaginaryBoosts() {

@@ -83,6 +83,15 @@ export const changelog = [
     <li>Fixed ENHANCE LOAD ID 7 Automator command not working.</li>
     <li>Note: Individual Enhancement respecs in Automator won't be implemented as it's too niche and only 
     complicates the code. Ask me if you believe this feature is necessary.</li>
+    14/2
+    <li>Row 1 Enhancements no longer set their respective AD's initial cost to 1 AM.</li>
+    <li>Enhanced Achievement 11 now reduces post-infinity cost scaling for ADs by -0.01 with the entire row ➜
+    -0.0015 for every Enhancement in the row (a max of -0.012).</li>
+    <li>Achievement 158 makes Black Hole upgrades no longer spend Reality Machines.</li>
+    <li>Achievement 167 makes Reality Upgrades no longer spend Reality Machines.</li>
+    <li>Fixed Ra's Reality setting Dimension Boosts to 0 (Thank you BsonHK for reporting!).</li>
+    <li>Fixed the Fast Forward and Skip buttons for News ticker appearing above everything, including the credits 
+    (Thank you Arphimigon for reporting!), and fixed their position in Aero theme (Thank you antitruth for reporting!)</li>
     </ul>
     `
   },

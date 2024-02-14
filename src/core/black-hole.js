@@ -39,7 +39,7 @@ class BlackHoleUpgradeState {
     const bh = BlackHole(this.id);
     const beforeProg = bh.isCharged ? 1 - bh.stateProgress : bh.stateProgress;
 
-    Currency.realityMachines.purchase(this.cost);
+    if (!Achievement(158).canBeApplied) Currency.realityMachines.purchase(this.cost);
     this.incrementAmount();
     this._lazyValue.invalidate();
     this._lazyCost.invalidate();

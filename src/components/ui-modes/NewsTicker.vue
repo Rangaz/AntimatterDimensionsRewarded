@@ -22,6 +22,7 @@ export default {
       return this.fastForward ? "fa-play" : "fa-forward";
     },
     oldFForwardPosition() {
+      if (Theme.currentName() == "S12") return "left: 0px";
       return this.showSkip ? "left: calc(10% - 32px)" : "left: 10%";
     }
   },
@@ -233,35 +234,47 @@ export default {
 
 <style scoped>
 .c-fforward-button {
-  z-index: 9;
+  z-index: 1;
   width: 32px;
 }
 .c-old-fforward-button {
-  z-index: 9;
+  z-index: 1;
   width: 32px;
 }
 .l-fforward-button {
   position: absolute;
   left: 12.8rem; /* This is the same width as the modern sidebar. */
 }
+.t-s12 .l-fforward-button {
+  left: 0rem;
+}
 .l-old-fforward-button {
   position: absolute;
   /*left: 10%; /* This is good enough for most zoom levels. */
 }
+.t-s12 .l-old-fforward-button {
+  left: -32px;
+}
 .c-skip-button {
-  z-index: 9;
+  z-index: 1;
   width: 32px;
 }
 .c-old-skip-button {
-  z-index: 9;
+  z-index: 1;
   width: 32px;
 }
 .l-skip-button {
   position: absolute;
   left: calc(12.8rem + 32px);
 }
+.t-s12 .l-skip-button {
+  left: 32px;
+}
 .l-old-skip-button {
   position: absolute;
   left: 10%;
+}
+.t-s12 .l-old-skip-button {
+  left: 32px;
 }
 </style>

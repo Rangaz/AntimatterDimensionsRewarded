@@ -413,25 +413,24 @@ export function buyMaxDimension(tier, bulk = Infinity) {
 class AntimatterDimensionState extends DimensionState {
   constructor(tier) {
     super(() => player.dimensions.antimatter, tier);
-    // The vanilla costs are in the FIRST_PURCHASE_COST
-    const FIRST_PURCHASE_COST = [null, 10, 100, 1e4, 1e6, 1e9, 1e13, 1e18, 1e24];
-    this._firstPurchaseCost = FIRST_PURCHASE_COST[tier];
-    const BASE_COSTS = [null, 1, 10, 1e3, 1e4, 1e7, 1e10, 1e15, 1e21];
+    // These are the vanilla costs
+    const BASE_COSTS = [null, 10, 100, 1e4, 1e6, 1e9, 1e13, 1e18, 1e24];
     this._baseCost = BASE_COSTS[tier];
-    // These are the base costs with the enhanced achievements
-    const ENHANCED_BASE_COSTS = [null, 1, 1, 1, 1, 1, 1, 1, 1];
-    this._enhancedBaseCosts = ENHANCED_BASE_COSTS[tier];
+    // These are with their regular Achievement reward
+    const REGULAR_COSTS = [null, 1, 10, 1e3, 1e4, 1e7, 1e10, 1e15, 1e21];
+    this._regularCost = REGULAR_COSTS[tier];
+    // These are the base and enhanced cost multipliers
     const BASE_COST_MULTIPLIERS = [null, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e12, 1e15];
     this._baseCostMultiplier = BASE_COST_MULTIPLIERS[tier];
     const ENHANCED_COST_MULTIPLIERS = [null, 2, 2, 2, 2, 2, 2, 2, 32];
-    this._enhancedCostMultipliers = ENHANCED_COST_MULTIPLIERS[tier];
+    this._enhancedCostMultiplier = ENHANCED_COST_MULTIPLIERS[tier];
     // These are the Cursed Row 1 values
     const CURSED_BASE_COSTS = [null, 1e129, DC.E10000, DC.E100000, DC.E320000, DC.E500000, 
       DC.E1E6, DC.E3E6, DC.E6E6];
-    this._cursedBaseCosts = CURSED_BASE_COSTS[tier];
+    this._cursedBaseCost = CURSED_BASE_COSTS[tier];
     const CURSED_COST_MULTPLIERS = [null, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, 
       Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE];
-    this._cursedCostMultipliers = CURSED_COST_MULTPLIERS[tier];
+    this._cursedCostMultiplier = CURSED_COST_MULTPLIERS[tier];
     const C6_BASE_COSTS = [null, 1, 10, 10, 50, 250, 2e3, 2e4, 4e5];
     this._c6BaseCost = C6_BASE_COSTS[tier];
     const C6_BASE_COST_MULTIPLIERS = [null, 1e3, 5e3, 1e4, 1.2e4, 1.8e4, 2.6e4, 3.2e4, 4.2e4];
@@ -447,22 +446,22 @@ class AntimatterDimensionState extends DimensionState {
     // Cursing row 1 already implies that all row 1 Achievements are disabled.
     if (isCursed) {
       return new ExponentialCostScaling({
-      baseCost: this._cursedBaseCosts,
-      baseIncrease: this._cursedCostMultipliers,
+      baseCost: this._cursedBaseCost,
+      baseIncrease: this._cursedCostMultiplier,
       costScale: Player.dimensionMultDecrease,
       scalingCostThreshold: Number.MAX_VALUE
     })};
     // Having the enhanced achievement makes its effect also conveniently work for C6.
     if (row1Achievement.isEnhanced) {
       return new ExponentialCostScaling({
-      baseCost: this._enhancedBaseCosts,
-      baseIncrease: this._enhancedCostMultipliers,
+      baseCost: this._baseCost,
+      baseIncrease: this._enhancedCostMultiplier,
       costScale: Player.dimensionMultDecrease,
       scalingCostThreshold: Number.MAX_VALUE
     })};
     return new ExponentialCostScaling({
-      // I made the cost be different if you don't have the achievement
-      baseCost: NormalChallenge(6).isRunning ? this._c6BaseCost : (row1Achievement.isUnlocked ? this._baseCost : this._firstPurchaseCost),
+      // The cost should be different if you have the achievement
+      baseCost: NormalChallenge(6).isRunning ? this._c6BaseCost : (row1Achievement.isUnlocked ? this._regularCost : this._baseCost),
       baseIncrease: NormalChallenge(6).isRunning ? this._c6BaseCostMultiplier : this._baseCostMultiplier,
       costScale: Player.dimensionMultDecrease,
       scalingCostThreshold: Number.MAX_VALUE

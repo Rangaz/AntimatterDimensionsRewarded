@@ -164,12 +164,11 @@ class AchievementState extends GameMechanicState {
       if (!fromPreset) GameUI.notify.success("Achievement 115 has been automatically Enhanced");
     }
 
-    // Enhancing Achievement 81 affects post-infinity scaling, and so does Er11.
-    // However, since Er11 activates this effect only if the entire first row is Enhanced, 
-    // any row 1 Achievement could trigger this.
+    // Enhancing Achievement 81 affects post-infinity scaling, and so does any row 1 Achievement. 
     if (this.id === 81 || (this.id > 10 && this.id < 20)) {
       GameCache.dimensionMultDecrease.invalidate();
     }
+    if (this.id > 10 && this.id < 20) GameCache.row1Enhancements.invalidate();
     if (this.id === 96) {
       player.eternityPoints = player.eternityPoints.plus(DC.E40.powEffectOf(Achievement(55).enhancedEffect));
     }

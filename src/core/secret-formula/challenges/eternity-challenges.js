@@ -92,8 +92,9 @@ export const eternityChallenges = [
       effect: completions => completions * 0.2,
       formatEffect: value => {
         const total = Math.round(Player.dimensionMultDecrease + Effects.sum(EternityChallenge(6).reward)) - 
-          Effects.sum(Achievement(11).enhancedEffect, Achievement(81), Achievement(81).enhancedEffect) - value;
-        return `-${format(value, 2, 1)} (${formatX(total, 2, 2)} total)`;
+          Effects.sum(Achievement(11).enhancedEffect, 
+          Achievement(81), Achievement(81).enhancedEffect) - value;
+        return `-${format(value, 2, 1)} (${formatX(total, 3, 3)} total)`;
       }
     },
     scrambleText: ["cannot gain Antimatter Galaxies normally", "c㏰'퐚 gai鸭 Anti꟢at랜erﻪﶓa⁍axie㮾 䂇orma㦂l"],
