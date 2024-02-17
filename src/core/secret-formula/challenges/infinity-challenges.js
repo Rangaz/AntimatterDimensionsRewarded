@@ -14,7 +14,7 @@ export const infinityChallenges = [
       formatEffect: value => formatX(value, 1, 1)
     },
     unlockAM: DC.E2000,
-    cursedUnlockAM: DC.E1000000 // When row 13 is cursed
+    cursedUnlockAM: DC.E1E6 // When row 13 is cursed
   },
   {
     id: 2,

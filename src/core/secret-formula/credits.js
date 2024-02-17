@@ -13,7 +13,9 @@ export const credits = {
     10: "Modal Maker, Lady Taker, Pie Baker",
     11: "Lurker Tester",
     12: "Web Tester",
-    13: "Android Tester"
+    13: "Android Tester",
+    14: "AD: Rewarded Developer",
+    15: "AD: Rewarded Special Thanks"
   },
 
   // Each person must have a name and at least one role (the index of the desired role in roles). They can also have a
@@ -39,7 +41,7 @@ export const credits = {
       roles: 3
     }, {
       name: "WaitingIdly",
-      roles: [3, 7, 9, 12, 13]
+      roles: [3, 7, 9, 12, 13, 15]
     }, {
       name: "kajfik",
       name2: "Jakub Kajfosz",
@@ -435,7 +437,37 @@ export const credits = {
       name: "ZylaKat",
       name2: "Katherine Goforth-Harbin",
       roles: 13
-    }
+    }, {
+      name: "Rangaz",
+      roles: 14
+    }, {
+      name: "FIQ",
+      roles: 15
+    }, {
+      name: "Amity",
+      roles: 15
+    }, {
+      name: "Legendis",
+      roles: 15
+    }, {
+      name: "JamesM",
+      roles: 15
+    }, {
+      name: "HRH",
+      roles: 15
+    }, {
+      name: "Hexa",
+      roles: 15
+    }, {
+      name: "asaned",
+      roles: 15
+    }, {
+      name: "Lapis",
+      roles: 15
+    }, {
+      name: "The Discord modding community",
+      roles: 15
+    }, 
   ]
 };
 

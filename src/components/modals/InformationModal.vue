@@ -21,7 +21,8 @@ export default {
     </div>
     <div class="c-info-body">
       Antimatter Dimensions is an Idle Incremental game created by Finnish developer Hevipelle. Originating as a solo
-      project in 2016, it was expanded upon by a large team of developers and testers from then on.
+      project in 2016, it was expanded upon by a large team of developers and testers from then on. Antimatter Dimensions:
+      Rewarded is a mod of this game made in 2023 by developer Rangaz after the game became open source.
       <br>
       <br>
       The game has unfolding gameplay and multiple prestige layers. The "How to Play" button contains useful

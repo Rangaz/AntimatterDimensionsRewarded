@@ -675,6 +675,7 @@ export const normalAchievements = [
   },
   {
     // Buffed & Enhanced!
+    // The x10 Reality is coded in reality.js
     id: 54,
     name: "That's FASTER!",
     get description() { return `Infinity in ${formatInt(10)} minutes or less.`; },
@@ -683,8 +684,9 @@ export const normalAchievements = [
     get reward() { return `Start with ${format(5e6)} antimatter.`; },
     effect: 5e6,
     enhanced: {
-      reward: "Multiply your starting AM, IP and EP amount by your Reality amount.",
-      effect: () => Decimal.clampMin(player.realities, 1).powEffectOf(Achievement(55).enhancedEffect),
+      get reward() { return `Multiply your starting AM, IP and EP amount by your Reality amount, and gain 
+        ${formatX(10)} Realities.` },
+      effect: () => Decimal.clampMin(Currency.realities.value, 1).powEffectOf(Achievement(55).enhancedEffect),
       formatEffect: value => `${formatX(value, 2, 2)}`
     }
   },
