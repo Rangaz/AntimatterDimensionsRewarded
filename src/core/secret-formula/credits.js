@@ -17,7 +17,7 @@ export const credits = {
     14: "Web Tester",
     15: "Android Tester",
     16: "AD: Rewarded Developer",
-    17: "AD: Rewarded Special Thanks"
+    17: "AD: Rewarded Special Thank"
   },
 
   // Each person must have a name and at least one role (the index of the desired role in roles). They can also have a
