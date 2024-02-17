@@ -92,6 +92,10 @@ export const changelog = [
     <li>Fixed Ra's Reality setting Dimension Boosts to 0 (Thank you BsonHK for reporting!).</li>
     <li>Fixed the Fast Forward and Skip buttons for News ticker appearing above everything, including the credits 
     (Thank you Arphimigon for reporting!), and fixed their position in Aero theme (Thank you antitruth for reporting!)</li>
+    17/2
+    <li>Added a credits section for this mod.</li>
+    <li>Fixed Infinity Challenge 1 unlocking earlier than intended (Thank you Jirachi93 for making me notice).</li>
+    <li>Enhanced Achievement 54 now multiplies Reality gain by x10.</li>
     </ul>
     `
   },
