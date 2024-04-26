@@ -2,15 +2,10 @@ import { DC } from "../../constants";
 import { PlayerProgress } from "../../player-progress";
 
 /*
-TODO:
-QOL before Pelle:
--Fix bugs <IN PROGRESS>
-  ->0 Dim Boosts on Ra <DONE>
-  ->Companion slot fixes
-  ->Speedup/Skip News ticker buttons appearing on credits <DONE>
--Improve the About window
--Make credits include this mod's development
--Nameless change?
+PELLE:
+-Row 18
+-
+-Balance
 */
 
 export const normalAchievements = [
@@ -2067,10 +2062,6 @@ export const normalAchievements = [
       effect: 1.2
     }
   },
-
-  // ----------------------------------------------------------------------
-  // Enhanced rewards later than this point won't be developed until later.
-
   {
     id: 141,
     name: "Snap back to reality",
@@ -2439,28 +2430,35 @@ export const normalAchievements = [
   },
         
   // ----------------------------------------------------------------------
-  // Anything at this point forward won't start developing until later
+  // Anything at this point forward won't be Enhanced
 
   {
+    // No need to implement anything
     id: 181,
     displayId: 666,
     name: "Antimatter Dimensions Eternal",
     description: "Doom your Reality.",
     checkRequirement: () => Pelle.isDoomed,
     checkEvent: GAME_EVENT.REALITY_RESET_AFTER,
+    reward: "You just Doomed yourself, why would you be rewarded for it?",
   },
   {
+    // Not yet implemented
     id: 182,
-    name: "One more time",
-    description: "Permanently gain back all Antimatter Dimension autobuyers.",
+    name: "<9D Galaxy",
+    description: "Purchase an Antimatter Galaxy with no more than 4 Dimension Boosts while Doomed.",
     checkRequirement: () => PelleUpgrade.antimatterDimAutobuyers1.canBeApplied &&
       PelleUpgrade.antimatterDimAutobuyers2.canBeApplied,
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() { return `Each Dimension Boost and Antimatter Galaxy reduce each other's requirements by
+      ${formatInt(1)}.` }
   },
   {
+    // Not yet implemented
     id: 183,
-    name: "Déjà vOoM",
-    description: "Complete Infinity Challenge 5 while Doomed.",
+    name: "One for All",
+    get description() { return `Complete Infinity Challenge 4 without purchasing more
+      than ${formatInt(1)} of each Antimatter Dimension while Doomed.` },
     checkRequirement: () => Pelle.isDoomed && InfinityChallenge(5).isCompleted,
     checkEvent: GAME_EVENT.INFINITY_CHALLENGE_COMPLETED,
     // Weirdly specific reward? Yes, its V's ST bonus because we forgot to disable it
@@ -2469,27 +2467,37 @@ export const normalAchievements = [
     effect: 1.0812403840463596
   },
   {
+    // The name is a reference to the approximate amount of time it takes for Replicanti to
+    // reach 1.8e308 with no upgrades.
+    // Not yet implemented
     id: 184,
-    name: "You're out!",
-    description: "Encounter the third Pelle Strike.",
+    name: "71332 seconds later...",
+    description: "Reach Eternity whithout purchasing any Replicanti upgrades while Doomed.",
     checkRequirement: () => PelleStrikes.eternity.hasStrike,
-    checkEvent: GAME_EVENT.PELLE_STRIKE_UNLOCKED
+    checkEvent: GAME_EVENT.PELLE_STRIKE_UNLOCKED,
+    reward: "The Replicanti chance upgrade can now be bought an infinite amount of times, but " + 
+      "its cost increases faster aftr 100%."
+
   },
   {
+    // Needs to change
     id: 185,
     name: "Four score and seven years ago",
     description: "Encounter the fourth Pelle Strike.",
     checkRequirement: () => PelleStrikes.ECs.hasStrike,
-    checkEvent: GAME_EVENT.PELLE_STRIKE_UNLOCKED
+    checkEvent: GAME_EVENT.PELLE_STRIKE_UNLOCKED,
+    reward: "Pelle Upgrades no longer spend Reality Shards."
   },
   {
+    // Not yet implemented
     id: 186,
-    displayId: 181,
-    name: "An unhealthy obsession",
-    description: `Purchase Time Study 181 while Doomed.`,
-    reward: "..."
+    name: "Amalgamation",
+    get description() { return `Reach ${formatPostBreak("1e1000")} IP in Eternity Challenge 1 without
+      purchasing any Infinity Dimensions nor any 5-8th Antimatter Dimensions while Doomed.` },
+    get reward() { `You can complete every Eternity Challenge up to ${formatInt(6)} times.` }
   },
   {
+    // This may need to change
     id: 187,
     name: "The One with Dilated Time",
     description: "Unlock Dilation while Doomed.",
@@ -2508,6 +2516,7 @@ export const normalAchievements = [
     name: "The End",
     description: "Beat the game.",
     checkRequirement: () => GameEnd.endState > END_STATE_MARKERS.GAME_END && !GameEnd.removeAdditionalEnd,
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    reward: "Congratulations! Watch a cool animation and the credits!"
   },
 ];
