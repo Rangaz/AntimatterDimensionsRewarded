@@ -568,7 +568,9 @@ export const normalAchievements = [
     checkRequirement: () => NormalChallenges.all.countWhere(c => c.isCompleted) >= 3,
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
     get reward () { 
-      return `For every Normal Challenge completed, all Antimatter Dimensions are ${formatPercents(0.02)} stronger.`;
+      // The text makes it easy to know wthat r47 has an Enhancement not yet unlocked.
+      return `For every Normal Challenge completed, all Antimatter Dimensions are ${formatPercents(0.02)} stronger.
+        ${Achievements.isEnhancementUnlocked && !Teresa.isUnlocked ? "(Unlock Teresa to unlock Enhancement)" : ""}`;
     },
     effect: () => Math.pow(1.02, NormalChallenges.all.countWhere(c => c.isCompleted)),
     formatEffect: value => `${formatX(value, 2, 2)}`,
@@ -576,7 +578,7 @@ export const normalAchievements = [
       get reward () {
         if (Teresa.isUnlocked) return `For every Celestial Reality beaten, 
           raise all Antimatter Dimensions by +${format(0.001, 3, 3)} power.`;
-        else return "Unlock Teresa to unlock this reward.";
+        return "Unlock Teresa to unlock this reward.";
       },
       effect: () => 1 + 
         (Teresa.runCompleted ? 0.001 : 0) +
@@ -1967,7 +1969,9 @@ export const normalAchievements = [
       player.IPMultPurchases === 0 &&
       Currency.infinityPoints.exponent >= 200000,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    reward: "You start Eternities with all Infinity Challenges unlocked and completed.",
+    get reward() { return `You start Eternities with all Infinity Challenges unlocked and completed.
+                      ${Achievements.maxEnhancedRow >= 13 && !V.isFullyCompleted ? 
+                        "(Fully complete Hard V to unlock Enhancement)" : ""}`},
     enhanced: {
       reward: "You start Eternities with all Infinity Challenges unlocked and completed, and all Realities with " +
         "a full Time Study tree. This requires fully completing Hard V.",
