@@ -9,6 +9,22 @@ export const changelog = [
    * }
    */
   {
+    date: [2024, 4, 26],
+    name: "Better late than never",
+    info: `
+    <b>It's time to finish this</b>
+    <br>
+    <br>
+    <b>New content: NOT RELEASED YET</b>
+    <br>
+    <br>
+    <b>Changes: </b>
+    <ul>
+    <li>26/4: Added indications for Achievements 47 and 133 to indicate how to unlock their Enhancements.</li>
+    </ul>
+    `
+  },
+  {
     date: [2023, 11, 30],
     name: "Have better life quality",
     info: `
