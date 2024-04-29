@@ -58,7 +58,7 @@ export class Galaxy {
     }
 
     amount -= Effects.sum(InfinityUpgrade.resetBoost, Achievement(27), 
-      Achievement(27).enhancedEffect.effects.initialReduction);
+      Achievement(27).enhancedEffect.effects.initialReduction, Achievement(182).effects.galaxyReduction);
     if (InfinityChallenge(5).isCompleted) amount -= 1;
 
     if (GlyphAlteration.isAdded("power")) amount *= getSecondaryGlyphEffect("powerpow");

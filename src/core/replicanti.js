@@ -331,6 +331,7 @@ class ReplicantiUpgradeState {
     this.baseCost = Decimal.times(this.baseCost, this.costIncrease);
     this.value = this.nextValue;
     if (EternityChallenge(8).isRunning) player.eterc8repl--;
+    player.requirementChecks.eternity.noRU = false;
     GameUI.update();
   }
 

@@ -2445,18 +2445,21 @@ export const normalAchievements = [
     reward: "You just Doomed yourself, why would you be rewarded for it?",
   },
   {
-    // Not yet implemented
+    // Implemented! And changed!
     id: 182,
     name: "<9D Galaxy",
     description: "Purchase an Antimatter Galaxy with no more than 4 Dimension Boosts while Doomed.",
-    checkRequirement: () => PelleUpgrade.antimatterDimAutobuyers1.canBeApplied &&
-      PelleUpgrade.antimatterDimAutobuyers2.canBeApplied,
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    checkRequirement: () => Pelle.isDoomed && DimBoost.purchasedBoosts <= 4,
+    checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
     get reward() { return `Each Dimension Boost and Antimatter Galaxy reduce each other's requirements by
-      ${formatInt(1)}.` }
+      ${formatInt(3)}.` },
+    effects: {
+        dimBoostReduction: () => 3 * player.galaxies,
+        galaxyReduction: () => 3 * DimBoost.purchasedBoosts,
+      },
   },
   {
-    // Not yet implemented
+    // Not yet changed
     id: 183,
     name: "One for All",
     get description() { return `Complete Infinity Challenge 4 without purchasing more
@@ -2471,14 +2474,14 @@ export const normalAchievements = [
   {
     // The name is a reference to the approximate amount of time it takes for Replicanti to
     // reach 1.8e308 with no upgrades.
-    // Not yet implemented
+    // Not yet implemented nor changed
     id: 184,
     name: "71332 seconds later...",
-    description: "Reach Eternity whithout purchasing any Replicanti upgrades while Doomed.",
-    checkRequirement: () => PelleStrikes.eternity.hasStrike,
-    checkEvent: GAME_EVENT.PELLE_STRIKE_UNLOCKED,
+    description: "Eternity without purchasing any Replicanti upgrades while Doomed.",
+    checkRequirement: () => Pelle.isDoomed && player.requirementChecks.eternity.noRU,
+    checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
     reward: "The Replicanti chance upgrade can now be bought an infinite amount of times, but " + 
-      "its cost increases faster aftr 100%."
+      "its cost increases faster after 100%."
 
   },
   {
@@ -2491,7 +2494,7 @@ export const normalAchievements = [
     reward: "Pelle Upgrades no longer spend Reality Shards."
   },
   {
-    // Not yet implemented
+    // Not yet implemented nor changed
     id: 186,
     name: "Amalgamation",
     get description() { return `Reach ${formatPostBreak("1e1000")} IP in Eternity Challenge 1 without
@@ -2499,7 +2502,7 @@ export const normalAchievements = [
     get reward() { `You can complete every Eternity Challenge up to ${formatInt(6)} times.` }
   },
   {
-    // This may need to change
+    // Not yet changed
     id: 187,
     name: "The One with Dilated Time",
     description: "Unlock Dilation while Doomed.",
@@ -2519,6 +2522,6 @@ export const normalAchievements = [
     description: "Beat the game.",
     checkRequirement: () => GameEnd.endState > END_STATE_MARKERS.GAME_END && !GameEnd.removeAdditionalEnd,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    reward: "Congratulations! Watch a cool animation and the credits!"
+    reward: "Congratulations! Watch a cool animation, and then the credits!"
   },
 ];
