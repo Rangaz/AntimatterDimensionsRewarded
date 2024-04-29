@@ -231,6 +231,7 @@ class InfinityIPMultUpgrade extends GameMechanicState {
         // to my Achievement 82 (no longer spends resources). I'll try to fix this issue.
         purchases = Math.floor(Decimal.log(availableIP.divide(this.cost), this.costIncrease) + 1);
       }
+
       if (purchases <= 0) return;
       this.purchase(purchases);
     }
