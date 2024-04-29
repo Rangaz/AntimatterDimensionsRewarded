@@ -20,6 +20,14 @@ export const changelog = [
     <br>
     <b>Changes: </b>
     <ul>
+    <li>28/4: Implemented recent base game improvements, including:
+      <ul>
+      <li>Updated credits</li>
+      <li>Improved loading Glyph presets</li>
+      <li>Improved recycling</li>
+      <li>And fixed typos</li>
+      </ul>
+    </li>
     <li>26/4: Added indications for Achievements 47 and 133 to indicate how to unlock their Enhancements.</li>
     </ul>
     `
