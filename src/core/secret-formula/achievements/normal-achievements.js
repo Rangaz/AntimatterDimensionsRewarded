@@ -664,7 +664,6 @@ export const normalAchievements = [
     checkEvent: [GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
     reward: "Start with an 8th AD, if possible. Disabled if the 8th AD autobuyer is also disabled.",
     effect: 1,
-
     effectCondition: () => Autobuyer.antimatterDimension(8).isActive && player.auto.autobuyersOn &&
       player.auto.antimatterDims.isActive,
     enhanced: {
@@ -874,7 +873,6 @@ export const normalAchievements = [
       4 / (Time.thisInfinity.totalMinutes * !Achievement(145).canBeApplied + 1), 1) : 1),
     effectCondition: () => Player.isInAnyChallenge && 
       (Achievement(145).canBeApplied || Time.thisInfinity.totalMinutes < 3),
-
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: { 
       get reward () {
