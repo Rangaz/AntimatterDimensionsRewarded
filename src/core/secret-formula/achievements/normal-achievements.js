@@ -2459,13 +2459,16 @@ export const normalAchievements = [
       },
   },
   {
-    // Not yet changed
+    // Changed!
     id: 183,
-    name: "One for All",
+    name: "Ten for All",
     get description() { return `Complete Infinity Challenge 4 without purchasing more
-      than ${formatInt(1)} of each Antimatter Dimension while Doomed.` },
-    checkRequirement: () => Pelle.isDoomed && InfinityChallenge(5).isCompleted,
-    checkEvent: GAME_EVENT.INFINITY_CHALLENGE_COMPLETED,
+      than ${formatInt(10)} of each of ADs 1-7 in any reset while Doomed.` },
+    checkRequirement: () => 
+      Pelle.isDoomed && 
+      InfinityChallenge(4).isRunning &&
+      player.requirementChecks.infinity.noMoreThan10AD,
+    checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     // Weirdly specific reward? Yes, its V's ST bonus because we forgot to disable it
     // when balancing Pelle and only realised too late.
     get reward() { return `All Antimatter Dimensions are raised to ${formatPow(1.0812403840463596, 0, 3)}`; },

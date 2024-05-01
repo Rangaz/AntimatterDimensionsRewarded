@@ -102,7 +102,9 @@ export const pelleUpgrades = {
   },
   dimBoostResetsNothing: {
     id: 7,
-    description: "Dimension Boosts no longer reset anything",
+    // The upgrade actually does the exact same effect as base game, but I changed the text since it's relevant 
+    // for my changed r183
+    description: "Dimension Boosts no longer reset anything, and Antimatter Galaxies only reset Dimension Boosts",
     cost: 1e11,
     formatCost,
   },
