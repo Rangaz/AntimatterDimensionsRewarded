@@ -2471,20 +2471,20 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     // Weirdly specific reward? Yes, its V's ST bonus because we forgot to disable it
     // when balancing Pelle and only realised too late.
-    get reward() { return `All Antimatter Dimensions are raised to ${formatPow(1.0812403840463596, 0, 3)}`; },
+    get reward() { return `All Antimatter Dimensions are raised to ${formatPow(1.0812403840463596, 0, 3)}.`; },
     effect: 1.0812403840463596
   },
   {
     // The name is a reference to the approximate amount of time it takes for Replicanti to
     // reach 1.8e308 with no upgrades.
-    // Not yet implemented nor changed
+    // Implemented (surprisingly easy)! And changed! 
     id: 184,
     name: "71332 seconds later...",
     description: "Eternity without purchasing any Replicanti upgrades while Doomed.",
     checkRequirement: () => Pelle.isDoomed && player.requirementChecks.eternity.noRU,
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
-    reward: "The Replicanti chance upgrade can now be bought an infinite amount of times, but " + 
-      "its cost increases faster after 100%."
+    get reward() { return `The Replicanti chance upgrade cost scales ${formatInt(3)} times slower and 
+      has no cap.` }
 
   },
   {

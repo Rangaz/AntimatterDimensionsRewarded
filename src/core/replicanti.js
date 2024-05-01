@@ -361,10 +361,14 @@ export const ReplicantiUpgrade = {
     get baseCost() { return player.replicanti.chanceCost; }
     set baseCost(value) { player.replicanti.chanceCost = value; }
 
-    get costIncrease() { return 1e15; }
+    get costIncrease() { 
+      if (Achievement(184).canBeApplied) return 1e5;
+      return 1e15; 
+    }
 
     get cap() {
-      // Chance never goes over 100%.
+      if (Achievement(184).canBeApplied) return Number.MAX_VALUE;
+      // Chance never goes over 100% in normal circunstances.
       return 1;
     }
 
