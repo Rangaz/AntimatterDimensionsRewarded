@@ -188,7 +188,7 @@ export const eternityMilestones = {
     },
     activeCondition: () => (player.options.offlineProgress
       ? (Achievement(102).isEnhanced ? `Always active thanks to Enhanced Achievement 102.` : `Must be outside of Normal/Infinity Challenges and outside of EC4 and EC12,
-        the Big Crunch Autobuyer must be turned on and set to time mode with less than ${formatInt(60)} seconds,
+        the Big Crunch Autobuyer must be turned on and set to time mode with ${formatInt(5)} seconds or less,
         and the Eternity Autobuyer must be turned off.`)
       : ""),
       pelleUseless: true
