@@ -22,6 +22,7 @@ export const infinities = {
       Achievement(87),
       Achievement(87).enhancedEffect,
       Achievement(102).enhancedEffect.effects.multiplier,
+      Achievement(131).effects.infinitiesGain,
       Achievement(164),
       Achievement(172).effects.infinityMultiplier,
     ),

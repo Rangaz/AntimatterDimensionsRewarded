@@ -86,6 +86,9 @@ export const general = {
       if (ach === 2094) return Achievement(94).effects.replicantiSpeed.effectOrDefault(1);
       if (ach === 108) return Achievement(108).canBeApplied && (Time.thisEternity.totalSeconds < 9 
         || Achievement(145).canBeApplied) ? Achievement(108).effects.replicantiSpeed.effectOrDefault(1) : 1;
+      // There is also a banked infinities gain effect, but we don't track that in the multiplier tab
+      if (ach === 131) return Achievement(131).canBeApplied
+        ? Achievement(131).effects.infinitiesGain.effectOrDefault(1) : 1;
       // There is also a buy10 effect, but we don't track that in the multiplier tab
       if (ach === 141) return Achievement(141).canBeApplied ? Achievement(141).effects.ipGain.effectOrDefault(1) : 1;
       if (ach === 72 || ach === 183) return 1;
