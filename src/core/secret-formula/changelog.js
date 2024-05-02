@@ -9,7 +9,7 @@ export const changelog = [
    * }
    */
   {
-    date: [2024, 5, 3],
+    date: [2024, 5, 2],
     name: "Celebrate Android Reality Update",
     info: `
 <i>Note: These changes are from base game, added to this mod on July 6, 2024.</i>
