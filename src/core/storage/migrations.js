@@ -474,6 +474,15 @@ export const migrations = {
       // I want to add a 7th Enhancement slot to match the 7 existing Glyph preset slots
       player.reality.enhancedPresets.push({name: "", enhancements: ""});
     },
+    35: player => {
+      // If the player has r146 "Perks of living" achievement we give them the DAB, or ACHEH, perk automatically
+      if ((player.achievementBits[13] & 32) !== 0 && !player.reality.perks.has(107)) {
+        player.reality.perks.add(107);
+      }
+      if ((player.achievementBits[13] & 32) !== 0 && !player.reality.perks.has(206)) {
+        player.reality.perks.add(206);
+      }
+    }
   },
 
   normalizeTimespans(player) {
