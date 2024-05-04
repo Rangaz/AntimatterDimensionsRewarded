@@ -251,6 +251,7 @@ window.player = {
       noAD1: true,
       noRG: true,
       noRU: true,
+      noAD5678: true,
     },
     reality: {
       noAM: true,
@@ -1056,6 +1057,7 @@ export const Player = {
           noAD1: true,
           noRG: true,
           noRU: true,
+          noAD5678: true,
         };
       // eslint-disable-next-line no-fallthrough
       case "infinity":

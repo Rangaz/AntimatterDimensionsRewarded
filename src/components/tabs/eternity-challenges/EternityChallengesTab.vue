@@ -20,6 +20,7 @@ export default {
       untilNextEC: TimeSpan.zero,
       untilAllEC: TimeSpan.zero,
       hasECR: false,
+      hasr185: false,
     };
   },
   computed: {
@@ -54,6 +55,7 @@ export default {
         this.untilAllEC.setFrom(untilNextEC + (autoECInterval * (remainingCompletions - 1)));
       }
       this.hasECR = Perk.studyECRequirement.isBought;
+      this.hasr185 = Achievement(185).canBeApplied;
     },
     isChallengeVisible(challenge) {
       return challenge.completions > 0 || challenge.isUnlocked || challenge.hasUnlocked ||
@@ -87,6 +89,9 @@ export default {
     <div>
       Complete Eternity Challenges again for a bigger reward, maximum of {{ formatInt(5) }} times.<br>
       The rewards are applied permanently with no need to have the respective Eternity Challenge Time Study purchased.
+    </div>
+    <div v-if="hasr185">
+      You need at least a full completion before benefiting from continous completions.
     </div>
     <div v-if="!hasECR">
       When you respec out of an unlocked Eternity Challenge, you don't need to redo the secondary requirement<br>

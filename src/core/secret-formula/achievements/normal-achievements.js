@@ -2313,6 +2313,7 @@ export const normalAchievements = [
     effect: 69
   },
   {
+    // Buffed!
     id: 167,
     name: "Mr. Layer? Sorry, you're not on the list",
     get description() { return `Reach ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)} Reality Machines.`; },
@@ -2488,34 +2489,41 @@ export const normalAchievements = [
 
   },
   {
-    // Needs to change
+    // Implemented (requires more testing)! And changed!
     id: 185,
-    name: "Four score and seven years ago",
-    description: "Encounter the fourth Pelle Strike.",
-    checkRequirement: () => PelleStrikes.ECs.hasStrike,
-    checkEvent: GAME_EVENT.PELLE_STRIKE_UNLOCKED,
-    reward: "Pelle Upgrades no longer spend Reality Shards."
+    name: "Amalgamation",
+    get description() { return `Reach ${formatPostBreak("1e600")} IP in Eternity Challenge 1 
+      without purchasing any Infinity Dimensions nor any 5-8th Antimatter Dimensions while Doomed.` },
+    checkRequirement: () => 
+      Pelle.isDoomed &&
+      EternityChallenge(1).isRunning &&
+      player.requirementChecks.eternity.noAD5678 &&
+      Array.dimensionTiers.map(InfinityDimension).every(dim => dim.baseAmount === 0) &&
+      Currency.infinityPoints.value.gte(DC.E600),
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    reward: "Eternity Challenge completions are now continous, based on highest IP."
   },
   {
     // Not yet implemented nor changed
     id: 186,
-    name: "Amalgamation",
-    get description() { return `Reach ${formatPostBreak("1e1000")} IP in Eternity Challenge 1 without
-      purchasing any Infinity Dimensions nor any 5-8th Antimatter Dimensions while Doomed.` },
+    name: "And nothing of value was lost.",
+    get description() { return `Reach ${formatPostBreak("1e3000")} IP in Eternity Challenge 9 without
+      purchasing any Infinity nor Time Dimensions.` },
     get reward() { `You can complete every Eternity Challenge up to ${formatInt(6)} times.` }
   },
   {
     // Not yet changed
     id: 187,
-    name: "The One with Dilated Time",
-    description: "Unlock Dilation while Doomed.",
-    checkRequirement: () => PelleStrikes.dilation.hasStrike,
+    name: "Galactic Despacito",
+    get description() { return `Have ${formatInt(10)} times more Replicanti Galaxies than Antimatter Galaxies,
+      and ${formatInt(10)} times more Tachyon Galaxies than Replicanti Galaxies.`; },
+    checkRequirement: () => Pelle.isDoomed,
     checkEvent: GAME_EVENT.PELLE_STRIKE_UNLOCKED,
     // We forgot to disable a singularity milestone while balancing Pelle; now it's disabled
     // and this upgrade has the same effect as it used to.
     get reward() {
       return `Increase the multiplier per repeatable Dilated Time
-      multiplier upgrade by ${formatX(1.35, 0, 2)}.`;
+        multiplier upgrade by ${formatX(1.35, 0, 2)}.`;
     },
     effect: 1.35
   },

@@ -50,7 +50,7 @@ export const eternityChallenges = [
       number of Infinities or else you will fail the Challenge.`,
     goal: DC.E2750,
     goalIncrease: DC.E550,
-    restriction: completions => Math.max(16 - 4 * completions, 0),
+    restriction: completions => Math.max(16 - Math.round(4 * completions), 0),
     checkRestriction: restriction => Currency.infinities.lte(restriction),
     formatRestriction: restriction => (restriction === 0
       ? "without any Infinities"
@@ -72,7 +72,7 @@ export const eternityChallenges = [
     goalIncrease: DC.E400,
     reward: {
       description: "Distant Galaxy cost scaling starts later",
-      effect: completions => completions * 5,
+      effect: completions => Math.ceil(completions * 5),
       formatEffect: value => `${formatInt(value)} AG later`
     }
   },

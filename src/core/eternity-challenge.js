@@ -157,6 +157,10 @@ export class EternityChallengeState extends GameMechanicState {
   }
 
   goalAtCompletions(completions) {
+    // In normal circumstances, this function 'looks ahead' to tell you how much IP is needed for the next
+    // full completion. However, with continous completions, even a tiny amount ahead is good enough,
+    // so, by substracting 1, this should work
+    if (Achievement(185).canBeApplied) completions--;
     return completions > 0
       ? this.initialGoal.times(this.goalIncrease.pow(Math.min(completions, this.maxCompletions - 1)))
       : this.initialGoal;
@@ -165,11 +169,13 @@ export class EternityChallengeState extends GameMechanicState {
   completionsAtIP(ip) {
     if (ip.lt(this.initialGoal)) return 0;
     const completions = 1 + (ip.dividedBy(this.initialGoal)).log10() / this.goalIncrease.log10();
+    // r185 makes completions continous
+    if (Achievement(185).canBeApplied) return Math.min(completions, this.maxCompletions);
     return Math.min(Math.floor(completions), this.maxCompletions);
   }
 
-  addCompletion(auto = false) {
-    this.completions++;
+  addCompletion(auto = false, completions = 1) {
+    this.completions += completions;
     if ((this.id === 4 || this.id === 12) && auto) {
       this.tryFail(true);
     }

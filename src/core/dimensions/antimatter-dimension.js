@@ -243,6 +243,7 @@ function onBuyDimension(tier) {
   if (tier !== 1) player.requirementChecks.eternity.onlyAD1 = false;
   if (tier === 8) player.requirementChecks.infinity.noAD8 = false;
   if (tier === 1) player.requirementChecks.eternity.noAD1 = false;
+  if (tier > 4) player.requirementChecks.eternity.noAD5678 = false;
   if (AntimatterDimension(tier).bought > 10 && tier !== 8) 
     player.requirementChecks.infinity.noMoreThan10AD = false;
 }

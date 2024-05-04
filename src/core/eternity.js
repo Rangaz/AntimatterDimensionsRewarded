@@ -16,15 +16,20 @@ function giveEternityRewards(auto) {
 
   if (EternityChallenge.isRunning) {
     const challenge = EternityChallenge.current;
-    challenge.addCompletion(false);
-    if (Perk.studyECBulk.isBought) {
-      let completionCount = 0;
-      while (!challenge.isFullyCompleted && challenge.canBeCompleted) {
-        challenge.addCompletion(false);
-        completionCount++;
+    if (Achievement(185).canBeApplied) { // Continous EC completions
+      challenge.addCompletion(false, challenge.completionsAtIP(player.records.thisEternity.maxIP) - challenge.completions);
+    }
+    else {
+      challenge.addCompletion(false);
+      if (Perk.studyECBulk.isBought) {
+        let completionCount = 0;
+        while (!challenge.isFullyCompleted && challenge.canBeCompleted) {
+          challenge.addCompletion(false);
+          completionCount++;
+        }
+        AutomatorData.lastECCompletionCount = completionCount;
+        if (Enslaved.isRunning && completionCount > 5) EnslavedProgress.ec1.giveProgress();
       }
-      AutomatorData.lastECCompletionCount = completionCount;
-      if (Enslaved.isRunning && completionCount > 5) EnslavedProgress.ec1.giveProgress();
     }
     player.challenge.eternity.requirementBits &= ~(1 << challenge.id);
     respecTimeStudies(auto);
