@@ -2460,7 +2460,7 @@ export const normalAchievements = [
       },
   },
   {
-    // Changed!
+    // Changed! But not yet implemented
     id: 183,
     name: "Ten for All",
     get description() { return `Complete Infinity Challenge 4 without purchasing more
@@ -2470,10 +2470,10 @@ export const normalAchievements = [
       InfinityChallenge(4).isRunning &&
       player.requirementChecks.infinity.noMoreThan10AD,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    // Weirdly specific reward? Yes, its V's ST bonus because we forgot to disable it
-    // when balancing Pelle and only realised too late.
-    get reward() { return `All Antimatter Dimensions are raised to ${formatPow(1.0812403840463596, 0, 3)}.`; },
-    effect: 1.0812403840463596
+    // Weirdly specific reward? No
+    get reward() { return `The Buy 10 factor is applied twice for every ${formatInt(100)} purchases, 
+      thrice for every ${formatInt(1000)} purchases, and so on. It now affects each Infinity and Time Dimension.`; },
+    effect: 1.00
   },
   {
     // The name is a reference to the approximate amount of time it takes for Replicanti to
@@ -2484,12 +2484,12 @@ export const normalAchievements = [
     description: "Eternity without purchasing any Replicanti upgrades while Doomed.",
     checkRequirement: () => Pelle.isDoomed && player.requirementChecks.eternity.noRU,
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
-    get reward() { return `The Replicanti chance upgrade cost scales ${formatInt(3)} times slower and 
-      has no cap.` }
+    get reward() { return `The Replicanti chance upgrade cost scales ${formatInt(3)} times slower, and 
+      can be infinitely purchased.` }
 
   },
   {
-    // Implemented (requires more testing)! And changed!
+    // Implemented! And changed!
     id: 185,
     name: "Amalgamation",
     get description() { return `Reach ${formatPostBreak("1e600")} IP in Eternity Challenge 1 
@@ -2512,7 +2512,7 @@ export const normalAchievements = [
     get reward() { `You can complete every Eternity Challenge up to ${formatInt(6)} times.` }
   },
   {
-    // Not yet changed
+    // Not yet changed nor implemented
     id: 187,
     name: "Galactic Despacito",
     get description() { return `Have ${formatInt(10)} times more Replicanti Galaxies than Antimatter Galaxies,
@@ -2520,11 +2520,8 @@ export const normalAchievements = [
     checkRequirement: () => Pelle.isDoomed,
     checkEvent: GAME_EVENT.PELLE_STRIKE_UNLOCKED,
     // We forgot to disable a singularity milestone while balancing Pelle; now it's disabled
-    // and this upgrade has the same effect as it used to.
-    get reward() {
-      return `Increase the multiplier per repeatable Dilated Time
-        multiplier upgrade by ${formatX(1.35, 0, 2)}.`;
-    },
+    // and I did whatever I wanted
+    reward: "ALL Galaxies count as Antimatter and Replicanti Galaxies for the purposes of boosts.",
     effect: 1.35
   },
   {

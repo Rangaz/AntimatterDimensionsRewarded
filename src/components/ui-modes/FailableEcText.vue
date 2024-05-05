@@ -50,7 +50,7 @@ export default {
           this.currentResource = new Decimal(Time.thisEternity.totalSeconds);
         }
         this.maximumResource = new Decimal(EternityChallenge.current.config.restriction(
-          Math.max(EternityChallenge.current.completions - this.hasr185 + 0.0001, 0)));
+          Math.max(EternityChallenge.current.completions - (this.hasr185 * 0.99999), 0)));
       }
     },
   },

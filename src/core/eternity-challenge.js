@@ -269,7 +269,7 @@ export class EternityChallengeState extends GameMechanicState {
     // In normal circumstances, this function 'looks ahead' to tell you what the restriction is for the next
     // full completion. However, with continous completions, even a tiny amount ahead is good enough,
     // so, by substracting 1, and adding a very small amount, this should work
-    completions = Math.max(completions - Achievement(185).canBeApplied + 0.0000001, 0);
+    completions = Math.max(completions - (Achievement(185).canBeApplied * 0.9999999), 0);
     return this.config.restriction === undefined ||
       this.config.checkRestriction(this.config.restriction(completions));
   }
@@ -311,7 +311,7 @@ export class EternityChallengeState extends GameMechanicState {
       `spending more than ${quantify("in-game second", restriction, 0, 1)} in it`;
     }
     Modal.message.show(`
-      ${reason(this.config.restriction(this.completions - Achievement(185).canBeApplied + 0.0001))}, ` +
+      ${reason(this.config.restriction(this.completions - (Achievement(185).canBeApplied * 0.9999)))}, ` +
       `which has caused you to exit it.`,
       { closeEvent: GAME_EVENT.REALITY_RESET_AFTER }, 1);
     EventHub.dispatch(GAME_EVENT.CHALLENGE_FAILED);

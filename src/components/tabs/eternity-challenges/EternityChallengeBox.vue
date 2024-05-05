@@ -38,7 +38,7 @@ export default {
       const config = this.config;
       let goal = `Goal: ${this.goalAtCompletions(this.completions)} IP`;
       if (config.restriction) {
-        goal += ` ${config.formatRestriction(config.restriction(Math.max(this.completions - this.hasr185 + 0.0001, 0)))}`;
+        goal += ` ${config.formatRestriction(config.restriction(Math.max(this.completions - (this.hasr185 * 0.99999), 0)))}`;
       }
       return goal;
     },

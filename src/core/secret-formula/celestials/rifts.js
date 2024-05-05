@@ -17,7 +17,7 @@ export const pelleRifts = {
     effect: totalFill => {
       if (player.challenge.eternity.current !== 0) {
         const chall = EternityChallenge.current;
-        const goal = chall.goalAtCompletions(chall.gainedCompletionStatus.totalCompletions);
+        const goal = chall.goalAtCompletions(chall.gainedCompletionStatus.totalCompletions + Achievement(185).canBeApplied);
         return totalFill.plus(1).pow(0.1).min(goal.pow(0.15));
       }
       return totalFill.plus(1).pow(0.33);
