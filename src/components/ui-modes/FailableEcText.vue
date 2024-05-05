@@ -5,7 +5,8 @@ export default {
     return {
       currentResource: new Decimal(0),
       maximumResource: new Decimal(0),
-      currentEternityChallengeId: 0
+      currentEternityChallengeId: 0,
+      hasr185: false,
     };
   },
   computed: {
@@ -41,6 +42,7 @@ export default {
   methods: {
     update() {
       if (EternityChallenge.current && [4, 12].includes(EternityChallenge.current.id)) {
+        this.hasr185 = Achievement(185).canBeApplied;
         this.currentEternityChallengeId = EternityChallenge.current.id;
         if (this.currentEternityChallengeId === 4) {
           this.currentResource.copyFrom(Currency.infinities);
@@ -48,7 +50,7 @@ export default {
           this.currentResource = new Decimal(Time.thisEternity.totalSeconds);
         }
         this.maximumResource = new Decimal(EternityChallenge.current.config.restriction(
-          EternityChallenge.current.completions));
+          Math.max(EternityChallenge.current.completions - this.hasr185 + 0.0001, 0)));
       }
     },
   },

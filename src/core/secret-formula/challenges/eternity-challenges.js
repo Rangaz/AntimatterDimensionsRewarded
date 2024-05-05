@@ -50,7 +50,7 @@ export const eternityChallenges = [
       number of Infinities or else you will fail the Challenge.`,
     goal: DC.E2750,
     goalIncrease: DC.E550,
-    restriction: completions => Math.max(16 - Math.round(4 * completions), 0),
+    restriction: completions => Math.max(Math.floor(16 - 4 * completions), 0),
     checkRestriction: restriction => Currency.infinities.lte(restriction),
     formatRestriction: restriction => (restriction === 0
       ? "without any Infinities"

@@ -563,7 +563,7 @@ export const normalAchievements = [
     checkRequirement: () => NormalChallenges.all.countWhere(c => c.isCompleted) >= 3,
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
     get reward () { 
-      // The text makes it easy to know wthat r47 has an Enhancement not yet unlocked.
+      // The text makes it easy to know that r47 has an Enhancement not yet unlocked.
       return `For every Normal Challenge completed, all Antimatter Dimensions are ${formatPercents(0.02)} stronger.
         ${Achievements.isEnhancementUnlocked && !Teresa.isUnlocked ? "(Unlock Teresa to unlock Enhancement)" : ""}`;
     },
@@ -2501,7 +2501,7 @@ export const normalAchievements = [
       Array.dimensionTiers.map(InfinityDimension).every(dim => dim.baseAmount === 0) &&
       Currency.infinityPoints.value.gte(DC.E600),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    reward: "Eternity Challenge completions are now continous, based on highest IP."
+    reward: "Eternity Challenge completions are now continous."
   },
   {
     // Not yet implemented nor changed
