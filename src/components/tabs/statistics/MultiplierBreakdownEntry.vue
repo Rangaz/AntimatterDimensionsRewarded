@@ -510,7 +510,7 @@ export default {
 }
 
 .c-bar-highlight {
-  animation: a-glow-bar 1s infinite;
+  animation: a-glow-bar 2s infinite;
 }
 
 @keyframes a-glow-bar {
@@ -571,7 +571,7 @@ export default {
 .c-single-entry-highlight {
   border: 0.1rem solid;
   font-weight: bold;
-  animation: a-glow-text 1s infinite;
+  animation: a-glow-text 2s infinite;
 }
 
 @keyframes a-glow-text {
