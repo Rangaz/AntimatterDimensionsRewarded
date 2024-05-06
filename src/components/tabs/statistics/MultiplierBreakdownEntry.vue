@@ -471,6 +471,7 @@ export default {
 
 <style scoped>
 .c-multiplier-entry-container {
+  -webkit-tap-highlight-color: transparent;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
