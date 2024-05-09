@@ -480,6 +480,7 @@ export default {
   padding: 0.5rem;
   font-weight: normal;
   background-color: var(--color-base);
+
   -webkit-tap-highlight-color: transparent;
 }
 
