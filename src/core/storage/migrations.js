@@ -485,6 +485,9 @@ export const migrations = {
 
       // This update has a rebalance that assumes the 3rd dilation repeatable is unpurchasable in cel7
       if (player.celestials.pelle.doomed) player.dilation.rebuyables[3] = 0;
+    },
+    36: player => {
+      delete player.infinity.upgradeBits;
     }
   },
 
