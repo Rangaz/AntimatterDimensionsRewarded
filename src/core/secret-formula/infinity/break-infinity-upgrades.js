@@ -57,7 +57,7 @@ export const breakInfinityUpgrades = {
   achievementMult: {
     id: "achievementMult",
     cost: 1e6,
-    description: "Additional multiplier to Antimatter Dimensions based on Achievements completed",
+    description: "Antimatter Dimensions gain a multiplier based on Achievements completed",
     effect: () => Math.max(Math.pow((Achievements.effectiveCount - 30), 3) / 40, 1),
     formatEffect: value => formatX(value, 2, 2)
   },
@@ -66,7 +66,7 @@ export const breakInfinityUpgrades = {
     cost: 1e7,
     description: () => (Achievement(145).canBeApplied ? 
       "Antimatter Dimensions gain a multiplier (maxed by Achievement 145)" :
-      "Antimatter Dimensions gain a multiplier based on slowest challenge run"),
+      "Antimatter Dimensions gain a multiplier based on how fast your slowest challenge run is"),
     effect: () => Achievement(145).canBeApplied ? DC.D3E4 : 
       Decimal.clampMin(50 / Time.worstChallenge.totalMinutes, 1),
     formatEffect: value => formatX(value, 2, 2),
