@@ -487,7 +487,7 @@ export const migrations = {
       if (player.celestials.pelle.doomed) player.dilation.rebuyables[3] = 0;
     },
     36: player => {
-      if (Boolean(player.infinity?.upgradeBits)) delete player.infinity.upgradeBits;
+      if (player.infinity?.upgradeBits) delete player.infinity.upgradeBits;
     }
   },
 
