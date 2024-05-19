@@ -4,8 +4,18 @@ import { PlayerProgress } from "../../player-progress";
 /*
 PELLE:
 -Row 18
--
+  ->r186's change
+  ->r186's reward
+  ->r187's change
+  ->r187's reward
 -Balance
+
+AFTER UPDATE
+-Implement recent baase game additions
+-Enhancements less overwelming
+  ->Show Nameless hint that no Enhancements are neccesary (or disable them)
+  ->Make some Enhancements free?
+  ->Highlight pre-requirements on hover
 */
 
 export const normalAchievements = [
@@ -610,7 +620,8 @@ export const normalAchievements = [
         if (Laitela.isUnlocked) {
           return `ALL Dimensions, including IDs, TDs, and DMDs, are ${formatPercents(0.50)} stronger.`;
         }
-        else { return `ALL Dimensions, including IDs and TDs, are ${formatPercents(0.50)} stronger.`};
+        return `ALL Dimensions, including IDs and TDs, are ${formatPercents(0.50)} stronger. (You're
+          better off Enhancing something else)`;
       },
       effect: 1.5,
     }
@@ -2460,7 +2471,7 @@ export const normalAchievements = [
       },
   },
   {
-    // Changed! But not yet implemented
+    // Implemented! And changed!
     id: 183,
     name: "Ten for All",
     get description() { return `Complete Infinity Challenge 4 without purchasing more
@@ -2471,9 +2482,9 @@ export const normalAchievements = [
       player.requirementChecks.infinity.noMoreThan10AD,
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     // Weirdly specific reward? No
-    get reward() { return `The Buy 10 factor is applied twice for every ${formatInt(100)} purchases, 
-      thrice for every ${formatInt(1000)} purchases, and so on. It now affects each Infinity and Time Dimension.`; },
-    effect: 1.00
+    get reward() { return `The Buy 10 factor affects Infinity and Time Dimensions, and is applied an 
+      additional time for every ${formatInt(100)} purchases, every ${formatInt(1000)} purchases, and so on.`; },
+    effect: 1.1111111111
   },
   {
     // The name is a reference to the approximate amount of time it takes for Replicanti to
@@ -2484,7 +2495,7 @@ export const normalAchievements = [
     description: "Eternity without purchasing any Replicanti upgrades while Doomed.",
     checkRequirement: () => Pelle.isDoomed && player.requirementChecks.eternity.noRU,
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
-    get reward() { return `The Replicanti chance upgrade cost scales ${formatInt(3)} times slower, and 
+    get reward() { return `The Replicanti chance upgrade's cost scales ${formatInt(3)} times slower, and 
       can be infinitely purchased.` }
 
   },
@@ -2521,7 +2532,8 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.PELLE_STRIKE_UNLOCKED,
     // We forgot to disable a singularity milestone while balancing Pelle; now it's disabled
     // and I did whatever I wanted
-    reward: "ALL Galaxies count as Antimatter and Replicanti Galaxies for the purposes of boosts.",
+    reward: "The 2nd rebuyable Dilation upgrade no longer resets your Dilated Time, and it affects cost " +
+      "scaling for Antimatter and Replicanti Galaxies.",
     effect: 1.35
   },
   {

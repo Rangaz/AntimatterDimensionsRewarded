@@ -40,10 +40,21 @@ export const ID = {
     multValue: dim => {
       const getMult = id => Decimal.pow(InfinityDimension(id).powerMultiplier,
         Math.floor(InfinityDimension(id).baseAmount / 10));
-      if (dim) return getMult(dim);
+
+      const getBuy10Mult = id => {
+        if (!Achievement(183).canBeApplied || !InfinityDimension(id).baseAmount) return DC.D1;
+          const amountOfDigits = Math.log10(InfinityDimension(id).baseAmount);
+          let buy10Value = 0;
+          for (let i = 2; i <= amountOfDigits; i++) {
+            buy10Value += Math.floor(InfinityDimension(id).baseAmount / Math.pow(10, i));
+          }
+          return Decimal.pow(AntimatterDimensions.buyTenMultiplier, buy10Value);
+      }
+      
+      if (dim) return getMult(dim).times(getBuy10Mult(dim));
       return InfinityDimensions.all
         .filter(id => id.isProducing)
-        .map(id => getMult(id.tier))
+        .map(id => getMult(id.tier).times(getBuy10Mult(id.tier)))
         .reduce((x, y) => x.times(y), DC.D1);
     },
     isActive: () => !EternityChallenge(2).isRunning && !EternityChallenge(10).isRunning,

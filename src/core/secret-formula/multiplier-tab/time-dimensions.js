@@ -41,6 +41,15 @@ export const TD = {
       const getMult = td => {
         const d = TimeDimension(td);
         const bought = td === 8 ? Math.clampMax(d.bought, 1e8) : d.bought;
+        if (Achievement(183).canBeApplied && bought) {
+          const buy10Mult = AntimatterDimensions.buyTenMultiplier
+          const amountOfDigits = Math.log10(bought);
+          let buy10Value = 0;
+          for (let i = 1; i <= amountOfDigits; i++) {
+            buy10Value += Math.floor(bought / Math.pow(10, i));
+          }
+          return Decimal.pow(d.powerMultiplier, bought).times(Decimal.pow(buy10Mult, buy10Value));
+        }
         return Decimal.pow(d.powerMultiplier, bought);
       };
       if (dim) return getMult(dim);

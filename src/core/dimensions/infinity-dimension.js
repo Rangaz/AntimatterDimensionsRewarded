@@ -164,6 +164,15 @@ class InfinityDimensionState extends DimensionState {
       );
     mult = mult.times(Decimal.pow(this.powerMultiplier, Math.floor(this.baseAmount / 10)));
 
+    if (Achievement(183).canBeApplied && this.baseAmount) {
+      const amountOfDigits = Math.log10(this.baseAmount);
+      let buy10Value = 0;
+      for (let i = 2; i <= amountOfDigits; i++) {
+        buy10Value += Math.floor(this.baseAmount / Math.pow(10, i));
+      }
+      mult = mult.times(Decimal.pow(AntimatterDimensions.buyTenMultiplier, buy10Value));
+    }
+
 
     if (tier === 1) {
       mult = mult.times(PelleRifts.decay.milestones[0].effectOrDefault(1));
