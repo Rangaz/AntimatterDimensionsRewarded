@@ -6,14 +6,12 @@ PELLE:
 -Row 18
   ->r186's change
   ->r186's reward
-  ->r187's change
-  ->r187's reward
 -Balance
 
 AFTER UPDATE
 -Implement recent baase game additions
 -Enhancements less overwelming
-  ->Show Nameless hint that no Enhancements are neccesary (or disable them)
+  ->Show Nameless hint that no Enhancements are necessary (or disable them)
   ->Make some Enhancements free?
   ->Highlight pre-requirements on hover
 */
@@ -2523,18 +2521,27 @@ export const normalAchievements = [
     get reward() { `You can complete every Eternity Challenge up to ${formatInt(6)} times.` }
   },
   {
-    // Not yet changed nor implemented
+    // Changed! But not implemented
     id: 187,
     name: "Galactic Despacito",
     get description() { return `Have ${formatInt(10)} times more Replicanti Galaxies than Antimatter Galaxies,
       and ${formatInt(10)} times more Tachyon Galaxies than Replicanti Galaxies.`; },
-    checkRequirement: () => Pelle.isDoomed,
-    checkEvent: GAME_EVENT.PELLE_STRIKE_UNLOCKED,
+    checkRequirement: () => 
+      Pelle.isDoomed &&
+      player.galaxies > 0 &&
+      Replicanti.galaxies.total >= 10 * player.galaxies &&
+      player.dilation.totalTachyonGalaxies >= 10 * Replicanti.galaxies.total,
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     // We forgot to disable a singularity milestone while balancing Pelle; now it's disabled
     // and I did whatever I wanted
     reward: "The 2nd rebuyable Dilation upgrade no longer resets your Dilated Time, and it affects cost " +
       "scaling for Antimatter and Replicanti Galaxies.",
-    effect: 1.35
+    effects: {
+      // Note that these formulas are also written on dilation-upgrades for the effect preview.
+      // Any change here should also be applied there
+      antimatterGalaxyCostPower: () => 0.5 + 0.5 * DilationUpgrade.galaxyThreshold.effectOrDefault(1),
+      replicantiGalaxyCostPower: () => 0.05 + 0.95 * DilationUpgrade.galaxyThreshold.effectOrDefault(1),
+    }
   },
   {
     id: 188,

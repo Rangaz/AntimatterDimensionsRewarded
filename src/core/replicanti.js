@@ -447,7 +447,10 @@ export const ReplicantiUpgrade = {
 
     get cost() {
       return this.baseCost.dividedByEffectsOf(TimeStudy(233), PelleRifts.vacuum.milestones[1]).
-      powEffectsOf(Achievement(98).enhancedEffect, CursedRow(9));
+      powEffectsOf(
+        Achievement(98).enhancedEffect, 
+        CursedRow(9), 
+        Achievement(187).effects.replicantiGalaxyCostPower);
     }
 
     get baseCost() { return player.replicanti.galCost; }
