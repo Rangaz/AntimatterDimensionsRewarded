@@ -1,4 +1,5 @@
 <script>
+import { Achievement } from "../../core/globals";
 import FailableEcText from "./FailableEcText";
 import PrimaryButton from "@/components/PrimaryButton";
 
@@ -67,14 +68,18 @@ export default {
         if (!part.isActive(token)) continue;
         if (part.name(token).includes("Eternity Challenge")) {
           const currEC = player.challenge.eternity.current;
-          const nextCompletion = EternityChallenge(currEC).completions + 1;
+          const maxCompletions = EternityChallenge(currEC).maxCompletions;
+          const isContinous = Achievement(185).canBeApplied;
+          const nextCompletion = EternityChallenge(currEC).completions + (1 - isContinous * 0.999);
           let completionText = "";
           if (Enslaved.isRunning && currEC === 1) {
             completionText = `(${formatInt(nextCompletion)}/???)`;
-          } else if (nextCompletion === 6) {
+          } else if (Math.floor(nextCompletion) + isContinous === maxCompletions + 1) {
             completionText = `(already completed)`;
+          } else if (isContinous) {
+            completionText = `(${format(nextCompletion, 2, 2)}/${formatInt(maxCompletions)})`;
           } else {
-            completionText = `(${formatInt(nextCompletion)}/${formatInt(5)})`;
+            completionText = `(${formatInt(nextCompletion)}/${formatInt(maxCompletions)})`;
           }
           names.push(`${part.name(token)} ${completionText}`);
         } else {

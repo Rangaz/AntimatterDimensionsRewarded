@@ -21,6 +21,7 @@ export default {
       untilAllEC: TimeSpan.zero,
       hasECR: false,
       hasr185: false,
+      hasr186: false,
     };
   },
   computed: {
@@ -56,6 +57,7 @@ export default {
       }
       this.hasECR = Perk.studyECRequirement.isBought;
       this.hasr185 = Achievement(185).canBeApplied;
+      this.hasr186 = Achievement(186).canBeApplied;
     },
     isChallengeVisible(challenge) {
       return challenge.completions > 0 || challenge.isUnlocked || challenge.hasUnlocked ||
@@ -87,7 +89,7 @@ export default {
       </div>
     </div>
     <div>
-      Complete Eternity Challenges again for a bigger reward, maximum of {{ formatInt(5) }} times.<br>
+      Complete Eternity Challenges again for a bigger reward, maximum of {{ formatInt(5 + hasr186) }} times.<br>
       The rewards are applied permanently with no need to have the respective Eternity Challenge Time Study purchased.
     </div>
     <div v-if="hasr185">

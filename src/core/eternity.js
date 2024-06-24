@@ -173,7 +173,7 @@ export function eternity(force, auto, specialConditions = {}) {
   }
   resetTickspeed();
   playerInfinityUpgradesOnReset();
-  AchievementTimers.marathon2.reset();
+  //AchievementTimers.marathon2.reset();
   player.records.timeWithExcessIPowerProd = 0;
   applyEU1();
   player.records.thisInfinity.maxAM = DC.D0;

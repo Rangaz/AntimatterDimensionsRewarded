@@ -23,7 +23,7 @@ export function startEternityChallenge() {
   player.records.thisEternity.maxAM = DC.D0;
   Currency.antimatter.reset();
   playerInfinityUpgradesOnReset();
-  AchievementTimers.marathon2.reset();
+  //AchievementTimers.marathon2.reset();
   ECTimeStudyState.invalidateCachedRequirements();
 }
 
@@ -82,7 +82,7 @@ export class EternityChallengeState extends GameMechanicState {
   }
 
   get maxCompletions() {
-    return Enslaved.isRunning && this.id === 1 ? 1000 : 5;
+    return Enslaved.isRunning && this.id === 1 ? 1000 : Achievement(186).canBeApplied ? 6 : 5;
   }
 
   get remainingCompletions() {
@@ -90,7 +90,7 @@ export class EternityChallengeState extends GameMechanicState {
   }
 
   get isFullyCompleted() {
-    return this.completions === this.maxCompletions;
+    return Math.floor(this.completions) === this.maxCompletions;
   }
 
   get maxValidCompletions() {
@@ -194,10 +194,10 @@ export class EternityChallengeState extends GameMechanicState {
   }
 
   addCompletion(auto = false, completions = 1) {
-    completions = Math.clampMax(completions, this.maxValidCompletions - this.completions);
+    if (!auto) completions = Math.clampMax(completions, this.maxValidCompletions - this.completions);
     // In maxValidCompletions the precision is ~+-5/1048576, however some rounding is desirable
     // in the case of EC4, since its restriction is discrete, so... sorry, this isn't really continous.
-    completions = Math.round(completions * 10000) / 10000;
+    if (Achievement(185).canBeApplied) completions = Math.round(completions * 10000) / 10000;
     this.completions += completions;
     if ((this.id === 4 || this.id === 12) && auto) {
       this.tryFail(true);

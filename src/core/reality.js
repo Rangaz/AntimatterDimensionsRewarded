@@ -769,7 +769,7 @@ export function finishProcessReality(realityProps) {
   player.records.thisReality.bestRSminVal = 0;
   resetTimeDimensions();
   resetTickspeed();
-  AchievementTimers.marathon2.reset();
+  //AchievementTimers.marathon2.reset();
   Currency.infinityPoints.reset();
 
   if (RealityUpgrade(10).isBought) applyRUPG10();

@@ -9,7 +9,7 @@ PELLE:
 -Balance
 
 AFTER UPDATE
--Implement recent baase game additions
+-Implement recent base game additions
 -Enhancements less overwelming
   ->Show Nameless hint that no Enhancements are necessary (or disable them)
   ->Make some Enhancements free?
@@ -2442,7 +2442,7 @@ export const normalAchievements = [
   },
         
   // ----------------------------------------------------------------------
-  // Anything at this point forward won't be Enhanced
+  // Pelle Achievements
 
   {
     // No need to implement anything
@@ -2513,15 +2513,21 @@ export const normalAchievements = [
     reward: "Eternity Challenge completions are now continous."
   },
   {
-    // Not yet implemented nor changed
+    // Implemented! And changed!
     id: 186,
     name: "And nothing of value was lost.",
-    get description() { return `Reach ${formatPostBreak("1e3000")} IP in Eternity Challenge 9 without
-      purchasing any Infinity nor Time Dimensions.` },
-    get reward() { `You can complete every Eternity Challenge up to ${formatInt(6)} times.` }
+    get description() { return `Reach ${formatPostBreak("1e2350")} IP in Eternity Challenge 9 without
+      having more than ${formatInt(1)} Galaxy in total.` },
+    checkRequirement: () => 
+      Pelle.isDoomed &&
+      EternityChallenge(9).isRunning &&
+      player.galaxies + Replicanti.galaxies.total <= 1 &&
+      Currency.infinityPoints.value.gte(DC.E2350),
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() { return `You can complete every Eternity Challenge up to ${formatInt(6)} times.` }
   },
   {
-    // Changed! But not implemented
+    // Implemented! And changed!
     id: 187,
     name: "Galactic Despacito",
     get description() { return `Have ${formatInt(10)} times more Replicanti Galaxies than Antimatter Galaxies,

@@ -63,7 +63,7 @@ export class Galaxy {
 
     if (GlyphAlteration.isAdded("power")) amount *= getSecondaryGlyphEffect("powerpow");
 
-    amount = Math.pow(amount, Achievement(187).effects.antimatterGalaxyCostPower.effectOrDefault(1));
+    if (amount > 1) amount = Math.pow(amount, Achievement(187).effects.antimatterGalaxyCostPower.effectOrDefault(1));
 
     amount = Math.floor(amount);
     const tier = Galaxy.requiredTier;

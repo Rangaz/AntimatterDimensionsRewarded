@@ -26,8 +26,8 @@ class AchievementTimer {
 }
 
 export const AchievementTimers = {
-  marathon1: new AchievementTimer(false),
-  marathon2: new AchievementTimer(false),
+  marathon1: new AchievementTimer(false), // Not disabled since it's tied to a news message.
+  //marathon2: new AchievementTimer(false),
   pain: new AchievementTimer(true),
   stats: new AchievementTimer(true)
 };
