@@ -491,7 +491,10 @@ export const ReplicantiUpgrade = {
       const freeUpgrades = Achievement(98).canBeApplied;
       // This isn't a hot enough autobuyer to worry about doing an actual inverse.
       const bulk = bulkBuyBinarySearch(Currency.infinityPoints.value, {
-        costFunction: x => this.baseCostAfterCount(x).dividedByEffectOf(TimeStudy(233)),
+        costFunction: x => this.baseCostAfterCount(x).dividedByEffectOf(TimeStudy(233)).powEffectsOf(
+          Achievement(98).enhancedEffect, 
+          CursedRow(9), 
+          Achievement(187).effects.replicantiGalaxyCostPower),
         firstCost: this.cost,
         cumulative: !freeUpgrades,
       }, this.value);

@@ -267,7 +267,7 @@ export const Pelle = {
   },
 
   get remnantRequirementForDilation() {
-    return 3.8e7;
+    return 4.7e7;
   },
 
   get canDilateInPelle() {
@@ -318,7 +318,7 @@ export const Pelle = {
 
   // Calculations assume this is in units of proportion per second (eg. 0.03 is 3% drain per second)
   get riftDrainPercent() {
-    return 0.03;
+    return 0.04;
   },
 
   get glyphMaxLevel() {

@@ -151,7 +151,7 @@ export const pelleRifts = {
     strike: () => PelleStrikes.ECs,
     percentage: totalFill => totalFill.plus(1).log10() ** 0.4 / 4000 ** 0.4,
     percentageToFill: percentage => Decimal.pow(10, percentage ** 2.5 * 4000).minus(1),
-    effect: totalFill => new Decimal(58 * totalFill.plus(1).log10() ** 0.2 / 4000 ** 0.2),
+    effect: totalFill => new Decimal(50 * totalFill.plus(1).log10() ** 0.2 / 4000 ** 0.2),
     currency: () => Currency.eternityPoints,
     galaxyGeneratorThreshold: 1e10,
     milestones: [
@@ -186,15 +186,15 @@ export const pelleRifts = {
     baseEffect: x => `All Dimensions ${formatPow(x, 2, 3)}`,
     additionalEffects: () => [PelleRifts.paradox.milestones[2]],
     strike: () => PelleStrikes.dilation,
-    percentage: totalFill => totalFill.plus(1).log10() / 100,
-    percentageToFill: percentage => Decimal.pow10(percentage * 100).minus(1),
-    effect: totalFill => new Decimal(1 + totalFill.plus(1).log10() * 0.004),
+    percentage: totalFill => totalFill.plus(1).log10() / 70,
+    percentageToFill: percentage => Decimal.pow10(percentage * 70).minus(1),
+    effect: totalFill => new Decimal(1 + totalFill.plus(1).log10() * 0.0028),
     currency: () => Currency.dilatedTime,
     galaxyGeneratorThreshold: 1e5,
     milestones: [
       {
         resource: "paradox",
-        requirement: 0.15,
+        requirement: 0.14 ,
         description: "Time Dimensions 5-8 are much cheaper, unlock more Dilation upgrades",
         // FIXME: Not a great solution
         onStateChange: () => {
@@ -203,13 +203,13 @@ export const pelleRifts = {
       },
       {
         resource: "paradox",
-        requirement: 0.25,
+        requirement: 0.35,
         description: () => `Dilated Time gain becomes Tachyon Particles ${formatPow(1.4, 1, 1)}`,
         effect: 1.4
       },
       {
         resource: "paradox",
-        requirement: 0.5,
+        requirement: 0.85,
         description: "Dilation rebuyable purchase count improves Infinity Power conversion rate",
         effect: () => Math.min(
           1.1 ** (Object.values(player.dilation.rebuyables).sum() - 90),

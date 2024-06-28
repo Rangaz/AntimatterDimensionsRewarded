@@ -2,7 +2,7 @@ export const dilationTimeStudies = [
   {
     id: 1,
     description: "Unlock Time Dilation",
-    cost: 5000,
+    cost: () => Pelle.isDoomed ? 14000 : 5000,
     requirement: () => {
       const ttRequirement = Currency.timeTheorems.max.gte(TimeStudy.dilation.totalTimeTheoremRequirement);
       if (Ra.unlocks.autoUnlockDilation.canBeApplied &&
@@ -14,7 +14,9 @@ export const dilationTimeStudies = [
       const tsRequirement = [231, 232, 233, 234].some(id => TimeStudy(id).isBought);
       if (Perk.bypassECDilation.canBeApplied) return tsRequirement;
       const ecRequirement = EternityChallenge(11).isFullyCompleted && EternityChallenge(12).isFullyCompleted;
-      return tsRequirement && ecRequirement && ttRequirement;
+      if (!Pelle.isDoomed) return tsRequirement && ecRequirement && ttRequirement;
+      const pelleRequirement = Achievement(186).canBeApplied; // Guarantee that 6 completions is neccesary
+      return tsRequirement && ecRequirement && ttRequirement && pelleRequirement;
     }
   },
   {

@@ -3,13 +3,9 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 PELLE:
--Row 18
-  ->r186's change
-  ->r186's reward
--Balance
+-Implement recent base game additions
 
 AFTER UPDATE
--Implement recent base game additions
 -Enhancements less overwelming
   ->Show Nameless hint that no Enhancements are necessary (or disable them)
   ->Make some Enhancements free?
@@ -2545,8 +2541,8 @@ export const normalAchievements = [
     effects: {
       // Note that these formulas are also written on dilation-upgrades for the effect preview.
       // Any change here should also be applied there
-      antimatterGalaxyCostPower: () => 0.5 + 0.5 * DilationUpgrade.galaxyThreshold.effectOrDefault(1),
-      replicantiGalaxyCostPower: () => 0.05 + 0.95 * DilationUpgrade.galaxyThreshold.effectOrDefault(1),
+      antimatterGalaxyCostPower: () => 0.56 + 0.44 * DilationUpgrade.galaxyThreshold.effectOrDefault(1),
+      replicantiGalaxyCostPower: () => 0.01 + 0.99 * DilationUpgrade.galaxyThreshold.effectOrDefault(1),
     }
   },
   {
