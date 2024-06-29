@@ -25,6 +25,7 @@ export const changelog = [
     <br>
     <b>Other changes: </b>
     <ul>
+    <li>29/6: Fixed multiplier tab entry for Antimatter Dimensions breaking with Continuum.</li>
     <li>Rifts now drain 3% ➜ 4% of their respective resource each second.</li>
     <li>Fixed power effects applied on Replicanti Galaxy cost messing with its autobuyer.</li>
     <li>Recent base game improvements to come soon...</li>

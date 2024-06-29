@@ -64,7 +64,7 @@ export const AD = {
     multValue: dim => {
       // Least hack way to get r183's effect :). A bit inaccurrate but no one should notice 
       const getPurchases = ad => (Laitela.continuumActive
-        ? AntimatterDimension(ad).continuumValue.timesEffectOf(Achievement(183))
+        ? AntimatterDimension(ad).continuumValue * Achievement(183).effectOrDefault(1)
         : Math.floor(AntimatterDimension(ad).bought / (10 - Achievement(183).canBeApplied))
       );
       // I'll pretend that r122 affects purchases, when in reality it doesn't.
