@@ -111,11 +111,11 @@ export const general = {
       return (MultiplierTabHelper.achievementDimCheck(ach, dim) && Achievement(ach).canBeApplied)
         ? Achievement(ach).effectOrDefault(1) : 1;
     },
-    // 183 is the only time a power effect is in an Achievement, so we special-case it here and return a x1 multiplier.
+    // 183 is the only time, in base game, a power effect is in an Achievement, so 
+    // we special-case it here and return a x1 multiplier.
     // ...or that would be the case if it wasn't for my achievements (r72, Er47, Er93 & Er123).
     powValue: ach => {
       switch (ach) {
-        case 183: return Achievement(183).effectOrDefault(1); 
         case 10047: return Achievement(47).enhancedEffect.effectOrDefault(1);
         case 72: return Achievement(72).effectOrDefault(1);
         case 10072: return Achievement(72).enhancedEffect.effectOrDefault(1);

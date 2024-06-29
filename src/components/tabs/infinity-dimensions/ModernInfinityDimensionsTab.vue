@@ -13,6 +13,9 @@ export default {
       infinityPower: new Decimal(0),
       dimMultiplier: new Decimal(0),
       powerPerSecond: new Decimal(0),
+      buy10Mult: new Decimal(0),
+      multiplierText: "",
+      hasr183: false,
       incomeType: "",
       isEC8Running: false,
       EC8PurchasesLeft: 0,
@@ -42,6 +45,9 @@ export default {
       this.showLockedDimCostNote = !InfinityDimension(8).isUnlocked;
       this.isEC9Running = EternityChallenge(9).isRunning;
       this.infinityPower.copyFrom(Currency.infinityPower);
+      this.hasr183 = Achievement(183).canBeApplied;
+      this.buy10Mult.copyFrom(AntimatterDimensions.buyTenMultiplier);
+      this.multiplierText = `Buy 10 Dimension purchase multiplier: ${formatX(this.buy10Mult, 2, 2)}`;
       this.conversionRate = InfinityDimensions.powerConversionRate;
       if (this.isEC9Running) {
         this.dimMultiplier.copyFrom(Decimal.pow(Math.max(this.infinityPower.log2(), 1), 4).max(1));
@@ -143,6 +149,7 @@ export default {
       purchases each.
     </div>
     <div>You are getting {{ format(powerPerSecond, 2, 0) }} {{ incomeType }} per second.</div>
+    <div v-if="hasr183">{{ multiplierText }}</div>
     <b
       v-if="isEC8Running"
       class="l-infinity-dim-tab__ec8-purchases"

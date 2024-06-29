@@ -27,6 +27,7 @@ export default {
       completions: 0,
       showGoalSpan: false,
       lastGoal: "",
+      hasr185: false,
     };
   },
   computed: {
@@ -37,7 +38,7 @@ export default {
       const config = this.config;
       let goal = `Goal: ${this.goalAtCompletions(this.completions)} IP`;
       if (config.restriction) {
-        goal += ` ${config.formatRestriction(config.restriction(this.completions))}`;
+        goal += ` ${config.formatRestriction(config.restriction(Math.max(this.completions - (this.hasr185 * 0.99999), 0)))}`;
       }
       return goal;
     },
@@ -57,7 +58,7 @@ export default {
       const challenge = this.challenge;
       const config = this.config.reward;
       return {
-        effect: () => config.effect(challenge.completions + 1),
+        effect: () => config.effect(Math.min(challenge.completions + 1, challenge.maxCompletions)),
         formatEffect: config.formatEffect,
         cap: config.cap,
       };
@@ -76,9 +77,11 @@ export default {
       this.showGoalSpan = PlayerProgress.realityUnlocked();
       this.canBeUnlocked = TimeStudy.eternityChallenge(challenge.id).canBeBought;
 
+      this.hasr185 = Achievement(185).canBeApplied; // Continous completions
+
       this.lastGoal = (Enslaved.isRunning && this.challenge.id === 1)
         ? wordShift.wordCycle(this.config.scrambleText.map(x => format(x)))
-        : this.goalAtCompletions(this.challenge.maxCompletions - 1);
+        : this.goalAtCompletions(this.challenge.maxCompletions - 1 + this.hasr185);
     },
     start() {
       if (this.canBeUnlocked) {
@@ -107,7 +110,10 @@ export default {
     </template>
     <template #bottom>
       <div :style="{ visiblity: completions < 5 ? 'visible' : 'hidden' }">
-        <div>
+        <div v-if="hasr185">
+          Completed {{ format(completions, 2, 2) }} times
+        </div>
+        <div v-else>
           Completed {{ quantifyInt("time", completions) }}
         </div>
         {{ goalDisplay }}

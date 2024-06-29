@@ -187,8 +187,10 @@ export const Pelle = {
   },
 
   get disabledAchievements() {
-    return [174, 172, 164, 163, 162, 156, 153, 152, 143, 142, 141, 137, 136, 134, 133, 132, 126, 125, 124, 122, 121, 118, 117, 
-      116, 115, 113, 111, 108, 107, 106, 104, 103, 101, 97, 95, 93, 92, 91, 87, 85, 78, 77, 76, 74, 65, 64, 62, 55, 54, 37, 33, 31];
+    return [177, 176, 174, 172, 166, 164, 163, 162, 156, 153, 152, 143, 142, 141, 137, 136, 134, 133, 132, 
+      126, 125, 124, 122, 121, 118, 117, 
+      116, 115, 113, 111, 108, 107, 106, 104, 103, 101, 97, 95, 93, 92, 91, 87, 85, 78, 77, 76, 74, 
+      68, 65, 64, 62, 55, 54, 51, 37, 33, 31];
   },
 
   get uselessInfinityUpgrades() {
@@ -265,7 +267,7 @@ export const Pelle = {
   },
 
   get remnantRequirementForDilation() {
-    return 3.8e7;
+    return 4.7e7;
   },
 
   get canDilateInPelle() {
@@ -316,7 +318,7 @@ export const Pelle = {
 
   // Calculations assume this is in units of proportion per second (eg. 0.03 is 3% drain per second)
   get riftDrainPercent() {
-    return 0.03;
+    return 0.04;
   },
 
   get glyphMaxLevel() {

@@ -44,7 +44,7 @@ export class DimBoost {
     if (CursedRow(5).isCursed && tier > 4) return DC.D1; 
     // r51 will make all Dimension Boosts affect all Antimatter dimensions
     const normalBoostMult = DimBoost.power.pow(this.realBoosts + 1 - tier * 
-      (!Achievement(51).isUnlocked || Achievement(51).isCursed)).clampMin(1);
+      (!Achievement(51).canBeApplied || Achievement(51).isCursed)).clampMin(1);
     const imaginaryBoostMult = DimBoost.power.times(ImaginaryUpgrade(24).effectOrDefault(1))
       .pow(this.imaginaryBoosts).clampMin(1);
     return normalBoostMult.times(imaginaryBoostMult);
@@ -119,7 +119,7 @@ export class DimBoost {
       amount += Math.pow(targetResets - 1, 3) + targetResets - 1;
     }
 
-    amount -= Effects.sum(InfinityUpgrade.resetBoost, Achievement(25));
+    amount -= Effects.sum(InfinityUpgrade.resetBoost, Achievement(25), Achievement(182).effects.dimBoostReduction);
     if (InfinityChallenge(5).isCompleted) amount -= 1;
 
     amount *= InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1);

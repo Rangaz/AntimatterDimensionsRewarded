@@ -241,6 +241,15 @@ class TimeDimensionState extends DimensionState {
     const bought = tier === 8 ? Math.clampMax(dim.bought, 1e8) : dim.bought;
     mult = mult.times(Decimal.pow(dim.powerMultiplier, bought));
 
+    if (Achievement(183).canBeApplied && dim.bought) {
+      const amountOfDigits = Math.log10(dim.bought);
+      let buy10Value = 0;
+      for (let i = 1; i <= amountOfDigits; i++) {
+        buy10Value += Math.floor(dim.bought / Math.pow(10, i));
+      }
+      mult = mult.times(Decimal.pow(AntimatterDimensions.buyTenMultiplier, buy10Value));
+    }
+
     mult = mult.pow(getAdjustedGlyphEffect("timepow"));
     mult = mult.pow(getAdjustedGlyphEffect("effarigdimensions"));
     mult = mult.pow(getAdjustedGlyphEffect("curseddimensions"));

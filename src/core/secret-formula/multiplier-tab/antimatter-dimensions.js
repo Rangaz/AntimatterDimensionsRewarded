@@ -62,9 +62,10 @@ export const AD = {
   purchase: {
     name: dim => (dim ? `Purchased AD ${dim}` : "Purchases"),
     multValue: dim => {
+      // Least hack way to get r183's effect :). A bit inaccurrate but no one should notice 
       const getPurchases = ad => (Laitela.continuumActive
-        ? AntimatterDimension(ad).continuumValue
-        : Math.floor(AntimatterDimension(ad).bought / 10)
+        ? AntimatterDimension(ad).continuumValue.timesEffectOf(Achievement(183))
+        : Math.floor(AntimatterDimension(ad).bought / (10 - Achievement(183).canBeApplied))
       );
       // I'll pretend that r122 affects purchases, when in reality it doesn't.
       if (dim) {
@@ -113,7 +114,7 @@ export const AD = {
   },
   achievementMult: {
     name: "Achievement Multiplier",
-    // Er75 raises this by 60
+    // Er75 raises this by 100
     multValue: dim => Decimal.pow(Decimal.pow(Achievements.power, Achievement(75).enhancedEffect.effects.powEffect.
       effectOrDefault(1)), dim ? 1 : MultiplierTabHelper.activeDimCount("AD")),
     isActive: () => !Pelle.isDoomed && !EternityChallenge(11).isRunning,
@@ -199,7 +200,7 @@ export const AD = {
       }
       return totalMult;
     },
-    powValue: () => Achievement(183).effectOrDefault(1) * Achievement(47).enhancedEffect.effectOrDefault(1) *
+    powValue: () => Achievement(47).enhancedEffect.effectOrDefault(1) *
     Achievement(72).effectOrDefault(1) * Achievement(72).enhancedEffect.effectOrDefault(1),
     isActive: () => !EternityChallenge(11).isRunning,
     icon: MultiplierTabIcons.ACHIEVEMENT,

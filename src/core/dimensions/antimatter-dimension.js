@@ -110,8 +110,16 @@ function applyNDMultipliers(mult, tier) {
   let buy10Value;
   if (Laitela.continuumActive) {
     buy10Value = AntimatterDimension(tier).continuumValue;
+    // My r183 is equivalent to multiplying this by 1 + 1/10 + 1/100 + (...) = 10/9
+    if (Achievement(183).canBeApplied) buy10Value *= 10/9;
   } else {
     buy10Value = Math.floor(AntimatterDimension(tier).bought / 10);
+    if (Achievement(183).canBeApplied && AntimatterDimension(tier).bought) {
+      const amountOfDigits = Math.log10(AntimatterDimension(tier).bought);
+      for (let i = 2; i <= amountOfDigits; i++) {
+        buy10Value += Math.floor(AntimatterDimension(tier).bought / Math.pow(10, i));
+      }
+    }
   }
 
   multiplier = multiplier.times(Decimal.pow(AntimatterDimensions.buyTenMultiplier, buy10Value));
@@ -208,7 +216,6 @@ function applyNDPowers(mult, tier) {
       Achievement(47).enhancedEffect,
       Achievement(72),
       Achievement(72).enhancedEffect,
-      Achievement(183),
       PelleRifts.paradox
     );
 
@@ -243,6 +250,9 @@ function onBuyDimension(tier) {
   if (tier !== 1) player.requirementChecks.eternity.onlyAD1 = false;
   if (tier === 8) player.requirementChecks.infinity.noAD8 = false;
   if (tier === 1) player.requirementChecks.eternity.noAD1 = false;
+  if (tier > 4) player.requirementChecks.eternity.noAD5678 = false;
+  if (AntimatterDimension(tier).bought > 10 && tier !== 8) 
+    player.requirementChecks.infinity.noMoreThan10AD = false;
 }
 
 export function buyOneDimension(tier) {

@@ -18,6 +18,7 @@ export default {
       failedRestriction: undefined,
       hasMoreCompletions: false,
       nextGoalAt: new Decimal(0),
+      hasr185: false,
       canEternity: false,
       eternityGoal: new Decimal(0),
       hover: false,
@@ -113,6 +114,7 @@ export default {
       this.canEternity = Player.canEternity;
       this.eternityGoal.copyFrom(Player.eternityGoal);
       this.headerTextColored = player.options.headerTextColored;
+      this.hasr185 = Achievement(185).canBeApplied;
 
       if (!this.canEternity) {
         this.type = EP_BUTTON_DISPLAY_TYPE.CANNOT_ETERNITY;
@@ -253,12 +255,17 @@ const EP_BUTTON_DISPLAY_TYPE = {
       </template>
       <template v-else>
         <br>
-        {{ quantifyInt("completion", gainedCompletions) }} on Eternity
+        <template v-if="hasr185">
+          +{{ format(gainedCompletions, 2, 2) }} completions on Eternity
+        </template>
+        <template v-else>
+          {{ quantifyInt("completion", gainedCompletions) }} on Eternity
+        </template>
         <template v-if="failedRestriction">
           <br>
           {{ failedRestriction }}
         </template>
-        <template v-else-if="hasMoreCompletions">
+        <template v-else-if="hasMoreCompletions && !hasr185">
           <br>
           Next goal at {{ format(nextGoalAt) }} IP
         </template>

@@ -2,15 +2,12 @@ import { DC } from "../../constants";
 import { PlayerProgress } from "../../player-progress";
 
 /*
-TODO:
-QOL before Pelle:
--Fix bugs <IN PROGRESS>
-  ->0 Dim Boosts on Ra <DONE>
-  ->Companion slot fixes
-  ->Speedup/Skip News ticker buttons appearing on credits <DONE>
--Improve the About window
--Make credits include this mod's development
--Nameless change?
+AFTER UPDATE
+-Implement recent base game additions
+-Enhancements less overwelming
+  ->Show Nameless hint that no Enhancements are necessary (or disable them)
+  ->Make some Enhancements free?
+  ->Highlight pre-requirements on hover
 */
 
 export const normalAchievements = [
@@ -568,7 +565,7 @@ export const normalAchievements = [
     checkRequirement: () => NormalChallenges.all.countWhere(c => c.isCompleted) >= 3,
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
     get reward () { 
-      // The text makes it easy to know wthat r47 has an Enhancement not yet unlocked.
+      // The text makes it easy to know that r47 has an Enhancement not yet unlocked.
       return `For every Normal Challenge completed, all Antimatter Dimensions are ${formatPercents(0.02)} stronger.
         ${Achievements.isEnhancementUnlocked && !Teresa.isUnlocked ? "(Unlock Teresa to unlock Enhancement)" : ""}`;
     },
@@ -615,7 +612,8 @@ export const normalAchievements = [
         if (Laitela.isUnlocked) {
           return `ALL Dimensions, including IDs, TDs, and DMDs, are ${formatPercents(0.50)} stronger.`;
         }
-        else { return `ALL Dimensions, including IDs and TDs, are ${formatPercents(0.50)} stronger.`};
+        return `ALL Dimensions, including IDs and TDs, are ${formatPercents(0.50)} stronger. (You're
+          better off Enhancing something else)`;
       },
       effect: 1.5,
     }
@@ -2069,10 +2067,6 @@ export const normalAchievements = [
       effect: 1.2
     }
   },
-
-  // ----------------------------------------------------------------------
-  // Enhanced rewards later than this point won't be developed until later.
-
   {
     id: 141,
     name: "Snap back to reality",
@@ -2322,6 +2316,7 @@ export const normalAchievements = [
     effect: 69
   },
   {
+    // Buffed!
     id: 167,
     name: "Mr. Layer? Sorry, you're not on the list",
     get description() { return `Reach ${format(Decimal.NUMBER_MAX_VALUE, 1, 0)} Reality Machines.`; },
@@ -2441,75 +2436,119 @@ export const normalAchievements = [
   },
         
   // ----------------------------------------------------------------------
-  // Anything at this point forward won't start developing until later
+  // Pelle Achievements
 
   {
+    // No need to implement anything
     id: 181,
     displayId: 666,
     name: "Antimatter Dimensions Eternal",
     description: "Doom your Reality.",
     checkRequirement: () => Pelle.isDoomed,
     checkEvent: GAME_EVENT.REALITY_RESET_AFTER,
+    reward: "You just Doomed yourself, why would you be rewarded for it?",
   },
   {
+    // Implemented! And changed!
     id: 182,
-    name: "One more time",
-    description: "Permanently gain back all Antimatter Dimension autobuyers.",
-    checkRequirement: () => PelleUpgrade.antimatterDimAutobuyers1.canBeApplied &&
-      PelleUpgrade.antimatterDimAutobuyers2.canBeApplied,
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    name: "<9D Galaxy",
+    description: "Purchase an Antimatter Galaxy with no more than 4 Dimension Boosts while Doomed.",
+    checkRequirement: () => Pelle.isDoomed && DimBoost.purchasedBoosts <= 4,
+    checkEvent: GAME_EVENT.GALAXY_RESET_BEFORE,
+    get reward() { return `Each Dimension Boost and Antimatter Galaxy reduce each other's requirements by
+      ${formatInt(3)}.` },
+    effects: {
+        dimBoostReduction: () => 3 * player.galaxies,
+        galaxyReduction: () => 3 * DimBoost.purchasedBoosts,
+      },
   },
   {
+    // Implemented! And changed!
     id: 183,
-    name: "Déjà vOoM",
-    description: "Complete Infinity Challenge 5 while Doomed.",
-    checkRequirement: () => Pelle.isDoomed && InfinityChallenge(5).isCompleted,
-    checkEvent: GAME_EVENT.INFINITY_CHALLENGE_COMPLETED,
-    // Weirdly specific reward? Yes, its V's ST bonus because we forgot to disable it
-    // when balancing Pelle and only realised too late.
-    get reward() { return `All Antimatter Dimensions are raised to ${formatPow(1.0812403840463596, 0, 3)}`; },
-    effect: 1.0812403840463596
+    name: "Ten for All",
+    get description() { return `Complete Infinity Challenge 4 without purchasing more
+      than ${formatInt(10)} of each of ADs 1-7 in any reset while Doomed.` },
+    checkRequirement: () => 
+      Pelle.isDoomed && 
+      InfinityChallenge(4).isRunning &&
+      player.requirementChecks.infinity.noMoreThan10AD,
+    checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
+    // Weirdly specific reward? No
+    get reward() { return `The Buy 10 factor affects Infinity and Time Dimensions, and is applied an 
+      additional time for every ${formatInt(100)} purchases, every ${formatInt(1000)} purchases, and so on.`; },
+    effect: 1.1111111111
   },
   {
+    // The name is a reference to the approximate amount of time it takes for Replicanti to
+    // reach 1.8e308 with no upgrades.
+    // Implemented (surprisingly easy)! And changed! 
     id: 184,
-    name: "You're out!",
-    description: "Encounter the third Pelle Strike.",
-    checkRequirement: () => PelleStrikes.eternity.hasStrike,
-    checkEvent: GAME_EVENT.PELLE_STRIKE_UNLOCKED
+    name: "71332 seconds later...",
+    description: "Eternity without purchasing any Replicanti upgrades while Doomed.",
+    checkRequirement: () => Pelle.isDoomed && player.requirementChecks.eternity.noRU,
+    checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
+    get reward() { return `The Replicanti chance upgrade's cost scales ${formatInt(3)} times slower, and 
+      can be infinitely purchased.` }
+
   },
   {
+    // Implemented! And changed!
     id: 185,
-    name: "Four score and seven years ago",
-    description: "Encounter the fourth Pelle Strike.",
-    checkRequirement: () => PelleStrikes.ECs.hasStrike,
-    checkEvent: GAME_EVENT.PELLE_STRIKE_UNLOCKED
+    name: "Amalgamation",
+    get description() { return `Reach ${formatPostBreak("1e600")} IP in Eternity Challenge 1 
+      without purchasing any Infinity Dimensions nor any 5-8th Antimatter Dimensions while Doomed.` },
+    checkRequirement: () => 
+      Pelle.isDoomed &&
+      EternityChallenge(1).isRunning &&
+      player.requirementChecks.eternity.noAD5678 &&
+      Array.dimensionTiers.map(InfinityDimension).every(dim => dim.baseAmount === 0) &&
+      Currency.infinityPoints.value.gte(DC.E600),
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    reward: "Eternity Challenge completions are now continous."
   },
   {
+    // Implemented! And changed!
     id: 186,
-    displayId: 181,
-    name: "An unhealthy obsession",
-    description: `Purchase Time Study 181 while Doomed.`,
-    reward: "..."
+    name: "And nothing of value was lost.",
+    get description() { return `Reach ${formatPostBreak("1e2350")} IP in Eternity Challenge 9 without
+      having more than ${formatInt(1)} Galaxy in total.` },
+    checkRequirement: () => 
+      Pelle.isDoomed &&
+      EternityChallenge(9).isRunning &&
+      player.galaxies + Replicanti.galaxies.total <= 1 &&
+      Currency.infinityPoints.value.gte(DC.E2350),
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    get reward() { return `You can complete every Eternity Challenge up to ${formatInt(6)} times.` }
   },
   {
+    // Implemented! And changed!
     id: 187,
-    name: "The One with Dilated Time",
-    description: "Unlock Dilation while Doomed.",
-    checkRequirement: () => PelleStrikes.dilation.hasStrike,
-    checkEvent: GAME_EVENT.PELLE_STRIKE_UNLOCKED,
+    name: "Galactic Despacito",
+    get description() { return `Have ${formatInt(10)} times more Replicanti Galaxies than Antimatter Galaxies,
+      and ${formatInt(10)} times more Tachyon Galaxies than Replicanti Galaxies.`; },
+    checkRequirement: () => 
+      Pelle.isDoomed &&
+      player.galaxies > 0 &&
+      Replicanti.galaxies.total >= 10 * player.galaxies &&
+      player.dilation.totalTachyonGalaxies >= 10 * Replicanti.galaxies.total,
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     // We forgot to disable a singularity milestone while balancing Pelle; now it's disabled
-    // and this upgrade has the same effect as it used to.
-    get reward() {
-      return `Increase the multiplier per repeatable Dilated Time
-      multiplier upgrade by ${formatX(1.35, 0, 2)}.`;
-    },
-    effect: 1.35
+    // and I did whatever I wanted
+    reward: "The 2nd rebuyable Dilation upgrade no longer resets your Dilated Time, and it affects cost " +
+      "scaling for Antimatter and Replicanti Galaxies.",
+    effects: {
+      // Note that these formulas are also written on dilation-upgrades for the effect preview.
+      // Any change here should also be applied there
+      antimatterGalaxyCostPower: () => 0.56 + 0.44 * DilationUpgrade.galaxyThreshold.effectOrDefault(1),
+      replicantiGalaxyCostPower: () => 0.01 + 0.99 * DilationUpgrade.galaxyThreshold.effectOrDefault(1),
+    }
   },
   {
     id: 188,
     name: "The End",
     description: "Beat the game.",
     checkRequirement: () => GameEnd.endState > END_STATE_MARKERS.GAME_END && !GameEnd.removeAdditionalEnd,
-    checkEvent: GAME_EVENT.GAME_TICK_AFTER
+    checkEvent: GAME_EVENT.GAME_TICK_AFTER,
+    reward: "Congratulations! Watch a cool animation, and then the credits!"
   },
 ];

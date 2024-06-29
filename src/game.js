@@ -224,7 +224,12 @@ export function addEternityTime(time, realTime, ep, eternities) {
     const currEC = player.challenge.eternity.current;
     const ec = EternityChallenge(currEC);
     const challText = player.dilation.active ? "Dilated EC" : "Eternity Challenge";
-    challenge = `${challText} ${currEC} (${formatInt(ec.completions)}/${formatInt(ec.maxCompletions)})`;
+    if (Achievement(185).canBeApplied) {
+      challenge = `${challText} ${currEC} (${format(ec.completions, 2, 2)})`;
+    }
+    else {
+      challenge = `${challText} ${currEC} (${formatInt(ec.completions)}/${formatInt(ec.maxCompletions)})`;
+    }
   } else if (player.dilation.active) challenge = "Time Dilation";
   // If we call this function outside of dilation, it uses the existing AM and produces an erroneous number
   const gainedTP = player.dilation.active ? getTachyonGain() : DC.D0;

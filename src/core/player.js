@@ -243,12 +243,15 @@ window.player = {
       maxAll: false,
       noSacrifice: true,
       noAD8: true,
+      noMoreThan10AD: true,
     },
     eternity: {
       onlyAD1: true,
       onlyAD8: true,
       noAD1: true,
       noRG: true,
+      noRU: true,
+      noAD5678: true,
     },
     reality: {
       noAM: true,
@@ -1053,6 +1056,8 @@ export const Player = {
           onlyAD8: true,
           noAD1: true,
           noRG: true,
+          noRU: true,
+          noAD5678: true,
         };
       // eslint-disable-next-line no-fallthrough
       case "infinity":
@@ -1060,6 +1065,7 @@ export const Player = {
           maxAll: false,
           noSacrifice: true,
           noAD8: true,
+          noMoreThan10AD: true,
         };
         break;
       default:

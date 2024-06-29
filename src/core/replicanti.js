@@ -331,6 +331,7 @@ class ReplicantiUpgradeState {
     this.baseCost = Decimal.times(this.baseCost, this.costIncrease);
     this.value = this.nextValue;
     if (EternityChallenge(8).isRunning) player.eterc8repl--;
+    player.requirementChecks.eternity.noRU = false;
     GameUI.update();
   }
 
@@ -360,10 +361,14 @@ export const ReplicantiUpgrade = {
     get baseCost() { return player.replicanti.chanceCost; }
     set baseCost(value) { player.replicanti.chanceCost = value; }
 
-    get costIncrease() { return 1e15; }
+    get costIncrease() { 
+      if (Achievement(184).canBeApplied) return 1e5;
+      return 1e15; 
+    }
 
     get cap() {
-      // Chance never goes over 100%.
+      if (Achievement(184).canBeApplied) return Number.MAX_VALUE;
+      // Chance never goes over 100% in normal circunstances.
       return 1;
     }
 
@@ -442,7 +447,10 @@ export const ReplicantiUpgrade = {
 
     get cost() {
       return this.baseCost.dividedByEffectsOf(TimeStudy(233), PelleRifts.vacuum.milestones[1]).
-      powEffectsOf(Achievement(98).enhancedEffect, CursedRow(9));
+      powEffectsOf(
+        Achievement(98).enhancedEffect, 
+        CursedRow(9), 
+        Achievement(187).effects.replicantiGalaxyCostPower);
     }
 
     get baseCost() { return player.replicanti.galCost; }
@@ -483,7 +491,10 @@ export const ReplicantiUpgrade = {
       const freeUpgrades = Achievement(98).canBeApplied;
       // This isn't a hot enough autobuyer to worry about doing an actual inverse.
       const bulk = bulkBuyBinarySearch(Currency.infinityPoints.value, {
-        costFunction: x => this.baseCostAfterCount(x).dividedByEffectOf(TimeStudy(233)),
+        costFunction: x => this.baseCostAfterCount(x).dividedByEffectOf(TimeStudy(233)).powEffectsOf(
+          Achievement(98).enhancedEffect, 
+          CursedRow(9), 
+          Achievement(187).effects.replicantiGalaxyCostPower),
         firstCost: this.cost,
         cumulative: !freeUpgrades,
       }, this.value);

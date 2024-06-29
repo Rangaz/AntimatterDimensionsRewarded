@@ -23,7 +23,7 @@ export function startEternityChallenge() {
   player.records.thisEternity.maxAM = DC.D0;
   Currency.antimatter.reset();
   playerInfinityUpgradesOnReset();
-  AchievementTimers.marathon2.reset();
+  //AchievementTimers.marathon2.reset();
   ECTimeStudyState.invalidateCachedRequirements();
 }
 
@@ -82,7 +82,7 @@ export class EternityChallengeState extends GameMechanicState {
   }
 
   get maxCompletions() {
-    return Enslaved.isRunning && this.id === 1 ? 1000 : 5;
+    return Enslaved.isRunning && this.id === 1 ? 1000 : Achievement(186).canBeApplied ? 6 : 5;
   }
 
   get remainingCompletions() {
@@ -90,13 +90,32 @@ export class EternityChallengeState extends GameMechanicState {
   }
 
   get isFullyCompleted() {
-    return this.completions === this.maxCompletions;
+    return Math.floor(this.completions) === this.maxCompletions;
   }
 
   get maxValidCompletions() {
-    if (this.id !== 4 && this.id !== 12) return this.maxCompletions;
+    const maxCompletions = this.maxCompletions;
+    if (this.id !== 4 && this.id !== 12) return maxCompletions;
+    if (this.isWithinRestrictionAtCompletions(maxCompletions)) return maxCompletions;
     let completions = this.completions;
-    while (completions < this.maxCompletions && this.isWithinRestrictionAtCompletions(completions)) {
+    if (Achievement(185).canBeApplied) { // Continous completions
+      // I made a binary search that has arbitrary precision and should work
+      // regardless of what the restriction is
+      let validCompletions = (maxCompletions + completions) / 2;
+      const range = maxCompletions - completions;
+      // The precision for i = 20 is +-~5/1048576 or +-0.000005
+      for (let i = 2; i <= 20; i++) {
+        if (this.isWithinRestrictionAtCompletions(validCompletions)) {
+          validCompletions += range / Math.pow(2, i);
+        }
+        else {
+          validCompletions -= range / Math.pow(2, i);
+        }
+      }
+      return validCompletions;
+    }
+
+    while (completions < maxCompletions && this.isWithinRestrictionAtCompletions(completions)) {
       completions++;
     }
     return completions;
@@ -157,6 +176,10 @@ export class EternityChallengeState extends GameMechanicState {
   }
 
   goalAtCompletions(completions) {
+    // In normal circumstances, this function 'looks ahead' to tell you how much IP is needed for the next
+    // full completion. However, with continous completions, even a tiny amount ahead is good enough,
+    // so, by substracting 1, this should work
+    if (Achievement(185).canBeApplied) completions--;
     return completions > 0
       ? this.initialGoal.times(this.goalIncrease.pow(Math.min(completions, this.maxCompletions - 1)))
       : this.initialGoal;
@@ -165,11 +188,17 @@ export class EternityChallengeState extends GameMechanicState {
   completionsAtIP(ip) {
     if (ip.lt(this.initialGoal)) return 0;
     const completions = 1 + (ip.dividedBy(this.initialGoal)).log10() / this.goalIncrease.log10();
+    // r185 makes completions continous
+    if (Achievement(185).canBeApplied) return Math.min(completions, this.maxCompletions);
     return Math.min(Math.floor(completions), this.maxCompletions);
   }
 
-  addCompletion(auto = false) {
-    this.completions++;
+  addCompletion(auto = false, completions = 1) {
+    if (!auto) completions = Math.clampMax(completions, this.maxValidCompletions - this.completions);
+    // In maxValidCompletions the precision is ~+-5/1048576, however some rounding is desirable
+    // in the case of EC4, since its restriction is discrete, so... sorry, this isn't really continous.
+    if (Achievement(185).canBeApplied) completions = Math.round(completions * 10000) / 10000;
+    this.completions += completions;
     if ((this.id === 4 || this.id === 12) && auto) {
       this.tryFail(true);
     }
@@ -237,6 +266,10 @@ export class EternityChallengeState extends GameMechanicState {
   }
 
   isWithinRestrictionAtCompletions(completions) {
+    // In normal circumstances, this function 'looks ahead' to tell you what the restriction is for the next
+    // full completion. However, with continous completions, even a tiny amount ahead is good enough,
+    // so, by substracting 1, and adding a very small amount, this should work
+    completions = Math.max(completions - (Achievement(185).canBeApplied * 0.9999999), 0);
     return this.config.restriction === undefined ||
       this.config.checkRestriction(this.config.restriction(completions));
   }
@@ -277,9 +310,10 @@ export class EternityChallengeState extends GameMechanicState {
       reason = restriction => `You failed Eternity Challenge ${this.id} due to ` +
       `spending more than ${quantify("in-game second", restriction, 0, 1)} in it`;
     }
-    Modal.message.show(`${reason(this.config.restriction(this.completions))}, ` +
-    `which has caused you to exit it.`,
-    { closeEvent: GAME_EVENT.REALITY_RESET_AFTER }, 1);
+    Modal.message.show(`
+      ${reason(this.config.restriction(this.completions - (Achievement(185).canBeApplied * 0.9999)))}, ` +
+      `which has caused you to exit it.`,
+      { closeEvent: GAME_EVENT.REALITY_RESET_AFTER }, 1);
     EventHub.dispatch(GAME_EVENT.CHALLENGE_FAILED);
   }
 

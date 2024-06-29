@@ -16,6 +16,9 @@ export default {
       timeShards: new Decimal(0),
       upgradeThreshold: new Decimal(0),
       shardsPerSecond: new Decimal(0),
+      buy10Mult: new Decimal(0),
+      multiplierText: "",
+      hasr183: false,
       incomeType: "",
       areAutobuyersUnlocked: false,
       showLockedDimCostNote: true,
@@ -33,6 +36,9 @@ export default {
       this.timeShards.copyFrom(Currency.timeShards);
       this.upgradeThreshold.copyFrom(FreeTickspeed.fromShards(Currency.timeShards.value).nextShards);
       this.shardsPerSecond.copyFrom(TimeDimension(1).productionPerSecond);
+      this.hasr183 = Achievement(183).canBeApplied;
+      this.buy10Mult.copyFrom(AntimatterDimensions.buyTenMultiplier);
+      this.multiplierText = `Buy 10 Dimension purchase multiplier: ${formatX(this.buy10Mult, 2, 2)}`;
       this.incomeType = EternityChallenge(7).isRunning ? "Eighth Infinity Dimensions" : "Time Shards";
       this.areAutobuyersUnlocked = Autobuyer.timeDimension(1).isUnlocked;
     },
@@ -82,6 +88,7 @@ export default {
       increasing above {{ formatInt(tickspeedSoftcap) }} Tickspeed upgrades.
     </div>
     <div>You are getting {{ format(shardsPerSecond, 2, 0) }} {{ incomeType }} per second.</div>
+    <div v-if="hasr183">{{ multiplierText }}</div>
     <div class="l-dimensions-container">
       <NewTimeDimensionRow
         v-for="tier in 8"
