@@ -9,13 +9,36 @@ export const changelog = [
    * }
    */
   {
+    date: [2024, 6, 28],
+    name: "It's done",
+    info: `
+    <b>Pelle is done. Enjoy!</b>
+    <b>With this, the mod is content complete!</li>
+    <br>
+    <br>
+    <b>New content:</b>
+    <ul>
+    <li>Row 18 achievements, totally new.</li>
+    <li>Later stages of Pelle rebalanced.</li>
+    </ul>
+    <br>
+    <br>
+    <b>Other changes: </b>
+    <ul>
+    <li>Rifts now drain 3% ➜ 4% of their respective resource each second.</li>
+    <li>Fixed power effects applied on Replicanti Galaxy cost messing with its autobuyer.</li>
+    <li>Recent base game improvements to come soon...</li>
+    </ul>
+    `
+  },
+  {
     date: [2024, 4, 26],
     name: "Better late than never",
     info: `
     <b>It's time to finish this</b>
     <br>
     <br>
-    <b>New content: NOT RELEASED YET</b>
+    <b>New content: Look at last entry</b>
     <br>
     <br>
     <b>Changes: </b>

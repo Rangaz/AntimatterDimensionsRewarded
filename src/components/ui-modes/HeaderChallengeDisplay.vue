@@ -1,5 +1,4 @@
 <script>
-import { Achievement } from "../../core/globals";
 import FailableEcText from "./FailableEcText";
 import PrimaryButton from "@/components/PrimaryButton";
 
