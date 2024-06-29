@@ -2,10 +2,8 @@ import { DC } from "../../constants";
 import { PlayerProgress } from "../../player-progress";
 
 /*
-PELLE:
--Implement recent base game additions
-
 AFTER UPDATE
+-Implement recent base game additions
 -Enhancements less overwelming
   ->Show Nameless hint that no Enhancements are necessary (or disable them)
   ->Make some Enhancements free?
