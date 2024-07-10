@@ -148,7 +148,7 @@ export const v = {
       id: 6,
       name: "Dual Requiem",
       description: value => `Unlock Reality with a total of at most ${formatInt(-value)} Glyphs equipped 
-        and Enhanced Achievements.`,
+        and Enhancements.`,
       // This achievement has internally negated values since the check is always greater than
       values: [3, 12, 21, 30, 39],
       condition: () => V.isRunning && TimeStudy.reality.isBought,

@@ -90,7 +90,7 @@ export default {
   },
   watch: {
     newEnhancements(newVal) {
-      // Update Enhanced Achievements when the string changes
+      // Update Enhancements when the string changes
       const achievementsToEnhance = this.newEnhancements.split("|")[0].split(",");
       const rowsToCurse = this.newEnhancements.split("|")[1].split(",");
       for (const pseudoAchievement of this.$refs.id) {

@@ -421,7 +421,7 @@ export const migrations = {
       player.options.news.showFForward = true;
     },
     30: player => {
-      // The enhanced achievements version
+      // The Enhancements version
       player.reality.enhancedAchievements = new Set();
       player.reality.disEnhance = false;
     },

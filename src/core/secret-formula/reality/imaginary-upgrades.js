@@ -211,7 +211,7 @@ export const imaginaryUpgrades = [
     id: 19,
     cost: 2e11,
     requirement: () => `Reach ${formatInt(4.05e6)} Tickspeed Continuum without ever having more than
-      ${formatInt(8)} Time Studies and 8 Enhanced Achievements in this Reality`,
+      ${formatInt(8)} Time Studies and 8 Enhancements in this Reality`,
     hasFailed: () => player.requirementChecks.reality.maxStudies > 8 || 
       Achievements.totalEnhancementPoints - Achievements.enhancementPoints > 8,
     checkRequirement: () => player.requirementChecks.reality.maxStudies <= 8 &&
@@ -275,7 +275,7 @@ export const imaginaryUpgrades = [
     cost: 1.8e15,
     formatCost: x => format(x, 1),
     requirement: () => `Reach Glyph level ${formatInt(20800)} in Ra's Reality with
-      at most ${formatInt(0)} Glyphs equipped and ${formatInt(-1)} Enhanced Achievements`,
+      at most ${formatInt(0)} Glyphs equipped and ${formatInt(-1)} Enhancements`,
     hasFailed: () => !Ra.isRunning || player.requirementChecks.reality.maxGlyphs > 0 || 
       Achievements.totalEnhancementPoints - Achievements.enhancementPoints > -1,
     checkRequirement: () => Ra.isRunning && player.requirementChecks.reality.maxGlyphs <= 0 &&

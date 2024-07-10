@@ -61,7 +61,7 @@ class AchievementState extends GameMechanicState {
   }
 
   get isEffectActive() {
-    // This means that enhanced achievements lose their regular effect
+    // This means that Enhancements lose their regular effect
     return this.isUnlocked && !this.isDisabled && !this.isEnhanced && !this.isCursed;
   }
 

@@ -38,7 +38,7 @@ export const eternityMilestones = {
         of your best Eternity Points per minute from previous Eternities (${effectText})`;
     },
     activeCondition: () => (player.options.offlineProgress
-      ? (Achievement(102).isEnhanced ? `Always active thanks to Enhanced Achievement 102` :
+      ? (Achievement(102).isEnhanced ? `Always active thanks to Enhancement 102` :
         `Active as long as neither of the other offline milestones
         (${formatInt(200)} or ${formatInt(1000)}) are also active`)
       : ""),
@@ -167,7 +167,7 @@ export const eternityMilestones = {
         fastest${realTime} Eternity `) + (eternities.gt(0) ? `(Currently ${format(eternities, 2, 2)}/hour)` : "(Inactive)");
     },
     activeCondition: () => (player.options.offlineProgress
-      ? (Achievement(102).isEnhanced ? `Always active thanks to Enhanced Achievement 102.` : 
+      ? (Achievement(102).isEnhanced ? `Always active thanks to Enhancement 102.` : 
           `Must be outside of all Challenges and Dilation, and the Eternity Autobuyer must be set to Eternity at zero EP.
           This milestone's effect is capped at ${formatInt(33)}ms.`)
       : ""),
@@ -187,7 +187,7 @@ export const eternityMilestones = {
         (infinities.gt(0) ? `(Currently ${format(infinities, 2, 2)}/hour)` : "(Inactive)");
     },
     activeCondition: () => (player.options.offlineProgress
-      ? (Achievement(102).isEnhanced ? `Always active thanks to Enhanced Achievement 102.` : `Must be outside of Normal/Infinity Challenges and outside of EC4 and EC12,
+      ? (Achievement(102).isEnhanced ? `Always active thanks to Enhancement 102.` : `Must be outside of Normal/Infinity Challenges and outside of EC4 and EC12,
         the Big Crunch Autobuyer must be turned on and set to time mode with ${formatInt(5)} seconds or less,
         and the Eternity Autobuyer must be turned off.`)
       : ""),

@@ -109,7 +109,7 @@ export const MultiplierTabHelper = {
 
   // Helper method to check for whether an achievement affects a particular dimension or not. Format of dimStr is
   // expected to be a three-character string "XXN", eg. "AD3" or "TD2"
-  // Enhanced Achievements are +10000, cursed rows are negative
+  // Enhancements are +10000, cursed rows are negative
   achievementDimCheck(ach, dimStr) {
     switch (ach) {
       case 23:

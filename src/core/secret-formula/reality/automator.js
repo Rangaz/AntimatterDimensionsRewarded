@@ -629,7 +629,7 @@ export const automator = {
       keyword: "ENHANCE RESPEC",
       category: 1,
       syntax: `<b>enhance respec</b>`,
-      description: `This command turns on the respec option, which will respec your Enhanced Achievements on the next manual or
+      description: `This command turns on the respec option, which will respec your Enhancements on the next manual or
         automatic Reality. Note that this does not actually perform a reality on its own; make sure your Autobuyer
         is on, or you manually run the REALITY command, if you have them unlocked.`,
       examples: [

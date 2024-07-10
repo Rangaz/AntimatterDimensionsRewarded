@@ -108,7 +108,7 @@ export default {
         player.reality.toBeEnhancedAchievements = new Set();
         player.celestials.ra.toBeCursedBits = 0;
       }
-      // We want to give toBeEnhancedAchievements all enhanced achievements only when neccesary.
+      // We want to give toBeEnhancedAchievements all Enhancements only when neccesary.
       // If there's only 1 element it likely means that an achievement was clicked while
       // respecAll was active. 0 elements means that a cursed row was clicked instead.
       if (!newValue && (!Number.isInteger(Math.log2(player.celestials.ra.toBeCursedBits)) &&

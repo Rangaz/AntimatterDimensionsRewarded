@@ -117,7 +117,7 @@ const dimTypes = ["AD", "ID", "TD"];
 const singleRes = ["IP", "EP", "DT", "tickspeed", "infinities", "eternities", "replicanti"];
 const targetedEffects = {
   achievement: { 
-    // Enhanced Achievements will be placed here as (10000 + actual number)
+    // Enhancements will be placed here as (10000 + actual number)
     // to distinguish them from the regular achievements, and 
     // 1000/2000 + actual number for when they have more than 1 effect to keep track of
     // -row only when neccesary (-3) (cursed rows)

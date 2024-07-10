@@ -124,7 +124,7 @@ export default {
       // We want to look for duplicate ids, then display them
       // I don't know if performance is going to be a problem here
       const duplicates = [];
-      // We also want to look for if an Enhanced Achievement is getting cursed
+      // We also want to look for if an Enhancement is getting cursed
       const enhancedAndCursed = [];
       for (const id of achievementsInString) {
         if (achievementsInString.indexOf(id) != achievementsInString.lastIndexOf(id)) {

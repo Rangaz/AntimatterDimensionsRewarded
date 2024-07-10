@@ -424,36 +424,6 @@ to all Antimatter Dimensions. Each fully completed row also gives another ${form
 effect from all Achievements together is shown above all the Achievement images.
 <br>
 <br>
-${Achievements.isEnhancementUnlocked ? `
-Achievement Enhancement is unlocked after you buy the perk ACHEH. It allows you to greatly strengthen an Achievement
-Reward of your choice, overwriting its previous reward.
-<br>
-<br>
-The Achievements you can enhance are initially limited to the first 4 rows, and you permanently 
-gain an Enhancement Point for every Achievement unlocked in rows 14 and beyond.
-<br>
-<br>
-You can Enhance at any time, but you can only change them after a Reality. To Enhance an Achievement, click on the image.
-Clicking on an Enhanced Achievement will make it respec as soon as possible, and clicking again will undo this action.
-Free Enhancements, like 'FAKE NEWS!', are an exception and can be disenhanced at any time.
-<br>
-<br>
-${V.isFlipped ? `
-Cursed Achievement rows are unlocked with Hard V. Cursing an Achievement row disables all their Achievements, respecs any 
-active Enhancements and applies a nerf as long as it's cursed. 
-<br>
-<br>
-A cursed row counts as -2 Achievements Enhanced, effectively increasing the amount of Enhancements you can have active at 
-the same time. 
-<br>
-<br>
-You can only curse or uncurse rows after a Reality, and only rows you have Enhancements unlocked. 
-To curse or uncurse you first click on 'Curse Achievements...', and then click the rows you want to curse or uncurse.
-Clicking again will undo this action.
-<br>
-<br>
-`: ``}` : ``}
-
 Secret Achievements offer no gameplay benefits or advantages and are simply there for fun. Hovering over a Secret
 Achievement will give a hint on how to attain them.
 
@@ -1049,6 +1019,26 @@ different colors, roughly indicating which part of the game they affect the most
       isUnlocked: () => PlayerProgress.realityUnlocked() || TimeStudy.reality.isBought,
       tags: ["pp", "reality", "tree", "endgame", "lategame"],
       tab: "reality/perks"
+    }, {
+      name: "Enhancements",
+      info: () => `
+Enhancements are unlocked after you buy the perk ACHEH. It allows you to greatly strengthen an Achievement
+Reward of your choice, overwriting its previous effect.
+<br>
+<br>
+The Achievements you can enhance are initially limited to the first 4 rows, and you permanently 
+gain an Enhancement Point for every Achievement unlocked in rows 14 and beyond.
+<br>
+<br>
+You can Enhance an Achievement at any time, but respecs only trigger after a Reality. 
+To Enhance an Achievement, click on the image.
+Clicking on an Enhancement will make it respec as soon as possible, and clicking again will undo this action.
+Free Enhancements, like 'FAKE NEWS!', are an exception and can be respec at any time.
+<br>
+`,
+      isUnlocked: () => Achievements.isEnhancementUnlocked,
+      tags: ["achievement", "awards", "reality", "v", "lategame", "endgame", "enhance", "enhancement", "curse", "rangaz"],
+      tab: "achievements/normal"
     }, 
     {
       name: "Automator Overview",
@@ -1650,6 +1640,26 @@ that the reaction cannot proceed due to not having enough of that reagent to get
         "decoherence", "force", "exponential", "uncountability", "boundless", "unpredictability", "multiversal",
         "reaction"],
       tab: "reality/alchemy"
+    }, {
+      name: "Cursed Rows",
+      info: () => `
+Cursed Rows are unlocked with Hard V. Cursing an Achievement row disables all their rewards, respecs any 
+active Enhancements and applies a nerf as long as it's cursed. 
+<br>
+<br>
+A cursed row counts as -2 Enhancements, effectively increasing the amount of Enhancements you can have active at 
+the same time. 
+<br>
+<br>
+You can only curse or uncurse rows after a Reality, and only rows you have Enhancements unlocked. 
+To curse or uncurse you first click on 'Curse Achievements...', and then click the rows you want to curse or uncurse.
+Clicking again will undo this action.
+<br>
+<br>
+`,
+      isUnlocked: () => V.isFlipped,
+      tags: ["achievement", "reality", "ra", "v", "lategame", "endgame", "enhance", "enhancement", "curse", "rangaz"],
+      tab: "achievements/normal"
     }, {
       name: "Imaginary Machines",
       info: () => `

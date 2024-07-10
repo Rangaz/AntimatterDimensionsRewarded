@@ -228,7 +228,7 @@ export const tabNotifications = {
         tab: "normal",
       },
     ],
-    // Always externally triggered (when I figure it out)
+    // Always externally triggered
     condition: () => true,
   }
 };

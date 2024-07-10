@@ -102,11 +102,13 @@ affected by this bug</li>
     <br>
     <b>Other changes: </b>
     <ul>
+    <li>10/7: There's now a dedicated How to Play section for Enhancements and Cursed rows.</li>
+    <li>Minor text changes regarding Enhancements.</li>
+    <li>6/7: Recent base game improvements have arrived! Look at the next Changelog entry (copied
+    from base game) for details.</li>
     <li>29/6: Fixed multiplier tab entry for Antimatter Dimensions breaking with Continuum.</li>
     <li>Rifts now drain 3% ➜ 4% of their respective resource each second.</li>
     <li>Fixed power effects applied on Replicanti Galaxy cost messing with its autobuyer.</li>
-    <li>6/7: Recent base game improvements have arrived! Look at the next Changelog entry (copied
-    from base game) for details.</li>
     <li>Savefiles with Achievement 146 automatically unlock the ACHEH perk if not obtained.</li>
     </ul>
     `
@@ -118,7 +120,7 @@ affected by this bug</li>
     <b>It's time to finish this</b>
     <br>
     <br>
-    <b>New content: Look at last entry</b>
+    <b>New content: Look at next entry</b>
     <br>
     <br>
     <b>Changes: </b>

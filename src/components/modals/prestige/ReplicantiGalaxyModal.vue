@@ -20,7 +20,7 @@ export default {
       return `You are about to purchase ${quantifyInt("Replicanti Galaxy", this.canBeBought)}`;
     },
     message() {
-      const reductionString = this.doNothing ? `not divide or reset anything thanks to Enhanced Achievement 126` : 
+      const reductionString = this.doNothing ? `not divide or reset anything thanks to Enhancement 126` : 
         (this.divideReplicanti
           ? `divide your Replicanti by ${format(Number.MAX_VALUE, 2, 2)} for each Replicanti Galaxy purchased
             (${format(this.replicanti, 2, 2)} to

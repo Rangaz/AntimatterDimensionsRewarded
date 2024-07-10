@@ -37,7 +37,7 @@ export const TP = {
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },
   achievement: {
-    name: () => Achievement(132).isEnhanced ? "Enhanced Achievement 132" : "Achievement 132",
+    name: () => Achievement(132).isEnhanced ? "Enhancement 132" : "Achievement 132",
     multValue: () => Achievement(132).effectOrDefault(1) * Achievement(132).enhancedEffect.effectOrDefault(1),
     isActive: () => Achievement(132).canBeApplied || Achievement(132).isEnhanced,
     icon: MultiplierTabIcons.ACHIEVEMENT,

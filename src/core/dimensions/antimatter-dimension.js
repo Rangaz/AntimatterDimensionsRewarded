@@ -461,7 +461,7 @@ class AntimatterDimensionState extends DimensionState {
       costScale: Player.dimensionMultDecrease,
       scalingCostThreshold: Number.MAX_VALUE
     })};
-    // Having the enhanced achievement makes its effect also conveniently work for C6.
+    // Having the Enhancement makes its effect also conveniently work for C6.
     if (row1Achievement.isEnhanced) {
       return new ExponentialCostScaling({
       baseCost: this._baseCost,

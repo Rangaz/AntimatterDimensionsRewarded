@@ -17,7 +17,7 @@ export const general = {
           ? name.concat(" (", dim, ")")
           : name
       }
-      name = ach > 10000 ? "Enhanced Achievement " : "Achievement ";
+      name = ach > 10000 ? "Enhancement " : "Achievement ";
       // We only want the first 3 digits of ach. We essentially substract ach
       // by almost itself, cancelling out everything but the 3 digits.
       ach -= Math.floor(ach / 1000) * 1000;

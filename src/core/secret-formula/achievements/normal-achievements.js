@@ -1096,7 +1096,7 @@ export const normalAchievements = [
     enhanced: {
       get reward() {
         return `Start with ${Achievement(55).isEnhanced ? 
-          `${format(DC.E50)} (improved by Enhanced Achievement 55)` : formatInt(10)} Time Theorems.`
+          `${format(DC.E50)} (improved by Enhancement 55)` : formatInt(10)} Time Theorems.`
       },
       effect: () => DC.E1.powEffectOf(Achievement(55).enhancedEffect),
     }
@@ -1358,7 +1358,7 @@ export const normalAchievements = [
     enhanced: {
       get reward() {
         return `Start every Reality with ${Achievement(55).isEnhanced ? `${formatPostBreak(DC.E2000)} 
-          (improved by Enhanced Achievement 55)` : format(1e40)} Eternity Points, 
+          (improved by Enhancement 55)` : format(1e40)} Eternity Points, 
           and gain that amount upon Enhancing this achievement.`;
       },
       effect: () => DC.E40.powEffectOf(Achievement(55).enhancedEffect)
@@ -1481,7 +1481,7 @@ export const normalAchievements = [
     effect: 5e40,
     enhanced: {
       get reward() { return `When unlocking Dilation, start with ${Achievement(55).isEnhanced ? 
-        `${format(DC.C2P200, 2, 2)} Tachyon Particles (improved by Enhanced Achievement 55).` : 
+        `${format(DC.C2P200, 2, 2)} Tachyon Particles (improved by Enhancement 55).` : 
         `${formatInt(16)} Tachyon Particles.`}`},
       effect: () => DC.D16.powEffectOf(Achievement(55).enhancedEffect),
     }
@@ -2027,7 +2027,7 @@ export const normalAchievements = [
     enhanced: {
       reward: "Eternities no longer reset anything, except on challenges or Dilation, and " +
         "respeccing Studies can be done at any time. This can be Enhanced for free, but " + 
-        "requires Enhanced Achievement 115."
+        "requires Enhancement 115."
     }
   },
   {
@@ -2358,7 +2358,7 @@ export const normalAchievements = [
     name: "Hitchhiker's Guide to Reality",
     get description() {
       return `Reality for ${format(Decimal.NUMBER_MAX_VALUE, 1)} Reality Machines without having
-      any Charged Infinity Upgrades or Enhanced Achievements, having any equipped Glyphs, 
+      any Charged Infinity Upgrades or Enhancements, having any equipped Glyphs, 
       or buying any Triad Studies.`;
     },
     checkRequirement: () => MachineHandler.gainedRealityMachines.gte(Decimal.NUMBER_MAX_VALUE) &&

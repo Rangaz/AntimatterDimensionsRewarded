@@ -183,11 +183,11 @@ export const catchupResources = [
       is determined by how high some of your resources reached in that Reality.`
   },
   {
-    name: "Enhanced Achievements",
+    name: "Enhancements",
     id: 24,
-    openH2pEntry: "Achievements",
+    openH2pEntry: "Enhancements",
     requiredStage: PROGRESS_STAGE.EARLY_REALITY,
-    description: `Enhanced Achievements are unlocked through the ACHEH perk, and massively power up an early achievement 
+    description: `Enhancements are unlocked through the ACHEH perk, and massively power up an early achievement 
       reward of your choice. More can be active at the same time based on post-Reality Achievements completed, and they
       can only be changed between Realities.`
   },
@@ -254,7 +254,7 @@ export const catchupResources = [
     requiredStage: PROGRESS_STAGE.V,
     description: `V is the fourth Celestial, with a modified Reality which is similar to Teresa's Reality but only gives
       rewards by reaching certain milestones of resources within. They give a new resource called Space Theorems, which
-      allow you to purchase additional Time Studies without path restrictions, and more Enhanced Achievements.`
+      allow you to purchase additional Time Studies without path restrictions, and more Enhancements.`
   },
   {
     name: "Ra",
@@ -306,8 +306,15 @@ export const catchupResources = [
       of Time Studies called Triad Studies.`
   },
   {
-    name: "Imaginary Machines",
+    name: "Cursed Rows",
     id: 39,
+    requiredStage: PROGRESS_STAGE.RA,
+    description: `V's Memories also unlock Cursed Rows, which disables all Achievements and Enhancements in a row, and
+      applies a nerf, counting as -2 Enhancements.`
+  },
+  {
+    name: "Imaginary Machines",
+    id: 40,
     requiredStage: PROGRESS_STAGE.IMAGINARY_MACHINES,
     description: () => `Imaginary Machines are a new resource unlocked when reaching ${format(DC.E1000)} Reality
       Machines. They are produced passively up to a cap determined by how many Reality Machines you would have gotten
@@ -315,7 +322,7 @@ export const catchupResources = [
   },
   {
     name: "Lai'tela",
-    id: 40,
+    id: 41,
     requiredStage: PROGRESS_STAGE.LAITELA,
     description: `Lai'tela is the sixth Celestial, whose Reality has a modified completion condition and gives a
       scaling reward based on how quickly you can reach it. They unlock new features largely related to a resource
@@ -323,14 +330,14 @@ export const catchupResources = [
   },
   {
     name: "Continuum",
-    id: 41,
+    id: 42,
     requiredStage: PROGRESS_STAGE.LAITELA,
     description: `Continuum is a modified type of production which allows your Antimatter Dimensions to produce as if
       they could purchase fractional amounts of upgrades, without actually purchasing them.`
   },
   {
     name: "Dark Matter Dimensions",
-    id: 42,
+    id: 43,
     openH2pEntry: "Lai'tela",
     requiredStage: PROGRESS_STAGE.LAITELA,
     description: `Dark Matter Dimensions are cascading production which operate on a tick-based system instead of
@@ -338,7 +345,7 @@ export const catchupResources = [
   },
   {
     name: "Dimension Reset Mechanics",
-    id: 43,
+    id: 44,
     openH2pEntry: "Lai'tela",
     requiredStage: PROGRESS_STAGE.LAITELA,
     description: `Dark Matter Dimensions can be reset in two ways. Annihilation resets all your Dimensions in exchange
@@ -347,21 +354,21 @@ export const catchupResources = [
   },
   {
     name: "Singularities",
-    id: 44,
+    id: 45,
     requiredStage: PROGRESS_STAGE.LAITELA,
     description: `Dark Energy can be used to produce Singularities, which give boosts based on their total amount.
       When producing Singularities, any extra Dark Energy above the condensing threshold is wasted.`
   },
   {
     name: "Pelle",
-    id: 45,
+    id: 46,
     requiredStage: PROGRESS_STAGE.PELLE,
     description: `Pelle is the seventh and final Celestial, who permanently Dooms your game, throwing you into a very
       difficult modified Reality which you cannot escape.`
   },
   {
     name: "Armageddon",
-    id: 46,
+    id: 47,
     openH2pEntry: "Pelle",
     requiredStage: PROGRESS_STAGE.PELLE,
     description: `Armageddon is a Pelle-specific reset which you can perform at any time. This resets your progress to
@@ -369,7 +376,7 @@ export const catchupResources = [
   },
   {
     name: "Pelle Strikes and Rifts",
-    id: 47,
+    id: 48,
     openH2pEntry: "Pelle Strikes",
     requiredStage: PROGRESS_STAGE.PELLE,
     description: `Upon reaching certain progress milestones within Pelle, a Strike may occur which permanently applies
