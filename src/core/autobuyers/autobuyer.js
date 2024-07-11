@@ -133,7 +133,7 @@ export class UpgradeableAutobuyerState extends IntervaledAutobuyerState {
 
   get interval() {
     const interval = this.data.interval;
-    return BreakInfinityUpgrade.autobuyerSpeed.isBought ? interval / 2 : interval;
+    return interval / (1 + BreakInfinityUpgrade.autobuyerSpeed.isBought + Achievement(61).isEnhanced * 2);
   }
 
   get hasMaxedInterval() {

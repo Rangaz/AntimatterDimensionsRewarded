@@ -3,10 +3,8 @@ import { PlayerProgress } from "../../player-progress";
 
 /*
 AFTER UPDATE
--Implement recent base game additions
 -Enhancements less overwelming
   ->Show Nameless hint that no Enhancements are necessary (or disable them)
-  ->Make some Enhancements free?
   ->Highlight pre-requirements on hover
 */
 
@@ -135,7 +133,7 @@ export const normalAchievements = [
     reward: "Add a fast-forward button to the news ticker.",
     enhanced: {
       reward: "Add a fast-forward button and a skip button to the news ticker. " +
-        "This Achievement can be Enhanced for free.",
+        "This Enhancement free.",
     }
   },
   {
@@ -700,7 +698,8 @@ export const normalAchievements = [
     effect: 5e12,
     enhanced: {
       get reward() {
-        return `Raise the Enhanced effects affecting starting resources by ${formatPow(50)}.`;
+        return `Raise the Enhanced effects affecting starting resources by ${formatPow(50)}.
+          This Enhancement is free.`;
       },
       effect: 50
     }
@@ -793,8 +792,8 @@ export const normalAchievements = [
     reward: "Dimension Autobuyer bulks are unlimited.",
     enhanced: {
       get reward() {
-        return `Dimension Autobuyer bulks are unlimited, and the Dilation Autobuyers bulk buy 
-          ${formatX(2)} as much. This can be Enhanced for free.`;
+        return `Dimension Autobuyer bulks are unlimited, and they, and the Tickspeed autobuyer, work
+          twice as fast. This Enhancement is.`;
       },
       effect: 2
     }
@@ -1657,7 +1656,7 @@ export const normalAchievements = [
     reward: "A fading sense of accomplishment.",
     effect: () => "Sense of accomplishment (fading)",
     enhanced: {
-      reward: "An overwelming unfading sense of accomplishment. This can be Enhanced for free.",
+      reward: "An overwelming unfading sense of accomplishment. This Enhancement is free.",
       effect: () => "Overwelming sense of accomplishment",
     }
   },
@@ -1878,7 +1877,7 @@ export const normalAchievements = [
         instead of resetting them to ${formatInt(1)}.`;
     },
     enhanced: {
-      reward: "Replicanti Galaxies no longer divide or reset Replicanti. This Achievement can be Enhanced for free."
+      reward: "Replicanti Galaxies no longer divide or reset Replicanti. This Enhancement is free."
     }
   },
   {
@@ -1926,15 +1925,17 @@ export const normalAchievements = [
     effects: {
       infinitiesGain: 2,
       bankedInfinitiesGain: () => Currency.infinities.value.times(0.15).floor(),
+    },
     enhanced: {
       get reward() {
-        return `After Eternity you permanently keep ${formatPercents(0.95)} of your Infinities as Banked Infinities,
+        return `You gain ${formatX(100000)} times more Infinities. After Eternity you permanently keep ${formatPercents(0.95)} of your Infinities as Banked Infinities,
           and, as long as this is Enhanced, they persist between Realities.`;
       },
-      effect: () => Currency.infinities.value.times(0.95).floor(),
+      effects: {
+        infinitiesGain: 100000,
+        bankedInfinitiesGain: () => Currency.infinities.value.times(0.95).floor(),
+      },
     }
-    }
-
   },
   {
     // Buffed & Enhanced!
@@ -1975,7 +1976,7 @@ export const normalAchievements = [
                         "(Fully complete Hard V to unlock Enhancement)" : ""}`},
     enhanced: {
       reward: "You start Eternities with all Infinity Challenges unlocked and completed, and all Realities with " +
-        "a full Time Study tree. This requires fully completing Hard V.",
+        "a full Time Study tree.",
     }
   },
   {
@@ -2026,7 +2027,7 @@ export const normalAchievements = [
       " or Dilating.",
     enhanced: {
       reward: "Eternities no longer reset anything, except on challenges or Dilation, and " +
-        "respeccing Studies can be done at any time. This can be Enhanced for free, but " + 
+        "respeccing Studies can be done at any time. This Enhancement is free, but " + 
         "requires Enhancement 115."
     }
   },
@@ -2066,7 +2067,7 @@ export const normalAchievements = [
     enhanced: {
       get reward() {
         return `Remove the downsides and strengthen the effects of Time Studies 131 and 133. This costs
-          ${formatInt(3)} Achievements.`;
+          ${formatInt(3)} Enhancements.`;
       },
       // This will directly multiply the values of the Time Studies.
       effect: 1.2

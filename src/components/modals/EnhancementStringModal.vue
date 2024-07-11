@@ -156,7 +156,7 @@ export default {
       const curseAmount = cursesInString.length;
       
       // Since some Achievements are free, we need to account for that.
-      ["22", "61", "114", "126", "136"].forEach(value => achievementAmount -= achievementsInString.includes(value));
+      ["22", "55", "61", "114", "126", "136"].forEach(value => achievementAmount -= achievementsInString.includes(value));
       
       // A few Enhancements are worth more Achievements
       achievementAmount += achievementsInString.includes("118") + 2 * achievementsInString.includes("138");

@@ -1034,10 +1034,29 @@ You can Enhance an Achievement at any time, but respecs only trigger after a Rea
 To Enhance an Achievement, click on the image.
 Clicking on an Enhancement will make it respec as soon as possible, and clicking again will undo this action.
 Free Enhancements, like 'FAKE NEWS!', are an exception and can be respec at any time.
+You can shift-click an Enhancement to lock it, preventing it from being accidentally respec. Shift-click again 
+to remove the lock.
 <br>
+<br>
+${VUnlocks.enhancementPresets.canBeApplied ? `
+  Enhancement Presets are unlocked after obtaining 1 V-Achievement, and they work very similarly to
+  Time Study Presets. They allow you to save your current Enhancements and then load them with a 
+  single click.
+<br>
+<br>
+  The 'Respec and Load' button will perform a Reality, respec all Enhancements (except locked ones) and
+  try to Enhance all Achievements in it. 
+  <br>
+  <br>
+  When editing an Enhancement preset, the modal will display all Achievements to be Enhanced, along with any errors.
+  For a collection of Achievements you can use ranges as XX-YY, and for an entire row you can use "row z". 
+  For example, instead of "11, 12, 13, 14, 15, 16, 17, 18", you can put "11-18" or "row 1"; both options are equivalent
+  in this case.
+  ` : ``}
 `,
       isUnlocked: () => Achievements.isEnhancementUnlocked,
-      tags: ["achievement", "awards", "reality", "v", "lategame", "endgame", "enhance", "enhancement", "curse", "rangaz"],
+      tags: ["achievement", "awards", "reality", "v", "lategame", "endgame", "enhance", "enhancement", 
+        "preset", "link", "curse", "rangaz"],
       tab: "achievements/normal"
     }, 
     {
@@ -1656,9 +1675,14 @@ To curse or uncurse you first click on 'Curse Achievements...', and then click t
 Clicking again will undo this action.
 <br>
 <br>
+Cursed Rows are also compatible with Enhancement presets, and they get saved just like any other Enhancement.
+When editing a preset, you can add Curses by, after a "|", adding the row number(s) you want to curse.
+Using ranges is also possible. For example, "91-98|1-8" will Enhance all row 9 Achievements, and curse all rows 
+from 1 to 8.
 `,
       isUnlocked: () => V.isFlipped,
-      tags: ["achievement", "reality", "ra", "v", "lategame", "endgame", "enhance", "enhancement", "curse", "rangaz"],
+      tags: ["achievement", "reality", "ra", "v", "hard v", "lategame", "endgame", "enhance", "enhancement", "curse",
+        "preset", "link", "rangaz"],
       tab: "achievements/normal"
     }, {
       name: "Imaginary Machines",

@@ -96,7 +96,7 @@ class AchievementState extends GameMechanicState {
 
     // Handle special cases first
     // Free Enhancements should always be available
-    if ([22, 61, 114, 126].includes(this.id)) return true;
+    if ([22, 55, 61, 114, 126].includes(this.id)) return true;
 
     // Used for Imaginary Upgrade's locks 
     let effectiveEnhancementPoints = Achievements.enhancementPoints;
@@ -449,8 +449,8 @@ export const Achievements = {
   // Free Enhancements add 1 to compensate for the bigger size of enhancedAchievements
   get enhancementPoints() {
     return this.totalEnhancementPoints - player.reality.enhancedAchievements.size +
-      Achievement(22).isEnhanced + Achievement(61).isEnhanced + Achievement(114).isEnhanced + 
-      Achievement(126).isEnhanced + Achievement(136).isEnhanced - 
+      Achievement(22).isEnhanced + Achievement(55).isEnhanced + Achievement(61).isEnhanced + 
+      Achievement(114).isEnhanced + Achievement(126).isEnhanced + Achievement(136).isEnhanced - 
       Achievement(118).isEnhanced - 2 * Achievement(138).isEnhanced 
       + 2 * this.effectiveCurses;
   },

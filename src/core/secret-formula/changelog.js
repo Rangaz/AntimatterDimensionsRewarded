@@ -102,6 +102,11 @@ affected by this bug</li>
     <br>
     <b>Other changes: </b>
     <ul>
+    <li>11/7: Enhancement 55 is free.</li>
+    <li>Enhancement 61 no longer increases Dilation bulk amounts, instead it increases AD's 
+    autobuyer speed so that it's actually instantaneous instead of 0.05s.</li>
+    <li>Enhancement 131 now boosts Infinities by x100,000.</li>
+    <li>Added more information in the How to Play section for Enhancements and Cursed rows.</li>
     <li>10/7: There's now a dedicated How to Play section for Enhancements and Cursed rows.</li>
     <li>Minor text changes regarding Enhancements.</li>
     <li>6/7: Recent base game improvements have arrived! Look at the next Changelog entry (copied

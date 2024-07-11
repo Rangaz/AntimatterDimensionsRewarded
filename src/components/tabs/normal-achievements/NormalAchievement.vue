@@ -210,7 +210,7 @@ export default {
         return;
       }
       // Free Enhancements should be easy to disEnhance
-      if (this.isEnhanced && [22, 61, 114, 126, 136].includes(this.id)) {
+      if (this.isEnhanced && [22, 55, 61, 114, 126, 136].includes(this.id)) {
         this.achievement.disEnhance();
         return;
       }
