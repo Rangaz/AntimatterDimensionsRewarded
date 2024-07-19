@@ -1065,7 +1065,8 @@ ${VUnlocks.enhancementPresets.canBeApplied ? `
       isUnlocked: () => Achievements.isEnhancementUnlocked,
       tags: ["achievement", "awards", "reality", "v", "lategame", "endgame", "enhance", "enhancement", 
         "preset", "link", "curse", "rangaz"],
-      tab: "achievements/normal"
+      tab: "achievements/normal",
+      priority: () => !Pelle.isDoomed
     }, 
     {
       name: "Automator Overview",

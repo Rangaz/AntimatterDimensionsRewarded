@@ -219,7 +219,8 @@ export const imaginaryUpgrades = [
       Tickspeed.continuumValue >= 4.05e6,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     canLock: true,
-    lockEvent: () => `purchase more than ${formatInt(8)} Time Studies or Enhance more than 8 Achievements`,
+    lockEvent: () => `purchase more than ${formatInt(8)} Time Studies or Enhance more than 
+      ${formatInt(8)} Achievements`,
     description: "Unlock Dark Matter Annihilation"
   },
   {
