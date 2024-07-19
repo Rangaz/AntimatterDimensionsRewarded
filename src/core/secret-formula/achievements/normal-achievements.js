@@ -133,7 +133,7 @@ export const normalAchievements = [
     reward: "Add a fast-forward button to the news ticker.",
     enhanced: {
       reward: "Add a fast-forward button and a skip button to the news ticker. " +
-        "This Enhancement free.",
+        "This Enhancement is free.",
     }
   },
   {
@@ -793,7 +793,7 @@ export const normalAchievements = [
     enhanced: {
       get reward() {
         return `Dimension Autobuyer bulks are unlimited, and they, and the Tickspeed autobuyer, work
-          twice as fast. This Enhancement is.`;
+          twice as fast. This Enhancement is free.`;
       },
       effect: 2
     }
@@ -1741,7 +1741,7 @@ export const normalAchievements = [
     enhanced: {
       get reward() { return `Dimensional Sacrifice doesn't reset your Antimatter Dimensions
         and the Autobuyer activates every tick if turned on. It now affects Tickspeed at a reduced rate.
-        This costs ${formatInt(2)} Achievements.` },
+        This costs ${formatInt(2)} Enhancements.` },
       effect: () => Sacrifice.totalBoost.pow(-0.04),
       formatEffect: value => `${formatX(value.recip(), 3, 3)}`
     }
