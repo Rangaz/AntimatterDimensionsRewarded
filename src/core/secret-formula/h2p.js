@@ -13,6 +13,7 @@ export const h2p = {
    *  @property {function: @return Boolean} isUnlocked  Condition for when the entry is visible and searchable
    *  @property {Array: String} tags  List of keywords which are linked to this tab in the search function
    *  @property {String} tab    Key of a tab+subtab combination which will default the h2p to this entry if opened
+   *  @property {function: @return Number} priority   Controls which entry to show by default on a tab, default is 0
    * }
    */
   tabs: [
@@ -313,6 +314,7 @@ ${formatInt(1)} instead of ${formatInt(10)}), <b>M</b> for Max all
       isUnlocked: () => true,
       tags: ["dims", "normal", "antimatter", "ad"],
       tab: "dimensions/antimatter"
+      // This will be shown by default after 1st Infinity
     }, {
       name: "Tickspeed",
       info: () => `
@@ -361,7 +363,9 @@ Once you obtain Achievement 51 "Limit break" however, every Boost applies equall
 `,
       isUnlocked: () => true,
       tags: ["dimboost", "reset", "earlygame"],
-      tab: "dimensions/antimatter"
+      tab: "dimensions/antimatter",
+      // Will show by default after 1st Dimension Boost and before 5th Dimension Boost
+      priority: () => DimBoost.purchasedBoosts >= 1 && !PlayerProgress.infinityUnlocked() // 1 if true, 0 otherwise
     }, {
       name: "Antimatter Galaxies",
       info: () => `
@@ -389,7 +393,9 @@ increases by another ${formatPercents(0.002, 1)} per Galaxy, on top of Distant s
 `,
       isUnlocked: () => true,
       tags: ["8th", "reset", "galaxy", "earlygame"],
-      tab: "dimensions/antimatter"
+      tab: "dimensions/antimatter",
+      // Will show by default after 1st Galaxy and until 1st Infinity
+      priority: () => player.galaxies >= 1 && !PlayerProgress.infinityUnlocked() ? 3 : 0
     }, {
       name: "Dimensional Sacrifice",
       info: () => `
@@ -411,7 +417,9 @@ ${formatX(8)} then ${formatX(5)}; in both cases you will end up with a total sac
 `,
       isUnlocked: () => Sacrifice.isVisible,
       tags: ["8th", "reset", "earlygame", "gods", "earlygame"],
-      tab: "dimensions/antimatter"
+      tab: "dimensions/antimatter",
+      // Will show by default after 5th Dim Boost and before 1st Galaxy
+      priority: () => DimBoost.purchasedBoosts >= 5 && !PlayerProgress.infinityUnlocked() ? 2 : 0
     }, {
       name: "Achievements",
       info: () => `
@@ -1490,7 +1498,8 @@ If affordable, the Infinity button itself will visually change and bring you to 
 `,
       isUnlocked: () => Enslaved.isCompleted,
       tags: ["reality", "lategame", "endgame", "tesseract", "id", "celestial"],
-      tab: "celestials/tesseract"
+      tab: "dimensions/infinity",
+      priority: () => !Pelle.isDoomed // 0 if Doomed, 1 otherwise, since it's irrelevant in cel7
     }, {
       name: "V, Celestial of Achievements",
       alias: "V",
@@ -1791,7 +1800,8 @@ to Antimatter Dimensions and Tickspeed.
       // Things break, so we check for the iMU instead.
       isUnlocked: () => ImaginaryUpgrade(15).isBought,
       tags: ["continuum", "purchase", "reality", "lategame", "endgame"],
-      tab: ""
+      tab: "dimensions/antimatter",
+      priority: () => Laitela.continuumActive // 1 if it's active, 0 if not
     }, {
       name: "Singularities",
       info: () => `

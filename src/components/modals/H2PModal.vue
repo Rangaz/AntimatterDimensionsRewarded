@@ -32,10 +32,16 @@ export default {
     const unlockedTabs = GameDatabase.h2p.tabs.filter(tab => tab.isUnlocked());
     const tab = this.$viewModel.tab;
     const subtab = `${tab}/${this.$viewModel.subtab}`;
-    const matchedEntry = unlockedTabs.find(h2pTab => h2pTab.tab === subtab || h2pTab.tab === tab);
+
+    const matchingEntries = unlockedTabs.filter(h2pTab => h2pTab.tab === subtab || h2pTab.tab === tab);
+    // For the matching entries we want the one with highest priority, with id as tie-breaker
+    const totalEntries = GameDatabase.h2p.tabs.length;
+    const tabPriority = tab => (tab.priority != undefined ? tab.priority() : 0) - (tab.id / totalEntries)
+    const matchedEntry = matchingEntries.sort((a, b) => tabPriority(b) - tabPriority(a))[0];
+
     this.activeTab = ui.view.h2pForcedTab || matchedEntry || unlockedTabs[0];
     ui.view.h2pForcedTab = undefined;
-    // Force-show the H2P info initally regardless of tab while the tooltip for the H2P button is still active
+    // Force-show the H2P info initially regardless of tab while the tooltip for the H2P button is still active
     if (Tutorial.emphasizeH2P()) this.activeTab = GameDatabase.h2p.tabs[0];
   },
   mounted() {
