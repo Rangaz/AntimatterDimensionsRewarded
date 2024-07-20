@@ -104,6 +104,7 @@ affected by this bug</li>
     <ul>
     <li>19/7: Minor text fixes (thank you James103 for reporting!).</li>
     <li>Changed behavior of what h2p tab to show by default.</li>
+    <li>Achievement 154 has a 10% ➜ 25% to give x2 Realities and Perk Points.</li>
     <li>11/7: Enhancement 55 is free.</li>
     <li>Enhancement 61 no longer increases Dilation bulk amounts, instead it increases AD's 
     autobuyer speed so that it's actually instantaneous instead of 0.05s.</li>

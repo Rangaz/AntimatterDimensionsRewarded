@@ -504,8 +504,8 @@ export const normalAchievements = [
     effect() {
       const excessTimeProduction = Time.timeWithExcessAMProd.totalSeconds;
       return excessTimeProduction >= 30 ?
-      Math.pow(excessTimeProduction - 30, 0.6) / 100 + 1.3 : 
-      1 + excessTimeProduction / 100;
+        Math.pow(excessTimeProduction - 30, 0.6) / 100 + 1.3 : 
+        1 + excessTimeProduction / 100;
     },
     formatEffect: value => `${formatX(value, 2, 2)}`,
     enhanced: {
@@ -2204,15 +2204,17 @@ export const normalAchievements = [
     formatEffect: value => isInCelestialReality() ? `Inactive` : `${formatX(value, 2, 2)}`
   },
   {
+    // Buffed!
     id: 154,
     name: "I am speed",
     get description() { return `Reality in under ${formatInt(5)} seconds (game time).`; },
     checkRequirement: () => Time.thisReality.totalSeconds <= 5,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
-    get reward() { return `${formatPercents(0.1)} chance each Reality of ${formatX(2)} Realities and Perk Points.`; },
-    effect: 0.1
+    get reward() { return `${formatPercents(0.25)} chance each Reality of ${formatX(2)} Realities and Perk Points.`; },
+    effect: 0.25
   },
   {
+    // Buffed!
     id: 155,
     name: "Achievement #15983",
     get description() { return `Play for ${formatFloat(13.7, 1)} billion years.`; },
