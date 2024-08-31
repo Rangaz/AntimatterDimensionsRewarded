@@ -102,6 +102,9 @@ affected by this bug</li>
     <br>
     <b>Other changes: </b>
     <ul>
+    <li>31/8: Fixed some instances of Eternity Challenge completions not being properly rounded
+    with Achievement 185 (thank you S34n for reporting!).</li>
+    <li>Achievement 33 gives x2 ➜ x3 Infinities with Infinities longer than 30 seconds.</li>
     <li>19/7: Minor text fixes (thank you James103 for reporting!).</li>
     <li>Changed behavior of what h2p tab to show by default.</li>
     <li>Achievement 154 has a 10% ➜ 25% to give x2 Realities and Perk Points.</li>

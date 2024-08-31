@@ -199,6 +199,7 @@ export class EternityChallengeState extends GameMechanicState {
     // in the case of EC4, since its restriction is discrete, so... sorry, this isn't really continous.
     if (Achievement(185).canBeApplied) completions = Math.round(completions * 10000) / 10000;
     this.completions += completions;
+    this.completions = Math.ceil(this.completions * 10000) / 10000;
     if ((this.id === 4 || this.id === 12) && auto) {
       this.tryFail(true);
     }

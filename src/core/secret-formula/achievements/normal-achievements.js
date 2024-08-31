@@ -124,7 +124,7 @@ export const normalAchievements = [
     }
   },
   {
-    // Implemented & Enhanced! Biggest challenge so far, and I'm very happy with it!
+    // Implemented & Enhanced! Biggest challenge when I first started, and I'm very happy with it!
     id: 22,
     name: "FAKE NEWS!",
     get description() { return `Encounter ${formatInt(50)} different news messages.`; },
@@ -294,9 +294,9 @@ export const normalAchievements = [
     checkEvent: GAME_EVENT.BIG_CRUNCH_AFTER,
     get reward() {
       return `Infinities more than ${formatInt(30)} seconds long
-      give ${formatX(2)} more Infinities${Time.thisInfinity.totalSeconds >= 30 ? " (active)" : " (inactive)"}.`;
+      give ${formatX(3)} more Infinities${Time.thisInfinity.totalSeconds >= 30 ? " (active)" : " (inactive)"}.`;
     },
-    effect: 2,
+    effect: 3,
     effectCondition: () => Time.thisInfinity.totalSeconds >= 30,
     enhanced: {
       reward: "Gain more Infinities based on the length of your current Infinity.",
